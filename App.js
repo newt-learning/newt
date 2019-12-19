@@ -1,24 +1,19 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
+import { createBottomTabNavigator } from "react-navigation-tabs";
+// Screens
+import SignInScreen from "./src/screens/SignInScreen";
+import HomeScreen from "./src/screens/HomeScreen";
+import ProfileScreen from "./src/screens/ProfileScreen";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Newt</Text>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#38ceff",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  title: {
-    color: "white",
-    fontSize: 56,
-    fontWeight: "bold"
-  }
+const switchNavigator = createSwitchNavigator({
+  SignIn: SignInScreen,
+  mainFlow: createBottomTabNavigator({
+    Home: HomeScreen,
+    Profile: ProfileScreen
+  })
 });
+
+const App = createAppContainer(switchNavigator);
+
+export default App;
