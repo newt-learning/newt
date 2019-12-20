@@ -1,6 +1,7 @@
 import createDataContext from "./createDataContext";
 import * as Google from "expo-google-app-auth";
 import firebase from "../config/firebase";
+import newtApi from "../api/newtApi";
 import keys from "../config/keys";
 
 // Action constants
@@ -15,7 +16,7 @@ const authReducer = (state, action) => {
       return {
         ...state,
         isFetching: false,
-        userInfo: payload,
+        userInfo: action.payload,
         exists: true,
         errorMessage: ""
       };
@@ -49,7 +50,26 @@ const authenticateWithGoogle = dispatch => async () => {
       firebase
         .auth()
         .signInWithCredential(credential)
-        .then(res => console.log(res))
+        .then(async res => {
+          // Request sign in (begin async sign in process)
+          dispatch(requestSignIn());
+
+          const { user } = res;
+
+          // Take only currently necessary info from user object
+          const userInfo = {
+            _id: user.uid,
+            displayName: user.displayName,
+            email: user.email
+          };
+
+          // Request to create user if doesn't exist, or send back existing user
+          // from Mongo DB
+          const dbRes = await newtApi.post("/user/create", userInfo);
+
+          // Set user info to state
+          dispatch(setAuthedUser(dbRes.data));
+        })
         .catch(error => console.log(error));
     } else {
       console.log("There was an error while signing in.");
