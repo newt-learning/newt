@@ -4,8 +4,10 @@ import { View, Text, StyleSheet, Button } from "react-native";
 const SignInScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Newt</Text>
-      <Button title="Go to Home" onPress={() => navigation.navigate("Home")} />
+      <Text style={styles.title}>newt</Text>
+      <View>
+        <Button title="Sign in with Google" />
+      </View>
     </View>
   );
 };
@@ -15,7 +17,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#38ceff",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "space-around"
   },
   title: {
     color: "white",
