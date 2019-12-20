@@ -5,9 +5,20 @@ import keys from "../config/keys";
 
 // Action constants
 const REQUEST_SIGN_IN = "REQUEST_SIGN_IN";
+const SET_AUTHED_USER = "SET_AUTHED_USER";
 
 const authReducer = (state, action) => {
   switch (action.type) {
+    case REQUEST_SIGN_IN:
+      return { ...state, isFetching: true };
+    case SET_AUTHED_USER:
+      return {
+        ...state,
+        isFetching: false,
+        userInfo: payload,
+        exists: true,
+        errorMessage: ""
+      };
     default:
       return state;
   }
@@ -16,6 +27,10 @@ const authReducer = (state, action) => {
 // Actions
 const requestSignIn = () => {
   return { type: REQUEST_SIGN_IN };
+};
+
+const setAuthedUser = payload => {
+  return { type: SET_AUTHED_USER, payload };
 };
 
 const authenticateWithGoogle = dispatch => async () => {
