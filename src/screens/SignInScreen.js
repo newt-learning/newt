@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
+// Context
+import { Context as AuthContext } from "../context/AuthContext";
 
-const SignInScreen = ({ navigation }) => {
+const SignInScreen = () => {
+  const { state, authenticateWithGoogle } = useContext(AuthContext);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>newt</Text>
       <View>
-        <Button title="Sign in with Google" />
+        <Button title="Sign in with Google" onPress={authenticateWithGoogle} />
       </View>
     </View>
   );
