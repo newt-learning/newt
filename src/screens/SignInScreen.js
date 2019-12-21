@@ -5,6 +5,7 @@ import { Button, SocialIcon } from "react-native-elements";
 import { Context as AuthContext } from "../context/AuthContext";
 // Styling
 import { WHITE, GRAY_2, GRAY_3, NEWT_BLUE } from "../design/colors";
+import { SEMIBOLD, FS16, FS72 } from "../design/typography";
 
 const SignInScreen = () => {
   const { state, authenticateWithGoogle } = useContext(AuthContext);
@@ -41,8 +42,7 @@ const styles = StyleSheet.create({
     fontFamily: "Righteous",
     letterSpacing: 2,
     color: "white",
-    fontSize: 64,
-    fontWeight: "bold"
+    fontSize: FS72
   },
   button: {
     backgroundColor: WHITE,
@@ -58,9 +58,9 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
     color: GRAY_2,
-    fontFamily: "Muli-SemiBold",
+    fontFamily: SEMIBOLD,
     marginRight: 25,
-    fontSize: 16
+    fontSize: FS16
   }
 });
 
