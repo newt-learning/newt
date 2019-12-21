@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from "react-navigation-tabs";
 import { AppLoading } from "expo";
 import { setNavigator } from "./src/refs/navigationRef";
 // Screens
+import ResolveAuth from "./src/screens/ResolveAuth";
 import SignInScreen from "./src/screens/SignInScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
@@ -13,6 +14,7 @@ import { Provider as AuthProvider } from "./src/context/AuthContext";
 import useFonts from "./src/hooks/useFonts";
 
 const switchNavigator = createSwitchNavigator({
+  ResolveAuth,
   SignIn: SignInScreen,
   mainFlow: createBottomTabNavigator({
     Home: HomeScreen,

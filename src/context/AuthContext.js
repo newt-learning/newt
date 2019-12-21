@@ -113,6 +113,30 @@ const authenticateWithGoogle = dispatch => async () => {
   }
 };
 
+// Function to check if the user is already signed in on the device. Go to Home
+// screen if signed in, otherwise Sign In screen
+const tryLocalSignIn = dispatch => async () => {
+  await firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+      dispatch(requestSignIn());
+
+      // Get user info from db
+      newtApi
+        .get(`/user/${user.uid}`)
+        .then(res => dispatch(setAuthedUser(res.data)))
+        .catch(error => {
+          dispatch(resolveSignIn());
+        });
+
+      // Navigate to Home screen
+      navigate("Home");
+    } else {
+      dispatch(removeAuthedUser());
+      navigate("SignIn");
+    }
+  });
+};
+
 const signOut = dispatch => async () => {
   await firebase.auth().signOut();
   dispatch(removeAuthedUser());
@@ -122,6 +146,6 @@ const signOut = dispatch => async () => {
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { authenticateWithGoogle, signOut },
+  { authenticateWithGoogle, signOut, tryLocalSignIn },
   { isFetching: false, exists: false, userInfo: null, errorMessage: "" }
 );
