@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import { Button, SocialIcon } from "react-native-elements";
 // Context
 import { Context as AuthContext } from "../context/AuthContext";
+// Styling
+import { WHITE, GRAY_2, GRAY_3, NEWT_BLUE } from "../design/colors";
 
 const SignInScreen = () => {
   const { state, authenticateWithGoogle } = useContext(AuthContext);
@@ -31,7 +33,7 @@ const SignInScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#38ceff",
+    backgroundColor: NEWT_BLUE,
     alignItems: "center",
     justifyContent: "space-around"
   },
@@ -41,7 +43,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   button: {
-    backgroundColor: "white",
+    backgroundColor: WHITE,
     justifyContent: "center",
     borderRadius: 8,
     marginRight: 25,
@@ -53,7 +55,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 25
   },
   buttonTitle: {
-    color: "#666666",
+    color: GRAY_2,
     marginRight: 25,
     fontSize: 16
   }
