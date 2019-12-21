@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
+import { Button, SocialIcon } from "react-native-elements";
 // Context
 import { Context as AuthContext } from "../context/AuthContext";
 
@@ -9,8 +10,19 @@ const SignInScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>newt</Text>
-      <View>
-        <Button title="Sign in with Google" onPress={authenticateWithGoogle} />
+      <View style={{ width: "100%" }}>
+        <Button
+          icon={
+            <Image
+              source={require("../../assets/google-logo.png")}
+              style={styles.icon}
+            />
+          }
+          title="Sign in with Google"
+          titleStyle={styles.buttonTitle}
+          onPress={authenticateWithGoogle}
+          buttonStyle={styles.button}
+        />
       </View>
     </View>
   );
@@ -27,6 +39,23 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 56,
     fontWeight: "bold"
+  },
+  button: {
+    backgroundColor: "white",
+    justifyContent: "center",
+    borderRadius: 8,
+    marginRight: 25,
+    marginLeft: 25
+  },
+  icon: {
+    width: 25,
+    height: 25,
+    marginHorizontal: 25
+  },
+  buttonTitle: {
+    color: "#666666",
+    marginRight: 25,
+    fontSize: 16
   }
 });
 
