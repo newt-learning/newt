@@ -38,8 +38,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-around"
   },
   title: {
+    fontFamily: "Righteous",
+    letterSpacing: 2,
     color: "white",
-    fontSize: 56,
+    fontSize: 64,
     fontWeight: "bold"
   },
   button: {
@@ -56,6 +58,7 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
     color: GRAY_2,
+    fontFamily: "Muli-SemiBold",
     marginRight: 25,
     fontSize: 16
   }
