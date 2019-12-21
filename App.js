@@ -2,6 +2,7 @@ import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { AppLoading } from "expo";
+import { setNavigator } from "./src/refs/navigationRef";
 // Screens
 import SignInScreen from "./src/screens/SignInScreen";
 import HomeScreen from "./src/screens/HomeScreen";
@@ -31,7 +32,7 @@ export default () => {
 
   return (
     <AuthProvider>
-      <App />
+      <App ref={navigator => setNavigator(navigator)} />
     </AuthProvider>
   );
 };

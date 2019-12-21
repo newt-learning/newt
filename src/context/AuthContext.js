@@ -3,6 +3,7 @@ import * as Google from "expo-google-app-auth";
 import firebase from "../config/firebase";
 import newtApi from "../api/newtApi";
 import keys from "../config/keys";
+import { navigate } from "../refs/navigationRef";
 
 // Action constants
 const REQUEST_SIGN_IN = "REQUEST_SIGN_IN";
@@ -83,6 +84,9 @@ const authenticateWithGoogle = dispatch => async () => {
 
           // Set user info to state
           dispatch(setAuthedUser(dbRes.data));
+
+          // Navigate to Home screen
+          navigate("Home");
         })
         .catch(error => {
           dispatch(resolveSignIn());
