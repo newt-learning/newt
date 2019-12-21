@@ -1,12 +1,15 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { Feather } from "@expo/vector-icons";
+// Components
+import Header from "../components/Header";
 // Styling
 import { OFF_BLACK } from "../design/colors";
 
 const AddContent = () => {
   return (
-    <View style={{ marginTop: 40 }}>
+    <View>
+      <Header />
       <Text style={{ fontSize: 48 }}>Add Content</Text>
     </View>
   );
