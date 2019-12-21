@@ -50,6 +50,9 @@ const setError = payload => {
 // Authenticate with Google through a popup
 const authenticateWithGoogle = dispatch => async () => {
   try {
+    // Request sign in (begin async sign in process)
+    dispatch(requestSignIn());
+
     const result = await Google.logInAsync({
       iosClientId: keys.googleIosClientId,
       androidClientId: keys.googleAndroidClientId
@@ -66,9 +69,6 @@ const authenticateWithGoogle = dispatch => async () => {
         .auth()
         .signInWithCredential(credential)
         .then(async res => {
-          // Request sign in (begin async sign in process)
-          dispatch(requestSignIn());
-
           const { user } = res;
 
           // Take only currently necessary info from user object

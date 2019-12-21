@@ -8,7 +8,10 @@ import { WHITE, GRAY_2, GRAY_3, NEWT_BLUE } from "../design/colors";
 import { SEMIBOLD, FS16, FS72 } from "../design/typography";
 
 const SignInScreen = () => {
-  const { state, authenticateWithGoogle } = useContext(AuthContext);
+  const {
+    state: { isFetching },
+    authenticateWithGoogle
+  } = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
@@ -25,6 +28,8 @@ const SignInScreen = () => {
           titleStyle={styles.buttonTitle}
           onPress={authenticateWithGoogle}
           buttonStyle={styles.button}
+          loading={isFetching}
+          loadingProps={{ color: NEWT_BLUE }}
         />
       </View>
     </View>
