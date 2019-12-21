@@ -4,16 +4,16 @@ import { Feather } from "@expo/vector-icons";
 // Styling
 import { OFF_BLACK } from "../design/colors";
 
-const HomeScreen = () => {
+const AddContent = () => {
   return (
     <View style={{ marginTop: 40 }}>
-      <Text style={{ fontSize: 48 }}>Home Screen</Text>
+      <Text style={{ fontSize: 48 }}>Add Content</Text>
     </View>
   );
 };
 
-HomeScreen.navigationOptions = {
-  tabBarIcon: <Feather name="home" size={20} color={OFF_BLACK} />
+AddContent.navigationOptions = {
+  tabBarIcon: <Feather name="plus-square" size={20} color={OFF_BLACK} />
 };
 
-export default HomeScreen;
+export default AddContent;

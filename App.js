@@ -7,6 +7,7 @@ import { setNavigator } from "./src/refs/navigationRef";
 import ResolveAuth from "./src/screens/ResolveAuth";
 import SignInScreen from "./src/screens/SignInScreen";
 import HomeScreen from "./src/screens/HomeScreen";
+import AddContent from "./src/screens/AddContent";
 import ProfileScreen from "./src/screens/ProfileScreen";
 // Context
 import { Provider as AuthProvider } from "./src/context/AuthContext";
@@ -18,6 +19,7 @@ const switchNavigator = createSwitchNavigator({
   SignIn: SignInScreen,
   mainFlow: createBottomTabNavigator({
     Home: HomeScreen,
+    "Add Content": AddContent,
     Profile: ProfileScreen
   })
 });
