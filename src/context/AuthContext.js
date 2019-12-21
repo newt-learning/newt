@@ -9,6 +9,7 @@ import { navigate } from "../refs/navigationRef";
 const REQUEST_SIGN_IN = "REQUEST_SIGN_IN";
 const RESOLVE_SIGN_IN = "RESOLVE_SIGN_IN";
 const SET_AUTHED_USER = "SET_AUTHED_USER";
+const REMOVE_AUTHED_USER = "REMOVE_AUTHED_USER";
 const SET_ERROR = "SET_ERROR";
 const CLEAR_ERROR = "CLEAR_ERROR";
 
@@ -26,6 +27,13 @@ const authReducer = (state, action) => {
         exists: true,
         errorMessage: ""
       };
+    case REMOVE_AUTHED_USER:
+      return {
+        ...state,
+        isFetching: false,
+        userInfo: null,
+        exists: false
+      };
     case SET_ERROR:
       return { ...state, errorMessage: action.payload };
     default:
@@ -42,6 +50,9 @@ const resolveSignIn = () => {
 };
 const setAuthedUser = payload => {
   return { type: SET_AUTHED_USER, payload };
+};
+const removeAuthedUser = () => {
+  return { type: REMOVE_AUTHED_USER };
 };
 const setError = payload => {
   return { type: SET_ERROR, payload };
@@ -102,8 +113,15 @@ const authenticateWithGoogle = dispatch => async () => {
   }
 };
 
+const signOut = dispatch => async () => {
+  await firebase.auth().signOut();
+  dispatch(removeAuthedUser());
+  // Navigate to sign in screen
+  navigate("SignIn");
+};
+
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { authenticateWithGoogle },
+  { authenticateWithGoogle, signOut },
   { isFetching: false, exists: false, userInfo: null, errorMessage: "" }
 );
