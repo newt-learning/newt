@@ -5,6 +5,7 @@ import { FS18, SEMIBOLD } from "../design/typography";
 
 const ContentButton = ({
   text,
+  onPress,
   buttonStyle: passedButtonStyle,
   textStyle: passedTextStyle
 }) => {
@@ -13,7 +14,7 @@ const ContentButton = ({
   const textStyle = StyleSheet.flatten([styles.text, passedTextStyle]);
 
   return (
-    <TouchableOpacity style={buttonStyle} onPress={() => console.log(text)}>
+    <TouchableOpacity style={buttonStyle} onPress={onPress}>
       <Text style={textStyle}>{text}</Text>
     </TouchableOpacity>
   );

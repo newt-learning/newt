@@ -1,5 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
+import { Header as ReactNavHeader } from "react-navigation-stack";
 // Styling
 import { FS18, FS24, BOLD } from "../design/typography";
 import { OFF_BLACK, GRAY_4 } from "../design/colors";
@@ -14,7 +15,7 @@ const Header = ({ title, displayLogo = false }) => {
 
 const styles = StyleSheet.create({
   header: {
-    height: 80,
+    height: 24 + ReactNavHeader.HEIGHT,
     justifyContent: "flex-end",
     alignItems: "center",
     paddingBottom: 10,

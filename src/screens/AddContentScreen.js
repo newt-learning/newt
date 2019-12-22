@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Text, StatusBar, StyleSheet } from "react-native";
-import { Feather } from "@expo/vector-icons";
 // Components
 import Header from "../components/Header";
 import ContentButton from "../components/ContentButton";
@@ -8,24 +7,20 @@ import ContentButton from "../components/ContentButton";
 import { OFF_BLACK, OFF_WHITE, WHITE, RUBY } from "../design/colors";
 import { REGULAR } from "../design/typography";
 
-const AddContent = () => {
+const AddContentScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor={OFF_WHITE} />
-      <Header title="Add Content" />
       <View style={styles.contentContainer}>
         <ContentButton
           text="Add a book"
+          onPress={() => navigation.navigate("Add Book")}
           buttonStyle={styles.bookBtn}
           textStyle={styles.bookBtnText}
         />
       </View>
     </View>
   );
-};
-
-AddContent.navigationOptions = {
-  tabBarIcon: <Feather name="plus-square" size={20} color={OFF_BLACK} />
 };
 
 const styles = StyleSheet.create({
@@ -45,4 +40,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AddContent;
+export default AddContentScreen;
