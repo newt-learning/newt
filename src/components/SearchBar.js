@@ -19,8 +19,8 @@ const SearchBar = ({ placeholderText, onChange, value }) => {
 const styles = StyleSheet.create({
   searchBarContainerStyle: {
     backgroundColor: WHITE,
-    marginTop: 4,
-    marginHorizontal: 4,
+    marginTop: 5,
+    marginHorizontal: 5,
     borderBottomWidth: 0,
     borderTopWidth: 0
   },
