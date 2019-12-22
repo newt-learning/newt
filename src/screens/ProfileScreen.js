@@ -14,8 +14,7 @@ const ProfileScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Header />
-      <Text style={{ fontSize: 48 }}>Profile</Text>
+      <Header title="Profile" />
       <Button title="Sign out" onPress={signOut} />
     </View>
   );

@@ -9,8 +9,7 @@ import { OFF_BLACK } from "../design/colors";
 const HomeScreen = () => {
   return (
     <View style={styles.container}>
-      <Header />
-      <Text style={{ fontSize: 48 }}>Home Screen</Text>
+      <Header title="newt" displayLogo />
     </View>
   );
 };

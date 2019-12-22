@@ -1,13 +1,13 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 // Styling
-import { FS24 } from "../design/typography";
+import { FS18, FS24, BOLD } from "../design/typography";
 import { OFF_BLACK, GRAY_4 } from "../design/colors";
 
-const Header = () => {
+const Header = ({ title, displayLogo = false }) => {
   return (
     <View style={styles.header}>
-      <Text style={styles.title}>newt</Text>
+      <Text style={displayLogo ? styles.logo : styles.title}>{title}</Text>
     </View>
   );
 };
@@ -22,6 +22,11 @@ const styles = StyleSheet.create({
     borderColor: GRAY_4
   },
   title: {
+    fontFamily: BOLD,
+    color: OFF_BLACK,
+    fontSize: FS18
+  },
+  logo: {
     fontFamily: "Righteous",
     color: OFF_BLACK,
     fontSize: FS24,

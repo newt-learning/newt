@@ -12,7 +12,7 @@ const AddContent = () => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor={OFF_WHITE} />
-      <Header />
+      <Header title="Add Content" />
       <View style={styles.contentContainer}>
         <ContentButton
           text="Add a book"
