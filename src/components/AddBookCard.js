@@ -8,7 +8,7 @@ import {
 } from "react-native";
 // Styling
 import { SEMIBOLD, REGULAR, FS16, FS14 } from "../design/typography";
-import { GRAY_5, GRAY_2, OFF_BLACK } from "../design/colors";
+import { GRAY_5, GRAY_4, GRAY_2, OFF_BLACK } from "../design/colors";
 
 const AddBookCard = ({ title, author, thumbnailUrl }) => {
   return (
@@ -20,13 +20,17 @@ const AddBookCard = ({ title, author, thumbnailUrl }) => {
       <>
         <Image
           style={styles.thumbnail}
-          source={{
-            uri: thumbnailUrl
-          }}
+          source={
+            thumbnailUrl
+              ? {
+                  uri: thumbnailUrl
+                }
+              : null
+          }
         />
         <View style={styles.bookInfo}>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.author}>by {author}</Text>
+          {title ? <Text style={styles.title}>{title}</Text> : null}
+          {author ? <Text style={styles.author}>by {author}</Text> : null}
         </View>
       </>
     </TouchableHighlight>
@@ -38,9 +42,9 @@ const styles = StyleSheet.create({
     height: 100,
     flexDirection: "row",
     alignItems: "center",
-    paddingLeft: 15,
+    paddingHorizontal: 15,
     borderBottomWidth: 1,
-    borderColor: GRAY_5
+    borderColor: GRAY_4
   },
   thumbnail: {
     height: 80,
@@ -49,7 +53,9 @@ const styles = StyleSheet.create({
   },
   bookInfo: {
     height: 100,
+    flex: 1,
     paddingVertical: 10,
+    paddingRight: 15,
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "stretch"

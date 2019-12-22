@@ -1,10 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 // Components
 import SearchBar from "../components/SearchBar";
 import AddBookCard from "../components/AddBookCard";
 // API
 import { getBookInfo } from "../api/googleBooksApi";
+
+// Function to check if a thumbnail url or the image links object exists
+const checkThumbnailExistence = volumeInfo => {
+  if (volumeInfo.imageLinks) {
+    if (volumeInfo.imageLinks.thumbnail) {
+      return volumeInfo.imageLinks.thumbnail;
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
+};
 
 const AddBookScreen = () => {
   const [searchBarText, setSearchBarText] = useState("");
@@ -29,10 +42,16 @@ const AddBookScreen = () => {
         onChange={setSearchBarText}
         value={searchBarText}
       />
-      <AddBookCard
-        title="Educated"
-        author="Tara Westover"
-        thumbnailUrl="http://books.google.com/books/content?id=2ObWDgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl"
+      <FlatList
+        data={bookResults}
+        renderItem={({ item }) => (
+          <AddBookCard
+            title={item.volumeInfo.title ? item.volumeInfo.title : null}
+            author={item.volumeInfo.authors ? item.volumeInfo.authors[0] : null}
+            thumbnailUrl={checkThumbnailExistence(item.volumeInfo)}
+          />
+        )}
+        keyExtractor={book => book.id}
       />
     </View>
   );
