@@ -25,7 +25,8 @@ const addContentFlow = createStackNavigator({
   "Add Content": {
     screen: AddContentScreen,
     navigationOptions: {
-      headerTitle: "Add Content"
+      headerTitle: "Add Content",
+      headerBackTitle: null
     }
   },
   "Add Book": {
