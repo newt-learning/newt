@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
 import { Feather } from "@expo/vector-icons";
 // Components
@@ -13,7 +13,7 @@ const ProfileScreen = () => {
   const { signOut } = useContext(AuthContext);
 
   return (
-    <View>
+    <View style={styles.container}>
       <Header />
       <Text style={{ fontSize: 48 }}>Profile</Text>
       <Button title="Sign out" onPress={signOut} />
@@ -24,5 +24,11 @@ const ProfileScreen = () => {
 ProfileScreen.navigationOptions = {
   tabBarIcon: <Feather name="user" size={20} color={OFF_BLACK} />
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }
+});
 
 export default ProfileScreen;
