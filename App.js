@@ -40,7 +40,7 @@ const addContentFlow = createStackNavigator({
     screen: AddBookScreen,
     navigationOptions: {
       headerTitle:
-        Platform.OS === "ios" ? <HeaderTitle title="Add Book" /> : "Add Content"
+        Platform.OS === "ios" ? <HeaderTitle title="Add Book" /> : "Add Book"
     }
   }
 });
