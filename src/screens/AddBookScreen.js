@@ -8,19 +8,8 @@ import { getBookInfo } from "../api/googleBooksApi";
 // Styling
 import { FS16, SEMIBOLD } from "../design/typography";
 import { GRAY_2 } from "../design/colors";
-
-// Function to check if a thumbnail url or the image links object exists
-const checkThumbnailExistence = volumeInfo => {
-  if (volumeInfo.imageLinks) {
-    if (volumeInfo.imageLinks.thumbnail) {
-      return volumeInfo.imageLinks.thumbnail;
-    } else {
-      return null;
-    }
-  } else {
-    return null;
-  }
-};
+// Helpers
+import { checkThumbnailExistence } from "../helpers/imageHelpers";
 
 const AddBookScreen = ({ navigation }) => {
   const [searchBarText, setSearchBarText] = useState("");
@@ -67,7 +56,9 @@ const AddBookScreen = ({ navigation }) => {
                 item.volumeInfo.authors ? item.volumeInfo.authors[0] : null
               }
               thumbnailUrl={checkThumbnailExistence(item.volumeInfo)}
-              onPress={() => navigation.navigate("BookScreen")}
+              onPress={() =>
+                navigation.navigate("BookScreen", { bookInfo: item })
+              }
             />
           )}
           keyExtractor={book => book.id}
