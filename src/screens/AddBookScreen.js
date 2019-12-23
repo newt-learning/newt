@@ -22,7 +22,7 @@ const checkThumbnailExistence = volumeInfo => {
   }
 };
 
-const AddBookScreen = () => {
+const AddBookScreen = ({ navigation }) => {
   const [searchBarText, setSearchBarText] = useState("");
   const [bookResults, setBookResults] = useState([]);
   const [totalBookResults, setTotalBookResults] = useState(null);
@@ -67,6 +67,7 @@ const AddBookScreen = () => {
                 item.volumeInfo.authors ? item.volumeInfo.authors[0] : null
               }
               thumbnailUrl={checkThumbnailExistence(item.volumeInfo)}
+              onPress={() => navigation.navigate("BookScreen")}
             />
           )}
           keyExtractor={book => book.id}

@@ -10,12 +10,12 @@ import {
 import { SEMIBOLD, REGULAR, FS16, FS14 } from "../design/typography";
 import { GRAY_5, GRAY_4, GRAY_2, OFF_BLACK } from "../design/colors";
 
-const AddBookCard = ({ title, author, thumbnailUrl }) => {
+const AddBookCard = ({ title, author, thumbnailUrl, onPress }) => {
   return (
     <TouchableHighlight
       underlayColor={GRAY_5}
       style={styles.cardContainer}
-      onPress={() => console.log("add book")}
+      onPress={onPress}
     >
       <>
         <Image
@@ -39,7 +39,7 @@ const AddBookCard = ({ title, author, thumbnailUrl }) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    height: 100,
+    minHeight: 100,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 15,
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     marginRight: 15
   },
   bookInfo: {
-    height: 100,
+    minHeight: 100,
     flex: 1,
     paddingVertical: 10,
     paddingRight: 15,
