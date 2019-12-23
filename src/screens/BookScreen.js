@@ -8,6 +8,8 @@ import {
   TouchableOpacity
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
+// Components
+import ShowMoreShowLess from "../components/ShowMoreShowLess";
 // Styling
 import {
   FS24,
@@ -24,7 +26,7 @@ import { shortenText } from "../helpers/textHelpers";
 
 const BookScreen = ({ navigation }) => {
   // State to store whether the user wants to read more of the description
-  const [readMore, setReadMore] = useState(false);
+  const [showMore, setShowMore] = useState(false);
 
   // Get book info from params sent through navigation prop
   const bookInfo = navigation.getParam("bookInfo");
@@ -46,25 +48,9 @@ const BookScreen = ({ navigation }) => {
         <View style={styles.descContainer}>
           <Text style={styles.subHeader}>Description</Text>
           <Text style={styles.text}>
-            {readMore ? description : shortenText(description, 400)}
+            {showMore ? description : shortenText(description, 400)}
           </Text>
-          {readMore ? (
-            <TouchableOpacity
-              style={styles.seeMoreContainer}
-              onPress={() => setReadMore(false)}
-            >
-              <Feather name="chevron-up" size={16} color={GRAY_2} />
-              <Text style={styles.seeMoreText}>Show Less</Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              style={styles.seeMoreContainer}
-              onPress={() => setReadMore(true)}
-            >
-              <Text style={styles.seeMoreText}>Show More</Text>
-              <Feather name="chevron-down" size={16} color={GRAY_2} />
-            </TouchableOpacity>
-          )}
+          <ShowMoreShowLess showMore={showMore} setShowMore={setShowMore} />
         </View>
       ) : null}
     </ScrollView>
@@ -85,7 +71,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 15,
     paddingHorizontal: 15,
-    paddingBottom: 10
+    paddingBottom: 15
   },
   title: {
     fontFamily: SEMIBOLD,
@@ -100,7 +86,7 @@ const styles = StyleSheet.create({
   },
   descContainer: {
     paddingHorizontal: 15,
-    paddingVertical: 20,
+    paddingVertical: 15,
     borderBottomWidth: 1,
     borderColor: GRAY_4
   },
@@ -113,14 +99,6 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: REGULAR,
     fontSize: FS14
-  },
-  seeMoreContainer: {
-    marginTop: 10,
-    alignItems: "center"
-  },
-  seeMoreText: {
-    fontSize: FS14,
-    color: GRAY_2
   }
 });
 
