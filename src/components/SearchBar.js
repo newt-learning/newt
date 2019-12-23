@@ -3,12 +3,13 @@ import { StyleSheet } from "react-native";
 import { SearchBar as ElementSearchBar } from "react-native-elements";
 import { WHITE, GRAY_5 } from "../design/colors";
 
-const SearchBar = ({ placeholderText, onChange, value }) => {
+const SearchBar = ({ placeholderText, onChange, value, onClear }) => {
   return (
     <ElementSearchBar
       placeholder={placeholderText}
       onChangeText={onChange}
       value={value}
+      onClear={onClear}
       lightTheme
       containerStyle={styles.searchBarContainerStyle}
       inputContainerStyle={styles.inputContainerStyle}

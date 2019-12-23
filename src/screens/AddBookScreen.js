@@ -23,6 +23,8 @@ const AddBookScreen = () => {
   const [searchBarText, setSearchBarText] = useState("");
   const [bookResults, setBookResults] = useState([]);
 
+  const clearBookResults = () => setBookResults([]);
+
   // Fetch books from search bar text input
   useEffect(() => {
     const getResults = async searchTerm => {
@@ -41,6 +43,7 @@ const AddBookScreen = () => {
         placeholderText="Search for books"
         onChange={setSearchBarText}
         value={searchBarText}
+        onClear={clearBookResults}
       />
       <FlatList
         data={bookResults}
