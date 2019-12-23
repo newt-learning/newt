@@ -12,6 +12,8 @@ import HomeScreen from "./src/screens/HomeScreen";
 import AddContentScreen from "./src/screens/AddContentScreen";
 import AddBookScreen from "./src/screens/AddBookScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
+// Components
+import { HeaderTitle } from "./src/components/Header";
 // Context
 import { Provider as AuthProvider } from "./src/context/AuthContext";
 // Hooks
@@ -25,14 +27,20 @@ const addContentFlow = createStackNavigator({
   "Add Content": {
     screen: AddContentScreen,
     navigationOptions: {
-      headerTitle: "Add Content",
+      headerTitle:
+        Platform.OS === "ios" ? (
+          <HeaderTitle title="Add Content" />
+        ) : (
+          "Add Content"
+        ),
       headerBackTitle: null
     }
   },
   "Add Book": {
     screen: AddBookScreen,
     navigationOptions: {
-      headerTitle: "Add Book"
+      headerTitle:
+        Platform.OS === "ios" ? <HeaderTitle title="Add Book" /> : "Add Content"
     }
   }
 });

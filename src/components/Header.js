@@ -1,14 +1,18 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Platform } from "react-native";
 import { Header as ReactNavHeader } from "react-navigation-stack";
 // Styling
 import { FS18, FS24, BOLD } from "../design/typography";
 import { OFF_BLACK, GRAY_4 } from "../design/colors";
 
+export const HeaderTitle = ({ title, displayLogo }) => (
+  <Text style={displayLogo ? styles.logo : styles.title}>{title}</Text>
+);
+
 const Header = ({ title, displayLogo = false }) => {
   return (
     <View style={styles.header}>
-      <Text style={displayLogo ? styles.logo : styles.title}>{title}</Text>
+      <HeaderTitle title={title} displayLogo={displayLogo} />
     </View>
   );
 };

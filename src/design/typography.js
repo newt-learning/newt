@@ -1,7 +1,11 @@
+import { Platform } from "react-native";
+
 // Font family
-export const REGULAR = "Muli-Regular";
-export const SEMIBOLD = "Muli-SemiBold";
-export const BOLD = "Muli-Bold";
+export const REGULAR =
+  Platform.OS === "ios" ? "AvenirNext-Regular" : "Muli-Regular";
+export const SEMIBOLD =
+  Platform.OS === "ios" ? "AvenirNext-DemiBold" : "Muli-SemiBold";
+export const BOLD = Platform.OS === "ios" ? "AvenirNext-Bold" : "Muli-Bold";
 
 // Font sizes
 export const FS12 = 12;
