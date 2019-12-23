@@ -9,16 +9,9 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 // Components
-import ShowMoreShowLess from "../components/ShowMoreShowLess";
+import Description from "../components/Content/Description";
 // Styling
-import {
-  FS24,
-  FS18,
-  FS16,
-  FS14,
-  SEMIBOLD,
-  REGULAR
-} from "../design/typography";
+import { FS24, FS16, FS14, SEMIBOLD, REGULAR } from "../design/typography";
 import { OFF_BLACK, GRAY_1, GRAY_2, GRAY_4 } from "../design/colors";
 // Helpers
 import { checkThumbnailExistence } from "../helpers/imageHelpers";
@@ -44,15 +37,11 @@ const BookScreen = ({ navigation }) => {
         {title ? <Text style={styles.title}>{title}</Text> : null}
         {authors ? <Text style={styles.author}>by {authors[0]}</Text> : null}
       </View>
-      {description ? (
-        <View style={styles.descContainer}>
-          <Text style={styles.subHeader}>Description</Text>
-          <Text style={styles.text}>
-            {showMore ? description : shortenText(description, 400)}
-          </Text>
-          <ShowMoreShowLess showMore={showMore} setShowMore={setShowMore} />
-        </View>
-      ) : null}
+      <Description
+        text={description}
+        showMore={showMore}
+        setShowMore={setShowMore}
+      />
     </ScrollView>
   );
 };
@@ -83,18 +72,6 @@ const styles = StyleSheet.create({
     fontFamily: REGULAR,
     fontSize: FS16,
     color: GRAY_2
-  },
-  descContainer: {
-    paddingHorizontal: 15,
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderColor: GRAY_4
-  },
-  subHeader: {
-    fontFamily: SEMIBOLD,
-    fontSize: FS18,
-    color: GRAY_1,
-    marginBottom: 5
   },
   text: {
     fontFamily: REGULAR,

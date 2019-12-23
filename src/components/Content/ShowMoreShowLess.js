@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { REGULAR, FS14 } from "../design/typography";
-import { GRAY_2 } from "../design/colors";
+import { REGULAR, FS14 } from "../../design/typography";
+import { GRAY_2 } from "../../design/colors";
 
 const ShowMoreShowLess = ({ showMore, setShowMore }) => {
   return showMore ? (
