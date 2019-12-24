@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 // Components
+import SubHeader from "./SubHeader";
 import ShowMoreShowLess from "./ShowMoreShowLess";
 // Styling
 import { SEMIBOLD, REGULAR, FS18, FS14 } from "../../design/typography";
@@ -17,7 +18,7 @@ const Description = ({ text, showMore, setShowMore }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Description</Text>
+      <SubHeader>Description</SubHeader>
       <Text style={styles.text}>
         {showMore ? text : shortenText(text, TEXT_LIMIT)}
       </Text>
@@ -30,16 +31,9 @@ const Description = ({ text, showMore, setShowMore }) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 15,
-    paddingVertical: 15,
+    padding: 15,
     borderBottomWidth: 1,
     borderColor: GRAY_4
-  },
-  header: {
-    fontFamily: SEMIBOLD,
-    fontSize: FS18,
-    color: GRAY_1,
-    marginBottom: 5
   },
   text: {
     fontFamily: REGULAR,

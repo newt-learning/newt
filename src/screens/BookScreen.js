@@ -4,6 +4,7 @@ import { Feather } from "@expo/vector-icons";
 // Components
 import TitleSection from "../components/Content/TitleSection";
 import Description from "../components/Content/Description";
+import BookInformationSection from "../components/Content/BookInformationSection";
 // Styling
 import { FS14, REGULAR } from "../design/typography";
 // Helpers
@@ -16,7 +17,16 @@ const BookScreen = ({ navigation }) => {
 
   // Get book info from params sent through navigation prop
   const bookInfo = navigation.getParam("bookInfo");
-  const { title, authors, description, imageLinks } = bookInfo.volumeInfo;
+  const {
+    title,
+    authors,
+    description,
+    imageLinks,
+    pageCount,
+    industryIdentifiers,
+    publisher,
+    publishedDate
+  } = bookInfo.volumeInfo;
   const bookThumbnail = checkThumbnailExistence(bookInfo.volumeInfo);
 
   return (
@@ -31,6 +41,12 @@ const BookScreen = ({ navigation }) => {
         text={description}
         showMore={showMore}
         setShowMore={setShowMore}
+      />
+      <BookInformationSection
+        numPages={pageCount}
+        publisher={publisher}
+        datePublished={publishedDate}
+        isbns={industryIdentifiers}
       />
     </ScrollView>
   );
