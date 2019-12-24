@@ -52,9 +52,7 @@ const AddBookScreen = ({ navigation }) => {
           renderItem={({ item }) => (
             <AddBookCard
               title={item.volumeInfo.title ? item.volumeInfo.title : null}
-              author={
-                item.volumeInfo.authors ? item.volumeInfo.authors[0] : null
-              }
+              authors={item.volumeInfo.authors ? item.volumeInfo.authors : null}
               thumbnailUrl={checkThumbnailExistence(item.volumeInfo)}
               onPress={() =>
                 navigation.navigate("BookScreen", { bookInfo: item })

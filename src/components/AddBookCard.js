@@ -10,7 +10,7 @@ import {
 import { SEMIBOLD, REGULAR, FS16, FS14 } from "../design/typography";
 import { GRAY_5, GRAY_4, GRAY_2, OFF_BLACK } from "../design/colors";
 
-const AddBookCard = ({ title, author, thumbnailUrl, onPress }) => {
+const AddBookCard = ({ title, authors, thumbnailUrl, onPress }) => {
   return (
     <TouchableHighlight
       underlayColor={GRAY_5}
@@ -30,7 +30,9 @@ const AddBookCard = ({ title, author, thumbnailUrl, onPress }) => {
         />
         <View style={styles.bookInfo}>
           {title ? <Text style={styles.title}>{title}</Text> : null}
-          {author ? <Text style={styles.author}>by {author}</Text> : null}
+          {authors ? (
+            <Text style={styles.author}>by {authors.join(", ")}</Text>
+          ) : null}
         </View>
       </>
     </TouchableHighlight>

@@ -1,18 +1,11 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Text,
-  Image,
-  TouchableOpacity
-} from "react-native";
+import { StyleSheet, ScrollView, Image } from "react-native";
 import { Feather } from "@expo/vector-icons";
 // Components
+import TitleSection from "../components/Content/TitleSection";
 import Description from "../components/Content/Description";
 // Styling
-import { FS24, FS16, FS14, SEMIBOLD, REGULAR } from "../design/typography";
-import { OFF_BLACK, GRAY_1, GRAY_2, GRAY_4 } from "../design/colors";
+import { FS14, REGULAR } from "../design/typography";
 // Helpers
 import { checkThumbnailExistence } from "../helpers/imageHelpers";
 import { shortenText } from "../helpers/textHelpers";
@@ -33,10 +26,7 @@ const BookScreen = ({ navigation }) => {
         resizeMode="contain"
         source={bookThumbnail ? { uri: bookThumbnail } : null}
       />
-      <View style={styles.mainInfo}>
-        {title ? <Text style={styles.title}>{title}</Text> : null}
-        {authors ? <Text style={styles.author}>by {authors[0]}</Text> : null}
-      </View>
+      <TitleSection title={title} authors={authors} />
       <Description
         text={description}
         showMore={showMore}
@@ -53,29 +43,6 @@ const styles = StyleSheet.create({
   thumbnail: {
     height: 180,
     marginTop: 15
-  },
-  mainInfo: {
-    borderBottomWidth: 1,
-    borderColor: GRAY_4,
-    alignItems: "center",
-    marginTop: 15,
-    paddingHorizontal: 15,
-    paddingBottom: 15
-  },
-  title: {
-    fontFamily: SEMIBOLD,
-    fontSize: FS24,
-    color: OFF_BLACK,
-    textAlign: "center"
-  },
-  author: {
-    fontFamily: REGULAR,
-    fontSize: FS16,
-    color: GRAY_2
-  },
-  text: {
-    fontFamily: REGULAR,
-    fontSize: FS14
   }
 });
 
