@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, ScrollView, Image } from "react-native";
+import { StyleSheet, View, ScrollView, Image, Platform } from "react-native";
 import { Feather } from "@expo/vector-icons";
 // Components
 import TitleSection from "../components/Content/TitleSection";
@@ -31,11 +31,13 @@ const BookScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <Image
-        style={styles.thumbnail}
-        resizeMode="contain"
-        source={bookThumbnail ? { uri: bookThumbnail } : null}
-      />
+      <View style={styles.imageContainer}>
+        <Image
+          style={styles.thumbnail}
+          resizeMode="contain"
+          source={bookThumbnail ? { uri: bookThumbnail } : null}
+        />
+      </View>
       <TitleSection title={title} authors={authors} />
       <Description
         text={description}
@@ -56,9 +58,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+  imageContainer: {
+    paddingTop: 15,
+    paddingBottom: 5,
+    ...Platform.select({
+      ios: {
+        shadowColor: "black",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 5
+      },
+      android: {
+        elevation: 0
+      }
+    })
+  },
   thumbnail: {
-    height: 180,
-    marginTop: 15
+    height: 180
   }
 });
 

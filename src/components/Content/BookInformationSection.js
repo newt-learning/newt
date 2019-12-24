@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import moment from "moment";
+import _ from "lodash";
 // Components
 import SubHeader from "./SubHeader";
 // Styling
@@ -33,19 +34,32 @@ const BookInformationSection = ({
   isbns: passedIsbns
 }) => {
   let isbns = {};
-  passedIsbns.forEach(({ type, identifier }) => (isbns[type] = identifier));
+  let formattedDate = "";
 
-  // If it's just the year, return that, otherwise format it
-  const formattedDate =
-    datePublished.length === 4
-      ? datePublished
-      : moment(datePublished).format("DD MMM, YYYY");
+  if (!_.isEmpty(passedIsbns)) {
+    passedIsbns.forEach(({ type, identifier }) => (isbns[type] = identifier));
+  }
+  // Check if the date passed is a string (some books had 101-01-01 as a date
+  // for some reason, like what is this Google Books API?)
+  if (_.isString(datePublished) && datePublished !== "101-01-01") {
+    // If it's just the year, return that, otherwise format it
+    formattedDate =
+      datePublished.length === 4
+        ? datePublished
+        : moment(datePublished).format("DD MMM, YYYY");
+  }
 
   return (
     <View style={styles.container}>
       <SubHeader>Information</SubHeader>
-      <InfoField fieldName="Pages" fieldValue={`${numPages} pages`} />
-      <InfoField fieldName="Publisher" fieldValue={publisher} />
+      <InfoField
+        fieldName="Pages"
+        fieldValue={_.isInteger(numPages) ? `${numPages} pages` : null}
+      />
+      <InfoField
+        fieldName="Publisher"
+        fieldValue={_.isString(publisher) ? publisher : null}
+      />
       <InfoField fieldName="Publish Date" fieldValue={formattedDate} />
       <InfoField
         fieldName="ISBN-10"
