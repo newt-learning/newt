@@ -35,15 +35,18 @@ const BookInformationSection = ({
   let isbns = {};
   passedIsbns.forEach(({ type, identifier }) => (isbns[type] = identifier));
 
+  // If it's just the year, return that, otherwise format it
+  const formattedDate =
+    datePublished.length === 4
+      ? datePublished
+      : moment(datePublished).format("DD MMM, YYYY");
+
   return (
     <View style={styles.container}>
       <SubHeader>Information</SubHeader>
       <InfoField fieldName="Pages" fieldValue={`${numPages} pages`} />
       <InfoField fieldName="Publisher" fieldValue={publisher} />
-      <InfoField
-        fieldName="Publish Date"
-        fieldValue={moment(datePublished).format("DD MMM, YYYY")}
-      />
+      <InfoField fieldName="Publish Date" fieldValue={formattedDate} />
       <InfoField
         fieldName="ISBN-10"
         fieldValue={isbns["ISBN_10"] ? isbns["ISBN_10"] : null}

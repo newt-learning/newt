@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     fontFamily: SEMIBOLD,
     fontSize: FS18,
     color: GRAY_1,
-    marginBottom: 5
+    marginBottom: 10
   }
 });
 
