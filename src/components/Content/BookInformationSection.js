@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import moment from "moment";
 // Components
 import SubHeader from "./SubHeader";
 // Styling
@@ -29,14 +30,28 @@ const BookInformationSection = ({
   numPages,
   publisher,
   datePublished,
-  isbns
+  isbns: passedIsbns
 }) => {
+  let isbns = {};
+  passedIsbns.forEach(({ type, identifier }) => (isbns[type] = identifier));
+
   return (
     <View style={styles.container}>
       <SubHeader>Information</SubHeader>
       <InfoField fieldName="Pages" fieldValue={`${numPages} pages`} />
       <InfoField fieldName="Publisher" fieldValue={publisher} />
-      <InfoField fieldName="Publish Date" fieldValue={datePublished} />
+      <InfoField
+        fieldName="Publish Date"
+        fieldValue={moment(datePublished).format("DD MMM, YYYY")}
+      />
+      <InfoField
+        fieldName="ISBN-10"
+        fieldValue={isbns["ISBN_10"] ? isbns["ISBN_10"] : null}
+      />
+      <InfoField
+        fieldName="ISBN-13"
+        fieldValue={isbns["ISBN_13"] ? isbns["ISBN_13"] : null}
+      />
     </View>
   );
 };
