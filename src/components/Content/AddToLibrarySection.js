@@ -6,13 +6,14 @@ import { Button } from "react-native-elements";
 import { GRAY_4, INDIGO } from "../../design/colors";
 import { REGULAR, SEMIBOLD } from "../../design/typography";
 
-const AddToLibrarySection = () => {
+const AddToLibrarySection = ({ onPress }) => {
   return (
     <View style={styles.container}>
       <Button
         title="Add to Library"
         buttonStyle={styles.button}
         titleStyle={styles.buttonTitle}
+        onPress={onPress}
         raised
       />
     </View>
