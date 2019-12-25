@@ -3,6 +3,7 @@ import { StyleSheet, View, ScrollView, Image, Platform } from "react-native";
 import { Feather } from "@expo/vector-icons";
 // Components
 import TitleSection from "../components/Content/TitleSection";
+import AddToLibrarySection from "../components/Content/AddToLibrarySection";
 import Description from "../components/Content/Description";
 import BookInformationSection from "../components/Content/BookInformationSection";
 // Styling
@@ -39,6 +40,7 @@ const BookScreen = ({ navigation }) => {
         />
       </View>
       <TitleSection title={title} authors={authors} />
+      <AddToLibrarySection />
       <Description
         text={description}
         showMore={showMore}

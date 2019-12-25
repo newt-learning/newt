@@ -24,3 +24,6 @@ export const RUBY_2 = "#ff7397";
 export const RUBY_3 = "#ff9ab4";
 export const RUBY_4 = "#ffc1d1";
 export const RUBY_5 = "#ffdbe4";
+
+// Indigos
+export const INDIGO = "#3a3aff";
