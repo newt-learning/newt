@@ -9,6 +9,7 @@ import { Feather } from "@expo/vector-icons";
 import ResolveAuth from "./src/screens/ResolveAuth";
 import SignInScreen from "./src/screens/SignInScreen";
 import HomeScreen from "./src/screens/HomeScreen";
+import MyLibraryScreen from "./src/screens/MyLibraryScreen";
 import AddContentScreen from "./src/screens/AddContentScreen";
 import AddBookScreen from "./src/screens/AddBookScreen";
 import BookScreen from "./src/screens/BookScreen";
@@ -57,6 +58,7 @@ const switchNavigator = createSwitchNavigator({
   SignIn: SignInScreen,
   mainFlow: createBottomTabNavigator({
     Home: HomeScreen,
+    "My Library": MyLibraryScreen,
     "Add Content": addContentFlow,
     Profile: ProfileScreen
   })
