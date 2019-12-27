@@ -24,8 +24,9 @@ const SHELVES = [
   }
 ];
 
-const AddToMyLibraryScreen = () => {
+const AddToMyLibraryScreen = ({ navigation }) => {
   const [shelves, toggleShelves] = useSingleCheckbox(SHELVES);
+  const bookInfo = navigation.getParam("bookInfo");
 
   return (
     <View style={styles.container}>
@@ -48,7 +49,13 @@ const AddToMyLibraryScreen = () => {
         ))}
       </View>
       <View style={styles.button}>
-        <ActionButton title="Add to Library" />
+        <ActionButton
+          title="Add to Library"
+          onPress={() => {
+            const currentShelf = _.find(shelves, shelf => shelf.checked);
+            console.log({ ...bookInfo, shelf: currentShelf.name });
+          }}
+        />
       </View>
     </View>
   );

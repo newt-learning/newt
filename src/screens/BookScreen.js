@@ -28,8 +28,8 @@ const BookScreen = ({ navigation }) => {
     industryIdentifiers,
     publisher,
     publishedDate
-  } = bookInfo.volumeInfo;
-  const bookThumbnail = checkThumbnailExistence(bookInfo.volumeInfo);
+  } = bookInfo;
+  const bookThumbnail = checkThumbnailExistence(bookInfo);
 
   return (
     <ScrollView style={styles.container}>
@@ -42,7 +42,7 @@ const BookScreen = ({ navigation }) => {
       </View>
       <TitleSection title={title} authors={authors} />
       <AddToLibrarySection
-        onPress={() => navigation.navigate("AddToMyLibrary")}
+        onPress={() => navigation.navigate("AddToMyLibrary", { bookInfo })}
       />
       <Description
         text={description}

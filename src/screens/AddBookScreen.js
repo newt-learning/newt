@@ -10,6 +10,7 @@ import { FS16, SEMIBOLD } from "../design/typography";
 import { GRAY_2 } from "../design/colors";
 // Helpers
 import { checkThumbnailExistence } from "../helpers/imageHelpers";
+import { extractRelevantBookInfo } from "../helpers/apiHelpers";
 
 const AddBookScreen = ({ navigation }) => {
   const [searchBarText, setSearchBarText] = useState("");
@@ -55,7 +56,9 @@ const AddBookScreen = ({ navigation }) => {
               authors={item.volumeInfo.authors ? item.volumeInfo.authors : null}
               thumbnailUrl={checkThumbnailExistence(item.volumeInfo)}
               onPress={() =>
-                navigation.navigate("BookScreen", { bookInfo: item })
+                navigation.navigate("BookScreen", {
+                  bookInfo: extractRelevantBookInfo(item)
+                })
               }
             />
           )}
