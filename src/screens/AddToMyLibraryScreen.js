@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import _ from "lodash";
+// Context
+import { Context as ContentContext } from "../context/ContentContext";
 // Components
 import Shelf from "../components/Content/Shelf";
 import ActionButton from "../components/ActionButton";
@@ -26,6 +28,7 @@ const SHELVES = [
 
 const AddToMyLibraryScreen = ({ navigation }) => {
   const [shelves, toggleShelves] = useSingleCheckbox(SHELVES);
+  const { state, addContent } = useContext(ContentContext);
   const bookInfo = navigation.getParam("bookInfo");
 
   return (
@@ -53,7 +56,8 @@ const AddToMyLibraryScreen = ({ navigation }) => {
           title="Add to Library"
           onPress={() => {
             const currentShelf = _.find(shelves, shelf => shelf.checked);
-            console.log({ ...bookInfo, shelf: currentShelf.name });
+            const data = { ...bookInfo, shelf: currentShelf.name };
+            addContent(data);
           }}
         />
       </View>

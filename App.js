@@ -19,6 +19,7 @@ import ProfileScreen from "./src/screens/ProfileScreen";
 import { HeaderTitle } from "./src/components/Header";
 // Context
 import { Provider as AuthProvider } from "./src/context/AuthContext";
+import { Provider as ContentProvider } from "./src/context/ContentContext";
 // Hooks
 import useFonts from "./src/hooks/useFonts";
 // Styling
@@ -88,7 +89,9 @@ export default () => {
 
   return (
     <AuthProvider>
-      <App ref={navigator => setNavigator(navigator)} />
+      <ContentProvider>
+        <App ref={navigator => setNavigator(navigator)} />
+      </ContentProvider>
     </AuthProvider>
   );
 };
