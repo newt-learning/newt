@@ -3,9 +3,6 @@ import { View, Text, StyleSheet } from "react-native";
 import { Feather } from "@expo/vector-icons";
 // Components
 import Header from "../components/Header";
-// Styling
-import { NEWT_BLUE, OFF_BLACK, GRAY_3 } from "../design/colors";
-import { FS14 } from "../design/typography";
 
 const HomeScreen = () => {
   return (
@@ -16,14 +13,9 @@ const HomeScreen = () => {
 };
 
 HomeScreen.navigationOptions = {
-  tabBarIcon: ({ focused }) => (
-    <Feather name="home" size={20} color={focused ? NEWT_BLUE : OFF_BLACK} />
+  tabBarIcon: ({ tintColor }) => (
+    <Feather name="home" size={20} color={tintColor} />
   )
-};
-
-HomeScreen.tabBarOptions = {
-  activeTintColor: NEWT_BLUE,
-  showLabel: false
 };
 
 const styles = StyleSheet.create({

@@ -6,8 +6,6 @@ import { Feather } from "@expo/vector-icons";
 import Header from "../components/Header";
 // Context
 import { Context as AuthContext } from "../context/AuthContext";
-// Styling
-import { NEWT_BLUE, OFF_BLACK } from "../design/colors";
 
 const ProfileScreen = () => {
   const { signOut } = useContext(AuthContext);
@@ -21,8 +19,8 @@ const ProfileScreen = () => {
 };
 
 ProfileScreen.navigationOptions = {
-  tabBarIcon: ({ focused }) => (
-    <Feather name="user" size={20} color={focused ? NEWT_BLUE : OFF_BLACK} />
+  tabBarIcon: ({ tintColor }) => (
+    <Feather name="user" size={20} color={tintColor} />
   )
 };
 

@@ -50,12 +50,8 @@ const addContentFlow = createStackNavigator({
 
 // Icon for Add Content button in bottom navigation bar
 addContentFlow.navigationOptions = {
-  tabBarIcon: ({ focused }) => (
-    <Feather
-      name="plus-square"
-      size={20}
-      color={focused ? NEWT_BLUE : OFF_BLACK}
-    />
+  tabBarIcon: ({ tintColor }) => (
+    <Feather name="plus-square" size={20} color={tintColor} />
   )
 };
 
