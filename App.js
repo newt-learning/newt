@@ -21,7 +21,7 @@ import { Provider as AuthProvider } from "./src/context/AuthContext";
 // Hooks
 import useFonts from "./src/hooks/useFonts";
 // Styling
-import { OFF_BLACK } from "./src/design/colors";
+import { OFF_BLACK, NEWT_BLUE } from "./src/design/colors";
 
 // Stack navigator between Add Content screen and specific content
 // (books, videos, articles) screens
@@ -50,18 +50,32 @@ const addContentFlow = createStackNavigator({
 
 // Icon for Add Content button in bottom navigation bar
 addContentFlow.navigationOptions = {
-  tabBarIcon: <Feather name="plus-square" size={20} color={OFF_BLACK} />
+  tabBarIcon: ({ focused }) => (
+    <Feather
+      name="plus-square"
+      size={20}
+      color={focused ? NEWT_BLUE : OFF_BLACK}
+    />
+  )
 };
 
 const switchNavigator = createSwitchNavigator({
   ResolveAuth,
   SignIn: SignInScreen,
-  mainFlow: createBottomTabNavigator({
-    Home: HomeScreen,
-    "My Library": MyLibraryScreen,
-    "Add Content": addContentFlow,
-    Profile: ProfileScreen
-  })
+  mainFlow: createBottomTabNavigator(
+    {
+      Home: HomeScreen,
+      "My Library": MyLibraryScreen,
+      "Add Content": addContentFlow,
+      Profile: ProfileScreen
+    },
+    {
+      tabBarOptions: {
+        activeTintColor: NEWT_BLUE,
+        inactiveTintColor: OFF_BLACK
+      }
+    }
+  )
 });
 
 const App = createAppContainer(switchNavigator);

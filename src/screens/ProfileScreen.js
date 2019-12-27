@@ -7,7 +7,7 @@ import Header from "../components/Header";
 // Context
 import { Context as AuthContext } from "../context/AuthContext";
 // Styling
-import { OFF_BLACK } from "../design/colors";
+import { NEWT_BLUE, OFF_BLACK } from "../design/colors";
 
 const ProfileScreen = () => {
   const { signOut } = useContext(AuthContext);
@@ -21,7 +21,9 @@ const ProfileScreen = () => {
 };
 
 ProfileScreen.navigationOptions = {
-  tabBarIcon: <Feather name="user" size={20} color={OFF_BLACK} />
+  tabBarIcon: ({ focused }) => (
+    <Feather name="user" size={20} color={focused ? NEWT_BLUE : OFF_BLACK} />
+  )
 };
 
 const styles = StyleSheet.create({
