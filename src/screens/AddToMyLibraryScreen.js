@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import _ from "lodash";
+// Components
 import Shelf from "../components/Content/Shelf";
+import ActionButton from "../components/ActionButton";
 import useSingleCheckbox from "../hooks/useSingleCheckbox";
 // Styling
 import { BOLD, FS20 } from "../design/typography";
@@ -26,14 +28,13 @@ const AddToMyLibraryScreen = () => {
   const [shelves, toggleShelves] = useSingleCheckbox(SHELVES);
 
   return (
-    <View>
-      <Text style={styles.header}>Select Shelf</Text>
-      <FlatList
-        data={shelves}
-        renderItem={({ item, index }) => (
+    <View style={styles.container}>
+      <View style={styles.option}>
+        <Text style={styles.header}>Select Shelf</Text>
+        {shelves.map((shelf, index) => (
           <Shelf
-            name={item.name}
-            checked={item.checked}
+            name={shelf.name}
+            checked={shelf.checked}
             onPressCheckbox={() => {
               const currentCheckedShelfIndex = _.findIndex(
                 shelves,
@@ -42,21 +43,36 @@ const AddToMyLibraryScreen = () => {
 
               toggleShelves(currentCheckedShelfIndex, index);
             }}
+            key={shelf.name}
           />
-        )}
-        keyExtractor={shelf => shelf.name}
-      />
+        ))}
+      </View>
+      <View style={styles.button}>
+        <ActionButton title="Add to Library" />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "space-between"
+  },
+  options: {
+    justifyContent: "flex-start"
+  },
   header: {
     fontFamily: BOLD,
     fontSize: FS20,
     color: OFF_BLACK,
     marginTop: 20,
     marginHorizontal: 15
+  },
+  button: {
+    alignItems: "center",
+    marginHorizontal: 15,
+    marginBottom: 20
   }
 });
 

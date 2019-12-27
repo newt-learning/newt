@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 // Hook to update checkboxes where only one item is allowed to be selected
+// (unselect current checked box and select pressed checked box)
 export default initialState => {
   const [checkboxes, setCheckboxes] = useState(initialState);
 
