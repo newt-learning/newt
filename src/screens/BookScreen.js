@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Image,
-  Text,
-  Platform,
-  Modal
-} from "react-native";
+import { StyleSheet, View, ScrollView, Image, Platform } from "react-native";
 import { Button } from "react-native-elements";
 import { Feather } from "@expo/vector-icons";
 // Components
@@ -24,7 +16,6 @@ import { shortenText } from "../helpers/textHelpers";
 const BookScreen = ({ navigation }) => {
   // State to store whether the user wants to read more of the description
   const [showMore, setShowMore] = useState(false);
-  const [showModal, setShowModal] = useState(false);
 
   // Get book info from params sent through navigation prop
   const bookInfo = navigation.getParam("bookInfo");
@@ -42,16 +33,6 @@ const BookScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <Modal
-        visible={showModal}
-        animationType="slide"
-        presentationStyle="formSheet"
-      >
-        <View>
-          <Text>Add to Library</Text>
-          <Button title="Close" onPress={() => setShowModal(false)} />
-        </View>
-      </Modal>
       <View style={styles.imageContainer}>
         <Image
           style={styles.thumbnail}
@@ -60,7 +41,9 @@ const BookScreen = ({ navigation }) => {
         />
       </View>
       <TitleSection title={title} authors={authors} />
-      <AddToLibrarySection onPress={() => setShowModal(true)} />
+      <AddToLibrarySection
+        onPress={() => navigation.navigate("AddToMyLibrary")}
+      />
       <Description
         text={description}
         showMore={showMore}

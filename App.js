@@ -13,6 +13,7 @@ import MyLibraryScreen from "./src/screens/MyLibraryScreen";
 import AddContentScreen from "./src/screens/AddContentScreen";
 import AddBookScreen from "./src/screens/AddBookScreen";
 import BookScreen from "./src/screens/BookScreen";
+import AddToMyLibraryScreen from "./src/screens/AddToMyLibraryScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 // Components
 import { HeaderTitle } from "./src/components/Header";
@@ -45,7 +46,8 @@ const addContentFlow = createStackNavigator({
         Platform.OS === "ios" ? <HeaderTitle title="Add Book" /> : "Add Book"
     }
   },
-  BookScreen: BookScreen
+  BookScreen: BookScreen,
+  AddToMyLibrary: AddToMyLibraryScreen
 });
 
 // Icon for Add Content button in bottom navigation bar
