@@ -45,14 +45,18 @@ const BookInformationSection = ({
         fieldValue={_.isString(publisher) ? publisher : null}
       />
       <InfoField fieldName="Publish Date" fieldValue={datePublished} />
-      <InfoField
-        fieldName="ISBN-10"
-        fieldValue={isbns["ISBN_10"] ? isbns["ISBN_10"] : null}
-      />
-      <InfoField
-        fieldName="ISBN-13"
-        fieldValue={isbns["ISBN_13"] ? isbns["ISBN_13"] : null}
-      />
+      {!_.isEmpty(isbns) && (
+        <>
+          <InfoField
+            fieldName="ISBN-10"
+            fieldValue={isbns["ISBN_10"] ? isbns["ISBN_10"] : null}
+          />
+          <InfoField
+            fieldName="ISBN-13"
+            fieldValue={isbns["ISBN_13"] ? isbns["ISBN_13"] : null}
+          />
+        </>
+      )}
     </View>
   );
 };
