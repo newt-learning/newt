@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { ScrollView, Text, StyleSheet } from "react-native";
+import _ from "lodash";
 import { Feather } from "@expo/vector-icons";
 import { Context as ContentContext } from "../context/ContentContext";
 import Shelf from "../components/Shelf";
@@ -11,7 +12,7 @@ const MyLibraryScreen = () => {
   } = useContext(ContentContext);
 
   const filterContentByShelf = shelf => {
-    return items.filter(item => item.shelf === shelf);
+    return _.filter(items, item => item.shelf === shelf);
   };
 
   // Fetch content data

@@ -50,9 +50,7 @@ const addContent = dispatch => async data => {
     dispatch(requestContent());
 
     // Make request to create content
-    const res = await newtApi.post("/content/create", data);
-    // Set received data to state
-    dispatch(setContent(res.data));
+    await newtApi.post("/content/create", data);
     // Navigate to prev screen (from Add To My Library to Book Screen)
     navigateBack();
   } catch (error) {
