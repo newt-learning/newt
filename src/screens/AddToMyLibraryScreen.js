@@ -10,6 +10,8 @@ import useSingleCheckbox from "../hooks/useSingleCheckbox";
 // Styling
 import { BOLD, FS20 } from "../design/typography";
 import { OFF_BLACK } from "../design/colors";
+// Helpers
+import { convertBookToDbContent } from "../helpers/apiHelpers";
 
 const SHELVES = [
   {
@@ -30,6 +32,13 @@ const AddToMyLibraryScreen = ({ navigation }) => {
   const [shelves, toggleShelves] = useSingleCheckbox(SHELVES);
   const { state, addContent } = useContext(ContentContext);
   const bookInfo = navigation.getParam("bookInfo");
+
+  const addBook = () => {
+    const currentShelf = _.find(shelves, shelf => shelf.checked);
+    const data = convertBookToDbContent(bookInfo, currentShelf.name, "book");
+
+    addContent(data);
+  };
 
   return (
     <View style={styles.container}>
@@ -52,14 +61,7 @@ const AddToMyLibraryScreen = ({ navigation }) => {
         ))}
       </View>
       <View style={styles.button}>
-        <ActionButton
-          title="Add to Library"
-          onPress={() => {
-            const currentShelf = _.find(shelves, shelf => shelf.checked);
-            const data = { ...bookInfo, shelf: currentShelf.name };
-            addContent(data);
-          }}
-        />
+        <ActionButton title="Add to Library" onPress={addBook} />
       </View>
     </View>
   );

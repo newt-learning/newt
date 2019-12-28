@@ -27,7 +27,7 @@ const BookScreen = ({ navigation }) => {
     pageCount,
     industryIdentifiers,
     publisher,
-    publishedDate
+    datePublished
   } = bookInfo;
   const bookThumbnail = checkThumbnailExistence(bookInfo);
 
@@ -50,9 +50,9 @@ const BookScreen = ({ navigation }) => {
         setShowMore={setShowMore}
       />
       <BookInformationSection
-        numPages={pageCount}
+        pageCount={pageCount}
         publisher={publisher}
-        datePublished={publishedDate}
+        datePublished={datePublished}
         isbns={industryIdentifiers}
       />
     </ScrollView>
