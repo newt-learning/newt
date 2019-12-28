@@ -4,7 +4,7 @@ import _ from "lodash";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
-import Shelf from "../components/Content/Shelf";
+import ShelfSelect from "../components/Content/ShelfSelect";
 import ActionButton from "../components/ActionButton";
 import useSingleCheckbox from "../hooks/useSingleCheckbox";
 // Styling
@@ -45,7 +45,7 @@ const AddToMyLibraryScreen = ({ navigation }) => {
       <View style={styles.option}>
         <Text style={styles.header}>Select Shelf</Text>
         {shelves.map((shelf, index) => (
-          <Shelf
+          <ShelfSelect
             name={shelf.name}
             checked={shelf.checked}
             onPressCheckbox={() => {
