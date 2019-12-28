@@ -1,13 +1,18 @@
 import React from "react";
 import _ from "lodash";
-import { Text, View, StyleSheet, FlatList } from "react-native";
-import { REGULAR, BOLD, FS14, FS24 } from "../design/typography";
-import { OFF_BLACK, GRAY_2, GRAY_4 } from "../design/colors";
+import { Text, View, StyleSheet, FlatList, Image } from "react-native";
+import { REGULAR, SEMIBOLD, BOLD, FS14, FS24 } from "../design/typography";
+import { OFF_BLACK, GRAY_2, OFF_WHITE } from "../design/colors";
 
-const ShelfContentCard = ({ title }) => {
+const ShelfContentCard = ({ title, thumbnailUrl }) => {
   return (
     <View style={styles.card}>
-      <Text>{title}</Text>
+      <Image
+        style={styles.thumbnail}
+        resizeMode="contain"
+        source={thumbnailUrl ? { uri: thumbnailUrl } : null}
+      />
+      <Text style={styles.bookTitle}>{title}</Text>
     </View>
   );
 };
@@ -25,7 +30,16 @@ const Shelf = ({ name, data }) => {
           contentContainerStyle={{ paddingLeft: 15, paddingRight: 5 }}
           data={data}
           keyExtractor={item => item._id}
-          renderItem={({ item }) => <ShelfContentCard title={item.name} />}
+          renderItem={({ item }) => (
+            <ShelfContentCard
+              title={item.name}
+              thumbnailUrl={
+                item.bookInfo.imageLinks.thumbnail
+                  ? item.bookInfo.imageLinks.thumbnail
+                  : null
+              }
+            />
+          )}
         />
       )}
     </View>
@@ -46,16 +60,27 @@ const styles = StyleSheet.create({
   card: {
     height: 150,
     width: 150,
+    justifyContent: "center",
     borderRadius: 10,
     marginRight: 10,
     padding: 10,
-    backgroundColor: GRAY_4
+    backgroundColor: OFF_WHITE
   },
   emptyText: {
     fontSize: FS14,
     fontFamily: REGULAR,
     marginLeft: 15,
     color: GRAY_2
+  },
+  thumbnail: {
+    height: 80,
+    marginBottom: 10
+  },
+  bookTitle: {
+    fontFamily: SEMIBOLD,
+    fontSize: FS14,
+    alignSelf: "center",
+    textAlign: "center"
   }
 });
 

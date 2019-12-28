@@ -13,6 +13,8 @@ import { Context as ContentContext } from "../context/ContentContext";
 // Components
 import Shelf from "../components/Shelf";
 import Loader from "../components/Loader";
+// Design
+import { GRAY_5 } from "../design/colors";
 
 const MyLibraryScreen = () => {
   const {
@@ -55,7 +57,8 @@ const MyLibraryScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: GRAY_5
   }
 });
 
