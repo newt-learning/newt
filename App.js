@@ -1,22 +1,16 @@
 import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
-import { createStackNavigator } from "react-navigation-stack";
 import { AppLoading } from "expo";
 import { setNavigator } from "./src/refs/navigationRef";
-import { Feather } from "@expo/vector-icons";
+// Stacks
+import MyLibraryStack from "./src/stacks/MyLibraryStack";
+import AddContentStack from "./src/stacks/AddContentStack";
 // Screens
 import ResolveAuth from "./src/screens/ResolveAuth";
 import SignInScreen from "./src/screens/SignInScreen";
 import HomeScreen from "./src/screens/HomeScreen";
-import MyLibraryScreen from "./src/screens/MyLibraryScreen";
-import AddContentScreen from "./src/screens/AddContentScreen";
-import AddBookScreen from "./src/screens/AddBookScreen";
-import BookScreen from "./src/screens/BookScreen";
-import AddToMyLibraryScreen from "./src/screens/AddToMyLibraryScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
-// Components
-import { HeaderTitle } from "./src/components/Header";
 // Context
 import { Provider as AuthProvider } from "./src/context/AuthContext";
 import { Provider as ContentProvider } from "./src/context/ContentContext";
@@ -25,47 +19,14 @@ import useFonts from "./src/hooks/useFonts";
 // Styling
 import { OFF_BLACK, NEWT_BLUE } from "./src/design/colors";
 
-// Stack navigator between Add Content screen and specific content
-// (books, videos, articles) screens
-const addContentFlow = createStackNavigator({
-  "Add Content": {
-    screen: AddContentScreen,
-    navigationOptions: {
-      headerTitle:
-        Platform.OS === "ios" ? (
-          <HeaderTitle title="Add Content" />
-        ) : (
-          "Add Content"
-        ),
-      headerBackTitle: null
-    }
-  },
-  "Add Book": {
-    screen: AddBookScreen,
-    navigationOptions: {
-      headerTitle:
-        Platform.OS === "ios" ? <HeaderTitle title="Add Book" /> : "Add Book"
-    }
-  },
-  BookScreen: BookScreen,
-  AddToMyLibrary: AddToMyLibraryScreen
-});
-
-// Icon for Add Content button in bottom navigation bar
-addContentFlow.navigationOptions = {
-  tabBarIcon: ({ tintColor }) => (
-    <Feather name="plus-square" size={20} color={tintColor} />
-  )
-};
-
 const switchNavigator = createSwitchNavigator({
   ResolveAuth,
   SignIn: SignInScreen,
   mainFlow: createBottomTabNavigator(
     {
       Home: HomeScreen,
-      "My Library": MyLibraryScreen,
-      "Add Content": addContentFlow,
+      "My Library": MyLibraryStack,
+      "Add Content": AddContentStack,
       Profile: ProfileScreen
     },
     {

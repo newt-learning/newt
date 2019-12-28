@@ -11,20 +11,9 @@ const MyLibraryScreen = () => {
     fetchContent();
   }, []);
 
-  return <Text style={styles.text}>My Library</Text>;
+  return <View></View>;
 };
 
-const styles = StyleSheet.create({
-  text: {
-    marginTop: 50,
-    fontSize: 48
-  }
-});
-
-MyLibraryScreen.navigationOptions = {
-  tabBarIcon: ({ tintColor }) => (
-    <Feather name="book-open" size={20} color={tintColor} />
-  )
-};
+const styles = StyleSheet.create({});
 
 export default MyLibraryScreen;
