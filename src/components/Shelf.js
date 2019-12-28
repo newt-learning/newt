@@ -22,6 +22,7 @@ const Shelf = ({ name, data }) => {
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingLeft: 15, paddingRight: 5 }}
           data={data}
           keyExtractor={item => item._id}
           renderItem={({ item }) => <ShelfContentCard title={item.name} />}
@@ -33,13 +34,13 @@ const Shelf = ({ name, data }) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
-    marginLeft: 15
+    marginTop: 20
   },
   title: {
     fontFamily: BOLD,
     fontSize: FS24,
     color: OFF_BLACK,
+    marginLeft: 15,
     marginBottom: 5
   },
   card: {
@@ -47,11 +48,13 @@ const styles = StyleSheet.create({
     width: 150,
     borderRadius: 10,
     marginRight: 10,
+    padding: 10,
     backgroundColor: GRAY_4
   },
   emptyText: {
     fontSize: FS14,
     fontFamily: REGULAR,
+    marginLeft: 15,
     color: GRAY_2
   }
 });

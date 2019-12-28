@@ -21,7 +21,9 @@ const MyLibraryScreen = () => {
   } = useContext(ContentContext);
 
   const filterContentByShelf = shelf => {
-    return _.filter(items, item => item.shelf === shelf);
+    const filteredArr = _.filter(items, item => item.shelf === shelf);
+    // Return only first 4 items
+    return filteredArr.slice(0, 4);
   };
 
   // Fetch content data
