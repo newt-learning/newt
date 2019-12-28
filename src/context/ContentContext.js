@@ -11,6 +11,10 @@ const contentReducer = (state, action) => {
   switch (action.type) {
     case REQUEST_CONTENT:
       return { ...state, isFetching: true };
+    case RESOLVE_CONTENT:
+      return { ...state, isFetching: false };
+    case SET_CONTENT:
+      return { ...state, isFetching: false, items: action.payload };
     default:
       return state;
   }
@@ -28,6 +32,18 @@ const setContent = payload => {
 };
 
 // Dispatch functions
+const fetchContent = dispatch => async () => {
+  try {
+    dispatch(requestContent());
+
+    const res = await newtApi.get("/content");
+    dispatch(setContent(res.data));
+  } catch (error) {
+    console.error(error);
+    dispatch(resolveContent());
+  }
+};
+
 const addContent = dispatch => async data => {
   try {
     // Indicate request is going to take place
@@ -47,6 +63,6 @@ const addContent = dispatch => async data => {
 
 export const { Provider, Context } = createDataContext(
   contentReducer,
-  { addContent },
-  { isFetching: false, items: {}, errorMessage: "" }
+  { fetchContent, addContent },
+  { isFetching: false, items: [], errorMessage: "" }
 );
