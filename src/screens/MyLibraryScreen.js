@@ -1,13 +1,22 @@
 import React, { useContext, useEffect } from "react";
-import { ScrollView, Text, StyleSheet } from "react-native";
+import {
+  ScrollView,
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator
+} from "react-native";
 import _ from "lodash";
 import { Feather } from "@expo/vector-icons";
+// Context
 import { Context as ContentContext } from "../context/ContentContext";
+// Components
 import Shelf from "../components/Shelf";
+import Loader from "../components/Loader";
 
 const MyLibraryScreen = () => {
   const {
-    state: { items },
+    state: { isFetching, items },
     fetchContent
   } = useContext(ContentContext);
 
@@ -19,6 +28,10 @@ const MyLibraryScreen = () => {
   useEffect(() => {
     fetchContent();
   }, []);
+
+  if (isFetching) {
+    return <Loader isLoading={isFetching} />;
+  }
 
   return (
     <ScrollView style={styles.container}>
