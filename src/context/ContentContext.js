@@ -1,5 +1,6 @@
 import createDataContext from "./createDataContext";
 import newtApi from "../api/newtApi";
+import { navigateBack } from "../refs/navigationRef";
 
 // Action constants
 const REQUEST_CONTENT = "REQUEST_CONTENT";
@@ -19,7 +20,7 @@ const contentReducer = (state, action) => {
 const requestContent = () => {
   return { type: REQUEST_CONTENT };
 };
-const resolveSignIn = () => {
+const resolveContent = () => {
   return { type: RESOLVE_CONTENT };
 };
 const setContent = payload => {
@@ -28,7 +29,20 @@ const setContent = payload => {
 
 // Dispatch functions
 const addContent = dispatch => async data => {
-  console.log(data);
+  try {
+    // Indicate request is going to take place
+    dispatch(requestContent());
+
+    // Make request to create content
+    const res = await newtApi.post("/content/create", data);
+    // Set received data to state
+    dispatch(setContent(res.data));
+    // Navigate to prev screen (from Add To My Library to Book Screen)
+    navigateBack();
+  } catch (error) {
+    console.error(error);
+    dispatch(resolveContent());
+  }
 };
 
 export const { Provider, Context } = createDataContext(

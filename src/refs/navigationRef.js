@@ -9,3 +9,7 @@ export const setNavigator = nav => {
 export const navigate = (routeName, params) => {
   navigator.dispatch(NavigationActions.navigate({ routeName, params }));
 };
+
+export const navigateBack = () => {
+  navigator.dispatch(NavigationActions.back());
+};

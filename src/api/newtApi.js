@@ -5,7 +5,7 @@ import firebase from "../config/firebase";
 const baseURL =
   process.env.NODE_ENV === "production"
     ? "https://www.newtlearning.com/api"
-    : "https://56ac3ded.ngrok.io/api";
+    : "https://73742ac4.ngrok.io/api";
 
 const instance = axios.create({
   baseURL
