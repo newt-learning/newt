@@ -1,11 +1,18 @@
 import React, { useContext, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { ScrollView, Text, StyleSheet } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { Context as ContentContext } from "../context/ContentContext";
 import Shelf from "../components/Shelf";
 
 const MyLibraryScreen = () => {
-  const { state, fetchContent } = useContext(ContentContext);
+  const {
+    state: { items },
+    fetchContent
+  } = useContext(ContentContext);
+
+  const filterContentByShelf = shelf => {
+    return items.filter(item => item.shelf === shelf);
+  };
 
   // Fetch content data
   useEffect(() => {
@@ -13,11 +20,20 @@ const MyLibraryScreen = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Shelf name="Currently Learning" />
-      <Shelf name="Want to Learn" />
-      <Shelf name="Finished Learning" />
-    </View>
+    <ScrollView style={styles.container}>
+      <Shelf
+        name="Currently Learning"
+        data={filterContentByShelf("Currently Learning")}
+      />
+      <Shelf
+        name="Want to Learn"
+        data={filterContentByShelf("Want to Learn")}
+      />
+      <Shelf
+        name="Finished Learning"
+        data={filterContentByShelf("Finished Learning")}
+      />
+    </ScrollView>
   );
 };
 
