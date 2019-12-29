@@ -1,9 +1,17 @@
 import React from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity
+} from "react-native";
 import _ from "lodash";
-import { Text, View, StyleSheet, FlatList, Image, Button } from "react-native";
-import { REGULAR, SEMIBOLD, BOLD, FS14, FS24 } from "../design/typography";
-import { OFF_BLACK, GRAY_1, GRAY_2, OFF_WHITE } from "../design/colors";
 import { Feather } from "@expo/vector-icons";
+// Styling
+import { REGULAR, SEMIBOLD, BOLD, FS14, FS24 } from "../design/typography";
+import { OFF_BLACK, GRAY_1, GRAY_2, GRAY_4, OFF_WHITE } from "../design/colors";
 
 const SeeAllCard = () => (
   <View style={styles.seeAllCard}>
@@ -25,13 +33,22 @@ const ShelfContentCard = ({ title, thumbnailUrl }) => {
   );
 };
 
-const Shelf = ({ name, data, numItems }) => {
+const Shelf = ({
+  name,
+  data,
+  numItems,
+  onPressTitle,
+  onPressCard,
+  onPressSeeAllCard
+}) => {
   return (
     <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>{name}</Text>
-        <Feather name="chevron-right" color={OFF_BLACK} size={24} />
-      </View>
+      <TouchableOpacity style={styles.titleContainer} onPress={onPressTitle}>
+        <>
+          <Text style={styles.title}>{name}</Text>
+          <Feather name="chevron-right" color={OFF_BLACK} size={24} />
+        </>
+      </TouchableOpacity>
       {_.isEmpty(data) ? (
         <Text style={styles.emptyText}>This shelf is empty</Text>
       ) : (

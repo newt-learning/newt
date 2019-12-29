@@ -16,7 +16,7 @@ import Loader from "../components/Loader";
 // Design
 import { GRAY_5 } from "../design/colors";
 
-const MyLibraryScreen = () => {
+const MyLibraryScreen = ({ navigation }) => {
   const {
     state: { isFetching, items },
     fetchContent
@@ -45,16 +45,31 @@ const MyLibraryScreen = () => {
         name="Currently Learning"
         data={currentlyLearningItems.slice(0, 4)}
         numItems={currentlyLearningItems.length}
+        onPressTitle={() =>
+          navigation.navigate("IndividualShelf", {
+            title: "Currently Learning"
+          })
+        }
       />
       <Shelf
         name="Want to Learn"
         data={wantToLearnItems.slice(0, 4)}
         numItems={wantToLearnItems.length}
+        onPressTitle={() =>
+          navigation.navigate("IndividualShelf", {
+            title: "Want to Learn"
+          })
+        }
       />
       <Shelf
         name="Finished Learning"
         data={finishedLearningItems.slice(0, 4)}
         numItems={finishedLearningItems.length}
+        onPressTitle={() =>
+          navigation.navigate("IndividualShelf", {
+            title: "Finished Learning"
+          })
+        }
       />
     </ScrollView>
   );

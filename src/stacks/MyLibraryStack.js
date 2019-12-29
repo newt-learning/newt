@@ -5,6 +5,7 @@ import { HeaderTitle } from "../components/Header";
 import { Feather } from "@expo/vector-icons";
 // Screens
 import MyLibraryScreen from "../screens/MyLibraryScreen";
+import IndividualShelfScreen from "../screens/IndividualShelfScreen";
 // Styling
 import { OFF_WHITE } from "../design/colors";
 
@@ -22,7 +23,8 @@ const MyLibraryStack = createStackNavigator({
         backgroundColor: OFF_WHITE
       }
     }
-  }
+  },
+  IndividualShelf: IndividualShelfScreen
 });
 
 MyLibraryStack.navigationOptions = {
