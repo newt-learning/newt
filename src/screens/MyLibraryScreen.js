@@ -23,9 +23,7 @@ const MyLibraryScreen = () => {
   } = useContext(ContentContext);
 
   const filterContentByShelf = shelf => {
-    const filteredArr = _.filter(items, item => item.shelf === shelf);
-    // Return only first 4 items
-    return filteredArr.slice(0, 4);
+    return _.filter(items, item => item.shelf === shelf);
   };
 
   // Fetch content data
@@ -37,19 +35,26 @@ const MyLibraryScreen = () => {
     return <Loader isLoading={isFetching} />;
   }
 
+  const currentlyLearningItems = filterContentByShelf("Currently Learning");
+  const wantToLearnItems = filterContentByShelf("Want to Learn");
+  const finishedLearningItems = filterContentByShelf("Finished Learning");
+
   return (
     <ScrollView style={styles.container}>
       <Shelf
         name="Currently Learning"
-        data={filterContentByShelf("Currently Learning")}
+        data={currentlyLearningItems.slice(0, 4)}
+        numItems={currentlyLearningItems.length}
       />
       <Shelf
         name="Want to Learn"
-        data={filterContentByShelf("Want to Learn")}
+        data={wantToLearnItems.slice(0, 4)}
+        numItems={wantToLearnItems.length}
       />
       <Shelf
         name="Finished Learning"
-        data={filterContentByShelf("Finished Learning")}
+        data={finishedLearningItems.slice(0, 4)}
+        numItems={finishedLearningItems.length}
       />
     </ScrollView>
   );

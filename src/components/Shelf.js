@@ -1,8 +1,16 @@
 import React from "react";
 import _ from "lodash";
-import { Text, View, StyleSheet, FlatList, Image } from "react-native";
+import { Text, View, StyleSheet, FlatList, Image, Button } from "react-native";
 import { REGULAR, SEMIBOLD, BOLD, FS14, FS24 } from "../design/typography";
-import { OFF_BLACK, GRAY_2, OFF_WHITE } from "../design/colors";
+import { OFF_BLACK, GRAY_1, GRAY_2, OFF_WHITE } from "../design/colors";
+import { Feather } from "@expo/vector-icons";
+
+const SeeAllCard = () => (
+  <View style={styles.seeAllCard}>
+    <Text style={styles.seeAllText}>See all</Text>
+    <Feather name="chevron-right" color={OFF_BLACK} size={16} />
+  </View>
+);
 
 const ShelfContentCard = ({ title, thumbnailUrl }) => {
   return (
@@ -17,7 +25,7 @@ const ShelfContentCard = ({ title, thumbnailUrl }) => {
   );
 };
 
-const Shelf = ({ name, data }) => {
+const Shelf = ({ name, data, numItems }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{name}</Text>
@@ -40,6 +48,7 @@ const Shelf = ({ name, data }) => {
               }
             />
           )}
+          ListFooterComponent={numItems > 4 ? <SeeAllCard /> : null}
         />
       )}
     </View>
@@ -81,6 +90,21 @@ const styles = StyleSheet.create({
     fontSize: FS14,
     alignSelf: "center",
     textAlign: "center"
+  },
+  seeAllCard: {
+    height: 150,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    borderRadius: 10,
+    marginRight: 10,
+    padding: 10,
+    backgroundColor: OFF_WHITE
+  },
+  seeAllText: {
+    fontFamily: REGULAR,
+    color: OFF_BLACK,
+    fontSize: FS14
   }
 });
 
