@@ -28,7 +28,10 @@ const ShelfContentCard = ({ title, thumbnailUrl }) => {
 const Shelf = ({ name, data, numItems }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{name}</Text>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>{name}</Text>
+        <Feather name="chevron-right" color={OFF_BLACK} size={24} />
+      </View>
       {_.isEmpty(data) ? (
         <Text style={styles.emptyText}>This shelf is empty</Text>
       ) : (
@@ -59,12 +62,17 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 20
   },
+  titleContainer: {
+    marginHorizontal: 15,
+    marginBottom: 5,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
   title: {
     fontFamily: BOLD,
     fontSize: FS24,
-    color: OFF_BLACK,
-    marginLeft: 15,
-    marginBottom: 5
+    color: OFF_BLACK
   },
   card: {
     height: 150,
