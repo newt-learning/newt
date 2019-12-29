@@ -5,6 +5,8 @@ import { HeaderTitle } from "../components/Header";
 import { Feather } from "@expo/vector-icons";
 // Screens
 import MyLibraryScreen from "../screens/MyLibraryScreen";
+// Styling
+import { OFF_WHITE } from "../design/colors";
 
 const MyLibraryStack = createStackNavigator({
   "My Library": {
@@ -15,7 +17,10 @@ const MyLibraryStack = createStackNavigator({
           <HeaderTitle title="My Library" />
         ) : (
           "My Library"
-        )
+        ),
+      headerStyle: {
+        backgroundColor: OFF_WHITE
+      }
     }
   }
 });

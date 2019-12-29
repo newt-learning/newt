@@ -6,6 +6,8 @@ import { Feather } from "@expo/vector-icons";
 import Header from "../components/Header";
 // Context
 import { Context as AuthContext } from "../context/AuthContext";
+// Styling
+import { GRAY_5 } from "../design/colors";
 
 const ProfileScreen = () => {
   const { signOut } = useContext(AuthContext);
@@ -26,7 +28,8 @@ ProfileScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: GRAY_5
   }
 });
 

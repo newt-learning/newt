@@ -17,7 +17,7 @@ import { Provider as ContentProvider } from "./src/context/ContentContext";
 // Hooks
 import useFonts from "./src/hooks/useFonts";
 // Styling
-import { OFF_BLACK, NEWT_BLUE } from "./src/design/colors";
+import { OFF_BLACK, OFF_WHITE, NEWT_BLUE } from "./src/design/colors";
 
 const switchNavigator = createSwitchNavigator({
   ResolveAuth,
@@ -32,7 +32,10 @@ const switchNavigator = createSwitchNavigator({
     {
       tabBarOptions: {
         activeTintColor: NEWT_BLUE,
-        inactiveTintColor: OFF_BLACK
+        inactiveTintColor: OFF_BLACK,
+        style: {
+          backgroundColor: OFF_WHITE
+        }
       }
     }
   )

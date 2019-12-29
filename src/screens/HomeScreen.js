@@ -3,6 +3,8 @@ import { View, Text, StyleSheet } from "react-native";
 import { Feather } from "@expo/vector-icons";
 // Components
 import Header from "../components/Header";
+// Styling
+import { GRAY_5 } from "../design/colors";
 
 const HomeScreen = () => {
   return (
@@ -20,7 +22,8 @@ HomeScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: GRAY_5
   }
 });
 

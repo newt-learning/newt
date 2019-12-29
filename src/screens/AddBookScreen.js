@@ -7,7 +7,7 @@ import AddBookCard from "../components/AddBookCard";
 import { getBookInfo } from "../api/googleBooksApi";
 // Styling
 import { FS16, SEMIBOLD } from "../design/typography";
-import { GRAY_2 } from "../design/colors";
+import { GRAY_2, GRAY_5 } from "../design/colors";
 // Helpers
 import { checkThumbnailExistence } from "../helpers/imageHelpers";
 import { extractRelevantBookInfo } from "../helpers/apiHelpers";

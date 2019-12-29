@@ -4,7 +4,7 @@ import { View, Text, StatusBar, StyleSheet } from "react-native";
 import Header from "../components/Header";
 import ContentButton from "../components/ContentButton";
 // Styling
-import { OFF_BLACK, OFF_WHITE, WHITE, RUBY } from "../design/colors";
+import { GRAY_5, OFF_WHITE, WHITE, RUBY } from "../design/colors";
 import { REGULAR } from "../design/typography";
 
 const AddContentScreen = ({ navigation }) => {
@@ -25,7 +25,8 @@ const AddContentScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: GRAY_5
   },
   contentContainer: {
     flex: 1,

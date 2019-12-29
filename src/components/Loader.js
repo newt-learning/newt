@@ -1,6 +1,6 @@
 import React from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
-import { NEWT_BLUE } from "../design/colors";
+import { GRAY_5, NEWT_BLUE } from "../design/colors";
 
 const Loader = ({ isLoading }) => (
   <View style={styles.container}>
@@ -11,7 +11,8 @@ const Loader = ({ isLoading }) => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: GRAY_5
   }
 });
 

@@ -8,6 +8,8 @@ import AddContentScreen from "../screens/AddContentScreen";
 import AddBookScreen from "../screens/AddBookScreen";
 import BookScreen from "../screens/BookScreen";
 import AddToMyLibraryScreen from "../screens/AddToMyLibraryScreen";
+// Styling
+import { OFF_WHITE } from "../design/colors";
 
 // Stack navigator between Add Content screen and specific content
 // (books, videos, articles) screens
@@ -21,14 +23,20 @@ const AddContentStack = createStackNavigator({
         ) : (
           "Add Content"
         ),
-      headerBackTitle: null
+      headerBackTitle: null,
+      headerStyle: {
+        backgroundColor: OFF_WHITE
+      }
     }
   },
   "Add Book": {
     screen: AddBookScreen,
     navigationOptions: {
       headerTitle:
-        Platform.OS === "ios" ? <HeaderTitle title="Add Book" /> : "Add Book"
+        Platform.OS === "ios" ? <HeaderTitle title="Add Book" /> : "Add Book",
+      headerStyle: {
+        backgroundColor: OFF_WHITE
+      }
     }
   },
   BookScreen: BookScreen,
