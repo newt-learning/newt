@@ -54,6 +54,10 @@ export function convertBookToDbContent(bookInfo, shelf, type) {
   return {
     name: bookInfo.title,
     description: bookInfo.description,
+    authors: bookInfo.authors,
+    thumbnailUrl: !_.isEmpty(bookInfo.imageLinks)
+      ? bookInfo.imageLinks.thumbnail
+      : null,
     type,
     shelf,
     bookInfo
