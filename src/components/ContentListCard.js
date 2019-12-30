@@ -6,11 +6,12 @@ import {
   Text,
   Image
 } from "react-native";
+import _ from "lodash";
 // Styling
 import { SEMIBOLD, REGULAR, FS16, FS14 } from "../design/typography";
 import { GRAY_5, GRAY_4, GRAY_2, OFF_BLACK } from "../design/colors";
 
-const AddBookCard = ({ title, authors, thumbnailUrl, onPress }) => {
+const ContentListCard = ({ title, authors, thumbnailUrl, onPress }) => {
   return (
     <TouchableHighlight
       underlayColor={GRAY_5}
@@ -30,7 +31,7 @@ const AddBookCard = ({ title, authors, thumbnailUrl, onPress }) => {
         />
         <View style={styles.bookInfo}>
           {title ? <Text style={styles.title}>{title}</Text> : null}
-          {authors ? (
+          {!_.isEmpty(authors) ? (
             <Text style={styles.author}>by {authors.join(", ")}</Text>
           ) : null}
         </View>
@@ -75,4 +76,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AddBookCard;
+export default ContentListCard;

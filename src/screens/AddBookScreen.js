@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, FlatList, Text } from "react-native";
 // Components
 import SearchBar from "../components/SearchBar";
-import AddBookCard from "../components/AddBookCard";
+import ContentListCard from "../components/ContentListCard";
 // API
 import { getBookInfo } from "../api/googleBooksApi";
 // Styling
@@ -51,7 +51,7 @@ const AddBookScreen = ({ navigation }) => {
         <FlatList
           data={bookResults}
           renderItem={({ item }) => (
-            <AddBookCard
+            <ContentListCard
               title={item.volumeInfo.title ? item.volumeInfo.title : null}
               authors={item.volumeInfo.authors ? item.volumeInfo.authors : null}
               thumbnailUrl={checkThumbnailExistence(item.volumeInfo)}
