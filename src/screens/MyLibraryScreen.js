@@ -13,12 +13,13 @@ import { Context as ContentContext } from "../context/ContentContext";
 // Components
 import Shelf from "../components/Shelf";
 import Loader from "../components/Loader";
+import ErrorMessage from "../components/ErrorMessage";
 // Design
 import { GRAY_5 } from "../design/colors";
 
 const MyLibraryScreen = ({ navigation }) => {
   const {
-    state: { isFetching, items },
+    state: { isFetching, items, errorMessage },
     fetchContent
   } = useContext(ContentContext);
 
@@ -33,6 +34,11 @@ const MyLibraryScreen = ({ navigation }) => {
 
   if (isFetching) {
     return <Loader isLoading={isFetching} />;
+  }
+
+  // If there's an error message display error message screen
+  if (errorMessage) {
+    return <ErrorMessage message={errorMessage} />;
   }
 
   const currentlyLearningItems = filterContentByShelf("Currently Learning");

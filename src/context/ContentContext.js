@@ -6,15 +6,23 @@ import { navigateBack } from "../refs/navigationRef";
 const REQUEST_CONTENT = "REQUEST_CONTENT";
 const RESOLVE_CONTENT = "RESOLVE_CONTENT";
 const SET_CONTENT = "SET_CONTENT";
+const SET_ERROR_MESSAGE = "SET_ERROR_MESSAGE";
 
 const contentReducer = (state, action) => {
   switch (action.type) {
     case REQUEST_CONTENT:
       return { ...state, isFetching: true };
     case RESOLVE_CONTENT:
-      return { ...state, isFetching: false };
+      return { ...state, isFetching: false, errorMessage: "" };
     case SET_CONTENT:
-      return { ...state, isFetching: false, items: action.payload };
+      return {
+        ...state,
+        isFetching: false,
+        items: action.payload,
+        errorMessage: ""
+      };
+    case SET_ERROR_MESSAGE:
+      return { ...state, isFetching: false, errorMessage: action.payload };
     default:
       return state;
   }
@@ -30,6 +38,9 @@ const resolveContent = () => {
 const setContent = payload => {
   return { type: SET_CONTENT, payload };
 };
+const setErrorMessage = payload => {
+  return { type: SET_ERROR_MESSAGE, payload };
+};
 
 // Dispatch functions
 const fetchContent = dispatch => async () => {
@@ -39,8 +50,9 @@ const fetchContent = dispatch => async () => {
     const res = await newtApi.get("/content");
     dispatch(setContent(res.data));
   } catch (error) {
-    console.error(error);
-    dispatch(resolveContent());
+    dispatch(
+      setErrorMessage("Sorry, we're having some trouble getting your data.")
+    );
   }
 };
 

@@ -1,11 +1,12 @@
 import axios from "axios";
 import firebase from "../config/firebase";
+import keys from "../config/keys";
 
 // Set base URL based on whether it's a development or production environment
 const baseURL =
   process.env.NODE_ENV === "production"
     ? "https://www.newtlearning.com/api"
-    : "https://66c396e2.ngrok.io/api";
+    : `${keys.ngrokUrl}/api`;
 
 const instance = axios.create({
   baseURL
