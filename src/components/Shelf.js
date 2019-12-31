@@ -5,13 +5,15 @@ import {
   StyleSheet,
   FlatList,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  TouchableHighlight
 } from "react-native";
+import { withNavigation } from "react-navigation";
 import _ from "lodash";
 import { Feather } from "@expo/vector-icons";
 // Styling
 import { REGULAR, SEMIBOLD, BOLD, FS14, FS24 } from "../design/typography";
-import { OFF_BLACK, GRAY_1, GRAY_2, GRAY_4, OFF_WHITE } from "../design/colors";
+import { OFF_BLACK, GRAY_2, GRAY_4, OFF_WHITE } from "../design/colors";
 
 const SeeAllCard = () => (
   <View style={styles.seeAllCard}>
@@ -20,16 +22,22 @@ const SeeAllCard = () => (
   </View>
 );
 
-const ShelfContentCard = ({ title, thumbnailUrl }) => {
+let ShelfContentCard = ({ title, thumbnailUrl, onPress }) => {
   return (
-    <View style={styles.card}>
-      <Image
-        style={styles.thumbnail}
-        resizeMode="contain"
-        source={thumbnailUrl ? { uri: thumbnailUrl } : null}
-      />
-      <Text style={styles.bookTitle}>{title}</Text>
-    </View>
+    <TouchableHighlight
+      style={styles.card}
+      onPress={onPress}
+      underlayColor={GRAY_4}
+    >
+      <>
+        <Image
+          style={styles.thumbnail}
+          resizeMode="contain"
+          source={thumbnailUrl ? { uri: thumbnailUrl } : null}
+        />
+        <Text style={styles.bookTitle}>{title}</Text>
+      </>
+    </TouchableHighlight>
   );
 };
 
@@ -38,9 +46,18 @@ const Shelf = ({
   data,
   numItems,
   onPressTitle,
-  onPressCard,
-  onPressSeeAllCard
+  onPressSeeAllCard,
+  navigation
 }) => {
+  const handleContentCardPress = data => {
+    switch (data.type) {
+      case "book":
+        return navigation.navigate("BookScreen", { bookInfo: data });
+      default:
+        return;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.titleContainer} onPress={onPressTitle}>
@@ -66,6 +83,7 @@ const Shelf = ({
                   ? item.bookInfo.imageLinks.thumbnail
                   : null
               }
+              onPress={() => handleContentCardPress(item)}
             />
           )}
           ListFooterComponent={numItems > 4 ? <SeeAllCard /> : null}
@@ -133,4 +151,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Shelf;
+export default withNavigation(Shelf);

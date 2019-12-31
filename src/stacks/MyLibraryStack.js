@@ -6,6 +6,7 @@ import { Feather } from "@expo/vector-icons";
 // Screens
 import MyLibraryScreen from "../screens/MyLibraryScreen";
 import IndividualShelfScreen from "../screens/IndividualShelfScreen";
+import BookScreen from "../screens/BookScreen";
 // Styling
 import { OFF_WHITE } from "../design/colors";
 
@@ -24,7 +25,8 @@ const MyLibraryStack = createStackNavigator({
       }
     }
   },
-  IndividualShelf: IndividualShelfScreen
+  IndividualShelf: IndividualShelfScreen,
+  BookScreen: BookScreen
 });
 
 MyLibraryStack.navigationOptions = {
