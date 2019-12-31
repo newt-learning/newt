@@ -35,7 +35,8 @@ const AddToMyLibraryScreen = ({ navigation }) => {
 
   const addBook = () => {
     const currentShelf = _.find(shelves, shelf => shelf.checked);
-    const data = convertBookToDbContent(bookInfo, currentShelf.name, "book");
+    // Combine shelf and content type info with book info
+    const data = { ...bookInfo, shelf: currentShelf.name, type: "book" };
 
     addContent(data);
   };

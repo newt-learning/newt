@@ -17,6 +17,7 @@ const ContentList = ({ data, SearchBar }) => {
       </View>
     );
   }
+
   return (
     <View style={styles.container}>
       {/* If a SearchBar component is passed down, render it */}

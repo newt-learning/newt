@@ -14,7 +14,7 @@ import { OFF_BLACK, GRAY_2, GRAY_4, GRAY_5, OFF_WHITE } from "../design/colors";
 const ContentListCard = ({ title, authors, thumbnailUrl, onPress }) => {
   return (
     <TouchableHighlight
-      underlayColor={GRAY_5}
+      underlayColor={GRAY_4}
       style={styles.cardContainer}
       onPress={onPress}
     >

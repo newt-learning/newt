@@ -1,5 +1,6 @@
 import _ from "lodash";
 import moment from "moment";
+import { checkThumbnailExistence } from "./imageHelpers";
 
 // Extract only relevant book information from result of Google Books API
 export function extractRelevantBookInfo(bookObj) {
@@ -35,31 +36,24 @@ export function extractRelevantBookInfo(bookObj) {
         ? publishedDate
         : moment(publishedDate).format("DD MMM, YYYY");
   }
-  return {
-    bookId: id,
-    title: _.isString(title) ? title : null,
-    subtitle: _.isString(subtitle) ? subtitle : null,
-    authors: _.isArray(authors) ? authors : null,
-    description: _.isString(description) ? description : null,
-    imageLinks: !_.isEmpty(imageLinks) ? imageLinks : null,
-    pageCount: _.isNumber(pageCount) ? pageCount : null,
-    industryIdentifiers: !_.isEmpty(isbns) ? isbns : null,
-    publisher: _.isString(publisher) ? publisher : null,
-    datePublished: _.isString(formattedDate) ? formattedDate : null
-  };
-}
 
-// Combine data to match format of Content database schema
-export function convertBookToDbContent(bookInfo, shelf, type) {
+  // Match format of database content model
   return {
-    name: bookInfo.title,
-    description: bookInfo.description,
-    authors: bookInfo.authors,
-    thumbnailUrl: !_.isEmpty(bookInfo.imageLinks)
-      ? bookInfo.imageLinks.thumbnail
-      : null,
-    type,
-    shelf,
-    bookInfo
+    name: _.isString(title) ? title : null,
+    description: _.isString(description) ? description : null,
+    authors: _.isArray(authors) ? authors : null,
+    thumbnailUrl: checkThumbnailExistence(bookObj.volumeInfo),
+    bookInfo: {
+      bookId: id,
+      title: _.isString(title) ? title : null,
+      subtitle: _.isString(subtitle) ? subtitle : null,
+      authors: _.isArray(authors) ? authors : null,
+      description: _.isString(description) ? description : null,
+      imageLinks: !_.isEmpty(imageLinks) ? imageLinks : null,
+      pageCount: _.isNumber(pageCount) ? pageCount : null,
+      industryIdentifiers: !_.isEmpty(isbns) ? isbns : null,
+      publisher: _.isString(publisher) ? publisher : null,
+      datePublished: _.isString(formattedDate) ? formattedDate : null
+    }
   };
 }

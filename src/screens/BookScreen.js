@@ -19,17 +19,13 @@ const BookScreen = ({ navigation }) => {
 
   // Get book info from params sent through navigation prop
   const bookInfo = navigation.getParam("bookInfo");
+  const { name, authors, description, thumbnailUrl } = bookInfo;
   const {
-    title,
-    authors,
-    description,
-    imageLinks,
     pageCount,
     industryIdentifiers,
     publisher,
     datePublished
-  } = bookInfo;
-  const bookThumbnail = checkThumbnailExistence(bookInfo);
+  } = bookInfo.bookInfo;
 
   return (
     <ScrollView style={styles.container}>
@@ -37,10 +33,10 @@ const BookScreen = ({ navigation }) => {
         <Image
           style={styles.thumbnail}
           resizeMode="contain"
-          source={bookThumbnail ? { uri: bookThumbnail } : null}
+          source={thumbnailUrl ? { uri: thumbnailUrl } : null}
         />
       </View>
-      <TitleSection title={title} authors={authors} />
+      <TitleSection title={name} authors={authors} />
       <AddToLibrarySection
         onPress={() => navigation.navigate("AddToMyLibrary", { bookInfo })}
       />
