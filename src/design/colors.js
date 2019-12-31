@@ -27,3 +27,5 @@ export const RUBY_5 = "#ffdbe4";
 
 // Indigos
 export const INDIGO = "#3a3aff";
+
+export const LIME_GREEN = "#42e6a4";

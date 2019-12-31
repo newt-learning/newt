@@ -3,14 +3,21 @@ import { View, Text, StyleSheet } from "react-native";
 // Components
 import { Button } from "react-native-elements";
 import ActionButton from "../ActionButton";
+import ChangeShelfButton from "./ChangeShelfButton";
 // Styling
 import { GRAY_4, INDIGO } from "../../design/colors";
 import { REGULAR, SEMIBOLD } from "../../design/typography";
 
-const AddToLibrarySection = ({ onPress }) => {
+// Section for either adding a book to My Library or viewing and changing the
+// shelf it's on if it's already been saved
+const ActionSection = ({ shelf, onPress }) => {
   return (
     <View style={styles.container}>
-      <ActionButton title="Add to Library" onPress={onPress} />
+      {shelf ? (
+        <ChangeShelfButton shelf={shelf} onPress={onPress} />
+      ) : (
+        <ActionButton title="Add to Library" onPress={onPress} />
+      )}
     </View>
   );
 };
@@ -24,4 +31,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AddToLibrarySection;
+export default ActionSection;

@@ -4,7 +4,7 @@ import { Button } from "react-native-elements";
 import { Feather } from "@expo/vector-icons";
 // Components
 import TitleSection from "../components/Content/TitleSection";
-import AddToLibrarySection from "../components/Content/AddToLibrarySection";
+import ActionSection from "../components/Content/ActionSection";
 import Description from "../components/Content/Description";
 import BookInformationSection from "../components/Content/BookInformationSection";
 // Styling
@@ -19,7 +19,7 @@ const BookScreen = ({ navigation }) => {
 
   // Get book info from params sent through navigation prop
   const bookInfo = navigation.getParam("bookInfo");
-  const { name, authors, description, thumbnailUrl } = bookInfo;
+  const { name, authors, description, thumbnailUrl, shelf } = bookInfo;
   const {
     pageCount,
     industryIdentifiers,
@@ -37,8 +37,13 @@ const BookScreen = ({ navigation }) => {
         />
       </View>
       <TitleSection title={name} authors={authors} />
-      <AddToLibrarySection
-        onPress={() => navigation.navigate("AddToMyLibrary", { bookInfo })}
+      <ActionSection
+        shelf={shelf}
+        onPress={
+          shelf
+            ? () => console.log(shelf)
+            : () => navigation.navigate("AddToMyLibrary", { bookInfo })
+        }
       />
       <Description
         text={description}
