@@ -1,6 +1,7 @@
 // A list of cards of content (used in listing search results and shelves)
 import React from "react";
 import { View, StyleSheet, FlatList, Text } from "react-native";
+import { withNavigation } from "react-navigation";
 import _ from "lodash";
 // Components
 import SearchBar from "./SearchBar";
@@ -9,7 +10,16 @@ import ContentListCard from "./ContentListCard";
 import { REGULAR, FS16 } from "../design/typography";
 import { GRAY_2, GRAY_5 } from "../design/colors";
 
-const ContentList = ({ data, SearchBar }) => {
+const ContentList = ({ data, SearchBar, navigation }) => {
+  const handleContentCardPress = data => {
+    switch (data.type) {
+      case "book":
+        return navigation.navigate("BookScreen", { bookInfo: data });
+      default:
+        return;
+    }
+  };
+
   if (_.isEmpty(data)) {
     return (
       <View style={styles.emptyContainer}>
@@ -29,7 +39,7 @@ const ContentList = ({ data, SearchBar }) => {
             title={item.name}
             authors={item.authors}
             thumbnailUrl={item.thumbnailUrl}
-            onPress={() => console.log(item.name)}
+            onPress={() => handleContentCardPress(item)}
           />
         )}
         keyExtractor={item => item._id}
@@ -58,4 +68,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ContentList;
+export default withNavigation(ContentList);
