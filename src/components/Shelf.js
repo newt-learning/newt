@@ -15,11 +15,17 @@ import { Feather } from "@expo/vector-icons";
 import { REGULAR, SEMIBOLD, BOLD, FS14, FS24 } from "../design/typography";
 import { OFF_BLACK, GRAY_2, GRAY_4, OFF_WHITE } from "../design/colors";
 
-const SeeAllCard = () => (
-  <View style={styles.seeAllCard}>
-    <Text style={styles.seeAllText}>See all</Text>
-    <Feather name="chevron-right" color={OFF_BLACK} size={16} />
-  </View>
+const SeeAllCard = ({ onPress }) => (
+  <TouchableHighlight
+    style={styles.seeAllCard}
+    onPress={onPress}
+    underlayColor={GRAY_4}
+  >
+    <>
+      <Text style={styles.seeAllText}>See all</Text>
+      <Feather name="chevron-right" color={OFF_BLACK} size={16} />
+    </>
+  </TouchableHighlight>
 );
 
 let ShelfContentCard = ({ title, thumbnailUrl, onPress }) => {
@@ -41,14 +47,7 @@ let ShelfContentCard = ({ title, thumbnailUrl, onPress }) => {
   );
 };
 
-const Shelf = ({
-  name,
-  data,
-  numItems,
-  onPressTitle,
-  onPressSeeAllCard,
-  navigation
-}) => {
+const Shelf = ({ name, data, numItems, onPressTitle, navigation }) => {
   const handleContentCardPress = data => {
     switch (data.type) {
       case "book":
@@ -86,7 +85,9 @@ const Shelf = ({
               onPress={() => handleContentCardPress(item)}
             />
           )}
-          ListFooterComponent={numItems > 4 ? <SeeAllCard /> : null}
+          ListFooterComponent={
+            numItems > 4 ? <SeeAllCard onPress={onPressTitle} /> : null
+          }
         />
       )}
     </View>
