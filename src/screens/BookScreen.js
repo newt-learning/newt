@@ -18,7 +18,7 @@ import { shortenText } from "../helpers/textHelpers";
 const BookScreen = ({ navigation }) => {
   // State to store whether the user wants to read more of the description
   const [showMore, setShowMore] = useState(false);
-  const { addContent } = useContext(ContentContext);
+  const { addContent, updateContent } = useContext(ContentContext);
 
   // Get book info from params sent through navigation prop
   const bookInfo = navigation.getParam("bookInfo");
@@ -33,6 +33,9 @@ const BookScreen = ({ navigation }) => {
   const addBookToLibrary = selectedShelf => {
     const data = { ...bookInfo, shelf: selectedShelf, type: "book" };
     addContent(data);
+  };
+  const updateShelf = selectedShelf => {
+    updateContent(bookInfo._id, { shelf: selectedShelf });
   };
 
   return (
@@ -53,7 +56,7 @@ const BookScreen = ({ navigation }) => {
                 navigation.navigate("ShelfSelect", {
                   currentShelf: shelf,
                   buttonText: "Confirm",
-                  onConfirmShelf: selectedShelf => console.log(selectedShelf)
+                  onConfirmShelf: selectedShelf => updateShelf(selectedShelf)
                 })
             : () =>
                 navigation.navigate("ShelfSelect", {

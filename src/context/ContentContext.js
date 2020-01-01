@@ -71,8 +71,23 @@ const addContent = dispatch => async data => {
   }
 };
 
+const updateContent = dispatch => async (contentId, data) => {
+  try {
+    // Indicate request is going to take place
+    dispatch(requestContent());
+
+    // Make request to update content
+    await newtApi.put(`/content/${contentId}/update`, data);
+    // Navigate to prev screen (from Add To My Library to Book Screen)
+    navigateBack();
+  } catch (error) {
+    console.error(error);
+    dispatch(resolveContent());
+  }
+};
+
 export const { Provider, Context } = createDataContext(
   contentReducer,
-  { fetchContent, addContent },
+  { fetchContent, addContent, updateContent },
   { isFetching: false, items: [], errorMessage: "" }
 );
