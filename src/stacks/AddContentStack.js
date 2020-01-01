@@ -7,7 +7,7 @@ import { Feather } from "@expo/vector-icons";
 import AddContentScreen from "../screens/AddContentScreen";
 import AddBookScreen from "../screens/AddBookScreen";
 import BookScreen from "../screens/BookScreen";
-import AddToMyLibraryScreen from "../screens/AddToMyLibraryScreen";
+import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 // Styling
 import { OFF_WHITE } from "../design/colors";
 
@@ -40,7 +40,7 @@ const AddContentStack = createStackNavigator({
     }
   },
   BookScreen: BookScreen,
-  AddToMyLibrary: AddToMyLibraryScreen
+  ShelfSelect: ShelfSelectScreen
 });
 
 // Icon for Add Content button in bottom navigation bar
