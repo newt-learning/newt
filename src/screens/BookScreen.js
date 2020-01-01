@@ -41,7 +41,12 @@ const BookScreen = ({ navigation }) => {
         shelf={shelf}
         onPress={
           shelf
-            ? () => console.log(shelf)
+            ? () =>
+                navigation.navigate("ShelfSelect", {
+                  currentShelf: shelf,
+                  buttonText: "Confirm",
+                  onConfirmShelf: selectedShelf => console.log(selectedShelf)
+                })
             : () => navigation.navigate("AddToMyLibrary", { bookInfo })
         }
       />
