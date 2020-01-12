@@ -7,7 +7,8 @@ import { updateObjectInArrayById } from "../helpers/contextHelpers";
 const REQUEST_CONTENT = "REQUEST_CONTENT";
 const RESOLVE_CONTENT = "RESOLVE_CONTENT";
 const SET_CONTENT = "SET_CONTENT";
-const SET_INDIVIDUAL_CONTENT = "SET_INDIVIDUAL_CONTENT";
+const ADD_INDIVIDUAL_CONTENT = "ADD_INDIVIDUAL_CONTENT";
+const UPDATE_INDIVIDUAL_CONTENT = "UPDATE_INDIVIDUAL_CONTENT";
 const SET_ERROR_MESSAGE = "SET_ERROR_MESSAGE";
 
 const contentReducer = (state, action) => {
@@ -19,11 +20,14 @@ const contentReducer = (state, action) => {
     case SET_CONTENT:
       return {
         ...state,
-        isFetching: false,
-        items: action.payload,
-        errorMessage: ""
+        items: action.payload
       };
-    case SET_INDIVIDUAL_CONTENT:
+    case ADD_INDIVIDUAL_CONTENT:
+      return {
+        ...state,
+        items: [...state.items, action.payload]
+      };
+    case UPDATE_INDIVIDUAL_CONTENT:
       return {
         ...state,
         items: updateObjectInArrayById(state.items, action.payload)
@@ -45,8 +49,11 @@ const resolveContent = () => {
 const setContent = payload => {
   return { type: SET_CONTENT, payload };
 };
-const setIndividualContent = payload => {
-  return { type: SET_INDIVIDUAL_CONTENT, payload };
+const addIndividualContent = payload => {
+  return { type: ADD_INDIVIDUAL_CONTENT, payload };
+};
+const updateIndividualContent = payload => {
+  return { type: UPDATE_INDIVIDUAL_CONTENT, payload };
 };
 const setErrorMessage = payload => {
   return { type: SET_ERROR_MESSAGE, payload };
@@ -59,6 +66,7 @@ const fetchContent = dispatch => async () => {
 
     const res = await newtApi.get("/content");
     dispatch(setContent(res.data));
+    dispatch(resolveContent());
   } catch (error) {
     dispatch(
       setErrorMessage("Sorry, we're having some trouble getting your data.")
@@ -72,7 +80,10 @@ const addContent = dispatch => async data => {
     dispatch(requestContent());
 
     // Make request to create content
-    await newtApi.post("/content/create", data);
+    const res = await newtApi.post("/content/create", data);
+    // Update state
+    dispatch(addIndividualContent(res.data));
+    dispatch(resolveContent());
     // Navigate to prev screen (from Add To My Library to Book Screen)
     navigateBack();
   } catch (error) {
@@ -88,7 +99,8 @@ const updateContent = dispatch => async (contentId, data) => {
 
     // Make request to update content
     const res = await newtApi.put(`/content/${contentId}/update`, data);
-    dispatch(setIndividualContent(res.data));
+    // Update state
+    dispatch(updateIndividualContent(res.data));
     dispatch(resolveContent());
     // Navigate to prev screen (from Add To My Library to Book Screen)
     navigateBack();
