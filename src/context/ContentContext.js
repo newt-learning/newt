@@ -1,11 +1,13 @@
 import createDataContext from "./createDataContext";
 import newtApi from "../api/newtApi";
 import { navigateBack } from "../refs/navigationRef";
+import { updateObjectInArrayById } from "../helpers/contextHelpers";
 
 // Action constants
 const REQUEST_CONTENT = "REQUEST_CONTENT";
 const RESOLVE_CONTENT = "RESOLVE_CONTENT";
 const SET_CONTENT = "SET_CONTENT";
+const SET_INDIVIDUAL_CONTENT = "SET_INDIVIDUAL_CONTENT";
 const SET_ERROR_MESSAGE = "SET_ERROR_MESSAGE";
 
 const contentReducer = (state, action) => {
@@ -20,6 +22,11 @@ const contentReducer = (state, action) => {
         isFetching: false,
         items: action.payload,
         errorMessage: ""
+      };
+    case SET_INDIVIDUAL_CONTENT:
+      return {
+        ...state,
+        items: updateObjectInArrayById(state.items, action.payload)
       };
     case SET_ERROR_MESSAGE:
       return { ...state, isFetching: false, errorMessage: action.payload };
@@ -37,6 +44,9 @@ const resolveContent = () => {
 };
 const setContent = payload => {
   return { type: SET_CONTENT, payload };
+};
+const setIndividualContent = payload => {
+  return { type: SET_INDIVIDUAL_CONTENT, payload };
 };
 const setErrorMessage = payload => {
   return { type: SET_ERROR_MESSAGE, payload };
@@ -77,7 +87,9 @@ const updateContent = dispatch => async (contentId, data) => {
     dispatch(requestContent());
 
     // Make request to update content
-    await newtApi.put(`/content/${contentId}/update`, data);
+    const res = await newtApi.put(`/content/${contentId}/update`, data);
+    dispatch(setIndividualContent(res.data));
+    dispatch(resolveContent());
     // Navigate to prev screen (from Add To My Library to Book Screen)
     navigateBack();
   } catch (error) {
