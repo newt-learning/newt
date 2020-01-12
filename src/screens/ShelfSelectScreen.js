@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import _ from "lodash";
 // Components
@@ -13,6 +13,8 @@ import { OFF_BLACK } from "../design/colors";
 import { initializeShelves } from "../helpers/screenHelpers";
 
 const ShelfSelectScreen = ({ navigation }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const currentShelf = navigation.getParam("currentShelf");
   const buttonText = navigation.getParam("buttonText");
   const onConfirmShelf = navigation.getParam("onConfirmShelf");
@@ -45,9 +47,11 @@ const ShelfSelectScreen = ({ navigation }) => {
         <ActionButton
           title={buttonText}
           onPress={() => {
+            setIsLoading(true);
             const currentShelf = _.find(shelves, shelf => shelf.checked);
             onConfirmShelf(currentShelf.name);
           }}
+          showLoading={isLoading}
         />
       </View>
     </View>
