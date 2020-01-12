@@ -18,10 +18,18 @@ import { shortenText } from "../helpers/textHelpers";
 const BookScreen = ({ navigation }) => {
   // State to store whether the user wants to read more of the description
   const [showMore, setShowMore] = useState(false);
-  const { addContent, updateContent } = useContext(ContentContext);
+  const { state, addContent, updateContent } = useContext(ContentContext);
 
   // Get book info from params sent through navigation prop
-  const bookInfo = navigation.getParam("bookInfo");
+  const passedBookInfo = navigation.getParam("bookInfo");
+
+  // Check if an _id field exists (from db or not). If it does, get the latest
+  // data from state (so that any updates are reflected when navigating back to
+  // the screen), if not use the passed data
+  const bookInfo = passedBookInfo._id
+    ? state.items.filter(item => item._id === passedBookInfo._id)[0]
+    : passedBookInfo;
+
   const { name, authors, description, thumbnailUrl, shelf } = bookInfo;
   const {
     pageCount,
