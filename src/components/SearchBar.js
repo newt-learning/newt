@@ -1,7 +1,8 @@
 import React from "react";
+import { Platform } from "react-native";
 import { StyleSheet } from "react-native";
 import { SearchBar as ElementSearchBar } from "react-native-elements";
-import { WHITE, GRAY_5 } from "../design/colors";
+import { WHITE, GRAY_5, GRAY_1 } from "../design/colors";
 
 const SearchBar = ({ placeholderText, onChange, value, onClear }) => {
   return (
@@ -10,9 +11,11 @@ const SearchBar = ({ placeholderText, onChange, value, onClear }) => {
       onChangeText={onChange}
       value={value}
       onClear={onClear}
+      platform={Platform.OS}
       lightTheme
       containerStyle={styles.searchBarContainerStyle}
       inputContainerStyle={styles.inputContainerStyle}
+      cancelButtonProps={styles.iosCancelButton}
     />
   );
 };
@@ -28,6 +31,9 @@ const styles = StyleSheet.create({
   inputContainerStyle: {
     backgroundColor: GRAY_5,
     borderRadius: 8
+  },
+  iosCancelButton: {
+    color: GRAY_1
   }
 });
 
