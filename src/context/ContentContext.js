@@ -1,13 +1,18 @@
+import _ from "lodash";
 import createDataContext from "./createDataContext";
 import newtApi from "../api/newtApi";
 import { navigateBack } from "../refs/navigationRef";
-import { updateObjectInArrayById } from "../helpers/contextHelpers";
+import {
+  updateObjectInArrayById,
+  addIfDoesNotExist
+} from "../helpers/contextHelpers";
 
 // Action constants
 const REQUEST_CONTENT = "REQUEST_CONTENT";
 const RESOLVE_CONTENT = "RESOLVE_CONTENT";
 const SET_CONTENT = "SET_CONTENT";
 const ADD_INDIVIDUAL_CONTENT = "ADD_INDIVIDUAL_CONTENT";
+const ADD_CONTENT_IF_DOES_NOT_EXIST = "ADD_CONTENT_IF_DOES_NOT_EXIST";
 const UPDATE_INDIVIDUAL_CONTENT = "UPDATE_INDIVIDUAL_CONTENT";
 const SET_ERROR_MESSAGE = "SET_ERROR_MESSAGE";
 
@@ -26,6 +31,11 @@ const contentReducer = (state, action) => {
       return {
         ...state,
         items: [...state.items, action.payload]
+      };
+    case ADD_CONTENT_IF_DOES_NOT_EXIST:
+      return {
+        ...state,
+        items: addIfDoesNotExist(state.items, action.payload)
       };
     case UPDATE_INDIVIDUAL_CONTENT:
       return {
@@ -52,6 +62,9 @@ const setContent = payload => {
 const addIndividualContent = payload => {
   return { type: ADD_INDIVIDUAL_CONTENT, payload };
 };
+const addContentIfDoesNotExist = payload => {
+  return { type: ADD_CONTENT_IF_DOES_NOT_EXIST, payload };
+};
 const updateIndividualContent = payload => {
   return { type: UPDATE_INDIVIDUAL_CONTENT, payload };
 };
@@ -71,6 +84,21 @@ const fetchContent = dispatch => async () => {
     dispatch(
       setErrorMessage("Sorry, we're having some trouble getting your data.")
     );
+  }
+};
+
+const checkIfBookExistsInLibrary = dispatch => async googleBookId => {
+  try {
+    dispatch(requestContent());
+    const res = await newtApi.get(`/content/check-book/${googleBookId}`);
+
+    dispatch(addContentIfDoesNotExist(res.data));
+    dispatch(resolveContent());
+
+    // Whether the book exists in the user's library or not
+    return !_.isEmpty(res.data);
+  } catch (error) {
+    console.error(error);
   }
 };
 
@@ -112,6 +140,6 @@ const updateContent = dispatch => async (contentId, data) => {
 
 export const { Provider, Context } = createDataContext(
   contentReducer,
-  { fetchContent, addContent, updateContent },
+  { fetchContent, checkIfBookExistsInLibrary, addContent, updateContent },
   { isFetching: false, items: [], errorMessage: "" }
 );

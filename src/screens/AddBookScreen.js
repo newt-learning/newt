@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, StyleSheet, FlatList, Text } from "react-native";
 // Components
 import SearchBar from "../components/SearchBar";
@@ -57,7 +57,8 @@ const AddBookScreen = ({ navigation }) => {
               thumbnailUrl={checkThumbnailExistence(item.volumeInfo)}
               onPress={() =>
                 navigation.navigate("BookScreen", {
-                  bookInfo: extractRelevantBookInfo(item)
+                  bookInfo: extractRelevantBookInfo(item),
+                  comingFromAddBook: true
                 })
               }
             />

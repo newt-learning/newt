@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, ScrollView, Image, Platform } from "react-native";
 import { Button } from "react-native-elements";
 import { Feather } from "@expo/vector-icons";
@@ -9,6 +9,7 @@ import TitleSection from "../components/Content/TitleSection";
 import ActionSection from "../components/Content/ActionSection";
 import Description from "../components/Content/Description";
 import BookInformationSection from "../components/Content/BookInformationSection";
+import Loader from "../components/Loader";
 // Styling
 import { FS14, REGULAR } from "../design/typography";
 // Helpers
@@ -18,17 +19,69 @@ import { shortenText } from "../helpers/textHelpers";
 const BookScreen = ({ navigation }) => {
   // State to store whether the user wants to read more of the description
   const [showMore, setShowMore] = useState(false);
-  const { state, addContent, updateContent } = useContext(ContentContext);
+  const [bookExistsInLibrary, setBookExistsinLibrary] = useState(null);
+  const {
+    state,
+    addContent,
+    updateContent,
+    checkIfBookExistsInLibrary
+  } = useContext(ContentContext);
 
   // Get book info from params sent through navigation prop
   const passedBookInfo = navigation.getParam("bookInfo");
+  const comingFromAddBookScreen = navigation.getParam("comingFromAddBook");
 
-  // Check if an _id field exists (from db or not). If it does, get the latest
-  // data from state (so that any updates are reflected when navigating back to
-  // the screen), if not use the passed data
-  const bookInfo = passedBookInfo._id
-    ? state.items.filter(item => item._id === passedBookInfo._id)[0]
-    : passedBookInfo;
+  // Check if the book data passed, if coming from the 'Add Book Screen' (so
+  // passedBookInfo won't have a '_id' field), is already in the user's library
+  // and set state accordingly
+  useEffect(() => {
+    const checkBookInfo = async () => {
+      if (!passedBookInfo._id) {
+        const bookExists = await checkIfBookExistsInLibrary(
+          passedBookInfo.bookInfo.bookId
+        );
+
+        if (bookExists) {
+          setBookExistsinLibrary(true);
+        } else {
+          setBookExistsinLibrary(false);
+        }
+      } else {
+        setBookExistsinLibrary(true);
+      }
+    };
+
+    checkBookInfo();
+  }, []);
+
+  let bookInfo = {};
+
+  // There must be a more elegant way of doing this, but what this is doing is
+  // setting the bookInfo object with data based on whether the book exists in
+  // the user's library or not. If it doesn't, then we want to show the Book screen with the
+  // 'Add to Library' button (so get G Books data that's passed). If it does, then
+  // show the Book screen with existing shelf (state/context data). The issue is that when coming from
+  // the Add Book Screen, the data passed is Google Books data, so searching the
+  // library must be done with Google Books id. If it's not (e.g. coming
+  // from the My Library screen), then filter by database _id.
+  if (bookExistsInLibrary !== null) {
+    if (comingFromAddBookScreen) {
+      if (bookExistsInLibrary) {
+        bookInfo = state.items.filter(
+          item => item.bookInfo.bookId === passedBookInfo.bookInfo.bookId
+        )[0];
+      } else {
+        bookInfo = passedBookInfo;
+      }
+    } else {
+      bookInfo = state.items.filter(item => item._id === passedBookInfo._id)[0];
+    }
+  }
+
+  // If fetching data or the in-library-or-not check is ongoing, show Loader
+  if (state.isFetching || bookExistsInLibrary === null) {
+    return <Loader isLoading={state.isFetching} />;
+  }
 
   const { name, authors, description, thumbnailUrl, shelf } = bookInfo;
   const {
