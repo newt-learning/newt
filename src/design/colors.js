@@ -12,6 +12,8 @@ export const WHITE = "#ffffff";
 // Newt Blue
 export const NEWT_BLUE = "#38ceff";
 
+export const BLUE = "#1089ff";
+
 // Yellows
 export const YELLOW = "#ffcd38";
 

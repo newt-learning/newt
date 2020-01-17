@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 // Components
-import { Button } from "react-native-elements";
 import ActionButton from "../ActionButton";
 import ChangeShelfButton from "./ChangeShelfButton";
+import ClearButton from "../ClearButton";
 import ProgressBar from "../ProgressBar";
 // Styling
 import { GRAY_4, INDIGO } from "../../design/colors";
@@ -20,10 +20,13 @@ const ActionSection = ({ shelf, pageCount, pagesRead, onPress }) => {
         <View>
           <ChangeShelfButton shelf={shelf} onPress={onPress} />
           {shelf === "Currently Learning" ? (
-            <ProgressBar
-              barContainerStyle={styles.progressBar}
-              percentComplete={calculatePercentComplete(pagesRead, pageCount)}
-            />
+            <>
+              <ProgressBar
+                barContainerStyle={styles.progressBar}
+                percentComplete={calculatePercentComplete(pagesRead, pageCount)}
+              />
+              <ClearButton title="Update Progress" />
+            </>
           ) : null}
         </View>
       ) : (
