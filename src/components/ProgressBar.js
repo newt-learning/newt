@@ -23,9 +23,8 @@ const ProgressBar = ({ barContainerStyle, percentComplete }) => {
 
   return (
     <View style={containerStyle}>
-      <View style={barStyle}>
-        <Text style={styles.barText}>{`${percentComplete}%`}</Text>
-      </View>
+      <View style={barStyle} />
+      <Text style={styles.barText}>{`${percentComplete}%`}</Text>
     </View>
   );
 };
@@ -33,16 +32,17 @@ const ProgressBar = ({ barContainerStyle, percentComplete }) => {
 const styles = StyleSheet.create({
   barContainer: {
     height: 20,
+    justifyContent: "center",
     backgroundColor: GRAY_5,
     borderRadius: 5
   },
   bar: {
     height: 20,
-    justifyContent: "center",
     borderRadius: 5,
     backgroundColor: LIME_GREEN
   },
   barText: {
+    position: "absolute",
     fontFamily: REGULAR,
     fontSize: FS12,
     color: OFF_BLACK,

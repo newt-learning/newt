@@ -86,6 +86,7 @@ const BookScreen = ({ navigation }) => {
   const { name, authors, description, thumbnailUrl, shelf } = bookInfo;
   const {
     pageCount,
+    pagesRead,
     industryIdentifiers,
     publisher,
     datePublished
@@ -111,6 +112,8 @@ const BookScreen = ({ navigation }) => {
       <TitleSection title={name} authors={authors} />
       <ActionSection
         shelf={shelf}
+        pageCount={pageCount}
+        pagesRead={pagesRead}
         onPress={
           shelf
             ? () =>
