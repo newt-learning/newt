@@ -8,10 +8,11 @@ import MyLibraryScreen from "../screens/MyLibraryScreen";
 import IndividualShelfScreen from "../screens/IndividualShelfScreen";
 import BookScreen from "../screens/BookScreen";
 import ShelfSelectScreen from "../screens/ShelfSelectScreen";
+import UpdateProgressScreen from "../screens/UpdateProgressScreen";
 // Styling
 import { OFF_WHITE } from "../design/colors";
 
-const MyLibraryStack = createStackNavigator({
+const MainStack = createStackNavigator({
   "My Library": {
     screen: MyLibraryScreen,
     navigationOptions: {
@@ -30,6 +31,27 @@ const MyLibraryStack = createStackNavigator({
   BookScreen: BookScreen,
   ShelfSelect: ShelfSelectScreen
 });
+
+const MyLibraryStack = createStackNavigator(
+  {
+    Main: {
+      screen: MainStack,
+      navigationOptions: {
+        headerShown: false,
+        headerBackTitle: "Cancel"
+      }
+    },
+    UpdateProgress: {
+      screen: UpdateProgressScreen,
+      navigationOptions: {
+        headerTitle: "Update Progress"
+      }
+    }
+  },
+  {
+    mode: "modal"
+  }
+);
 
 MyLibraryStack.navigationOptions = {
   tabBarIcon: ({ tintColor }) => (

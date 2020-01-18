@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { withNavigation } from "react-navigation";
 // Components
 import ActionButton from "../ActionButton";
 import ChangeShelfButton from "./ChangeShelfButton";
@@ -13,7 +14,13 @@ import { calculatePercentComplete } from "../../helpers/screenHelpers";
 
 // Section for either adding a book to My Library or viewing and changing the
 // shelf it's on if it's already been saved
-const ActionSection = ({ shelf, pageCount, pagesRead, onPress }) => {
+const ActionSection = ({
+  shelf,
+  pageCount,
+  pagesRead,
+  onPress,
+  navigation
+}) => {
   return (
     <View style={styles.container}>
       {shelf ? (
@@ -25,7 +32,10 @@ const ActionSection = ({ shelf, pageCount, pagesRead, onPress }) => {
                 barContainerStyle={styles.progressBar}
                 percentComplete={calculatePercentComplete(pagesRead, pageCount)}
               />
-              <ClearButton title="Update Progress" />
+              <ClearButton
+                title="Update Progress"
+                onPress={() => navigation.navigate("UpdateProgress")}
+              />
             </>
           ) : null}
         </View>
@@ -48,4 +58,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ActionSection;
+export default withNavigation(ActionSection);
