@@ -8,12 +8,13 @@ import AddContentScreen from "../screens/AddContentScreen";
 import AddBookScreen from "../screens/AddBookScreen";
 import BookScreen from "../screens/BookScreen";
 import ShelfSelectScreen from "../screens/ShelfSelectScreen";
+import UpdateProgressScreen from "../screens/UpdateProgressScreen";
 // Styling
 import { OFF_WHITE } from "../design/colors";
 
 // Stack navigator between Add Content screen and specific content
 // (books, videos, articles) screens
-const AddContentStack = createStackNavigator({
+const MainStack = createStackNavigator({
   "Add Content": {
     screen: AddContentScreen,
     navigationOptions: {
@@ -42,6 +43,27 @@ const AddContentStack = createStackNavigator({
   BookScreen: BookScreen,
   ShelfSelect: ShelfSelectScreen
 });
+
+const AddContentStack = createStackNavigator(
+  {
+    Main: {
+      screen: MainStack,
+      navigationOptions: {
+        headerShown: false,
+        headerBackTitle: "Cancel"
+      }
+    },
+    UpdateProgress: {
+      screen: UpdateProgressScreen,
+      navigationOptions: {
+        headerTitle: "Update Progress"
+      }
+    }
+  },
+  {
+    mode: "modal"
+  }
+);
 
 // Icon for Add Content button in bottom navigation bar
 AddContentStack.navigationOptions = {
