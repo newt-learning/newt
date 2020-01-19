@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import {
   ScrollView,
+  View,
   Platform,
   Button,
   Text,
@@ -8,25 +9,61 @@ import {
   TextInput,
   ActivityIndicator
 } from "react-native";
+import _ from "lodash";
 import { Button as ElementButton } from "react-native-elements";
 import { MaterialIcons } from "@expo/vector-icons";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Design
-import { SEMIBOLD, FS16 } from "../design/typography";
-import { OFF_BLACK, GRAY_5, GRAY_2, IOS_BLUE } from "../design/colors";
+import { SEMIBOLD, REGULAR, FS16, FS12 } from "../design/typography";
+import { OFF_BLACK, GRAY_5, GRAY_2, IOS_BLUE, RED } from "../design/colors";
 
 const UpdateProgressScreen = ({ navigation }) => {
   const contentId = navigation.getParam("contentId");
   const pagesRead = navigation.getParam("pagesRead");
+  const pageCount = navigation.getParam("pageCount");
   const [updatedPagesRead, setUpdatedPagesRead] = useState(`${pagesRead}`);
+  const [errorMessage, setErrorMessage] = useState(null);
   const {
     state: { isFetching },
     updateBookProgress
   } = useContext(ContentContext);
 
+  // Validation function that's run before submitting request to check whether
+  // the number inputted makes sense.
+  const validatePagesRead = () => {
+    const num = _.toNumber(updatedPagesRead);
+
+    if (!_.isNumber(num)) {
+      setErrorMessage("Your input needs to be a number.");
+      return false;
+    }
+    if (_.isNumber(num) && !_.isInteger(num)) {
+      setErrorMessage("The number of pages read needs to be an integer.");
+      return false;
+    }
+    if (num < 0) {
+      setErrorMessage(
+        "Not sure how you've managed to read negative pages. The number needs to be positive."
+      );
+      return false;
+    }
+    if (num > pageCount) {
+      setErrorMessage(
+        "The number of pages you've read can't be more than the total number of pages in the book -- obviously."
+      );
+      return false;
+    }
+
+    setErrorMessage(null);
+    return true;
+  };
+
   const submitUpdatedPagesRead = () => {
-    updateBookProgress(contentId, updatedPagesRead);
+    const isValid = validatePagesRead();
+    if (isValid) {
+      updateBookProgress(contentId, _.toNumber(updatedPagesRead));
+    }
   };
 
   // Pass submit function as params so that it can be wired up in the right header
@@ -42,15 +79,20 @@ const UpdateProgressScreen = ({ navigation }) => {
       scrollEnabled={false}
       keyboardShouldPersistTaps="handled"
     >
-      <Text style={styles.text}>I'm on page</Text>
-      <TextInput
-        style={styles.input}
-        value={updatedPagesRead}
-        onFocus={() => setUpdatedPagesRead(null)}
-        onChangeText={setUpdatedPagesRead}
-        keyboardType="numeric"
-        maxLength={8}
-      />
+      <View style={{ flexDirection: "row" }}>
+        <Text style={styles.text}>I'm on page</Text>
+        <TextInput
+          style={styles.input}
+          value={updatedPagesRead}
+          onFocus={() => setUpdatedPagesRead(null)}
+          onChangeText={setUpdatedPagesRead}
+          keyboardType="number-pad"
+          maxLength={8}
+        />
+      </View>
+      {errorMessage ? (
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
+      ) : null}
     </ScrollView>
   );
 };
@@ -90,7 +132,6 @@ UpdateProgressScreen.navigationOptions = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
     marginTop: 20,
     marginHorizontal: 15
   },
@@ -108,6 +149,12 @@ const styles = StyleSheet.create({
     width: 100,
     padding: 2,
     marginLeft: 10
+  },
+  errorMessage: {
+    fontFamily: REGULAR,
+    fontSize: FS12,
+    color: RED,
+    marginTop: 15
   }
 });
 

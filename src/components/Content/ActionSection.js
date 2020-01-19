@@ -38,7 +38,8 @@ const ActionSection = ({
                 onPress={() =>
                   navigation.navigate("UpdateProgress", {
                     contentId,
-                    pagesRead
+                    pagesRead,
+                    pageCount
                   })
                 }
               />
