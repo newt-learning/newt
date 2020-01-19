@@ -4,16 +4,23 @@ import { Button } from "react-native-elements";
 import { INDIGO } from "../design/colors";
 import { SEMIBOLD } from "../design/typography";
 
-const ActionButton = ({ title, onPress, showLoading }) => (
-  <Button
-    title={title}
-    buttonStyle={styles.button}
-    titleStyle={styles.buttonTitle}
-    loading={showLoading}
-    onPress={onPress}
-    raised
-  />
-);
+const ActionButton = ({ title, onPress, showLoading, titleStyle }) => {
+  const buttonTitleStyle = StyleSheet.compose(
+    styles.buttonTitle,
+    titleStyle
+  );
+
+  return (
+    <Button
+      title={title}
+      buttonStyle={styles.button}
+      titleStyle={buttonTitleStyle}
+      loading={showLoading}
+      onPress={onPress}
+      raised
+    />
+  );
+};
 
 const styles = StyleSheet.create({
   button: {

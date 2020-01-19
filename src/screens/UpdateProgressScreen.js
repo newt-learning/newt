@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import _ from "lodash";
 import { Button as ElementButton } from "react-native-elements";
+import ActionButton from "../components/ActionButton";
 import { MaterialIcons } from "@expo/vector-icons";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
@@ -26,7 +27,8 @@ const UpdateProgressScreen = ({ navigation }) => {
   const [errorMessage, setErrorMessage] = useState(null);
   const {
     state: { isFetching },
-    updateBookProgress
+    updateBookProgress,
+    updateContent
   } = useContext(ContentContext);
 
   // Validation function that's run before submitting request to check whether
@@ -67,8 +69,15 @@ const UpdateProgressScreen = ({ navigation }) => {
     }
   };
 
-  // Pass submit function as params so that it can be wired up in the right header
-  // button.
+  // Function that updates pages read to page count and changes shelf to
+  // "Finished Learning" when finished book button is pressed
+  const submitFinishBook = () => {
+    updateBookProgress(contentId, pageCount, false);
+    updateContent(contentId, { shelf: "Finished Learning" });
+  };
+
+  // Pass submit updated pages function as params so that it can be wired up in
+  // the right header button.
   useEffect(() => {
     navigation.setParams({ updateProgress: submitUpdatedPagesRead });
     navigation.setParams({ isFetching });
@@ -94,6 +103,13 @@ const UpdateProgressScreen = ({ navigation }) => {
       {errorMessage ? (
         <Text style={styles.errorMessage}>{errorMessage}</Text>
       ) : null}
+      <View style={styles.buttonContainer}>
+        <ActionButton
+          title="I've finished the book"
+          titleStyle={styles.buttonTitle}
+          onPress={submitFinishBook}
+        />
+      </View>
     </ScrollView>
   );
 };
@@ -156,6 +172,13 @@ const styles = StyleSheet.create({
     fontSize: FS12,
     color: RED,
     marginTop: 15
+  },
+  buttonContainer: {
+    marginTop: 40,
+    alignItems: "center"
+  },
+  buttonTitle: {
+    fontSize: FS16
   }
 });
 

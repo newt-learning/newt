@@ -138,7 +138,11 @@ const updateContent = dispatch => async (contentId, data) => {
   }
 };
 
-const updateBookProgress = dispatch => async (contentId, pagesRead) => {
+const updateBookProgress = dispatch => async (
+  contentId,
+  pagesRead,
+  shouldNavigate = true
+) => {
   try {
     dispatch(requestContent());
 
@@ -148,8 +152,11 @@ const updateBookProgress = dispatch => async (contentId, pagesRead) => {
 
     dispatch(updateIndividualContent(res.data));
     dispatch(resolveContent());
-    // Navigate to prev screen (from Add To My Library to Book Screen)
-    navigateBack();
+
+    if (shouldNavigate) {
+      // Navigate to prev screen (from Add To My Library to Book Screen)
+      navigateBack();
+    }
   } catch (error) {
     console.error(error);
     dispatch(resolveContent());
