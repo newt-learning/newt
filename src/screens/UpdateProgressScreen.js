@@ -5,7 +5,8 @@ import {
   Button,
   Text,
   StyleSheet,
-  TextInput
+  TextInput,
+  ActivityIndicator
 } from "react-native";
 import { Button as ElementButton } from "react-native-elements";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -13,13 +14,16 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Context as ContentContext } from "../context/ContentContext";
 // Design
 import { SEMIBOLD, FS16 } from "../design/typography";
-import { GRAY_5, GRAY_2 } from "../design/colors";
+import { OFF_BLACK, GRAY_5, GRAY_2, IOS_BLUE } from "../design/colors";
 
 const UpdateProgressScreen = ({ navigation }) => {
   const contentId = navigation.getParam("contentId");
   const pagesRead = navigation.getParam("pagesRead");
   const [updatedPagesRead, setUpdatedPagesRead] = useState(`${pagesRead}`);
-  const { updateBookProgress } = useContext(ContentContext);
+  const {
+    state: { isFetching },
+    updateBookProgress
+  } = useContext(ContentContext);
 
   const submitUpdatedPagesRead = () => {
     updateBookProgress(contentId, updatedPagesRead);
@@ -29,7 +33,8 @@ const UpdateProgressScreen = ({ navigation }) => {
   // button.
   useEffect(() => {
     navigation.setParams({ updateProgress: submitUpdatedPagesRead });
-  }, [updatedPagesRead]);
+    navigation.setParams({ isFetching });
+  }, [updatedPagesRead, isFetching]);
 
   return (
     <ScrollView
@@ -52,18 +57,34 @@ const UpdateProgressScreen = ({ navigation }) => {
 
 UpdateProgressScreen.navigationOptions = ({ navigation }) => {
   const updateProgress = navigation.getParam("updateProgress");
+  const isFetching = navigation.getParam("isFetching");
 
   return {
-    headerRight: () =>
-      Platform.OS === "ios" ? (
-        <Button title="Done" onPress={updateProgress} />
-      ) : (
-        <ElementButton
-          type="clear"
-          icon={<MaterialIcons name="check" size={24} />}
-          onPress={updateProgress}
-        />
-      )
+    headerRight: () => {
+      if (Platform.OS === "ios") {
+        if (isFetching) {
+          return (
+            <ActivityIndicator
+              animating={isFetching}
+              color={IOS_BLUE}
+              style={{ marginRight: 15 }}
+            />
+          );
+        } else {
+          return <Button title="Done" onPress={updateProgress} />;
+        }
+      } else {
+        return (
+          <ElementButton
+            type="clear"
+            loading={isFetching}
+            loadingProps={{ color: OFF_BLACK }}
+            icon={<MaterialIcons name="check" size={24} />}
+            onPress={updateProgress}
+          />
+        );
+      }
+    }
   };
 };
 
