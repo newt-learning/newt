@@ -138,8 +138,32 @@ const updateContent = dispatch => async (contentId, data) => {
   }
 };
 
+const updateBookProgress = dispatch => async (contentId, pagesRead) => {
+  try {
+    dispatch(requestContent());
+
+    const res = await newtApi.put(`/content/${contentId}/book-progress`, {
+      pagesRead
+    });
+
+    dispatch(updateIndividualContent(res.data));
+    dispatch(resolveContent());
+    // Navigate to prev screen (from Add To My Library to Book Screen)
+    navigateBack();
+  } catch (error) {
+    console.error(error);
+    dispatch(resolveContent());
+  }
+};
+
 export const { Provider, Context } = createDataContext(
   contentReducer,
-  { fetchContent, checkIfBookExistsInLibrary, addContent, updateContent },
+  {
+    fetchContent,
+    checkIfBookExistsInLibrary,
+    addContent,
+    updateContent,
+    updateBookProgress
+  },
   { isFetching: false, items: [], errorMessage: "" }
 );

@@ -111,6 +111,7 @@ const BookScreen = ({ navigation }) => {
       </View>
       <TitleSection title={name} authors={authors} />
       <ActionSection
+        contentId={bookExistsInLibrary ? bookInfo._id : null}
         shelf={shelf}
         pageCount={pageCount}
         pagesRead={pagesRead}

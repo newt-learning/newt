@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   ScrollView,
   Platform,
@@ -9,16 +9,20 @@ import {
 } from "react-native";
 import { Button as ElementButton } from "react-native-elements";
 import { MaterialIcons } from "@expo/vector-icons";
+// Context
+import { Context as ContentContext } from "../context/ContentContext";
 // Design
 import { SEMIBOLD, FS16 } from "../design/typography";
 import { GRAY_5, GRAY_2 } from "../design/colors";
 
 const UpdateProgressScreen = ({ navigation }) => {
-  let pagesRead = navigation.getParam("pagesRead");
+  const contentId = navigation.getParam("contentId");
+  const pagesRead = navigation.getParam("pagesRead");
   const [updatedPagesRead, setUpdatedPagesRead] = useState(`${pagesRead}`);
+  const { updateBookProgress } = useContext(ContentContext);
 
   const submitUpdatedPagesRead = () => {
-    console.log(updatedPagesRead);
+    updateBookProgress(contentId, updatedPagesRead);
   };
 
   // Pass submit function as params so that it can be wired up in the right header

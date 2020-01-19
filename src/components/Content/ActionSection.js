@@ -15,6 +15,7 @@ import { calculatePercentComplete } from "../../helpers/screenHelpers";
 // Section for either adding a book to My Library or viewing and changing the
 // shelf it's on if it's already been saved
 const ActionSection = ({
+  contentId,
   shelf,
   pageCount,
   pagesRead,
@@ -35,7 +36,10 @@ const ActionSection = ({
               <ClearButton
                 title="Update Progress"
                 onPress={() =>
-                  navigation.navigate("UpdateProgress", { pagesRead })
+                  navigation.navigate("UpdateProgress", {
+                    contentId,
+                    pagesRead
+                  })
                 }
               />
             </>
