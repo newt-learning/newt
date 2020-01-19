@@ -33,6 +33,7 @@ const UpdateProgressScreen = ({ navigation }) => {
   // the number inputted makes sense.
   const validatePagesRead = () => {
     const num = _.toNumber(updatedPagesRead);
+    const emDash = String.fromCharCode(8212);
 
     if (!_.isNumber(num)) {
       setErrorMessage("Your input needs to be a number.");
@@ -50,7 +51,7 @@ const UpdateProgressScreen = ({ navigation }) => {
     }
     if (num > pageCount) {
       setErrorMessage(
-        "The number of pages you've read can't be more than the total number of pages in the book -- obviously."
+        `The number of pages you've read can't be more than the total number of pages in the book ${emDash} obviously.`
       );
       return false;
     }
