@@ -34,7 +34,9 @@ const ActionSection = ({
               />
               <ClearButton
                 title="Update Progress"
-                onPress={() => navigation.navigate("UpdateProgress")}
+                onPress={() =>
+                  navigation.navigate("UpdateProgress", { pagesRead })
+                }
               />
             </>
           ) : null}
