@@ -9,17 +9,10 @@ import ContentListCard from "./ContentListCard";
 // Styling
 import { REGULAR, FS16 } from "../design/typography";
 import { GRAY_2, GRAY_5 } from "../design/colors";
+// Helpers
+import { handleContentNavigation } from "../helpers/screenHelpers";
 
 const ContentList = ({ data, SearchBar, navigation }) => {
-  const handleContentCardPress = data => {
-    switch (data.type) {
-      case "book":
-        return navigation.navigate("BookScreen", { bookInfo: data });
-      default:
-        return;
-    }
-  };
-
   if (_.isEmpty(data)) {
     return (
       <View style={styles.emptyContainer}>
@@ -39,7 +32,7 @@ const ContentList = ({ data, SearchBar, navigation }) => {
             title={item.name}
             authors={item.authors}
             thumbnailUrl={item.thumbnailUrl}
-            onPress={() => handleContentCardPress(item)}
+            onPress={() => handleContentNavigation(item)}
           />
         )}
         keyExtractor={item => item._id}

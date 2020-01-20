@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { navigate } from "../refs/navigationRef";
 
 // Initialize shelves object for single checkbox selection, setting the passed
 // checkedShelf parameter as the shelf that should be checked initially
@@ -40,4 +41,14 @@ export const calculatePercentComplete = (amountCompleted, total) => {
   }
 
   return _.round((amountCompleted / total) * 100);
+};
+
+// Navigate to content screen (e.g. BookScreen) based on content type
+export const handleContentNavigation = content => {
+  switch (content.type) {
+    case "book":
+      return navigate("BookScreen", { bookInfo: content });
+    default:
+      return;
+  }
 };

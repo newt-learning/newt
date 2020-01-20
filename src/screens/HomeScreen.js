@@ -14,7 +14,10 @@ import ClearButton from "../components/ClearButton";
 import { SEMIBOLD, REGULAR, FS20, FS16, FS14 } from "../design/typography";
 import { GRAY_2, GRAY_5, NEWT_BLUE } from "../design/colors";
 // Helpers
-import { calculatePercentComplete } from "../helpers/screenHelpers";
+import {
+  calculatePercentComplete,
+  handleContentNavigation
+} from "../helpers/screenHelpers";
 
 const HomeScreen = ({ navigation }) => {
   const {
@@ -64,14 +67,6 @@ const HomeScreen = ({ navigation }) => {
     items,
     item => item.shelf === "Currently Learning"
   );
-  const handleContentCardPress = data => {
-    switch (data.type) {
-      case "book":
-        return navigation.navigate("BookScreen", { bookInfo: data });
-      default:
-        return;
-    }
-  };
 
   return (
     <FlatList
@@ -90,7 +85,7 @@ const HomeScreen = ({ navigation }) => {
             item.bookInfo.pagesRead,
             item.bookInfo.pageCount
           )}
-          onPress={() => handleContentCardPress(item)}
+          onPress={() => handleContentNavigation(item)}
         />
       )}
       ListHeaderComponent={<H1 style={styles.title}>In Progress</H1>}

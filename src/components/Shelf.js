@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   TouchableHighlight
 } from "react-native";
-import { withNavigation } from "react-navigation";
 import _ from "lodash";
 import { Feather } from "@expo/vector-icons";
 // Components
@@ -16,6 +15,8 @@ import { H2 } from "../components/Headers";
 // Styling
 import { REGULAR, SEMIBOLD, BOLD, FS14, FS24 } from "../design/typography";
 import { OFF_BLACK, GRAY_2, GRAY_4, OFF_WHITE } from "../design/colors";
+// Helpers
+import { handleContentNavigation } from "../helpers/screenHelpers";
 
 const SeeAllCard = ({ onPress }) => (
   <TouchableHighlight
@@ -49,16 +50,7 @@ let ShelfContentCard = ({ title, thumbnailUrl, onPress }) => {
   );
 };
 
-const Shelf = ({ name, data, numItems, onPressTitle, navigation }) => {
-  const handleContentCardPress = data => {
-    switch (data.type) {
-      case "book":
-        return navigation.navigate("BookScreen", { bookInfo: data });
-      default:
-        return;
-    }
-  };
-
+const Shelf = ({ name, data, numItems, onPressTitle }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.titleContainer} onPress={onPressTitle}>
@@ -84,7 +76,7 @@ const Shelf = ({ name, data, numItems, onPressTitle, navigation }) => {
                   ? item.bookInfo.imageLinks.thumbnail
                   : null
               }
-              onPress={() => handleContentCardPress(item)}
+              onPress={() => handleContentNavigation(item)}
             />
           )}
           ListFooterComponent={
@@ -149,4 +141,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default withNavigation(Shelf);
+export default Shelf;
