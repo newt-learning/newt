@@ -83,7 +83,14 @@ const BookScreen = ({ navigation }) => {
     return <Loader isLoading={state.isFetching} />;
   }
 
-  const { name, authors, description, thumbnailUrl, shelf } = bookInfo;
+  const {
+    name,
+    authors,
+    description,
+    thumbnailUrl,
+    shelf,
+    dateAdded
+  } = bookInfo;
   const {
     pageCount,
     pagesRead,
@@ -115,6 +122,7 @@ const BookScreen = ({ navigation }) => {
         shelf={shelf}
         pageCount={pageCount}
         pagesRead={pagesRead}
+        dateAdded={dateAdded}
         onPress={
           shelf
             ? () =>
