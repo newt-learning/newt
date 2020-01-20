@@ -38,12 +38,6 @@ export const calculatePercentComplete = (amountCompleted, total) => {
   if (typeof amountCompleted !== "number" || typeof total !== "number") {
     return 0;
   }
-  if (amountCompleted < 0) {
-    return 0;
-  }
-  if (amountCompleted > total) {
-    return 100;
-  }
 
   return _.round((amountCompleted / total) * 100);
 };

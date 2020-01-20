@@ -9,13 +9,18 @@ import {
 } from "../design/colors";
 import { REGULAR, FS12 } from "../design/typography";
 
-const ProgressBar = ({ barContainerStyle, percentComplete }) => {
+const ProgressBar = ({
+  barContainerStyle,
+  barStyle: passedBarStyle,
+  percentComplete
+}) => {
   const containerStyle = StyleSheet.compose(
     styles.barContainer,
     barContainerStyle
   );
   const barStyle = StyleSheet.flatten([
     styles.bar,
+    passedBarStyle,
     {
       width: `${percentComplete}%`
     }

@@ -5,6 +5,7 @@ import { NavHeaderTitle } from "../components/Headers";
 import { Feather } from "@expo/vector-icons";
 // Screens
 import HomeScreen from "../screens/HomeScreen";
+import BookScreen from "../screens/BookScreen";
 // Design
 import { OFF_WHITE } from "../design/colors";
 
@@ -21,7 +22,8 @@ const HomeStack = createStackNavigator({
         backgroundColor: OFF_WHITE
       }
     }
-  }
+  },
+  BookScreen: BookScreen
 });
 
 HomeStack.navigationOptions = {

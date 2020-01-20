@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { ScrollView, View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 import _ from "lodash";
 import { Feather } from "@expo/vector-icons";
 // Context
@@ -8,10 +8,13 @@ import { Context as ContentContext } from "../context/ContentContext";
 import { H1 } from "../components/Headers";
 import Loader from "../components/Loader";
 import ErrorMessage from "../components/ErrorMessage";
+import HomeContentCard from "../components/HomeContentCard";
 import ClearButton from "../components/ClearButton";
 // Styling
 import { SEMIBOLD, REGULAR, FS20, FS16, FS14 } from "../design/typography";
 import { GRAY_2, GRAY_5, NEWT_BLUE } from "../design/colors";
+// Helpers
+import { calculatePercentComplete } from "../helpers/screenHelpers";
 
 const HomeScreen = ({ navigation }) => {
   const {
@@ -61,20 +64,43 @@ const HomeScreen = ({ navigation }) => {
     items,
     item => item.shelf === "Currently Learning"
   );
+  const handleContentCardPress = data => {
+    switch (data.type) {
+      case "book":
+        return navigation.navigate("BookScreen", { bookInfo: data });
+      default:
+        return;
+    }
+  };
 
   return (
-    <ScrollView style={styles.container}>
-      <H1 style={styles.title}>In Progress</H1>
-      {inProgressContent.map(content => (
-        <Text key={content._id}>{content.name}</Text>
-      ))}
-    </ScrollView>
+    <FlatList
+      data={inProgressContent}
+      keyExtractor={item => item._id}
+      renderItem={({ item }) => (
+        <HomeContentCard
+          title={item.name}
+          thumbnailUrl={
+            item.bookInfo.imageLinks.thumbnail
+              ? item.bookInfo.imageLinks.thumbnail
+              : null
+          }
+          authors={item.authors}
+          percentComplete={calculatePercentComplete(
+            item.bookInfo.pagesRead,
+            item.bookInfo.pageCount
+          )}
+          onPress={() => handleContentCardPress(item)}
+        />
+      )}
+      ListHeaderComponent={<H1 style={styles.title}>In Progress</H1>}
+      style={styles.container}
+    />
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: GRAY_5
   },
   title: {
