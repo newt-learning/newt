@@ -73,7 +73,10 @@ const UpdateProgressScreen = ({ navigation }) => {
   // "Finished Learning" when finished book button is pressed
   const submitFinishBook = () => {
     updateBookProgress(contentId, pageCount, false);
-    updateContent(contentId, { shelf: "Finished Learning" });
+    updateContent(contentId, {
+      shelf: "Finished Learning",
+      dateCompleted: Date.now()
+    });
   };
 
   // Pass submit updated pages function as params so that it can be wired up in

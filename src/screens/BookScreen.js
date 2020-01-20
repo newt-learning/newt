@@ -89,7 +89,8 @@ const BookScreen = ({ navigation }) => {
     description,
     thumbnailUrl,
     shelf,
-    dateAdded
+    dateAdded,
+    dateCompleted
   } = bookInfo;
   const {
     pageCount,
@@ -104,7 +105,16 @@ const BookScreen = ({ navigation }) => {
     addContent(data);
   };
   const updateShelf = selectedShelf => {
-    updateContent(bookInfo._id, { shelf: selectedShelf });
+    // If the selected shelf is "Finished Learning", add/update the date completed
+    // field as well. Otherwise only change the shelf
+    if (selectedShelf === "Finished Learning") {
+      updateContent(bookInfo._id, {
+        shelf: selectedShelf,
+        dateCompleted: Date.now()
+      });
+    } else {
+      updateContent(bookInfo._id, { shelf: selectedShelf });
+    }
   };
 
   return (
@@ -123,6 +133,7 @@ const BookScreen = ({ navigation }) => {
         pageCount={pageCount}
         pagesRead={pagesRead}
         dateAdded={dateAdded}
+        dateCompleted={dateCompleted}
         onPress={
           shelf
             ? () =>

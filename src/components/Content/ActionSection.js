@@ -21,7 +21,8 @@ const UserInteractionSection = ({
   contentId,
   pagesRead,
   pageCount,
-  dateAdded
+  dateAdded,
+  dateCompleted
 }) => {
   switch (shelf) {
     // If "Currently Learning", progress bar and button to update book progress
@@ -52,7 +53,11 @@ const UserInteractionSection = ({
         </Text>
       );
     case "Finished Learning":
-      return null;
+      return (
+        <Text style={styles.dateInfoText}>
+          Completed on {moment(dateCompleted).format("DD MMM, YYYY")}
+        </Text>
+      );
     default:
       return null;
   }
@@ -66,6 +71,7 @@ const ActionSection = ({
   pageCount,
   pagesRead,
   dateAdded,
+  dateCompleted,
   onPress,
   navigation
 }) => {
@@ -81,6 +87,7 @@ const ActionSection = ({
             pagesRead={pagesRead}
             pageCount={pageCount}
             dateAdded={dateAdded}
+            dateCompleted={dateCompleted}
           />
         </View>
       ) : (
