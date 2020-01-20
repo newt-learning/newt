@@ -4,14 +4,20 @@ import { Button } from "react-native-elements";
 import { REGULAR, FS14 } from "../design/typography";
 import { BLUE } from "../design/colors";
 
-const ClearButton = ({ title, onPress }) => {
+const ClearButton = ({ title, onPress, containerStyle, titleStyle }) => {
+  const buttonTitleStyle = StyleSheet.compose(
+    styles.buttonTitle,
+    titleStyle
+  );
+
   return (
     <Button
       title={title}
       type="clear"
       onPress={onPress}
+      containerStyle={containerStyle}
       buttonStyle={styles.button}
-      titleStyle={styles.buttonTitle}
+      titleStyle={buttonTitleStyle}
     />
   );
 };

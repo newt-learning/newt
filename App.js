@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from "react-navigation-tabs";
 import { AppLoading } from "expo";
 import { setNavigator } from "./src/refs/navigationRef";
 // Stacks
+import HomeStack from "./src/stacks/HomeStack";
 import MyLibraryStack from "./src/stacks/MyLibraryStack";
 import AddContentStack from "./src/stacks/AddContentStack";
 // Screens
@@ -24,7 +25,7 @@ const switchNavigator = createSwitchNavigator({
   SignIn: SignInScreen,
   mainFlow: createBottomTabNavigator(
     {
-      Home: HomeScreen,
+      Home: HomeStack,
       "My Library": MyLibraryStack,
       "Add Content": AddContentStack,
       Profile: ProfileScreen

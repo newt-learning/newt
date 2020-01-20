@@ -1,8 +1,8 @@
 import React from "react";
-import { Text, Button, Platform } from "react-native";
+import { Platform } from "react-native";
 import { createStackNavigator } from "react-navigation-stack";
 import { HeaderTitle } from "../components/Header";
-import { Feather, MaterialIcons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 // Screens
 import MyLibraryScreen from "../screens/MyLibraryScreen";
 import IndividualShelfScreen from "../screens/IndividualShelfScreen";
