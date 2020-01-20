@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { ScrollView, View, Text, StyleSheet } from "react-native";
 import _ from "lodash";
 import { Feather } from "@expo/vector-icons";
@@ -7,6 +7,7 @@ import { Context as ContentContext } from "../context/ContentContext";
 // Components
 import { H1 } from "../components/Headers";
 import Loader from "../components/Loader";
+import ErrorMessage from "../components/ErrorMessage";
 import ClearButton from "../components/ClearButton";
 // Styling
 import { SEMIBOLD, REGULAR, FS20, FS16, FS14 } from "../design/typography";
@@ -14,8 +15,14 @@ import { GRAY_2, GRAY_5, NEWT_BLUE } from "../design/colors";
 
 const HomeScreen = ({ navigation }) => {
   const {
-    state: { isFetching, items }
+    state: { isFetching, items, errorMessage },
+    fetchContent
   } = useContext(ContentContext);
+
+  // Fetch content data
+  useEffect(() => {
+    fetchContent();
+  }, []);
 
   const NoContentMessage = () => (
     <View style={styles.noContentContainer}>
@@ -38,15 +45,29 @@ const HomeScreen = ({ navigation }) => {
     return <Loader isLoading={isFetching} />;
   }
 
+  // If there's an error message display error message screen
+  if (errorMessage) {
+    return <ErrorMessage message={errorMessage} />;
+  }
+
   // If there's no data and it's not currently being fetched, show the "No Content"
   // message
   if (!isFetching && _.isEmpty(items)) {
     return <NoContentMessage />;
   }
 
+  // Filter out only items in "Currently Learning" shelf
+  const inProgressContent = _.filter(
+    items,
+    item => item.shelf === "Currently Learning"
+  );
+
   return (
     <ScrollView style={styles.container}>
       <H1 style={styles.title}>In Progress</H1>
+      {inProgressContent.map(content => (
+        <Text key={content._id}>{content.name}</Text>
+      ))}
     </ScrollView>
   );
 };
