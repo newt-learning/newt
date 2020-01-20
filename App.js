@@ -7,11 +7,10 @@ import { setNavigator } from "./src/refs/navigationRef";
 import HomeStack from "./src/stacks/HomeStack";
 import MyLibraryStack from "./src/stacks/MyLibraryStack";
 import AddContentStack from "./src/stacks/AddContentStack";
+import ProfileStack from "./src/stacks/ProfileStack";
 // Screens
 import ResolveAuth from "./src/screens/ResolveAuth";
 import SignInScreen from "./src/screens/SignInScreen";
-import HomeScreen from "./src/screens/HomeScreen";
-import ProfileScreen from "./src/screens/ProfileScreen";
 // Context
 import { Provider as AuthProvider } from "./src/context/AuthContext";
 import { Provider as ContentProvider } from "./src/context/ContentContext";
@@ -28,7 +27,7 @@ const switchNavigator = createSwitchNavigator({
       Home: HomeStack,
       "My Library": MyLibraryStack,
       "Add Content": AddContentStack,
-      Profile: ProfileScreen
+      Profile: ProfileStack
     },
     {
       tabBarOptions: {
