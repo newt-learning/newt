@@ -1,7 +1,7 @@
 import React from "react";
 import { Platform } from "react-native";
 import { createStackNavigator } from "react-navigation-stack";
-import { HeaderTitle } from "../components/Header";
+import { NavHeaderTitle } from "../components/Headers";
 import { Feather } from "@expo/vector-icons";
 // Screens
 import ProfileScreen from "../screens/ProfileScreen";
@@ -13,7 +13,7 @@ const ProfileStack = createStackNavigator({
     screen: ProfileScreen,
     navigationOptions: {
       headerTitle:
-        Platform.OS === "ios" ? <HeaderTitle title="Profile" /> : "Profile",
+        Platform.OS === "ios" ? <NavHeaderTitle title="Profile" /> : "Profile",
       headerStyle: {
         backgroundColor: OFF_WHITE
       }

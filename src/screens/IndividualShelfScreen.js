@@ -4,7 +4,7 @@ import _ from "lodash";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
-import { HeaderTitle } from "../components/Header";
+import { NavHeaderTitle } from "../components/Headers";
 import ContentList from "../components/ContentList";
 import SearchBar from "../components/SearchBar";
 import { OFF_WHITE } from "../design/colors";
@@ -31,7 +31,8 @@ IndividualShelfScreen.navigationOptions = ({ navigation }) => {
   const { title } = navigation.state.params;
 
   return {
-    headerTitle: Platform.OS === "ios" ? <HeaderTitle title={title} /> : title,
+    headerTitle:
+      Platform.OS === "ios" ? <NavHeaderTitle title={title} /> : title,
     headerStyle: {
       backgroundColor: OFF_WHITE
     }

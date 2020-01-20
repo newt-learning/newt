@@ -1,7 +1,7 @@
 import React from "react";
 import { Platform } from "react-native";
 import { createStackNavigator } from "react-navigation-stack";
-import { HeaderTitle } from "../components/Header";
+import { NavHeaderTitle } from "../components/Headers";
 import { Feather } from "@expo/vector-icons";
 // Screens
 import AddContentScreen from "../screens/AddContentScreen";
@@ -20,7 +20,7 @@ const MainStack = createStackNavigator({
     navigationOptions: {
       headerTitle:
         Platform.OS === "ios" ? (
-          <HeaderTitle title="Add Content" />
+          <NavHeaderTitle title="Add Content" />
         ) : (
           "Add Content"
         ),
@@ -34,7 +34,11 @@ const MainStack = createStackNavigator({
     screen: AddBookScreen,
     navigationOptions: {
       headerTitle:
-        Platform.OS === "ios" ? <HeaderTitle title="Add Book" /> : "Add Book",
+        Platform.OS === "ios" ? (
+          <NavHeaderTitle title="Add Book" />
+        ) : (
+          "Add Book"
+        ),
       headerStyle: {
         backgroundColor: OFF_WHITE
       }

@@ -14,6 +14,4 @@ export const FS16 = 16;
 export const FS18 = 18;
 export const FS20 = 20;
 export const FS24 = 24;
-export const FS36 = 36;
-export const FS48 = 48;
-export const FS72 = 72;
+export const FS32 = 32;

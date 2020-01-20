@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, StatusBar, StyleSheet } from "react-native";
 // Components
-import Header from "../components/Header";
 import ContentButton from "../components/ContentButton";
 // Styling
 import { GRAY_5, OFF_WHITE, WHITE, RUBY } from "../design/colors";

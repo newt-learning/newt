@@ -8,7 +8,15 @@ import { Context as ContentContext } from "../context/ContentContext";
 import Loader from "../components/Loader";
 import ClearButton from "../components/ClearButton";
 // Styling
-import { SEMIBOLD, REGULAR, FS20, FS16, FS14 } from "../design/typography";
+import {
+  BOLD,
+  SEMIBOLD,
+  REGULAR,
+  FS32,
+  FS20,
+  FS16,
+  FS14
+} from "../design/typography";
 import { GRAY_2, GRAY_5, NEWT_BLUE } from "../design/colors";
 
 const HomeScreen = ({ navigation }) => {
@@ -45,7 +53,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text>Home</Text>
+      <Text style={styles.title}>In Progress</Text>
     </ScrollView>
   );
 };
@@ -54,6 +62,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: GRAY_5
+  },
+  title: {
+    fontFamily: BOLD,
+    fontSize: FS32,
+    marginTop: 20,
+    marginHorizontal: 15
   },
   noContentContainer: {
     flex: 1,
@@ -64,7 +78,7 @@ const styles = StyleSheet.create({
   },
   noContentHeader: {
     fontFamily: SEMIBOLD,
-    fontSize: 20
+    fontSize: FS20
   },
   noContentText: {
     fontFamily: REGULAR,

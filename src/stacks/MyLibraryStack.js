@@ -1,7 +1,7 @@
 import React from "react";
 import { Platform } from "react-native";
 import { createStackNavigator } from "react-navigation-stack";
-import { HeaderTitle } from "../components/Header";
+import { NavHeaderTitle } from "../components/Headers";
 import { Feather } from "@expo/vector-icons";
 // Screens
 import MyLibraryScreen from "../screens/MyLibraryScreen";
@@ -18,7 +18,7 @@ const MainStack = createStackNavigator({
     navigationOptions: {
       headerTitle:
         Platform.OS === "ios" ? (
-          <HeaderTitle title="My Library" />
+          <NavHeaderTitle title="My Library" />
         ) : (
           "My Library"
         ),

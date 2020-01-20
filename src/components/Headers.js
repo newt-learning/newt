@@ -4,7 +4,8 @@ import { StyleSheet, Text } from "react-native";
 import { FS18, FS24, BOLD } from "../design/typography";
 import { OFF_BLACK } from "../design/colors";
 
-export const HeaderTitle = ({ title, displayLogo }) => (
+// Title for navigation header
+export const NavHeaderTitle = ({ title, displayLogo }) => (
   <Text style={displayLogo ? styles.logo : styles.title}>{title}</Text>
 );
 
