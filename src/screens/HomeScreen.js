@@ -5,18 +5,11 @@ import { Feather } from "@expo/vector-icons";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
+import { H1 } from "../components/Headers";
 import Loader from "../components/Loader";
 import ClearButton from "../components/ClearButton";
 // Styling
-import {
-  BOLD,
-  SEMIBOLD,
-  REGULAR,
-  FS32,
-  FS20,
-  FS16,
-  FS14
-} from "../design/typography";
+import { SEMIBOLD, REGULAR, FS20, FS16, FS14 } from "../design/typography";
 import { GRAY_2, GRAY_5, NEWT_BLUE } from "../design/colors";
 
 const HomeScreen = ({ navigation }) => {
@@ -53,7 +46,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>In Progress</Text>
+      <H1 style={styles.title}>In Progress</H1>
     </ScrollView>
   );
 };
@@ -64,8 +57,6 @@ const styles = StyleSheet.create({
     backgroundColor: GRAY_5
   },
   title: {
-    fontFamily: BOLD,
-    fontSize: FS32,
     marginTop: 20,
     marginHorizontal: 15
   },

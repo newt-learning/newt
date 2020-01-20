@@ -11,6 +11,8 @@ import {
 import { withNavigation } from "react-navigation";
 import _ from "lodash";
 import { Feather } from "@expo/vector-icons";
+// Components
+import { H2 } from "../components/Headers";
 // Styling
 import { REGULAR, SEMIBOLD, BOLD, FS14, FS24 } from "../design/typography";
 import { OFF_BLACK, GRAY_2, GRAY_4, OFF_WHITE } from "../design/colors";
@@ -61,7 +63,7 @@ const Shelf = ({ name, data, numItems, onPressTitle, navigation }) => {
     <View style={styles.container}>
       <TouchableOpacity style={styles.titleContainer} onPress={onPressTitle}>
         <>
-          <Text style={styles.title}>{name}</Text>
+          <H2>{name}</H2>
           <Feather name="chevron-right" color={OFF_BLACK} size={24} />
         </>
       </TouchableOpacity>
@@ -104,11 +106,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center"
-  },
-  title: {
-    fontFamily: BOLD,
-    fontSize: FS24,
-    color: OFF_BLACK
   },
   card: {
     height: 150,
