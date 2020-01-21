@@ -46,6 +46,22 @@ const HomeScreen = ({ navigation }) => {
     </View>
   );
 
+  // Message if there's data/content but none in the "Currently Learning" shelf
+  const NoCurrentlyLearningMessage = () => (
+    <>
+      <Text style={styles.noCurrentContentText}>
+        Move a book, article, or video to the Currently Learning shelf to track
+        your progress.
+      </Text>
+      <ClearButton
+        title="Go to My Library"
+        titleStyle={{ fontSize: FS14, color: NEWT_BLUE }}
+        containerStyle={{ marginTop: 15 }}
+        onPress={() => navigation.navigate("My Library")}
+      />
+    </>
+  );
+
   // If data is being fetched, show loading spinner
   if (isFetching) {
     return <Loader isLoading={isFetching} />;
@@ -89,6 +105,7 @@ const HomeScreen = ({ navigation }) => {
         />
       )}
       ListHeaderComponent={<H1 style={styles.title}>In Progress</H1>}
+      ListEmptyComponent={<NoCurrentlyLearningMessage />}
       style={styles.container}
     />
   );
@@ -119,6 +136,13 @@ const styles = StyleSheet.create({
     color: GRAY_2,
     marginTop: 5,
     textAlign: "center"
+  },
+  noCurrentContentText: {
+    fontFamily: REGULAR,
+    fontSize: FS16,
+    color: GRAY_2,
+    marginTop: 10,
+    marginHorizontal: 15
   }
 });
 
