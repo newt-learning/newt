@@ -8,4 +8,4 @@
 
 #### Home Screen
 
-![Newt Home Screen](/assets/screenshots/newt_home.png)
+<img src="/assets/screenshots/newt_home.png" alt="Newt Home Screen" height="300" width="134" />
