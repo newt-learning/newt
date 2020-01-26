@@ -6,6 +6,9 @@
 
 ### Screenshots
 
-#### Home Screen
-
-<img src="https://github.com/newt-learning/newt-app/blob/master/assets/screenshots/newt_home.PNG" alt="Newt Home Screen" height="500" />
+<div style="display: inline; margin: 0 auto;">
+<img src="https://github.com/newt-learning/newt-app/blob/master/assets/screenshots/home_screen.PNG" alt="Newt Home Screen" height="500" />
+<img src="https://github.com/newt-learning/newt-app/blob/master/assets/screenshots/my_library_screen.png" alt="Newt My Library Screen" height="500" />
+<img src="https://github.com/newt-learning/newt-app/blob/master/assets/screenshots/add_book_screen.png" alt="Newt Add Book Screen" height="500" />
+<img src="https://github.com/newt-learning/newt-app/blob/master/assets/screenshots/book_screen.png" alt="Newt Book Screen" height="500" />
+</div>
