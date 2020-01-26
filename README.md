@@ -8,4 +8,4 @@
 
 #### Home Screen
 
-<img src="/assets/screenshots/newt_home.png" alt="Newt Home Screen" height="300" width="134" />
+<img src="https://github.com/newt-learning/newt-app/blob/master/assets/screenshots/newt_home.PNG" alt="Newt Home Screen" height="500" />
