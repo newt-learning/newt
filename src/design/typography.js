@@ -15,3 +15,4 @@ export const FS18 = 18;
 export const FS20 = 20;
 export const FS24 = 24;
 export const FS32 = 32;
+export const FS72 = 72;
