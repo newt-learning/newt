@@ -4,7 +4,8 @@ import newtApi from "../api/newtApi";
 import { navigateBack } from "../refs/navigationRef";
 import {
   updateObjectInArrayById,
-  addIfDoesNotExist
+  addIfDoesNotExist,
+  deleteObjectFromArray
 } from "../helpers/contextHelpers";
 
 // Action constants
@@ -14,6 +15,7 @@ const SET_CONTENT = "SET_CONTENT";
 const ADD_INDIVIDUAL_CONTENT = "ADD_INDIVIDUAL_CONTENT";
 const ADD_CONTENT_IF_DOES_NOT_EXIST = "ADD_CONTENT_IF_DOES_NOT_EXIST";
 const UPDATE_INDIVIDUAL_CONTENT = "UPDATE_INDIVIDUAL_CONTENT";
+const DELETE_CONTENT = "DELETE_CONTENT";
 const SET_ERROR_MESSAGE = "SET_ERROR_MESSAGE";
 
 const contentReducer = (state, action) => {
@@ -42,6 +44,11 @@ const contentReducer = (state, action) => {
         ...state,
         items: updateObjectInArrayById(state.items, action.payload)
       };
+    case DELETE_CONTENT:
+      return {
+        ...state,
+        items: deleteObjectFromArray(state.items, action.payload)
+      };
     case SET_ERROR_MESSAGE:
       return { ...state, isFetching: false, errorMessage: action.payload };
     default:
@@ -67,6 +74,9 @@ const addContentIfDoesNotExist = payload => {
 };
 const updateIndividualContent = payload => {
   return { type: UPDATE_INDIVIDUAL_CONTENT, payload };
+};
+const deleteIndividualContent = payload => {
+  return { type: DELETE_CONTENT, payload };
 };
 const setErrorMessage = payload => {
   return { type: SET_ERROR_MESSAGE, payload };
@@ -163,6 +173,20 @@ const updateBookProgress = dispatch => async (
   }
 };
 
+const deleteContent = dispatch => async contentId => {
+  try {
+    dispatch(requestContent());
+
+    await newtApi.delete(`/content/${contentId}`);
+
+    dispatch(deleteIndividualContent(contentId));
+    dispatch(resolveContent());
+  } catch (error) {
+    dispatch(resolveContent());
+    console.error(error);
+  }
+};
+
 export const { Provider, Context } = createDataContext(
   contentReducer,
   {
@@ -170,7 +194,8 @@ export const { Provider, Context } = createDataContext(
     checkIfBookExistsInLibrary,
     addContent,
     updateContent,
-    updateBookProgress
+    updateBookProgress,
+    deleteContent
   },
   { isFetching: false, items: [], errorMessage: "" }
 );

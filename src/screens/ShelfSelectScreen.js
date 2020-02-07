@@ -4,11 +4,12 @@ import _ from "lodash";
 // Components
 import ShelfSelect from "../components/Content/ShelfSelect";
 import ActionButton from "../components/ActionButton";
+import ClearButton from "../components/ClearButton";
 // Hooks
 import useSingleCheckbox from "../hooks/useSingleCheckbox";
 // Styling
 import { BOLD, FS20 } from "../design/typography";
-import { OFF_BLACK } from "../design/colors";
+import { OFF_BLACK, RED } from "../design/colors";
 // Helpers
 import { initializeShelves } from "../helpers/screenHelpers";
 
@@ -17,7 +18,10 @@ const ShelfSelectScreen = ({ navigation }) => {
 
   const currentShelf = navigation.getParam("currentShelf");
   const buttonText = navigation.getParam("buttonText");
+  // Whether the Delete button should be shown or not
+  const showDeleteButton = navigation.getParam("showDeleteButton");
   const onConfirmShelf = navigation.getParam("onConfirmShelf");
+  const onDelete = navigation.getParam("onDelete");
 
   const [shelves, toggleShelves] = useSingleCheckbox(
     initializeShelves(currentShelf)
@@ -42,6 +46,14 @@ const ShelfSelectScreen = ({ navigation }) => {
             key={shelf.name}
           />
         ))}
+        {showDeleteButton ? (
+          <ClearButton
+            title="Delete book from Library"
+            onPress={onDelete}
+            containerStyle={styles.deleteButton}
+            titleStyle={styles.delete}
+          />
+        ) : null}
       </View>
       <View style={styles.button}>
         <ActionButton
@@ -77,6 +89,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginHorizontal: 15,
     marginBottom: 20
+  },
+  deleteButton: {
+    marginTop: 30
+  },
+  delete: {
+    color: RED
   }
 });
 

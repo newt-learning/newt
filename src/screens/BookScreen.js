@@ -24,6 +24,7 @@ const BookScreen = ({ navigation }) => {
     state,
     addContent,
     updateContent,
+    deleteContent,
     checkIfBookExistsInLibrary
   } = useContext(ContentContext);
 
@@ -116,6 +117,10 @@ const BookScreen = ({ navigation }) => {
       updateContent(bookInfo._id, { shelf: selectedShelf });
     }
   };
+  const deleteItem = () => {
+    deleteContent(bookInfo._id);
+    navigation.popToTop();
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -140,7 +145,9 @@ const BookScreen = ({ navigation }) => {
                 navigation.navigate("ShelfSelect", {
                   currentShelf: shelf,
                   buttonText: "Confirm",
-                  onConfirmShelf: selectedShelf => updateShelf(selectedShelf)
+                  showDeleteButton: true,
+                  onConfirmShelf: selectedShelf => updateShelf(selectedShelf),
+                  onDelete: deleteItem
                 })
             : () =>
                 navigation.navigate("ShelfSelect", {

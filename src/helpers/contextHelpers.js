@@ -25,3 +25,7 @@ export const addIfDoesNotExist = (array, data) => {
 
   return array;
 };
+
+export const deleteObjectFromArray = (array, itemId) => {
+  return _.filter(array, ({ _id }) => itemId !== _id);
+};
