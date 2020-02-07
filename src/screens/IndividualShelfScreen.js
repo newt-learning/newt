@@ -6,7 +6,6 @@ import { Context as ContentContext } from "../context/ContentContext";
 // Components
 import { NavHeaderTitle } from "../components/Headers";
 import ContentList from "../components/ContentList";
-import SearchBar from "../components/SearchBar";
 import { OFF_WHITE } from "../design/colors";
 
 const IndividualShelfScreen = ({ navigation }) => {

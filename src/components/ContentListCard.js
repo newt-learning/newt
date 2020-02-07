@@ -9,7 +9,7 @@ import {
 import _ from "lodash";
 // Styling
 import { SEMIBOLD, REGULAR, FS16, FS14 } from "../design/typography";
-import { OFF_BLACK, GRAY_2, GRAY_4, GRAY_5, OFF_WHITE } from "../design/colors";
+import { OFF_BLACK, GRAY_2, GRAY_4, OFF_WHITE } from "../design/colors";
 
 const ContentListCard = ({ title, authors, thumbnailUrl, onPress }) => {
   return (

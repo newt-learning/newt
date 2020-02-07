@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
-import { Feather } from "@expo/vector-icons";
 // Context
 import { Context as AuthContext } from "../context/AuthContext";
 // Styling

@@ -4,8 +4,8 @@ import { View, Text, StyleSheet } from "react-native";
 import SubHeader from "./SubHeader";
 import ShowMoreShowLess from "./ShowMoreShowLess";
 // Styling
-import { SEMIBOLD, REGULAR, FS18, FS14 } from "../../design/typography";
-import { GRAY_1, GRAY_4 } from "../../design/colors";
+import { REGULAR, FS14 } from "../../design/typography";
+import { GRAY_4 } from "../../design/colors";
 // Helpers
 import { shortenText } from "../../helpers/textHelpers";
 

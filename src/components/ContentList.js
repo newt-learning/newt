@@ -4,7 +4,6 @@ import { View, StyleSheet, FlatList, Text } from "react-native";
 import { withNavigation } from "react-navigation";
 import _ from "lodash";
 // Components
-import SearchBar from "./SearchBar";
 import ContentListCard from "./ContentListCard";
 // Styling
 import { REGULAR, FS16 } from "../design/typography";

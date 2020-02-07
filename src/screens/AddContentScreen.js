@@ -1,10 +1,9 @@
 import React from "react";
-import { View, Text, StatusBar, StyleSheet } from "react-native";
+import { View, StatusBar, StyleSheet } from "react-native";
 // Components
 import ContentButton from "../components/ContentButton";
 // Styling
 import { GRAY_5, OFF_WHITE, WHITE, RUBY } from "../design/colors";
-import { REGULAR } from "../design/typography";
 
 const AddContentScreen = ({ navigation }) => {
   return (

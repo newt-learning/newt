@@ -1,6 +1,5 @@
 import React from "react";
 import { ListItem } from "react-native-elements";
-import { Feather } from "@expo/vector-icons";
 
 const Shelf = ({ name, checked, onPressCheckbox }) => {
   return (

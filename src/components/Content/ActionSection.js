@@ -8,8 +8,8 @@ import ChangeShelfButton from "./ChangeShelfButton";
 import ClearButton from "../ClearButton";
 import ProgressBar from "../ProgressBar";
 // Styling
-import { GRAY_4, GRAY_2, INDIGO } from "../../design/colors";
-import { REGULAR, SEMIBOLD, FS12 } from "../../design/typography";
+import { GRAY_4, GRAY_2 } from "../../design/colors";
+import { REGULAR, FS12 } from "../../design/typography";
 // Helpers
 import { calculatePercentComplete } from "../../helpers/screenHelpers";
 

@@ -1,12 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
-import {
-  OFF_BLACK,
-  GRAY_1,
-  GRAY_2,
-  GRAY_5,
-  LIME_GREEN
-} from "../design/colors";
+import { OFF_BLACK, GRAY_5, LIME_GREEN } from "../design/colors";
 import { REGULAR, FS12 } from "../design/typography";
 
 const ProgressBar = ({

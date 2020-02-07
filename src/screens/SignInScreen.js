@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-import { Button, SocialIcon } from "react-native-elements";
+import { Button } from "react-native-elements";
 // Context
 import { Context as AuthContext } from "../context/AuthContext";
 // Styling
-import { WHITE, GRAY_2, GRAY_3, NEWT_BLUE } from "../design/colors";
+import { WHITE, GRAY_2, NEWT_BLUE } from "../design/colors";
 import { SEMIBOLD, FS16, FS72 } from "../design/typography";
 
 const SignInScreen = () => {

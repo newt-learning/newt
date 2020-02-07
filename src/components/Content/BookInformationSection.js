@@ -1,12 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import moment from "moment";
 import _ from "lodash";
 // Components
 import SubHeader from "./SubHeader";
 // Styling
 import { SEMIBOLD, REGULAR, FS14 } from "../../design/typography";
-import { OFF_BLACK, GRAY_1 } from "../../design/colors";
+import { OFF_BLACK } from "../../design/colors";
 
 const InfoFieldName = ({ children }) => (
   <Text style={styles.fieldName}>{children}</Text>

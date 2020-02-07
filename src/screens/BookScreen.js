@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, ScrollView, Image, Platform } from "react-native";
-import { Button } from "react-native-elements";
-import { Feather } from "@expo/vector-icons";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
@@ -10,11 +8,6 @@ import ActionSection from "../components/Content/ActionSection";
 import Description from "../components/Content/Description";
 import BookInformationSection from "../components/Content/BookInformationSection";
 import Loader from "../components/Loader";
-// Styling
-import { FS14, REGULAR } from "../design/typography";
-// Helpers
-import { checkThumbnailExistence } from "../helpers/imageHelpers";
-import { shortenText } from "../helpers/textHelpers";
 
 const BookScreen = ({ navigation }) => {
   // State to store whether the user wants to read more of the description

@@ -13,7 +13,7 @@ import { Feather } from "@expo/vector-icons";
 // Components
 import { H2 } from "../components/Headers";
 // Styling
-import { REGULAR, SEMIBOLD, BOLD, FS14, FS24 } from "../design/typography";
+import { REGULAR, SEMIBOLD, FS14 } from "../design/typography";
 import { OFF_BLACK, GRAY_2, GRAY_4, OFF_WHITE } from "../design/colors";
 // Helpers
 import { handleContentNavigation } from "../helpers/screenHelpers";

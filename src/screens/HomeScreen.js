@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import _ from "lodash";
-import { Feather } from "@expo/vector-icons";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
