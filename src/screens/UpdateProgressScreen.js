@@ -15,6 +15,7 @@ import ActionButton from "../components/ActionButton";
 import { MaterialIcons } from "@expo/vector-icons";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
+import { Context as StatsContext } from "../context/StatsContext";
 // Design
 import { SEMIBOLD, REGULAR, FS16, FS12 } from "../design/typography";
 import { OFF_BLACK, GRAY_5, GRAY_2, IOS_BLUE, RED } from "../design/colors";
@@ -25,11 +26,14 @@ const UpdateProgressScreen = ({ navigation }) => {
   const pageCount = navigation.getParam("pageCount");
   const [updatedPagesRead, setUpdatedPagesRead] = useState(`${pagesRead}`);
   const [errorMessage, setErrorMessage] = useState(null);
+  // Get state + functions from Content Context
   const {
     state: { isFetching },
     updateBookProgress,
     updateContent
   } = useContext(ContentContext);
+  // Get function from Stats Context
+  const { createLearningUpdate } = useContext(StatsContext);
 
   // Validation function that's run before submitting request to check whether
   // the number inputted makes sense.
@@ -65,7 +69,16 @@ const UpdateProgressScreen = ({ navigation }) => {
   const submitUpdatedPagesRead = () => {
     const isValid = validatePagesRead();
     if (isValid) {
+      // Set learning update data object
+      const learningUpdateData = {
+        contentId,
+        previousPagesRead: pagesRead,
+        updatedPagesRead,
+        numPagesRead: updatedPagesRead - pagesRead,
+        contentType: "book"
+      };
       updateBookProgress(contentId, _.toNumber(updatedPagesRead));
+      createLearningUpdate(learningUpdateData);
     }
   };
 

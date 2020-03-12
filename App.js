@@ -14,6 +14,7 @@ import SignInScreen from "./src/screens/SignInScreen";
 // Context
 import { Provider as AuthProvider } from "./src/context/AuthContext";
 import { Provider as ContentProvider } from "./src/context/ContentContext";
+import { Provider as StatsProvider } from "./src/context/StatsContext";
 // Hooks
 import useFonts from "./src/hooks/useFonts";
 // Styling
@@ -54,7 +55,9 @@ export default () => {
   return (
     <AuthProvider>
       <ContentProvider>
-        <App ref={navigator => setNavigator(navigator)} />
+        <StatsProvider>
+          <App ref={navigator => setNavigator(navigator)} />
+        </StatsProvider>
       </ContentProvider>
     </AuthProvider>
   );
