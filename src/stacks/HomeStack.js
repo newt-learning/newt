@@ -6,10 +6,12 @@ import { Feather } from "@expo/vector-icons";
 // Screens
 import HomeScreen from "../screens/HomeScreen";
 import BookScreen from "../screens/BookScreen";
+import ShelfSelectScreen from "../screens/ShelfSelectScreen";
+import UpdateProgressScreen from "../screens/UpdateProgressScreen";
 // Design
 import { OFF_WHITE } from "../design/colors";
 
-const HomeStack = createStackNavigator({
+const MainStack = createStackNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: {
@@ -23,8 +25,28 @@ const HomeStack = createStackNavigator({
       }
     }
   },
-  BookScreen: BookScreen
+  BookScreen: BookScreen,
+  ShelfSelect: ShelfSelectScreen
 });
+
+const HomeStack = createStackNavigator(
+  {
+    Main: {
+      screen: MainStack,
+      navigationOptions: {
+        headerShown: false,
+        headerBackTitle: "Cancel"
+      }
+    },
+    UpdateProgress: {
+      screen: UpdateProgressScreen,
+      navigationOptions: {
+        headerTitle: "Update Progress"
+      }
+    }
+  },
+  { mode: "modal" }
+);
 
 HomeStack.navigationOptions = {
   tabBarIcon: ({ tintColor }) => (
