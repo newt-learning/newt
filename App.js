@@ -7,6 +7,7 @@ import { setNavigator } from "./src/refs/navigationRef";
 import HomeStack from "./src/stacks/HomeStack";
 import MyLibraryStack from "./src/stacks/MyLibraryStack";
 import AddContentStack from "./src/stacks/AddContentStack";
+import StatsStack from "./src/stacks/StatsStack";
 import ProfileStack from "./src/stacks/ProfileStack";
 // Screens
 import ResolveAuth from "./src/screens/ResolveAuth";
@@ -28,6 +29,7 @@ const switchNavigator = createSwitchNavigator({
       Home: HomeStack,
       "My Library": MyLibraryStack,
       "Add Content": AddContentStack,
+      Stats: StatsStack,
       Profile: ProfileStack
     },
     {
