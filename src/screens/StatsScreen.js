@@ -8,7 +8,7 @@ import Loader from "../components/Loader";
 // Design
 import { GRAY_5 } from "../design/colors";
 
-const StatsScreen = () => {
+const StatsScreen = ({ navigation }) => {
   const {
     state: { isFetching, summaryStats },
     fetchSummaryStats
@@ -28,6 +28,7 @@ const StatsScreen = () => {
       <StatsSummaryCard
         contentType="Books"
         summarySentence={summaryStats.books}
+        onPress={() => navigation.navigate("StatsVisuals")}
       />
     </View>
   );

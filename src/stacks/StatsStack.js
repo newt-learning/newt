@@ -5,6 +5,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import { NavHeaderTitle } from "../components/Headers";
 // Screens
 import StatsScreen from "../screens/StatsScreen";
+import StatsVisualsScreen from "../screens/StatsVisualsScreen";
 // Design
 import { OFF_WHITE } from "../design/colors";
 import { Feather } from "@expo/vector-icons";
@@ -23,7 +24,8 @@ const StatsStack = createStackNavigator({
         backgroundColor: OFF_WHITE
       }
     }
-  }
+  },
+  StatsVisuals: StatsVisualsScreen
 });
 
 StatsStack.navigationOptions = {

@@ -5,9 +5,13 @@ import { Feather } from "@expo/vector-icons";
 import { OFF_WHITE, BLUE, GRAY_1, GRAY_4 } from "../design/colors";
 import { SEMIBOLD, FS18, FS16 } from "../design/typography";
 
-const StatsSummaryCard = ({ contentType, summarySentence }) => {
+const StatsSummaryCard = ({ contentType, summarySentence, onPress }) => {
   return (
-    <TouchableHighlight style={styles.card} underlayColor={GRAY_4}>
+    <TouchableHighlight
+      style={styles.card}
+      underlayColor={GRAY_4}
+      onPress={onPress}
+    >
       <>
         <View style={styles.statsTitleContainer}>
           <View style={{ flexDirection: "row" }}>
