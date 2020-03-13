@@ -3,21 +3,32 @@ import { View, StyleSheet } from "react-native";
 // Context
 import { Context as StatsContext } from "../context/StatsContext";
 // Components
-import { H2 } from "../components/Headers";
+import StatsSummaryCard from "../components/StatsSummaryCard";
+import Loader from "../components/Loader";
 // Design
 import { GRAY_5 } from "../design/colors";
 
 const StatsScreen = () => {
-  const { fetchSummaryStats } = useContext(StatsContext);
+  const {
+    state: { isFetching, summaryStats },
+    fetchSummaryStats
+  } = useContext(StatsContext);
 
   // Fetch summary stats
   useEffect(() => {
     fetchSummaryStats();
   }, []);
 
+  if (isFetching) {
+    return <Loader isLoading={isFetching} />;
+  }
+
   return (
     <View style={styles.container}>
-      <H2>Stats</H2>
+      <StatsSummaryCard
+        contentType="Books"
+        summarySentence={summaryStats.books}
+      />
     </View>
   );
 };
