@@ -1,18 +1,22 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { H2 } from "../components/Headers";
+// Components
+import ButtonGroup from "../components/ButtonGroup";
 
 const StatsVisualsScreen = () => {
+  const buttons = ["D", "W", "M", "Y"];
+
   return (
     <View style={styles.container}>
-      <H2>Stats Visualizations</H2>
+      <ButtonGroup buttonsArray={buttons} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    marginTop: 10
   }
 });
 
