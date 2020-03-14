@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: "column",
     marginHorizontal: 10,
-    marginTop: 30,
+    marginTop: 10,
     padding: 15,
     backgroundColor: OFF_WHITE,
     borderRadius: 10

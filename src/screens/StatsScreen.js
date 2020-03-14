@@ -3,6 +3,7 @@ import { View, StyleSheet } from "react-native";
 // Context
 import { Context as StatsContext } from "../context/StatsContext";
 // Components
+import { H2 } from "../components/Headers";
 import StatsSummaryCard from "../components/StatsSummaryCard";
 import Loader from "../components/Loader";
 // Design
@@ -25,10 +26,11 @@ const StatsScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <H2 style={styles.title}>By Content</H2>
       <StatsSummaryCard
         contentType="Books"
         summarySentence={summaryStats.books}
-        onPress={() => navigation.navigate("StatsVisuals")}
+        onPress={() => navigation.navigate("StatsVisuals", { title: "Books" })}
       />
     </View>
   );
@@ -38,6 +40,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: GRAY_5
+  },
+  title: {
+    marginTop: 20,
+    marginHorizontal: 15
   }
 });
 

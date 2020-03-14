@@ -1,7 +1,10 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 // Components
 import ButtonGroup from "../components/ButtonGroup";
+import { NavHeaderTitle } from "../components/Headers";
+// Design
+import { OFF_WHITE } from "../design/colors";
 
 const StatsVisualsScreen = () => {
   const buttons = ["D", "W", "M", "Y"];
@@ -11,6 +14,19 @@ const StatsVisualsScreen = () => {
       <ButtonGroup buttonsArray={buttons} />
     </View>
   );
+};
+
+StatsVisualsScreen.navigationOptions = ({ navigation }) => {
+  // Get title from params
+  const { title } = navigation.state.params;
+
+  return {
+    headerTitle:
+      Platform.OS === "ios" ? <NavHeaderTitle title={title} /> : title,
+    headerStyle: {
+      backgroundColor: OFF_WHITE
+    }
+  };
 };
 
 const styles = StyleSheet.create({
