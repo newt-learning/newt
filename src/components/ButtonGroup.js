@@ -6,9 +6,10 @@ import { GRAY_1, GRAY_3 } from "../design/colors";
 
 const ButtonGroup = ({
   buttonsArray,
+  selectedIndex,
+  onPress,
   containerStyle: passedContainerStyle
 }) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
   const containerStyle = StyleSheet.flatten([
     styles.container,
     passedContainerStyle
@@ -16,7 +17,7 @@ const ButtonGroup = ({
 
   return (
     <ElementsButtonGroup
-      onPress={setSelectedIndex}
+      onPress={onPress}
       selectedIndex={selectedIndex}
       buttons={buttonsArray}
       containerStyle={containerStyle}

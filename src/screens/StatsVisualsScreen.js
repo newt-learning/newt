@@ -1,5 +1,5 @@
-import React from "react";
-import { View, StyleSheet, Platform } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Platform } from "react-native";
 // Components
 import ButtonGroup from "../components/ButtonGroup";
 import { NavHeaderTitle } from "../components/Headers";
@@ -8,12 +8,23 @@ import BarChart from "../components/StatsBarChart";
 import { OFF_WHITE } from "../design/colors";
 
 const StatsVisualsScreen = () => {
+  const [selectedButtonIndex, setSelectedButtonIndex] = useState(1);
   const buttons = ["D", "W", "M", "Y"];
 
   return (
     <View style={styles.container}>
-      <ButtonGroup buttonsArray={buttons} containerStyle={styles.buttonGroup} />
-      <BarChart containerStyle={styles.chart} />
+      <ButtonGroup
+        buttonsArray={buttons}
+        selectedIndex={selectedButtonIndex}
+        onPress={setSelectedButtonIndex}
+        containerStyle={styles.buttonGroup}
+      />
+      {/* Temporary. The actual implementation should just pass data props to BarChart */}
+      {selectedButtonIndex === 1 ? (
+        <BarChart containerStyle={styles.chart} />
+      ) : (
+        <Text style={styles.chart}>🚧 Under construction 🚧</Text>
+      )}
     </View>
   );
 };
