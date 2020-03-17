@@ -1,6 +1,6 @@
 import createDataContext from "./createDataContext";
 import newtApi from "../api/newtApi";
-import moment from "moment";
+import { getPeriodStartAndEndDates } from "../helpers/contextHelpers";
 
 // Action constants
 const REQUEST_LEARNING_UPDATES = "REQUEST_LEARNING_UPDATES";
@@ -88,29 +88,9 @@ const fetchSummaryStats = dispatch => async () => {
 // Temporarily just for "week"
 const fetchStatsByPeriod = dispatch => async period => {
   try {
-    // String to show date format required (used server-side)
-    const dateFormatStr = "YYYY-MM-DD";
-    // Inititalize start and end dates
-    let startDate = "";
-    let endDate = "";
+    const { startDate, endDate } = getPeriodStartAndEndDates(period);
 
-    // If the period is "week", then get the start of the week (previous Sunday if it's some)
-    // other day of the week), and end of the week (coming Saturday). Will need to extract this
-    // logic out when adding func. for days, months, and year
-    if (period === "week") {
-      // Current date
-      const today = moment().utc();
-      // Get the day-of-the-week number (Sun = 0 ... Sat = 6). Cloning because original moment object is mutable
-      const todayDayOfWeek = today.clone().day();
-      // Subtract day-of-the-week-number days from today to get start of week
-      startDate = today.clone().subtract(todayDayOfWeek, "days");
-      // Add 6 days to start of the week to get end of the week
-      endDate = startDate.clone().add("6", "days");
-
-      // Format start and end date
-      startDate = startDate.format(dateFormatStr);
-      endDate = endDate.format(dateFormatStr);
-
+    if (startDate && endDate) {
       dispatch(requestLearningUpdates());
       // Make request with period, start date and end date
       const res = await newtApi.get(
