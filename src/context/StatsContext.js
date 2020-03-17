@@ -85,6 +85,7 @@ const fetchSummaryStats = dispatch => async () => {
 };
 
 // Fetch reading stats for a particular period (day, week, month, or year)
+// Temporarily just for "week"
 const fetchStatsByPeriod = dispatch => async period => {
   try {
     // String to show date format required (used server-side)
@@ -105,19 +106,19 @@ const fetchStatsByPeriod = dispatch => async period => {
       startDate = today.clone().subtract(todayDayOfWeek, "days");
       // Add 6 days to start of the week to get end of the week
       endDate = startDate.clone().add("6", "days");
+
+      // Format start and end date
+      startDate = startDate.format(dateFormatStr);
+      endDate = endDate.format(dateFormatStr);
+
+      dispatch(requestLearningUpdates());
+      // Make request with period, start date and end date
+      const res = await newtApi.get(
+        `/stats/by-${period}/${startDate}.${endDate}`
+      );
+      dispatch(setPeriodStats({ period, data: res.data }));
+      dispatch(resolveLearningUpdates());
     }
-
-    // Format start and end date
-    startDate = startDate.format(dateFormatStr);
-    endDate = endDate.format(dateFormatStr);
-
-    dispatch(requestLearningUpdates());
-    // Make request with period, start date and end date
-    const res = await newtApi.get(
-      `/stats/by-${period}/${startDate}.${endDate}`
-    );
-    dispatch(setPeriodStats({ period, data: res.data }));
-    dispatch(resolveLearningUpdates());
   } catch (error) {
     dispatch(resolveLearningUpdates());
     console.error(error);

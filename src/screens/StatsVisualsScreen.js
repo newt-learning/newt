@@ -1,15 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, Platform } from "react-native";
+// Context
+import { Context as StatsContext } from "../context/StatsContext";
 // Components
 import ButtonGroup from "../components/ButtonGroup";
 import { NavHeaderTitle } from "../components/Headers";
 import BarChart from "../components/StatsBarChart";
+import Loader from "../components/Loader";
 // Design
 import { OFF_WHITE } from "../design/colors";
 
 const StatsVisualsScreen = () => {
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(1);
+  const {
+    state: { isFetching },
+    fetchStatsByPeriod
+  } = useContext(StatsContext);
   const buttons = ["D", "W", "M", "Y"];
+  const periods = ["day", "week", "month", "year"];
+
+  useEffect(() => {
+    fetchStatsByPeriod(periods[selectedButtonIndex]);
+  }, [selectedButtonIndex]);
+
+  // Main component to show in screen under Button Group
+  const Chart = ({ selectedButtonIndex }) => {
+    if (selectedButtonIndex == 1) {
+      // Temporary. The actual implementation should just pass data props to BarChart
+      return <BarChart containerStyle={styles.chart} />;
+    } else {
+      return <Text style={styles.chart}>🚧 Under construction 🚧</Text>;
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -19,11 +41,11 @@ const StatsVisualsScreen = () => {
         onPress={setSelectedButtonIndex}
         containerStyle={styles.buttonGroup}
       />
-      {/* Temporary. The actual implementation should just pass data props to BarChart */}
-      {selectedButtonIndex === 1 ? (
-        <BarChart containerStyle={styles.chart} />
+      {/* If fetching, show Loader. Otherwise show the Chart component */}
+      {isFetching ? (
+        <Loader isLoading={isFetching} />
       ) : (
-        <Text style={styles.chart}>🚧 Under construction 🚧</Text>
+        <Chart selectedButtonIndex={selectedButtonIndex} />
       )}
     </View>
   );
