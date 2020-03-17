@@ -13,7 +13,7 @@ import { OFF_WHITE } from "../design/colors";
 const StatsVisualsScreen = () => {
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(1);
   const {
-    state: { isFetching },
+    state: { isFetching, periodStats },
     fetchStatsByPeriod
   } = useContext(StatsContext);
   const buttons = ["D", "W", "M", "Y"];
@@ -24,10 +24,9 @@ const StatsVisualsScreen = () => {
   }, [selectedButtonIndex]);
 
   // Main component to show in screen under Button Group
-  const Chart = ({ selectedButtonIndex }) => {
+  const Chart = ({ data, selectedButtonIndex }) => {
     if (selectedButtonIndex == 1) {
-      // Temporary. The actual implementation should just pass data props to BarChart
-      return <BarChart containerStyle={styles.chart} />;
+      return <BarChart data={data} containerStyle={styles.chart} />;
     } else {
       return <Text style={styles.chart}>🚧 Under construction 🚧</Text>;
     }
@@ -45,7 +44,10 @@ const StatsVisualsScreen = () => {
       {isFetching ? (
         <Loader isLoading={isFetching} />
       ) : (
-        <Chart selectedButtonIndex={selectedButtonIndex} />
+        <Chart
+          data={periodStats[periods[selectedButtonIndex]]}
+          selectedButtonIndex={selectedButtonIndex}
+        />
       )}
     </View>
   );

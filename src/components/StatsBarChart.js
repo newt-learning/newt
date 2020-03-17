@@ -5,17 +5,12 @@ import _ from "lodash";
 import { scalePoint, scaleLinear } from "d3-scale";
 import { GRAY_3, BLUE, GRAY_2 } from "../design/colors";
 
-const data = [
-  { x: "Mon", y: 14 },
-  { x: "Tue", y: 0 },
-  { x: "Wed", y: 18 },
-  { x: "Thu", y: 35 },
-  { x: "Fri", y: 103 },
-  { x: "Sat", y: 24 },
-  { x: "Sun", y: 47 }
-];
+const BarChart = ({ data, containerStyle }) => {
+  // Temp. fix. Need to figure out the loading error in StatsContext where the data is being fetched.
+  if (_.isEmpty(data)) {
+    return null;
+  }
 
-const BarChart = ({ containerStyle }) => {
   const SVGHeight = 200;
   const { width: SVGWidth } = Dimensions.get("window");
   const chartMargin = 20;
