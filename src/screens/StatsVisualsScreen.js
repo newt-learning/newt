@@ -25,7 +25,7 @@ const StatsVisualsScreen = () => {
 
   // Main component to show in screen under Button Group
   const Chart = ({ data, selectedButtonIndex }) => {
-    if (selectedButtonIndex == 1) {
+    if (selectedButtonIndex == 1 || selectedButtonIndex == 3) {
       return <BarChart data={data} containerStyle={styles.chart} />;
     } else {
       return <Text style={styles.chart}>🚧 Under construction 🚧</Text>;
