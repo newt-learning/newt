@@ -1,5 +1,6 @@
 import createDataContext from "./createDataContext";
 import newtApi from "../api/newtApi";
+import moment from "moment";
 
 // Action constants
 const REQUEST_LEARNING_UPDATES = "REQUEST_LEARNING_UPDATES";
@@ -7,6 +8,7 @@ const RESOLVE_LEARNING_UPDATES = "RESOLVE_LEARNING_UPDATES";
 const SET_LEARNING_UPDATES = "SET_LEARNING_UPDATES";
 const ADD_LEARNING_UPDATE = "ADD_LEARNING_UPDATE";
 const SET_SUMMARY_STATS = "SET_SUMMARY_STATS";
+const SET_PERIOD_STATS = "SET_PERIOD_STATS";
 
 // Reducer
 const statsReducer = (state, action) => {
@@ -21,6 +23,14 @@ const statsReducer = (state, action) => {
       return { ...state, items: [...state.items, action.payload] };
     case SET_SUMMARY_STATS:
       return { ...state, summaryStats: action.payload };
+    case SET_PERIOD_STATS:
+      return {
+        ...state,
+        periodStats: {
+          ...state.periodStats,
+          [action.payload.period]: action.payload.data
+        }
+      };
     default:
       return state;
   }
@@ -41,6 +51,9 @@ const addLearningUpdate = payload => {
 };
 const setSummaryStats = payload => {
   return { type: SET_SUMMARY_STATS, payload };
+};
+const setPeriodStats = payload => {
+  return { type: SET_PERIOD_STATS, payload };
 };
 
 // Dispatch functions
@@ -71,6 +84,46 @@ const fetchSummaryStats = dispatch => async () => {
   }
 };
 
+// Fetch reading stats for a particular period (day, week, month, or year)
+const fetchStatsByPeriod = dispatch => async period => {
+  try {
+    // String to show date format required (used server-side)
+    const dateFormatStr = "YYYY-MM-DD";
+    // Inititalize start and end dates
+    let startDate = "";
+    let endDate = "";
+
+    // If the period is "week", then get the start of the week (previous Sunday if it's some)
+    // other day of the week), and end of the week (coming Saturday). Will need to extract this
+    // logic out when adding func. for days, months, and year
+    if (period === "week") {
+      // Current date
+      const today = moment().utc();
+      // Get the day-of-the-week number (Sun = 0 ... Sat = 6). Cloning because original moment object is mutable
+      const todayDayOfWeek = today.clone().day();
+      // Subtract day-of-the-week-number days from today to get start of week
+      startDate = today.clone().subtract(todayDayOfWeek, "days");
+      // Add 6 days to start of the week to get end of the week
+      endDate = startDate.clone().add("6", "days");
+    }
+
+    // Format start and end date
+    startDate = startDate.format(dateFormatStr);
+    endDate = endDate.format(dateFormatStr);
+
+    dispatch(requestLearningUpdates());
+    // Make request with period, start date and end date
+    const res = await newtApi.get(
+      `/stats/by-${period}/${startDate}.${endDate}`
+    );
+    dispatch(setPeriodStats({ period, data: res.data }));
+    dispatch(resolveLearningUpdates());
+  } catch (error) {
+    dispatch(resolveLearningUpdates());
+    console.error(error);
+  }
+};
+
 const createLearningUpdate = dispatch => async data => {
   try {
     dispatch(requestLearningUpdates());
@@ -87,6 +140,17 @@ const createLearningUpdate = dispatch => async data => {
 
 export const { Provider, Context } = createDataContext(
   statsReducer,
-  { fetchLearningUpdates, fetchSummaryStats, createLearningUpdate },
-  { isFetching: false, items: [], summaryStats: {}, errorMessage: "" }
+  {
+    fetchLearningUpdates,
+    fetchSummaryStats,
+    fetchStatsByPeriod,
+    createLearningUpdate
+  },
+  {
+    isFetching: false,
+    items: [],
+    summaryStats: {},
+    periodStats: { day: [], week: [], month: [], year: [] },
+    errorMessage: ""
+  }
 );

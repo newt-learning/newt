@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet } from "react-native";
 import { ButtonGroup as ElementsButtonGroup } from "react-native-elements";
 import { REGULAR, FS14 } from "../design/typography";
