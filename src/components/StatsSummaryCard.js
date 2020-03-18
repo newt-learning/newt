@@ -5,10 +5,18 @@ import { Feather } from "@expo/vector-icons";
 import { OFF_WHITE, BLUE, GRAY_1, GRAY_4 } from "../design/colors";
 import { SEMIBOLD, FS18, FS16 } from "../design/typography";
 
-const StatsSummaryCard = ({ contentType, summarySentence, onPress }) => {
+const StatsSummaryCard = ({
+  contentType,
+  summarySentence,
+  onPress,
+  cardStyle: passedCardStyle,
+  showChevron = true
+}) => {
+  const cardStyle = StyleSheet.flatten([styles.card, passedCardStyle]);
+
   return (
     <TouchableHighlight
-      style={styles.card}
+      style={cardStyle}
       underlayColor={GRAY_4}
       onPress={onPress}
     >
@@ -18,7 +26,9 @@ const StatsSummaryCard = ({ contentType, summarySentence, onPress }) => {
             <Feather name="book" size={22} color={BLUE} />
             <Text style={styles.statsTitle}>{contentType}</Text>
           </View>
-          <Feather name="chevron-right" size={20} color={BLUE} />
+          {showChevron && (
+            <Feather name="chevron-right" size={20} color={BLUE} />
+          )}
         </View>
         <Text style={styles.summary}>{summarySentence}</Text>
       </>

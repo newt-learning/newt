@@ -1,6 +1,6 @@
 import createDataContext from "./createDataContext";
 import newtApi from "../api/newtApi";
-import { getPeriodStartAndEndDates } from "../helpers/contextHelpers";
+import moment from "moment";
 
 // Action constants
 const REQUEST_LEARNING_UPDATES = "REQUEST_LEARNING_UPDATES";
@@ -88,7 +88,8 @@ const fetchSummaryStats = dispatch => async () => {
 // Temporarily just for "week"
 const fetchStatsByPeriod = dispatch => async period => {
   try {
-    const { startDate, endDate } = getPeriodStartAndEndDates(period);
+    const startDate = moment().startOf(period);
+    const endDate = moment().endOf(period);
 
     if (startDate && endDate) {
       dispatch(requestLearningUpdates());
