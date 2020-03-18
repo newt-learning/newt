@@ -11,6 +11,32 @@ import StatsSummaryCard from "../components/StatsSummaryCard";
 // Design
 import { OFF_WHITE, GRAY_5 } from "../design/colors";
 
+// Main component to show in screen under Button Group
+const StatsVizualization = ({ data, selectedButtonIndex }) => {
+  // If selectedButtonIndex is out of range for whatever reason (it should never be), return nothing
+  if (selectedButtonIndex < 0 || selectedButtonIndex >= 4) {
+    return null;
+  }
+
+  // For the day visual, show a summary card for each content type. Otherwise for the rest, show the bar chart
+  if (selectedButtonIndex === 0) {
+    return data.map(item => {
+      const sentence = `${item.value} ${item.unit} today.`;
+      return (
+        <StatsSummaryCard
+          key={item.contentType}
+          contentType={item.contentType}
+          summarySentence={sentence}
+          cardStyle={{ backgroundColor: GRAY_5 }}
+          showChevron={false}
+        />
+      );
+    });
+  } else {
+    return <BarChart data={data} containerStyle={styles.chart} />;
+  }
+};
+
 const StatsVisualsScreen = () => {
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(1);
   const {
@@ -24,30 +50,6 @@ const StatsVisualsScreen = () => {
     fetchStatsByPeriod(periods[selectedButtonIndex]);
   }, [selectedButtonIndex]);
 
-  // Main component to show in screen under Button Group
-  const Chart = ({ data, selectedButtonIndex }) => {
-    // For the day visual, show a summary card for each content type.
-    if (selectedButtonIndex === 0) {
-      return data.map(item => {
-        const sentence = `${item.value} ${item.unit} today.`;
-        return (
-          <StatsSummaryCard
-            key={item.contentType}
-            contentType={item.contentType}
-            summarySentence={sentence}
-            cardStyle={{ backgroundColor: GRAY_5 }}
-            showChevron={false}
-          />
-        );
-      });
-    }
-    if (selectedButtonIndex == 1 || selectedButtonIndex == 3) {
-      return <BarChart data={data} containerStyle={styles.chart} />;
-    } else {
-      return <Text style={styles.chart}>🚧 Under construction 🚧</Text>;
-    }
-  };
-
   return (
     <View style={styles.container}>
       <ButtonGroup
@@ -60,7 +62,7 @@ const StatsVisualsScreen = () => {
       {isFetching ? (
         <Loader isLoading={isFetching} />
       ) : (
-        <Chart
+        <StatsVizualization
           data={periodStats[periods[selectedButtonIndex]]}
           selectedButtonIndex={selectedButtonIndex}
         />
