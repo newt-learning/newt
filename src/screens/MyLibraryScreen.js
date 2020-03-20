@@ -16,8 +16,9 @@ const MyLibraryScreen = ({ navigation }) => {
     fetchContent
   } = useContext(ContentContext);
 
-  const filterContentByShelf = shelf => {
-    return _.filter(items, item => item.shelf === shelf);
+  const filterAndOrderContentByShelf = shelf => {
+    const filteredContent = _.filter(items, item => item.shelf === shelf);
+    return _.orderBy(filteredContent, "lastUpdated", "desc");
   };
 
   // Fetch content data
@@ -34,9 +35,13 @@ const MyLibraryScreen = ({ navigation }) => {
     return <ErrorMessage message={errorMessage} />;
   }
 
-  const currentlyLearningItems = filterContentByShelf("Currently Learning");
-  const wantToLearnItems = filterContentByShelf("Want to Learn");
-  const finishedLearningItems = filterContentByShelf("Finished Learning");
+  const currentlyLearningItems = filterAndOrderContentByShelf(
+    "Currently Learning"
+  );
+  const wantToLearnItems = filterAndOrderContentByShelf("Want to Learn");
+  const finishedLearningItems = filterAndOrderContentByShelf(
+    "Finished Learning"
+  );
 
   return (
     <ScrollView style={styles.container}>

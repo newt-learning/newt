@@ -82,10 +82,16 @@ const HomeScreen = ({ navigation }) => {
     items,
     item => item.shelf === "Currently Learning"
   );
+  // Then order the filtered content by descending order of when it was last updated (latest to oldest)
+  const orderedInProgressContent = _.orderBy(
+    inProgressContent,
+    "lastUpdated",
+    "desc"
+  );
 
   return (
     <FlatList
-      data={inProgressContent}
+      data={orderedInProgressContent}
       keyExtractor={item => item._id}
       renderItem={({ item }) => (
         <HomeContentCard

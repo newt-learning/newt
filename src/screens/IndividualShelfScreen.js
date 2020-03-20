@@ -14,13 +14,14 @@ const IndividualShelfScreen = ({ navigation }) => {
   } = useContext(ContentContext);
   const { title } = navigation.state.params;
 
-  const filterContentByShelf = shelf => {
-    return _.filter(items, item => item.shelf === shelf);
+  const filterAndOrderContentByShelf = shelf => {
+    const filteredContent = _.filter(items, item => item.shelf === shelf);
+    return _.orderBy(filteredContent, "lastUpdated", "desc");
   };
 
   return (
     <View style={styles.container}>
-      <ContentList data={filterContentByShelf(title)} />
+      <ContentList data={filterAndOrderContentByShelf(title)} />
     </View>
   );
 };
