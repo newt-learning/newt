@@ -85,11 +85,20 @@ const UpdateProgressScreen = ({ navigation }) => {
   // Function that updates pages read to page count and changes shelf to
   // "Finished Learning" when finished book button is pressed
   const submitFinishBook = () => {
+    // Set learning update data object
+    const learningUpdateData = {
+      contentId,
+      previousPagesRead: pagesRead,
+      updatedPagesRead: pageCount,
+      numPagesRead: pageCount - pagesRead,
+      contentType: "book"
+    };
     updateBookProgress(contentId, pageCount, false);
     updateContent(contentId, {
       shelf: "Finished Learning",
       dateCompleted: Date.now()
     });
+    createLearningUpdate(learningUpdateData);
   };
 
   // Pass submit updated pages function as params so that it can be wired up in
