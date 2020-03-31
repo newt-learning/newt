@@ -1,5 +1,5 @@
-import React, { useEffect, useContext } from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useEffect, useContext, useCallback, useState } from "react";
+import { View, ScrollView, StyleSheet, RefreshControl } from "react-native";
 // Context
 import { Context as StatsContext } from "../context/StatsContext";
 // Components
@@ -10,6 +10,7 @@ import Loader from "../components/Loader";
 import { GRAY_5 } from "../design/colors";
 
 const StatsScreen = ({ navigation }) => {
+  const [refreshing, setRefreshing] = useState(false);
   const {
     state: { isFetching, summaryStats },
     fetchSummaryStats
@@ -20,18 +21,36 @@ const StatsScreen = ({ navigation }) => {
     fetchSummaryStats();
   }, []);
 
-  if (isFetching) {
+  // Function that's called when user scrolls down to refresh screen
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await fetchSummaryStats();
+    setRefreshing(false);
+  }, [isFetching]);
+
+  // If data is being fetched AND it's not initiated from a user refresh call
+  // then show the full screen loader.
+  if (isFetching && !refreshing) {
     return <Loader isLoading={isFetching} />;
   }
 
   return (
     <View style={styles.container}>
-      <H2 style={styles.title}>By Content</H2>
-      <StatsSummaryCard
-        contentType="Books"
-        summarySentence={summaryStats.books}
-        onPress={() => navigation.navigate("StatsVisuals", { title: "Books" })}
-      />
+      <ScrollView
+        contentContainerStyle={styles.container}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <H2 style={styles.title}>By Content</H2>
+        <StatsSummaryCard
+          contentType="Books"
+          summarySentence={summaryStats.books}
+          onPress={() =>
+            navigation.navigate("StatsVisuals", { title: "Books" })
+          }
+        />
+      </ScrollView>
     </View>
   );
 };
