@@ -16,6 +16,10 @@ const ProfileScreen = () => {
     signOut
   } = useContext(AuthContext);
 
+  if (userInfo === null) {
+    return null;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.userInfoContainer}>
