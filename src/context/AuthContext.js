@@ -129,10 +129,10 @@ const tryLocalSignIn = dispatch => async () => {
         });
 
       // Navigate to Home screen
-      navigate("Home");
+      // navigate("Home");
     } else {
       dispatch(removeAuthedUser());
-      navigate("SignIn");
+      // navigate("SignIn");
     }
   });
 };
@@ -147,5 +147,5 @@ const signOut = dispatch => async () => {
 export const { Provider, Context } = createDataContext(
   authReducer,
   { authenticateWithGoogle, signOut, tryLocalSignIn },
-  { isFetching: false, exists: false, userInfo: null, errorMessage: "" }
+  { isFetching: true, exists: false, userInfo: null, errorMessage: "" }
 );

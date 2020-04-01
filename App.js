@@ -1,64 +1,56 @@
-import React from "react";
-import { createAppContainer, createSwitchNavigator } from "react-navigation";
-import { createBottomTabNavigator } from "react-navigation-tabs";
+import React, { useEffect, useContext } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import { AppLoading } from "expo";
-import { setNavigator } from "./src/refs/navigationRef";
-// Stacks
-import HomeStack from "./src/stacks/HomeStack";
-import MyLibraryStack from "./src/stacks/MyLibraryStack";
-import AddContentStack from "./src/stacks/AddContentStack";
-import StatsStack from "./src/stacks/StatsStack";
-import ProfileStack from "./src/stacks/ProfileStack";
-// Screens
-import ResolveAuth from "./src/screens/ResolveAuth";
-import SignInScreen from "./src/screens/SignInScreen";
 // Context
-import { Provider as AuthProvider } from "./src/context/AuthContext";
+import {
+  Provider as AuthProvider,
+  Context as AuthContext
+} from "./src/context/AuthContext";
 import { Provider as ContentProvider } from "./src/context/ContentContext";
 import { Provider as StatsProvider } from "./src/context/StatsContext";
+// Screens
+import SignInScreen from "./src/screens/SignInScreen";
+import HomeScreen from "./src/screens/HomeScreen";
 // Hooks
 import useFonts from "./src/hooks/useFonts";
-// Styling
-import { OFF_BLACK, OFF_WHITE, NEWT_BLUE } from "./src/design/colors";
 
-const switchNavigator = createSwitchNavigator({
-  ResolveAuth,
-  SignIn: SignInScreen,
-  mainFlow: createBottomTabNavigator(
-    {
-      Home: HomeStack,
-      "My Library": MyLibraryStack,
-      "Add Content": AddContentStack,
-      Stats: StatsStack,
-      Profile: ProfileStack
-    },
-    {
-      tabBarOptions: {
-        activeTintColor: NEWT_BLUE,
-        inactiveTintColor: OFF_BLACK,
-        style: {
-          backgroundColor: OFF_WHITE
-        }
-      }
-    }
-  )
-});
-
-const App = createAppContainer(switchNavigator);
-
-export default () => {
-  // Load custom fonts
+const App = () => {
+  const {
+    state: { isFetching, exists },
+    tryLocalSignIn
+  } = useContext(AuthContext);
   const [fontLoaded] = useFonts();
+  const Stack = createStackNavigator();
 
-  if (!fontLoaded) {
+  useEffect(() => {
+    tryLocalSignIn();
+  }, []);
+
+  if (isFetching || !fontLoaded) {
     return <AppLoading />;
   }
 
+  console.log(exists);
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        {exists ? (
+          <Stack.Screen name="Home" component={HomeScreen} />
+        ) : (
+          <Stack.Screen name="SignIn" component={SignInScreen} />
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default () => {
   return (
     <AuthProvider>
       <ContentProvider>
         <StatsProvider>
-          <App ref={navigator => setNavigator(navigator)} />
+          <App />
         </StatsProvider>
       </ContentProvider>
     </AuthProvider>
