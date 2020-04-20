@@ -9,9 +9,10 @@ import {
 } from "./src/context/AuthContext";
 import { Provider as ContentProvider } from "./src/context/ContentContext";
 import { Provider as StatsProvider } from "./src/context/StatsContext";
+// Stacks
+import MainTabs from "./src/navigators/MainTabs";
 // Screens
 import SignInScreen from "./src/screens/SignInScreen";
-import HomeScreen from "./src/screens/HomeScreen";
 // Hooks
 import useFonts from "./src/hooks/useFonts";
 
@@ -31,14 +32,21 @@ const App = () => {
     return <AppLoading />;
   }
 
-  console.log(exists);
   return (
     <NavigationContainer>
       <Stack.Navigator>
         {exists ? (
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen
+            name="Main"
+            component={MainTabs}
+            options={{ headerShown: false }}
+          />
         ) : (
-          <Stack.Screen name="SignIn" component={SignInScreen} />
+          <Stack.Screen
+            name="SignIn"
+            component={SignInScreen}
+            options={{ headerShown: false }}
+          />
         )}
       </Stack.Navigator>
     </NavigationContainer>
