@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { withNavigation } from "react-navigation";
+import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 // Components
 import ActionButton from "../ActionButton";
@@ -17,13 +17,14 @@ import { calculatePercentComplete } from "../../helpers/screenHelpers";
 // Date added if Want to Learn, and Date finished if Finished Learning
 const UserInteractionSection = ({
   shelf,
-  navigation,
   contentId,
   pagesRead,
   pageCount,
   dateAdded,
   dateCompleted
 }) => {
+  const navigation = useNavigation();
+
   switch (shelf) {
     // If "Currently Learning", progress bar and button to update book progress
     case "Currently Learning":
@@ -72,8 +73,7 @@ const ActionSection = ({
   pagesRead,
   dateAdded,
   dateCompleted,
-  onPress,
-  navigation
+  onPress
 }) => {
   return (
     <View style={styles.container}>
@@ -82,7 +82,6 @@ const ActionSection = ({
           <ChangeShelfButton shelf={shelf} onPress={onPress} />
           <UserInteractionSection
             shelf={shelf}
-            navigation={navigation}
             contentId={contentId}
             pagesRead={pagesRead}
             pageCount={pageCount}
@@ -116,4 +115,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default withNavigation(ActionSection);
+export default ActionSection;

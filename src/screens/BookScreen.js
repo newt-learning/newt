@@ -8,8 +8,9 @@ import ActionSection from "../components/Content/ActionSection";
 import Description from "../components/Content/Description";
 import BookInformationSection from "../components/Content/BookInformationSection";
 import Loader from "../components/Loader";
+import { OFF_WHITE } from "../design/colors";
 
-const BookScreen = ({ navigation }) => {
+const BookScreen = ({ navigation, route }) => {
   // State to store whether the user wants to read more of the description
   const [showMore, setShowMore] = useState(false);
   const [bookExistsInLibrary, setBookExistsinLibrary] = useState(null);
@@ -22,8 +23,8 @@ const BookScreen = ({ navigation }) => {
   } = useContext(ContentContext);
 
   // Get book info from params sent through navigation prop
-  const passedBookInfo = navigation.getParam("bookInfo");
-  const comingFromAddBookScreen = navigation.getParam("comingFromAddBook");
+  const passedBookInfo = route.params.bookInfo;
+  const comingFromAddBookScreen = route.params?.comingFromAddBook ?? false;
 
   // Check if the book data passed, if coming from the 'Add Book Screen' (so
   // passedBookInfo won't have a '_id' field), is already in the user's library
@@ -167,7 +168,8 @@ const BookScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: OFF_WHITE
   },
   imageContainer: {
     paddingTop: 15,

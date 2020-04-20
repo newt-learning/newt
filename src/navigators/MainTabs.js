@@ -5,7 +5,7 @@ import { Feather } from "@expo/vector-icons";
 import HomeStack from "./HomeStack";
 import ProfileStack from "./ProfileStack";
 // Design
-import { NEWT_BLUE, OFF_BLACK } from "../design/colors";
+import { NEWT_BLUE, OFF_BLACK, OFF_WHITE } from "../design/colors";
 
 const MainTabs = () => {
   const Tab = createBottomTabNavigator();
@@ -14,7 +14,10 @@ const MainTabs = () => {
     <Tab.Navigator
       tabBarOptions={{
         activeTintColor: NEWT_BLUE,
-        inactiveTintColor: OFF_BLACK
+        inactiveTintColor: OFF_BLACK,
+        style: {
+          backgroundColor: OFF_WHITE
+        }
       }}
     >
       <Tab.Screen

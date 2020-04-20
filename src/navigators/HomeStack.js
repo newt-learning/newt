@@ -1,16 +1,34 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import { NavHeaderTitle } from "../components/Headers";
 // Screens
 import HomeScreen from "../screens/HomeScreen";
 import BookScreen from "../screens/BookScreen";
+// Design
+import { OFF_WHITE } from "../design/colors";
 
 const Stack = createStackNavigator();
 
 const HomeStack = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="BookScreen" component={BookScreen} />
+    <Stack.Navigator
+      screenOptions={{ headerStyle: { backgroundColor: OFF_WHITE } }}
+    >
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          headerTitle: <NavHeaderTitle title="newt" displayLogo />
+        }}
+      />
+      <Stack.Screen
+        name="BookScreen"
+        component={BookScreen}
+        options={{
+          title: null,
+          headerBackTitle: "Back"
+        }}
+      />
     </Stack.Navigator>
   );
 };

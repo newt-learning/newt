@@ -106,7 +106,7 @@ const HomeScreen = ({ navigation }) => {
             item.bookInfo.pagesRead,
             item.bookInfo.pageCount
           )}
-          onPress={() => handleContentNavigation(item)}
+          onPress={() => handleContentNavigation(item, navigation)}
         />
       )}
       ListHeaderComponent={<H1 style={styles.title}>In Progress</H1>}

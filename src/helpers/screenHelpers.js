@@ -44,10 +44,10 @@ export const calculatePercentComplete = (amountCompleted, total) => {
 };
 
 // Navigate to content screen (e.g. BookScreen) based on content type
-export const handleContentNavigation = content => {
+export const handleContentNavigation = (content, navigationProp) => {
   switch (content.type) {
     case "book":
-      return navigate("BookScreen", { bookInfo: content });
+      return navigationProp.navigate("BookScreen", { bookInfo: content });
     default:
       return;
   }

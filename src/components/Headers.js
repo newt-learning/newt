@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, Platform } from "react-native";
 // Styling
 import { BOLD, FS32, FS24, FS18 } from "../design/typography";
 import { OFF_BLACK } from "../design/colors";
@@ -11,20 +11,14 @@ export const NavHeaderTitle = ({ title, displayLogo }) => (
 
 // Header 1 (font size 32)
 export const H1 = ({ children, style }) => {
-  const textStyle = StyleSheet.compose(
-    styles.h1,
-    style
-  );
+  const textStyle = StyleSheet.compose(styles.h1, style);
 
   return <Text style={textStyle}>{children}</Text>;
 };
 
 // Header 2 (font size 24)
 export const H2 = ({ children, style }) => {
-  const textStyle = StyleSheet.compose(
-    styles.h2,
-    style
-  );
+  const textStyle = StyleSheet.compose(styles.h2, style);
 
   return <Text style={textStyle}>{children}</Text>;
 };
@@ -33,7 +27,8 @@ const styles = StyleSheet.create({
   navHeader: {
     fontFamily: BOLD,
     color: OFF_BLACK,
-    fontSize: FS18
+    fontSize: FS18,
+    paddingLeft: Platform.OS === "ios" ? 0 : 15
   },
   logo: {
     fontFamily: "Righteous",

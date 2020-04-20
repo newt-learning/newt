@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from "react-navigation-tabs";
 import { AppLoading } from "expo";
 import { setNavigator } from "./src/refs/navigationRef";
 // Stacks
-import HomeStack from "./src/stacks/HomeStack";
+import HomeStack from "./src/stacks/_HomeStack";
 import MyLibraryStack from "./src/stacks/MyLibraryStack";
 import AddContentStack from "./src/stacks/AddContentStack";
 import StatsStack from "./src/stacks/StatsStack";
