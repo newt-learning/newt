@@ -1,4 +1,5 @@
 import React from "react";
+import { Platform } from "react-native";
 import {
   createStackNavigator,
   CardStyleInterpolators,
@@ -7,6 +8,7 @@ import { NavHeaderTitle } from "../components/Headers";
 import { MaterialIcons } from "@expo/vector-icons";
 // Screens
 import MyLibraryScreen from "../screens/MyLibraryScreen";
+import IndividualShelfScreen from "../screens/IndividualShelfScreen";
 import BookScreen from "../screens/BookScreen";
 import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
@@ -24,6 +26,15 @@ const MainStack = () => {
         name="My Library"
         component={MyLibraryScreen}
         options={{ headerTitle: () => <NavHeaderTitle title="My Library" /> }}
+      />
+      <Stack.Screen
+        name="IndividualShelf"
+        component={IndividualShelfScreen}
+        options={({ route }) => ({
+          title: route.params.title,
+          headerTitle: () => <NavHeaderTitle title={route.params.title} />,
+          headerBackTitleVisible: false,
+        })}
       />
       <Stack.Screen
         name="BookScreen"
