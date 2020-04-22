@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useLayoutEffect, useContext } from "react";
 import {
-  ScrollView,
   View,
+  ScrollView,
   Platform,
-  Button,
+  TouchableOpacity,
   Text,
   StyleSheet,
   TextInput,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import _ from "lodash";
 import { Button as ElementButton } from "react-native-elements";
@@ -17,23 +17,67 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Context as ContentContext } from "../context/ContentContext";
 import { Context as StatsContext } from "../context/StatsContext";
 // Design
-import { SEMIBOLD, REGULAR, FS16, FS12 } from "../design/typography";
-import { OFF_BLACK, GRAY_5, GRAY_2, IOS_BLUE, RED } from "../design/colors";
+import { SEMIBOLD, REGULAR, FS16, FS12, FS18 } from "../design/typography";
+import {
+  OFF_BLACK,
+  GRAY_5,
+  GRAY_2,
+  IOS_BLUE,
+  RED,
+  OFF_WHITE,
+} from "../design/colors";
 
-const UpdateProgressScreen = ({ navigation }) => {
-  const contentId = navigation.getParam("contentId");
-  const pagesRead = navigation.getParam("pagesRead");
-  const pageCount = navigation.getParam("pageCount");
+const UpdateProgressScreen = ({ navigation, route }) => {
+  const { contentId, pagesRead, pageCount } = route.params;
   const [updatedPagesRead, setUpdatedPagesRead] = useState(`${pagesRead}`);
   const [errorMessage, setErrorMessage] = useState(null);
   // Get state + functions from Content Context
   const {
     state: { isFetching },
     updateBookProgress,
-    updateContent
+    updateContent,
   } = useContext(ContentContext);
   // Get function from Stats Context
   const { createLearningUpdate } = useContext(StatsContext);
+
+  // Add the button for confirmation to the screen header: "Done" button for iOS
+  // and check mark icon for Android (and pass the update functions)
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        if (Platform.OS === "ios") {
+          if (isFetching) {
+            return (
+              <ActivityIndicator
+                animating={isFetching}
+                color={IOS_BLUE}
+                style={{ paddingRight: 15 }}
+              />
+            );
+          } else {
+            return (
+              <TouchableOpacity
+                style={{ paddingRight: 15 }}
+                onPress={submitUpdatedPagesRead}
+              >
+                <Text style={{ color: IOS_BLUE, fontSize: FS18 }}>Done</Text>
+              </TouchableOpacity>
+            );
+          }
+        } else {
+          return (
+            <ElementButton
+              type="clear"
+              loading={isFetching}
+              loadingProps={{ color: OFF_BLACK }}
+              icon={<MaterialIcons name="check" size={24} />}
+              onPress={submitUpdatedPagesRead}
+            />
+          );
+        }
+      },
+    });
+  });
 
   // Validation function that's run before submitting request to check whether
   // the number inputted makes sense.
@@ -75,10 +119,11 @@ const UpdateProgressScreen = ({ navigation }) => {
         previousPagesRead: pagesRead,
         updatedPagesRead,
         numPagesRead: updatedPagesRead - pagesRead,
-        contentType: "book"
+        contentType: "book",
       };
       updateBookProgress(contentId, _.toNumber(updatedPagesRead));
       createLearningUpdate(learningUpdateData);
+      navigation.goBack();
     }
   };
 
@@ -91,22 +136,15 @@ const UpdateProgressScreen = ({ navigation }) => {
       previousPagesRead: pagesRead,
       updatedPagesRead: pageCount,
       numPagesRead: pageCount - pagesRead,
-      contentType: "book"
+      contentType: "book",
     };
     updateBookProgress(contentId, pageCount, false);
     updateContent(contentId, {
       shelf: "Finished Learning",
-      dateCompleted: Date.now()
+      dateCompleted: Date.now(),
     });
     createLearningUpdate(learningUpdateData);
   };
-
-  // Pass submit updated pages function as params so that it can be wired up in
-  // the right header button.
-  useEffect(() => {
-    navigation.setParams({ updateProgress: submitUpdatedPagesRead });
-    navigation.setParams({ isFetching });
-  }, [updatedPagesRead, isFetching]);
 
   return (
     <ScrollView
@@ -139,48 +177,17 @@ const UpdateProgressScreen = ({ navigation }) => {
   );
 };
 
-UpdateProgressScreen.navigationOptions = ({ navigation }) => {
-  const updateProgress = navigation.getParam("updateProgress");
-  const isFetching = navigation.getParam("isFetching");
-
-  return {
-    headerRight: () => {
-      if (Platform.OS === "ios") {
-        if (isFetching) {
-          return (
-            <ActivityIndicator
-              animating={isFetching}
-              color={IOS_BLUE}
-              style={{ marginRight: 15 }}
-            />
-          );
-        } else {
-          return <Button title="Done" onPress={updateProgress} />;
-        }
-      } else {
-        return (
-          <ElementButton
-            type="clear"
-            loading={isFetching}
-            loadingProps={{ color: OFF_BLACK }}
-            icon={<MaterialIcons name="check" size={24} />}
-            onPress={updateProgress}
-          />
-        );
-      }
-    }
-  };
-};
-
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
-    marginHorizontal: 15
+    flex: 1,
+    paddingTop: 20,
+    paddingHorizontal: 15,
+    backgroundColor: OFF_WHITE,
   },
   text: {
     textAlignVertical: "center",
     fontFamily: SEMIBOLD,
-    fontSize: FS16
+    fontSize: FS16,
   },
   input: {
     fontSize: FS16,
@@ -190,21 +197,21 @@ const styles = StyleSheet.create({
     borderColor: GRAY_2,
     width: 100,
     padding: 2,
-    marginLeft: 10
+    marginLeft: 10,
   },
   errorMessage: {
     fontFamily: REGULAR,
     fontSize: FS12,
     color: RED,
-    marginTop: 15
+    marginTop: 15,
   },
   buttonContainer: {
     marginTop: 40,
-    alignItems: "center"
+    alignItems: "center",
   },
   buttonTitle: {
-    fontSize: FS16
-  }
+    fontSize: FS16,
+  },
 });
 
 export default UpdateProgressScreen;
