@@ -6,8 +6,9 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  TouchableHighlight
+  TouchableHighlight,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import _ from "lodash";
 import { Feather } from "@expo/vector-icons";
 // Components
@@ -51,6 +52,8 @@ let ShelfContentCard = ({ title, thumbnailUrl, onPress }) => {
 };
 
 const Shelf = ({ name, data, numItems, onPressTitle }) => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.titleContainer} onPress={onPressTitle}>
@@ -67,7 +70,7 @@ const Shelf = ({ name, data, numItems, onPressTitle }) => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingLeft: 15, paddingRight: 5 }}
           data={data}
-          keyExtractor={item => item._id}
+          keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <ShelfContentCard
               title={item.name}
@@ -76,7 +79,7 @@ const Shelf = ({ name, data, numItems, onPressTitle }) => {
                   ? item.bookInfo.imageLinks.thumbnail
                   : null
               }
-              onPress={() => handleContentNavigation(item)}
+              onPress={() => handleContentNavigation(item, navigation)}
             />
           )}
           ListFooterComponent={
@@ -90,14 +93,14 @@ const Shelf = ({ name, data, numItems, onPressTitle }) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20
+    marginTop: 20,
   },
   titleContainer: {
     marginHorizontal: 15,
     marginBottom: 5,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   card: {
     height: 150,
@@ -106,23 +109,23 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginRight: 10,
     padding: 10,
-    backgroundColor: OFF_WHITE
+    backgroundColor: OFF_WHITE,
   },
   emptyText: {
     fontSize: FS14,
     fontFamily: REGULAR,
     marginLeft: 15,
-    color: GRAY_2
+    color: GRAY_2,
   },
   thumbnail: {
     height: 80,
-    marginBottom: 10
+    marginBottom: 10,
   },
   bookTitle: {
     fontFamily: SEMIBOLD,
     fontSize: FS14,
     alignSelf: "center",
-    textAlign: "center"
+    textAlign: "center",
   },
   seeAllCard: {
     height: 150,
@@ -132,13 +135,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginRight: 10,
     padding: 10,
-    backgroundColor: OFF_WHITE
+    backgroundColor: OFF_WHITE,
   },
   seeAllText: {
     fontFamily: REGULAR,
     color: OFF_BLACK,
-    fontSize: FS14
-  }
+    fontSize: FS14,
+  },
 });
 
 export default Shelf;

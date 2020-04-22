@@ -4,8 +4,11 @@ import {
   CardStyleInterpolators,
 } from "@react-navigation/stack";
 import { NavHeaderTitle } from "../components/Headers";
+import { MaterialIcons } from "@expo/vector-icons";
 // Screens
 import MyLibraryScreen from "../screens/MyLibraryScreen";
+import BookScreen from "../screens/BookScreen";
+import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
 // Design
 import { OFF_WHITE } from "../design/colors";
@@ -21,6 +24,16 @@ const MainStack = () => {
         name="My Library"
         component={MyLibraryScreen}
         options={{ headerTitle: () => <NavHeaderTitle title="My Library" /> }}
+      />
+      <Stack.Screen
+        name="BookScreen"
+        component={BookScreen}
+        options={{ title: null }}
+      />
+      <Stack.Screen
+        name="ShelfSelect"
+        component={ShelfSelectScreen}
+        options={{ title: null }}
       />
     </Stack.Navigator>
   );
