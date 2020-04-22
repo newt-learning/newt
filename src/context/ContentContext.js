@@ -5,7 +5,7 @@ import { navigateBack } from "../refs/navigationRef";
 import {
   updateObjectInArrayById,
   addIfDoesNotExist,
-  deleteObjectFromArray
+  deleteObjectFromArray,
 } from "../helpers/contextHelpers";
 
 // Action constants
@@ -27,27 +27,27 @@ const contentReducer = (state, action) => {
     case SET_CONTENT:
       return {
         ...state,
-        items: action.payload
+        items: action.payload,
       };
     case ADD_INDIVIDUAL_CONTENT:
       return {
         ...state,
-        items: [...state.items, action.payload]
+        items: [...state.items, action.payload],
       };
     case ADD_CONTENT_IF_DOES_NOT_EXIST:
       return {
         ...state,
-        items: addIfDoesNotExist(state.items, action.payload)
+        items: addIfDoesNotExist(state.items, action.payload),
       };
     case UPDATE_INDIVIDUAL_CONTENT:
       return {
         ...state,
-        items: updateObjectInArrayById(state.items, action.payload)
+        items: updateObjectInArrayById(state.items, action.payload),
       };
     case DELETE_CONTENT:
       return {
         ...state,
-        items: deleteObjectFromArray(state.items, action.payload)
+        items: deleteObjectFromArray(state.items, action.payload),
       };
     case SET_ERROR_MESSAGE:
       return { ...state, isFetching: false, errorMessage: action.payload };
@@ -63,27 +63,27 @@ const requestContent = () => {
 const resolveContent = () => {
   return { type: RESOLVE_CONTENT };
 };
-const setContent = payload => {
+const setContent = (payload) => {
   return { type: SET_CONTENT, payload };
 };
-const addIndividualContent = payload => {
+const addIndividualContent = (payload) => {
   return { type: ADD_INDIVIDUAL_CONTENT, payload };
 };
-const addContentIfDoesNotExist = payload => {
+const addContentIfDoesNotExist = (payload) => {
   return { type: ADD_CONTENT_IF_DOES_NOT_EXIST, payload };
 };
-const updateIndividualContent = payload => {
+const updateIndividualContent = (payload) => {
   return { type: UPDATE_INDIVIDUAL_CONTENT, payload };
 };
-const deleteIndividualContent = payload => {
+const deleteIndividualContent = (payload) => {
   return { type: DELETE_CONTENT, payload };
 };
-const setErrorMessage = payload => {
+const setErrorMessage = (payload) => {
   return { type: SET_ERROR_MESSAGE, payload };
 };
 
 // Dispatch functions
-const fetchContent = dispatch => async () => {
+const fetchContent = (dispatch) => async () => {
   try {
     dispatch(requestContent());
 
@@ -97,7 +97,7 @@ const fetchContent = dispatch => async () => {
   }
 };
 
-const checkIfBookExistsInLibrary = dispatch => async googleBookId => {
+const checkIfBookExistsInLibrary = (dispatch) => async (googleBookId) => {
   try {
     dispatch(requestContent());
     const res = await newtApi.get(`/content/check-book/${googleBookId}`);
@@ -112,7 +112,7 @@ const checkIfBookExistsInLibrary = dispatch => async googleBookId => {
   }
 };
 
-const addContent = dispatch => async data => {
+const addContent = (dispatch) => async (data) => {
   try {
     // Indicate request is going to take place
     dispatch(requestContent());
@@ -122,15 +122,13 @@ const addContent = dispatch => async data => {
     // Update state
     dispatch(addIndividualContent(res.data));
     dispatch(resolveContent());
-    // Navigate to prev screen (from Add To My Library to Book Screen)
-    navigateBack();
   } catch (error) {
     console.error(error);
     dispatch(resolveContent());
   }
 };
 
-const updateContent = dispatch => async (contentId, data) => {
+const updateContent = (dispatch) => async (contentId, data) => {
   try {
     // Indicate request is going to take place
     dispatch(requestContent());
@@ -140,15 +138,13 @@ const updateContent = dispatch => async (contentId, data) => {
     // Update state
     dispatch(updateIndividualContent(res.data));
     dispatch(resolveContent());
-    // Navigate to prev screen (from Add To My Library to Book Screen)
-    navigateBack();
   } catch (error) {
     console.error(error);
     dispatch(resolveContent());
   }
 };
 
-const updateBookProgress = dispatch => async (
+const updateBookProgress = (dispatch) => async (
   contentId,
   pagesRead,
   shouldNavigate = true
@@ -157,7 +153,7 @@ const updateBookProgress = dispatch => async (
     dispatch(requestContent());
 
     const res = await newtApi.put(`/content/${contentId}/book-progress`, {
-      pagesRead
+      pagesRead,
     });
 
     dispatch(updateIndividualContent(res.data));
@@ -173,7 +169,7 @@ const updateBookProgress = dispatch => async (
   }
 };
 
-const deleteContent = dispatch => async contentId => {
+const deleteContent = (dispatch) => async (contentId) => {
   try {
     dispatch(requestContent());
 
@@ -195,7 +191,7 @@ export const { Provider, Context } = createDataContext(
     addContent,
     updateContent,
     updateBookProgress,
-    deleteContent
+    deleteContent,
   },
   { isFetching: false, items: [], errorMessage: "" }
 );

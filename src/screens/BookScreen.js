@@ -14,13 +14,7 @@ const BookScreen = ({ navigation, route }) => {
   // State to store whether the user wants to read more of the description
   const [showMore, setShowMore] = useState(false);
   const [bookExistsInLibrary, setBookExistsinLibrary] = useState(null);
-  const {
-    state,
-    addContent,
-    updateContent,
-    deleteContent,
-    checkIfBookExistsInLibrary
-  } = useContext(ContentContext);
+  const { state, checkIfBookExistsInLibrary } = useContext(ContentContext);
 
   // Get book info from params sent through navigation prop
   const passedBookInfo = route.params.bookInfo;
@@ -63,13 +57,15 @@ const BookScreen = ({ navigation, route }) => {
     if (comingFromAddBookScreen) {
       if (bookExistsInLibrary) {
         bookInfo = state.items.filter(
-          item => item.bookInfo.bookId === passedBookInfo.bookInfo.bookId
+          (item) => item.bookInfo.bookId === passedBookInfo.bookInfo.bookId
         )[0];
       } else {
         bookInfo = passedBookInfo;
       }
     } else {
-      bookInfo = state.items.filter(item => item._id === passedBookInfo._id)[0];
+      bookInfo = state.items.filter(
+        (item) => item._id === passedBookInfo._id
+      )[0];
     }
   }
 
@@ -85,36 +81,15 @@ const BookScreen = ({ navigation, route }) => {
     thumbnailUrl,
     shelf,
     dateAdded,
-    dateCompleted
+    dateCompleted,
   } = bookInfo;
   const {
     pageCount,
     pagesRead,
     industryIdentifiers,
     publisher,
-    datePublished
+    datePublished,
   } = bookInfo.bookInfo;
-
-  const addBookToLibrary = selectedShelf => {
-    const data = { ...bookInfo, shelf: selectedShelf, type: "book" };
-    addContent(data);
-  };
-  const updateShelf = selectedShelf => {
-    // If the selected shelf is "Finished Learning", add/update the date completed
-    // field as well. Otherwise only change the shelf
-    if (selectedShelf === "Finished Learning") {
-      updateContent(bookInfo._id, {
-        shelf: selectedShelf,
-        dateCompleted: Date.now()
-      });
-    } else {
-      updateContent(bookInfo._id, { shelf: selectedShelf });
-    }
-  };
-  const deleteItem = () => {
-    deleteContent(bookInfo._id);
-    navigation.popToTop();
-  };
 
   return (
     <ScrollView style={styles.container}>
@@ -137,17 +112,16 @@ const BookScreen = ({ navigation, route }) => {
           shelf
             ? () =>
                 navigation.navigate("ShelfSelect", {
-                  currentShelf: shelf,
+                  bookInfo,
                   buttonText: "Confirm",
                   showDeleteButton: true,
-                  onConfirmShelf: selectedShelf => updateShelf(selectedShelf),
-                  onDelete: deleteItem
+                  addToLibrary: false,
                 })
             : () =>
                 navigation.navigate("ShelfSelect", {
+                  bookInfo,
+                  addToLibrary: true,
                   buttonText: "Add to Library",
-                  onConfirmShelf: selectedShelf =>
-                    addBookToLibrary(selectedShelf)
                 })
         }
       />
@@ -169,7 +143,7 @@ const BookScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: OFF_WHITE
+    backgroundColor: OFF_WHITE,
   },
   imageContainer: {
     paddingTop: 15,
@@ -179,16 +153,16 @@ const styles = StyleSheet.create({
         shadowColor: "black",
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.2,
-        shadowRadius: 5
+        shadowRadius: 5,
       },
       android: {
-        elevation: 0
-      }
-    })
+        elevation: 0,
+      },
+    }),
   },
   thumbnail: {
-    height: 180
-  }
+    height: 180,
+  },
 });
 
 export default BookScreen;
