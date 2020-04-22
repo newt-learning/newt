@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
 // Stacks
 import HomeStack from "./HomeStack";
+import MyLibraryStack from "./MyLibraryStack";
 import AddContentStack from "./AddContentStack";
 import ProfileStack from "./ProfileStack";
 // Design
@@ -27,6 +28,15 @@ const MainTabs = () => {
         options={{
           tabBarIcon: ({ color }) => (
             <Feather name="home" color={color} size={20} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="My Library"
+        component={MyLibraryStack}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Feather name="book-open" color={color} size={20} />
           ),
         }}
       />

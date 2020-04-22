@@ -24,7 +24,13 @@ const AddContentStack = () => {
           headerBackTitle: "Add Content",
         }}
       />
-      <Stack.Screen name="Add Book" component={AddBookScreen} />
+      <Stack.Screen
+        name="Add Book"
+        component={AddBookScreen}
+        options={{
+          headerTitle: () => <NavHeaderTitle title="Add Book" />,
+        }}
+      />
       <Stack.Screen
         name="BookScreen"
         component={BookScreen}
