@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, StyleSheet, FlatList, Text } from "react-native";
+import { StyleSheet, FlatList, Text } from "react-native";
 // Components
 import SearchBar from "../components/SearchBar";
 import ContentListCard from "../components/ContentListCard";
@@ -7,7 +7,7 @@ import ContentListCard from "../components/ContentListCard";
 import { getBookInfo } from "../api/googleBooksApi";
 // Styling
 import { FS16, SEMIBOLD } from "../design/typography";
-import { GRAY_2, GRAY_5 } from "../design/colors";
+import { GRAY_2, OFF_WHITE } from "../design/colors";
 // Helpers
 import { checkThumbnailExistence } from "../helpers/imageHelpers";
 import { extractRelevantBookInfo } from "../helpers/apiHelpers";
@@ -24,7 +24,7 @@ const AddBookScreen = ({ navigation }) => {
 
   // Fetch books from search bar text input
   useEffect(() => {
-    const getResults = async searchTerm => {
+    const getResults = async (searchTerm) => {
       const results = await getBookInfo(searchTerm);
       setBookResults(results.items);
       setTotalBookResults(results.totalItems);
@@ -38,49 +38,52 @@ const AddBookScreen = ({ navigation }) => {
   }, [searchBarText]);
 
   return (
-    <View style={styles.container}>
-      <SearchBar
-        placeholderText="Search for books"
-        onChange={setSearchBarText}
-        value={searchBarText}
-        onClear={clearBookResults}
-      />
-      {totalBookResults === 0 ? (
-        <Text style={styles.text}>No results found</Text>
-      ) : (
-        <FlatList
-          data={bookResults}
-          renderItem={({ item }) => (
-            <ContentListCard
-              title={item.volumeInfo.title ? item.volumeInfo.title : null}
-              authors={item.volumeInfo.authors ? item.volumeInfo.authors : null}
-              thumbnailUrl={checkThumbnailExistence(item.volumeInfo)}
-              onPress={() =>
-                navigation.navigate("BookScreen", {
-                  bookInfo: extractRelevantBookInfo(item),
-                  comingFromAddBook: true
-                })
-              }
-            />
-          )}
-          keyExtractor={book => book.id}
+    <FlatList
+      style={styles.container}
+      data={bookResults}
+      ListHeaderComponent={
+        <SearchBar
+          placeholderText="Search for books"
+          onChange={setSearchBarText}
+          value={searchBarText}
+          onClear={clearBookResults}
+        />
+      }
+      ListEmptyComponent={() => {
+        // Show text saying No results only after user has searched
+        return totalBookResults !== null ? (
+          <Text style={styles.text}>No results found</Text>
+        ) : null;
+      }}
+      renderItem={({ item }) => (
+        <ContentListCard
+          title={item.volumeInfo.title ? item.volumeInfo.title : null}
+          authors={item.volumeInfo.authors ? item.volumeInfo.authors : null}
+          thumbnailUrl={checkThumbnailExistence(item.volumeInfo)}
+          onPress={() =>
+            navigation.navigate("BookScreen", {
+              bookInfo: extractRelevantBookInfo(item),
+              comingFromAddBook: true,
+            })
+          }
         />
       )}
-    </View>
+      keyExtractor={(book) => book.id}
+    />
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    backgroundColor: OFF_WHITE,
   },
   text: {
     marginHorizontal: 15,
     marginTop: 5,
     fontFamily: SEMIBOLD,
     fontSize: FS16,
-    color: GRAY_2
-  }
+    color: GRAY_2,
+  },
 });
 
 export default AddBookScreen;

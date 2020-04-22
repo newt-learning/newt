@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavHeaderTitle } from "../components/Headers";
 // Screens
 import AddContentScreen from "../screens/AddContentScreen";
+import AddBookScreen from "../screens/AddBookScreen";
 // Design
 import { OFF_WHITE } from "../design/colors";
 
@@ -17,9 +18,11 @@ const AddContentStack = () => {
         name="Add Content"
         component={AddContentScreen}
         options={{
-          headerTitle: <NavHeaderTitle title="Add Content" />,
+          headerTitle: () => <NavHeaderTitle title="Add Content" />,
+          headerBackTitle: "Add Content",
         }}
       />
+      <Stack.Screen name="Add Book" component={AddBookScreen} />
     </Stack.Navigator>
   );
 };

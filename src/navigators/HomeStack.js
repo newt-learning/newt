@@ -25,7 +25,7 @@ const MainStack = () => {
         name="Home"
         component={HomeScreen}
         options={{
-          headerTitle: <NavHeaderTitle title="newt" displayLogo />,
+          headerTitle: () => <NavHeaderTitle title="newt" displayLogo />,
         }}
       />
       <Stack.Screen

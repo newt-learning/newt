@@ -16,7 +16,7 @@ const ProfileStack = () => {
         name="Profile"
         component={ProfileScreen}
         options={{
-          headerTitle: <NavHeaderTitle title="Profile" />
+          headerTitle: () => <NavHeaderTitle title="Profile" />,
         }}
       />
     </Stack.Navigator>
