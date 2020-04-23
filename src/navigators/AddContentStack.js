@@ -23,14 +23,15 @@ const MainStack = () => {
         name="Add Content"
         component={AddContentScreen}
         options={{
+          title: "Add Content",
           headerTitle: () => <NavHeaderTitle title="Add Content" />,
-          headerBackTitle: "Add Content",
         }}
       />
       <Stack.Screen
         name="Add Book"
         component={AddBookScreen}
         options={{
+          title: "Add Book",
           headerTitle: () => <NavHeaderTitle title="Add Book" />,
         }}
       />

@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavHeaderTitle } from "../components/Headers";
 // Screens
 import ProfileScreen from "../screens/ProfileScreen";
+// Design
 import { OFF_WHITE } from "../design/colors";
 
 const Stack = createStackNavigator();
@@ -16,6 +17,7 @@ const ProfileStack = () => {
         name="Profile"
         component={ProfileScreen}
         options={{
+          title: "Profile",
           headerTitle: () => <NavHeaderTitle title="Profile" />,
         }}
       />
