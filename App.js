@@ -1,7 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { AppLoading } from "expo";
 // Context
 import {
   Provider as AuthProvider,
@@ -9,6 +8,8 @@ import {
 } from "./src/context/AuthContext";
 import { Provider as ContentProvider } from "./src/context/ContentContext";
 import { Provider as StatsProvider } from "./src/context/StatsContext";
+// Components
+import Loader from "./src/components/Loader";
 // Stacks
 import MainTabs from "./src/navigators/MainTabs";
 // Screens
@@ -29,7 +30,7 @@ const App = () => {
   }, []);
 
   if (isFetching || !fontLoaded) {
-    return <AppLoading />;
+    return <Loader />;
   }
 
   return (
@@ -45,7 +46,7 @@ const App = () => {
           <Stack.Screen
             name="SignIn"
             component={SignInScreen}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, animationEnabled: false }}
           />
         )}
       </Stack.Navigator>
