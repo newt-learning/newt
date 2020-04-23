@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import _ from "lodash";
 import { Button as ElementButton } from "react-native-elements";
-import ActionButton from "../components/ActionButton";
+import ClearButton from "../components/ClearButton";
 import { MaterialIcons } from "@expo/vector-icons";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
@@ -110,7 +110,7 @@ const UpdateProgressScreen = ({ navigation, route }) => {
     return true;
   };
 
-  const submitUpdatedPagesRead = () => {
+  const submitUpdatedPagesRead = async () => {
     const isValid = validatePagesRead();
     if (isValid) {
       // Set learning update data object
@@ -129,7 +129,7 @@ const UpdateProgressScreen = ({ navigation, route }) => {
 
   // Function that updates pages read to page count and changes shelf to
   // "Finished Learning" when finished book button is pressed
-  const submitFinishBook = () => {
+  const submitFinishBook = async () => {
     // Set learning update data object
     const learningUpdateData = {
       contentId,
@@ -144,6 +144,7 @@ const UpdateProgressScreen = ({ navigation, route }) => {
       dateCompleted: Date.now(),
     });
     createLearningUpdate(learningUpdateData);
+    navigation.goBack();
   };
 
   return (
@@ -166,13 +167,13 @@ const UpdateProgressScreen = ({ navigation, route }) => {
       {errorMessage ? (
         <Text style={styles.errorMessage}>{errorMessage}</Text>
       ) : null}
-      <View style={styles.buttonContainer}>
-        <ActionButton
-          title="I've finished the book"
-          titleStyle={styles.buttonTitle}
-          onPress={submitFinishBook}
-        />
-      </View>
+      <ClearButton
+        title="I've finished the book"
+        titleStyle={styles.buttonTitle}
+        containerStyle={styles.buttonContainer}
+        buttonStyle={{ paddingLeft: 0 }}
+        onPress={submitFinishBook}
+      />
     </ScrollView>
   );
 };
@@ -206,8 +207,8 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   buttonContainer: {
-    marginTop: 40,
-    alignItems: "center",
+    marginTop: 50,
+    alignItems: "flex-start",
   },
   buttonTitle: {
     fontSize: FS16,

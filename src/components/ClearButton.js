@@ -4,11 +4,15 @@ import { Button } from "react-native-elements";
 import { REGULAR, FS14 } from "../design/typography";
 import { BLUE } from "../design/colors";
 
-const ClearButton = ({ title, onPress, containerStyle, titleStyle }) => {
-  const buttonTitleStyle = StyleSheet.compose(
-    styles.buttonTitle,
-    titleStyle
-  );
+const ClearButton = ({
+  title,
+  onPress,
+  containerStyle,
+  titleStyle,
+  buttonStyle: passedButtonStyle,
+}) => {
+  const buttonTitleStyle = StyleSheet.compose(styles.buttonTitle, titleStyle);
+  const buttonStyle = StyleSheet.compose(styles.button, passedButtonStyle);
 
   return (
     <Button
@@ -16,7 +20,7 @@ const ClearButton = ({ title, onPress, containerStyle, titleStyle }) => {
       type="clear"
       onPress={onPress}
       containerStyle={containerStyle}
-      buttonStyle={styles.button}
+      buttonStyle={buttonStyle}
       titleStyle={buttonTitleStyle}
     />
   );
@@ -24,13 +28,13 @@ const ClearButton = ({ title, onPress, containerStyle, titleStyle }) => {
 
 const styles = StyleSheet.create({
   button: {
-    paddingVertical: 2
+    paddingVertical: 2,
   },
   buttonTitle: {
     fontFamily: REGULAR,
     fontSize: FS14,
-    color: BLUE
-  }
+    color: BLUE,
+  },
 });
 
 export default ClearButton;
