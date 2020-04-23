@@ -59,7 +59,7 @@ const StatsVisualsScreen = () => {
       />
       {/* If fetching, show Loader. Otherwise show the Chart component */}
       {isFetching ? (
-        <Loader isLoading={isFetching} />
+        <Loader isLoading={isFetching} backgroundColor={OFF_WHITE} />
       ) : (
         <StatsVizualization
           data={periodStats[periods[selectedButtonIndex]]}

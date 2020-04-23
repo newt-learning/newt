@@ -71,7 +71,7 @@ const BookScreen = ({ navigation, route }) => {
 
   // If fetching data or the in-library-or-not check is ongoing, show Loader
   if (state.isFetching || bookExistsInLibrary === null) {
-    return <Loader isLoading={state.isFetching} />;
+    return <Loader isLoading={state.isFetching} backgroundColor={OFF_WHITE} />;
   }
 
   const {
