@@ -29,9 +29,13 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     initializeShelves(bookInfo.shelf)
   );
 
-  const addBookToLibrary = (selectedShelf) => {
+  const addBookToLibrary = async (selectedShelf) => {
     const data = { ...bookInfo, shelf: selectedShelf, type: "book" };
-    addContent(data);
+    // Send request to add book and then send bookInfo as param in navigation
+    // route to 'BookScreen'. This will allow the Shelf button to change from
+    // 'Add to Library' to whatever shelf was chosen (ex: 'Want to Learn').
+    const newBook = await addContent(data, true);
+    navigation.navigate("BookScreen", { bookInfo: newBook });
   };
   const updateShelf = (selectedShelf) => {
     // If the selected shelf is "Finished Learning", add/update the date
@@ -54,7 +58,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   // Function that decided what to do when the Confirm/Add To Library button is
   // pressed. If coming from the 'Add Content' screen, then add to Library.
   // Otherwise update the shelf of already existing content.
-  onConfirmShelf = (selectedShelf) => {
+  const onConfirmShelf = (selectedShelf) => {
     if (addToLibrary) {
       addBookToLibrary(selectedShelf);
     } else {

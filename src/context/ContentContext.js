@@ -112,7 +112,7 @@ const checkIfBookExistsInLibrary = (dispatch) => async (googleBookId) => {
   }
 };
 
-const addContent = (dispatch) => async (data) => {
+const addContent = (dispatch) => async (data, returnData = false) => {
   try {
     // Indicate request is going to take place
     dispatch(requestContent());
@@ -122,6 +122,13 @@ const addContent = (dispatch) => async (data) => {
     // Update state
     dispatch(addIndividualContent(res.data));
     dispatch(resolveContent());
+
+    // This extra bit is so when a user adds a book to their library, the data
+    // can be then passed as a param to BookScreen in order to change the Shelf
+    // button from 'Add to Library' to whatever shelf they chose.
+    if (returnData) {
+      return res.data;
+    }
   } catch (error) {
     console.error(error);
     dispatch(resolveContent());

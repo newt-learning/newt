@@ -1,4 +1,5 @@
 import React from "react";
+import { Platform } from "react-native";
 import {
   createStackNavigator,
   CardStyleInterpolators,
@@ -12,7 +13,6 @@ import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
 // Design
 import { OFF_WHITE } from "../design/colors";
-import { Platform } from "react-native";
 
 const Stack = createStackNavigator();
 
