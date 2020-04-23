@@ -5,7 +5,7 @@ import { AppLoading } from "expo";
 // Context
 import {
   Provider as AuthProvider,
-  Context as AuthContext
+  Context as AuthContext,
 } from "./src/context/AuthContext";
 import { Provider as ContentProvider } from "./src/context/ContentContext";
 import { Provider as StatsProvider } from "./src/context/StatsContext";
@@ -19,7 +19,7 @@ import useFonts from "./src/hooks/useFonts";
 const App = () => {
   const {
     state: { isFetching, exists },
-    tryLocalSignIn
+    tryLocalSignIn,
   } = useContext(AuthContext);
   const [fontLoaded] = useFonts();
   const Stack = createStackNavigator();

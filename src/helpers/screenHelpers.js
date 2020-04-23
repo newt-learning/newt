@@ -1,28 +1,27 @@
 import _ from "lodash";
-import { navigate } from "../refs/navigationRef";
 
 // Initialize shelves object for single checkbox selection, setting the passed
 // checkedShelf parameter as the shelf that should be checked initially
-export const initializeShelves = checkedShelf => {
+export const initializeShelves = (checkedShelf) => {
   let initialShelves = [
     {
       name: "Currently Learning",
-      checked: false
+      checked: false,
     },
     {
       name: "Want to Learn",
-      checked: false
+      checked: false,
     },
     {
       name: "Finished Learning",
-      checked: false
-    }
+      checked: false,
+    },
   ];
 
   if (checkedShelf) {
     const checkedShelfIndex = _.findIndex(
       initialShelves,
-      shelf => shelf.name === checkedShelf
+      (shelf) => shelf.name === checkedShelf
     );
     initialShelves[checkedShelfIndex].checked = true;
   } else {

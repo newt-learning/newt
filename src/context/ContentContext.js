@@ -1,7 +1,6 @@
 import _ from "lodash";
 import createDataContext from "./createDataContext";
 import newtApi from "../api/newtApi";
-import { navigateBack } from "../refs/navigationRef";
 import {
   updateObjectInArrayById,
   addIfDoesNotExist,

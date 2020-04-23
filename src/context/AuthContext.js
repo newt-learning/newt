@@ -3,7 +3,6 @@ import * as Google from "expo-google-app-auth";
 import firebase from "../config/firebase";
 import newtApi from "../api/newtApi";
 import keys from "../config/keys";
-import { navigate } from "../refs/navigationRef";
 
 // Action constants
 const REQUEST_SIGN_IN = "REQUEST_SIGN_IN";
@@ -25,14 +24,14 @@ const authReducer = (state, action) => {
         isFetching: false,
         userInfo: action.payload,
         exists: true,
-        errorMessage: ""
+        errorMessage: "",
       };
     case REMOVE_AUTHED_USER:
       return {
         ...state,
         isFetching: false,
         userInfo: null,
-        exists: false
+        exists: false,
       };
     case SET_ERROR:
       return { ...state, errorMessage: action.payload };
@@ -48,25 +47,25 @@ const requestSignIn = () => {
 const resolveSignIn = () => {
   return { type: RESOLVE_SIGN_IN };
 };
-const setAuthedUser = payload => {
+const setAuthedUser = (payload) => {
   return { type: SET_AUTHED_USER, payload };
 };
 const removeAuthedUser = () => {
   return { type: REMOVE_AUTHED_USER };
 };
-const setError = payload => {
+const setError = (payload) => {
   return { type: SET_ERROR, payload };
 };
 
 // Authenticate with Google through a popup
-const authenticateWithGoogle = dispatch => async () => {
+const authenticateWithGoogle = (dispatch) => async () => {
   try {
     // Request sign in (begin async sign in process)
     dispatch(requestSignIn());
 
     const result = await Google.logInAsync({
       iosClientId: keys.googleIosClientId,
-      androidClientId: keys.googleAndroidClientId
+      androidClientId: keys.googleAndroidClientId,
     });
 
     if (result.type === "success") {
@@ -79,14 +78,14 @@ const authenticateWithGoogle = dispatch => async () => {
       firebase
         .auth()
         .signInWithCredential(credential)
-        .then(async res => {
+        .then(async (res) => {
           const { user } = res;
 
           // Take only currently necessary info from user object
           const userInfo = {
             _id: user.uid,
             displayName: user.displayName,
-            email: user.email
+            email: user.email,
           };
 
           // Request to create user if doesn't exist, or send back existing user
@@ -95,11 +94,8 @@ const authenticateWithGoogle = dispatch => async () => {
 
           // Set user info to state
           dispatch(setAuthedUser(dbRes.data));
-
-          // Navigate to Home screen
-          navigate("Home");
         })
-        .catch(error => {
+        .catch((error) => {
           dispatch(resolveSignIn());
           dispatch(setError("There was an error while signing in."));
         });
@@ -113,35 +109,28 @@ const authenticateWithGoogle = dispatch => async () => {
   }
 };
 
-// Function to check if the user is already signed in on the device. Go to Home
-// screen if signed in, otherwise Sign In screen
-const tryLocalSignIn = dispatch => async () => {
-  await firebase.auth().onAuthStateChanged(user => {
+// Function to check if the user is already signed in on the device.
+const tryLocalSignIn = (dispatch) => async () => {
+  await firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       dispatch(requestSignIn());
 
       // Get user info from db
       newtApi
         .get(`/user/${user.uid}`)
-        .then(res => dispatch(setAuthedUser(res.data)))
-        .catch(error => {
+        .then((res) => dispatch(setAuthedUser(res.data)))
+        .catch((error) => {
           dispatch(resolveSignIn());
         });
-
-      // Navigate to Home screen
-      // navigate("Home");
     } else {
       dispatch(removeAuthedUser());
-      // navigate("SignIn");
     }
   });
 };
 
-const signOut = dispatch => async () => {
+const signOut = (dispatch) => async () => {
   await firebase.auth().signOut();
   dispatch(removeAuthedUser());
-  // Navigate to sign in screen
-  navigate("SignIn");
 };
 
 export const { Provider, Context } = createDataContext(
