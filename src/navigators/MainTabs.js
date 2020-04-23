@@ -5,6 +5,7 @@ import { Feather } from "@expo/vector-icons";
 import HomeStack from "./HomeStack";
 import MyLibraryStack from "./MyLibraryStack";
 import AddContentStack from "./AddContentStack";
+import StatsStack from "./StatsStack";
 import ProfileStack from "./ProfileStack";
 // Design
 import { NEWT_BLUE, OFF_BLACK, OFF_WHITE } from "../design/colors";
@@ -46,6 +47,15 @@ const MainTabs = () => {
         options={{
           tabBarIcon: ({ color }) => (
             <Feather name="plus-square" color={color} size={20} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Stats"
+        component={StatsStack}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Feather name="bar-chart" color={color} size={20} />
           ),
         }}
       />

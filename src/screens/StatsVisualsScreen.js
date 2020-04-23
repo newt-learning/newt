@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, Platform } from "react-native";
+import { View, StyleSheet } from "react-native";
 // Context
 import { Context as StatsContext } from "../context/StatsContext";
 // Components
 import ButtonGroup from "../components/ButtonGroup";
-import { NavHeaderTitle } from "../components/Headers";
 import BarChart from "../components/StatsBarChart";
 import Loader from "../components/Loader";
 import StatsSummaryCard from "../components/StatsSummaryCard";
@@ -20,7 +19,7 @@ const StatsVizualization = ({ data, selectedButtonIndex }) => {
 
   // For the day visual, show a summary card for each content type. Otherwise for the rest, show the bar chart
   if (selectedButtonIndex === 0) {
-    return data.map(item => {
+    return data.map((item) => {
       const sentence = `${item.value} ${item.unit} today.`;
       return (
         <StatsSummaryCard
@@ -41,7 +40,7 @@ const StatsVisualsScreen = () => {
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(1);
   const {
     state: { isFetching, periodStats },
-    fetchStatsByPeriod
+    fetchStatsByPeriod,
   } = useContext(StatsContext);
   const buttons = ["D", "W", "M", "Y"];
   const periods = ["day", "week", "month", "year"];
@@ -71,31 +70,19 @@ const StatsVisualsScreen = () => {
   );
 };
 
-StatsVisualsScreen.navigationOptions = ({ navigation }) => {
-  // Get title from params
-  const { title } = navigation.state.params;
-
-  return {
-    headerTitle:
-      Platform.OS === "ios" ? <NavHeaderTitle title={title} /> : title,
-    headerStyle: {
-      backgroundColor: OFF_WHITE
-    }
-  };
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 10
+    backgroundColor: OFF_WHITE,
+    paddingTop: 10,
   },
   buttonGroup: {
-    marginHorizontal: 15
+    marginHorizontal: 15,
   },
   chart: {
     marginTop: 20,
-    marginHorizontal: 15
-  }
+    marginHorizontal: 15,
+  },
 });
 
 export default StatsVisualsScreen;
