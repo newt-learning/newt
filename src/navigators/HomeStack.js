@@ -1,16 +1,13 @@
 import React from "react";
-import { Platform } from "react-native";
-import {
-  createStackNavigator,
-  CardStyleInterpolators,
-} from "@react-navigation/stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import { NavHeaderTitle } from "../components/Headers";
-import { MaterialIcons } from "@expo/vector-icons";
 // Screens
 import HomeScreen from "../screens/HomeScreen";
 import BookScreen from "../screens/BookScreen";
 import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
+// Helpers
+import SCREEN_OPTIONS from "./screenOptions";
 // Design
 import { OFF_WHITE } from "../design/colors";
 
@@ -61,18 +58,7 @@ const RootStack = () => {
         component={UpdateProgressScreen}
         options={{
           title: "Update Progress",
-          headerStatusBarHeight: 15, // Reduce default height
-          headerBackTitle: "Cancel",
-          headerBackTitleStyle: { paddingLeft: 15 },
-          headerBackImage: () => {
-            // For iOS, don't show 'Back' chevron icon (show nothing). For
-            // Android, show 'Close' icon
-            return Platform.OS === "ios" ? null : (
-              <MaterialIcons name="close" size={24} />
-            );
-          },
-          cardOverlayEnabled: true,
-          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+          ...SCREEN_OPTIONS.presentationModalOptions,
         }}
       />
     </Stack.Navigator>
