@@ -20,7 +20,19 @@ const BarChart = ({ data, period, containerStyle }) => {
   const chartMargin = 25;
   const graphHeight = SVGHeight - 2 * chartMargin;
   const graphWidth = SVGWidth - 2 * chartMargin;
-  const barWidth = 16;
+  // Change bar width based on period (so they're more clear)
+  const getBarWidth = (period) => {
+    switch (period) {
+      case "week":
+        return 18;
+      case "month":
+        return 7;
+      case "year":
+        return 14;
+      default:
+        return 10;
+    }
+  };
 
   // X Scale
   const xDomain = data.map((item) => item.x);
@@ -139,10 +151,10 @@ const BarChart = ({ data, period, containerStyle }) => {
             data.map((item) => (
               <Rect
                 key={item.x}
-                x={scaleX(item.x) - barWidth / 2}
+                x={scaleX(item.x) - getBarWidth(period) / 2}
                 y={scaleY(item.y) * -1}
                 rx={4}
-                width={barWidth}
+                width={getBarWidth(period)}
                 height={scaleY(item.y)}
                 fill={BLUE}
               />
