@@ -4,14 +4,14 @@ import { View, StyleSheet } from "react-native";
 import { Context as StatsContext } from "../context/StatsContext";
 // Components
 import ButtonGroup from "../components/ButtonGroup";
-import OldBarChart from "../components/StatsBarChart";
+import BarChart from "../components/StatsBarChart";
 import Loader from "../components/Loader";
 import StatsSummaryCard from "../components/StatsSummaryCard";
 // Design
 import { OFF_WHITE, GRAY_5 } from "../design/colors";
 
 // Main component to show in screen under Button Group
-const StatsVizualization = ({ data, selectedButtonIndex }) => {
+const StatsVizualization = ({ data, selectedButtonIndex, period }) => {
   // If selectedButtonIndex is out of range for whatever reason (it should never be), return nothing
   if (selectedButtonIndex < 0 || selectedButtonIndex >= 4) {
     return null;
@@ -32,8 +32,9 @@ const StatsVizualization = ({ data, selectedButtonIndex }) => {
       );
     });
   } else {
-    // return <NewBarChart data={data} />;
-    return <OldBarChart data={data} containerStyle={styles.chart} />;
+    return (
+      <BarChart data={data} period={period} containerStyle={styles.chart} />
+    );
   }
 };
 
@@ -65,6 +66,7 @@ const StatsVisualsScreen = () => {
         <StatsVizualization
           data={periodStats[periods[selectedButtonIndex]]}
           selectedButtonIndex={selectedButtonIndex}
+          period={periods[selectedButtonIndex]}
         />
       )}
     </View>

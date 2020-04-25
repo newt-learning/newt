@@ -5,7 +5,7 @@ import _ from "lodash";
 import { scalePoint, scaleLinear } from "d3-scale";
 import { GRAY_3, BLUE, GRAY_2, GRAY_1 } from "../design/colors";
 
-const BarChart = ({ data, containerStyle }) => {
+const BarChart = ({ data, period, containerStyle }) => {
   // Temp. fix. Need to figure out the loading error in StatsContext where the data is being fetched.
   if (_.isEmpty(data)) {
     return null;
@@ -37,6 +37,40 @@ const BarChart = ({ data, containerStyle }) => {
 
   // Middle Label
   const middleValue = niceMaxVal / 2;
+
+  // Component that displays the x-axis labels depending on the period.
+  const XAxisLabels = ({ period, data }) => {
+    // Component for label
+    const XAxisLabel = ({ value }) => (
+      <Text
+        fontSize="12"
+        fill={GRAY_1}
+        x={scaleX(value)}
+        y="16"
+        textAnchor="middle"
+      >
+        {value}
+      </Text>
+    );
+
+    // If the period chosen is "month", then to avoid crowding the x-axis with
+    // 28-31 labels, only show the first day of the month (1) and then days
+    // divisible by 5 (5, 10, 15, ...).
+    if (period === "month") {
+      return data.map((item) => {
+        const dayNum = Number(item.x);
+
+        if (dayNum === 1 || dayNum % 5 === 0) {
+          return <XAxisLabel value={item.x} key={`Label ${item.x}`} />;
+        }
+      });
+    } else {
+      // Otherwise show all of them
+      return data.map((item) => (
+        <XAxisLabel value={item.x} key={`Label ${item.x}`} />
+      ));
+    }
+  };
 
   return (
     <View style={containerStyle}>
@@ -111,18 +145,7 @@ const BarChart = ({ data, containerStyle }) => {
             strokeWidth="1"
           />
           {/* X-axis labels */}
-          {data.map((item) => (
-            <Text
-              key={`Label ${item.x}`}
-              fontSize="12"
-              fill={GRAY_1}
-              x={scaleX(item.x)}
-              y="16"
-              textAnchor="middle"
-            >
-              {item.x}
-            </Text>
-          ))}
+          <XAxisLabels period={period} data={data} />
         </G>
       </Svg>
     </View>
