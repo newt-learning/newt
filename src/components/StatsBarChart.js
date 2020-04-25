@@ -41,7 +41,7 @@ const BarChart = ({ data, period, containerStyle }) => {
   // Component that displays the x-axis labels depending on the period.
   const XAxisLabels = ({ period, data }) => {
     // Component for label
-    const XAxisLabel = ({ value }) => (
+    const XAxisLabel = ({ value, label = value }) => (
       <Text
         fontSize="12"
         fill={GRAY_1}
@@ -49,7 +49,7 @@ const BarChart = ({ data, period, containerStyle }) => {
         y="16"
         textAnchor="middle"
       >
-        {value}
+        {label}
       </Text>
     );
 
@@ -64,6 +64,18 @@ const BarChart = ({ data, period, containerStyle }) => {
           return <XAxisLabel value={item.x} key={`Label ${item.x}`} />;
         }
       });
+    } else if (period === "year") {
+      // If the period chosen is "year", then make the label just the month's
+      // initial (J, F, M, ...) to reduce crowding. The reason the item object's
+      // x value isn't that to begin with is because then the list keys get
+      // messed up (multiple Js, Ms, etc.)
+      return data.map((item) => (
+        <XAxisLabel
+          value={item.x}
+          label={item["x"][0]}
+          key={`Label ${item.x}`}
+        />
+      ));
     } else {
       // Otherwise show all of them
       return data.map((item) => (
