@@ -13,7 +13,7 @@ const StatsScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const {
     state: { isFetching, summaryStats },
-    fetchSummaryStats
+    fetchSummaryStats,
   } = useContext(StatsContext);
 
   // Fetch summary stats
@@ -58,12 +58,12 @@ const StatsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: GRAY_5
+    backgroundColor: GRAY_5,
   },
   title: {
     marginTop: 20,
-    marginHorizontal: 15
-  }
+    marginHorizontal: 15,
+  },
 });
 
 export default StatsScreen;

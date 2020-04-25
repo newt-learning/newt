@@ -4,7 +4,7 @@ import { View, StyleSheet } from "react-native";
 import { Context as StatsContext } from "../context/StatsContext";
 // Components
 import ButtonGroup from "../components/ButtonGroup";
-import BarChart from "../components/StatsBarChart";
+import OldBarChart from "../components/StatsBarChart";
 import Loader from "../components/Loader";
 import StatsSummaryCard from "../components/StatsSummaryCard";
 // Design
@@ -32,7 +32,8 @@ const StatsVizualization = ({ data, selectedButtonIndex }) => {
       );
     });
   } else {
-    return <BarChart data={data} containerStyle={styles.chart} />;
+    // return <NewBarChart data={data} />;
+    return <OldBarChart data={data} containerStyle={styles.chart} />;
   }
 };
 
