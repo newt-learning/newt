@@ -1,11 +1,14 @@
 import React, { useEffect, useContext, useCallback, useState } from "react";
 import { View, ScrollView, StyleSheet, RefreshControl } from "react-native";
+import _ from "lodash";
 // Context
 import { Context as StatsContext } from "../context/StatsContext";
+import { Context as ContentContext } from "../context/ContentContext";
 // Components
 import { H2 } from "../components/shared/Headers";
 import StatsSummaryCard from "../components/Stats/StatsSummaryCard";
 import Loader from "../components/shared/Loader";
+import NoContentMessage from "../components/shared/NoContentMessage";
 // Design
 import { GRAY_5 } from "../design/colors";
 
@@ -15,6 +18,9 @@ const StatsScreen = ({ navigation }) => {
     state: { isFetching, summaryStats },
     fetchSummaryStats,
   } = useContext(StatsContext);
+  const {
+    state: { items },
+  } = useContext(ContentContext);
 
   // Fetch summary stats
   useEffect(() => {
@@ -32,6 +38,12 @@ const StatsScreen = ({ navigation }) => {
   // then show the full screen loader.
   if (isFetching && !refreshing) {
     return <Loader isLoading={isFetching} />;
+  }
+
+  // If there's no data and it's not currently being fetched, show the "No Content"
+  // message
+  if (!isFetching && _.isEmpty(items)) {
+    return <NoContentMessage />;
   }
 
   return (

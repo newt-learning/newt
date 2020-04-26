@@ -7,6 +7,7 @@ import { Context as ContentContext } from "../context/ContentContext";
 import Shelf from "../components/MyLibrary/Shelf";
 import Loader from "../components/shared/Loader";
 import ErrorMessage from "../components/shared/ErrorMessage";
+import NoContentMessage from "../components/shared/NoContentMessage";
 // Design
 import { GRAY_5 } from "../design/colors";
 
@@ -33,6 +34,12 @@ const MyLibraryScreen = ({ navigation }) => {
   // If there's an error message display error message screen
   if (errorMessage) {
     return <ErrorMessage message={errorMessage} />;
+  }
+
+  // If there's no data and it's not currently being fetched, show the "No Content"
+  // message
+  if (!isFetching && _.isEmpty(items)) {
+    return <NoContentMessage />;
   }
 
   const currentlyLearningItems = filterAndOrderContentByShelf(
