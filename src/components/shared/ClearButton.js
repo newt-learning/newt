@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
-import { REGULAR, FS14 } from "../design/typography";
-import { BLUE } from "../design/colors";
+import { REGULAR, FS14 } from "../../design/typography";
+import { BLUE } from "../../design/colors";
 
 const ClearButton = ({
   title,

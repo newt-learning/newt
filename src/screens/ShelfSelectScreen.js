@@ -5,8 +5,8 @@ import _ from "lodash";
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
 import ShelfSelect from "../components/Content/ShelfSelect";
-import ActionButton from "../components/ActionButton";
-import ClearButton from "../components/ClearButton";
+import ActionButton from "../components/shared/ActionButton";
+import ClearButton from "../components/shared/ClearButton";
 // Hooks
 import useSingleCheckbox from "../hooks/useSingleCheckbox";
 // Styling

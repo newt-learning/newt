@@ -1,6 +1,6 @@
 import React from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
-import { GRAY_5, NEWT_BLUE } from "../design/colors";
+import { GRAY_5, NEWT_BLUE } from "../../design/colors";
 
 const Loader = ({ isLoading, backgroundColor = GRAY_5 }) => {
   const containerStyle = StyleSheet.flatten([

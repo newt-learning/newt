@@ -3,10 +3,10 @@ import { View, Text, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 // Components
-import ActionButton from "../ActionButton";
+import ActionButton from "../shared/ActionButton";
 import ChangeShelfButton from "./ChangeShelfButton";
-import ClearButton from "../ClearButton";
-import ProgressBar from "../ProgressBar";
+import ClearButton from "../shared/ClearButton";
+import ProgressBar from "../shared/ProgressBar";
 // Styling
 import { GRAY_4, GRAY_2 } from "../../design/colors";
 import { REGULAR, FS12 } from "../../design/typography";
@@ -21,7 +21,7 @@ const UserInteractionSection = ({
   pagesRead,
   pageCount,
   dateAdded,
-  dateCompleted
+  dateCompleted,
 }) => {
   const navigation = useNavigation();
 
@@ -40,7 +40,7 @@ const UserInteractionSection = ({
               navigation.navigate("UpdateProgress", {
                 contentId,
                 pagesRead,
-                pageCount
+                pageCount,
               })
             }
           />
@@ -73,7 +73,7 @@ const ActionSection = ({
   pagesRead,
   dateAdded,
   dateCompleted,
-  onPress
+  onPress,
 }) => {
   return (
     <View style={styles.container}>
@@ -101,18 +101,18 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: "center",
     borderBottomWidth: 1,
-    borderColor: GRAY_4
+    borderColor: GRAY_4,
   },
   progressBar: {
-    marginTop: 15
+    marginTop: 15,
   },
   dateInfoText: {
     fontFamily: REGULAR,
     fontSize: FS12,
     color: GRAY_2,
     marginTop: 8,
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
 
 export default ActionSection;

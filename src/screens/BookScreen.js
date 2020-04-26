@@ -7,7 +7,7 @@ import TitleSection from "../components/Content/TitleSection";
 import ActionSection from "../components/Content/ActionSection";
 import Description from "../components/Content/Description";
 import BookInformationSection from "../components/Content/BookInformationSection";
-import Loader from "../components/Loader";
+import Loader from "../components/shared/Loader";
 import { OFF_WHITE } from "../design/colors";
 
 const BookScreen = ({ navigation, route }) => {

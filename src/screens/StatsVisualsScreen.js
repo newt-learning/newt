@@ -3,10 +3,10 @@ import { View, StyleSheet } from "react-native";
 // Context
 import { Context as StatsContext } from "../context/StatsContext";
 // Components
-import ButtonGroup from "../components/ButtonGroup";
-import BarChart from "../components/StatsBarChart";
-import Loader from "../components/Loader";
-import StatsSummaryCard from "../components/StatsSummaryCard";
+import ButtonGroup from "../components/shared/ButtonGroup";
+import BarChart from "../components/Stats/StatsBarChart";
+import Loader from "../components/shared/Loader";
+import StatsSummaryCard from "../components/Stats/StatsSummaryCard";
 // Design
 import { OFF_WHITE, GRAY_5 } from "../design/colors";
 

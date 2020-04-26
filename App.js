@@ -9,7 +9,7 @@ import {
 import { Provider as ContentProvider } from "./src/context/ContentContext";
 import { Provider as StatsProvider } from "./src/context/StatsContext";
 // Components
-import Loader from "./src/components/Loader";
+import Loader from "./src/components/shared/Loader";
 // Stacks
 import MainTabs from "./src/navigators/MainTabs";
 // Screens

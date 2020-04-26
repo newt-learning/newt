@@ -3,7 +3,7 @@ import { View, Dimensions } from "react-native";
 import Svg, { G, Rect, Line, Text } from "react-native-svg";
 import _ from "lodash";
 import { scalePoint, scaleLinear } from "d3-scale";
-import { GRAY_3, BLUE, GRAY_2, GRAY_1 } from "../design/colors";
+import { GRAY_3, BLUE, GRAY_2, GRAY_1 } from "../../design/colors";
 
 const BarChart = ({ data, period, containerStyle }) => {
   // Temp. fix. Need to figure out the loading error in StatsContext where the data is being fetched.

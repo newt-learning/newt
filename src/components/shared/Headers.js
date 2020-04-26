@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, Platform } from "react-native";
 // Styling
-import { BOLD, FS32, FS24, FS18 } from "../design/typography";
-import { OFF_BLACK } from "../design/colors";
+import { BOLD, FS32, FS24, FS18 } from "../../design/typography";
+import { OFF_BLACK } from "../../design/colors";
 
 // Title for navigation header
 export const NavHeaderTitle = ({ title, displayLogo }) => (
@@ -28,22 +28,22 @@ const styles = StyleSheet.create({
     fontFamily: BOLD,
     color: OFF_BLACK,
     fontSize: FS18,
-    paddingLeft: Platform.OS === "ios" ? 0 : 15
+    paddingLeft: Platform.OS === "ios" ? 0 : 15,
   },
   logo: {
     fontFamily: "Righteous",
     color: OFF_BLACK,
     fontSize: FS24,
-    letterSpacing: 1
+    letterSpacing: 1,
   },
   h1: {
     fontFamily: BOLD,
     fontSize: FS32,
-    color: OFF_BLACK
+    color: OFF_BLACK,
   },
   h2: {
     fontFamily: BOLD,
     fontSize: FS24,
-    color: OFF_BLACK
-  }
+    color: OFF_BLACK,
+  },
 });

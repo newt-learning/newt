@@ -2,7 +2,7 @@ import React from "react";
 import { Platform } from "react-native";
 import { StyleSheet } from "react-native";
 import { SearchBar as ElementSearchBar } from "react-native-elements";
-import { GRAY_5, GRAY_1, OFF_WHITE } from "../design/colors";
+import { GRAY_5, GRAY_1, OFF_WHITE } from "../../design/colors";
 
 const SearchBar = ({ placeholderText, onChange, value, onClear }) => {
   return (

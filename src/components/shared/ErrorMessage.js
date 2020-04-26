@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { GRAY_5, GRAY_2 } from "../design/colors";
-import { REGULAR, FS14 } from "../design/typography";
+import { GRAY_5, GRAY_2 } from "../../design/colors";
+import { REGULAR, FS14 } from "../../design/typography";
 
 const ErrorMessage = ({ message }) => {
   return (
@@ -17,14 +17,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: GRAY_5,
-    paddingHorizontal: 40
+    paddingHorizontal: 40,
   },
   text: {
     fontFamily: REGULAR,
     fontSize: FS14,
     color: GRAY_2,
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
 
 export default ErrorMessage;

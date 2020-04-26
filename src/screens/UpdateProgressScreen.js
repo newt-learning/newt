@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import _ from "lodash";
 import { Button as ElementButton } from "react-native-elements";
-import ClearButton from "../components/ClearButton";
+import ClearButton from "../components/shared/ClearButton";
 import { MaterialIcons } from "@expo/vector-icons";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";

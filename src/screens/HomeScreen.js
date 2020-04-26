@@ -4,24 +4,24 @@ import _ from "lodash";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
-import { H1 } from "../components/Headers";
-import Loader from "../components/Loader";
-import ErrorMessage from "../components/ErrorMessage";
-import HomeContentCard from "../components/HomeContentCard";
-import ClearButton from "../components/ClearButton";
+import { H1 } from "../components/shared/Headers";
+import Loader from "../components/shared/Loader";
+import ErrorMessage from "../components/shared/ErrorMessage";
+import HomeContentCard from "../components/Home/HomeContentCard";
+import ClearButton from "../components/shared/ClearButton";
 // Styling
 import { SEMIBOLD, REGULAR, FS20, FS16, FS14 } from "../design/typography";
 import { GRAY_2, GRAY_5, NEWT_BLUE } from "../design/colors";
 // Helpers
 import {
   calculatePercentComplete,
-  handleContentNavigation
+  handleContentNavigation,
 } from "../helpers/screenHelpers";
 
 const HomeScreen = ({ navigation }) => {
   const {
     state: { isFetching, items, errorMessage },
-    fetchContent
+    fetchContent,
   } = useContext(ContentContext);
 
   // Fetch content data
@@ -80,7 +80,7 @@ const HomeScreen = ({ navigation }) => {
   // Filter out only items in "Currently Learning" shelf
   const inProgressContent = _.filter(
     items,
-    item => item.shelf === "Currently Learning"
+    (item) => item.shelf === "Currently Learning"
   );
   // Then order the filtered content by descending order of when it was last updated (latest to oldest)
   const orderedInProgressContent = _.orderBy(
@@ -92,7 +92,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <FlatList
       data={orderedInProgressContent}
-      keyExtractor={item => item._id}
+      keyExtractor={(item) => item._id}
       renderItem={({ item }) => (
         <HomeContentCard
           title={item.name}
@@ -118,37 +118,37 @@ const HomeScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: GRAY_5
+    backgroundColor: GRAY_5,
   },
   title: {
     marginTop: 20,
-    marginHorizontal: 15
+    marginHorizontal: 15,
   },
   noContentContainer: {
     flex: 1,
     backgroundColor: GRAY_5,
     paddingHorizontal: 40,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   noContentHeader: {
     fontFamily: SEMIBOLD,
-    fontSize: FS20
+    fontSize: FS20,
   },
   noContentText: {
     fontFamily: REGULAR,
     fontSize: FS16,
     color: GRAY_2,
     marginTop: 5,
-    textAlign: "center"
+    textAlign: "center",
   },
   noCurrentContentText: {
     fontFamily: REGULAR,
     fontSize: FS16,
     color: GRAY_2,
     marginTop: 10,
-    marginHorizontal: 15
-  }
+    marginHorizontal: 15,
+  },
 });
 
 export default HomeScreen;

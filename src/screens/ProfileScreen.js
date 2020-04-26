@@ -2,8 +2,8 @@ import React, { useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 // Components
-import ClearButton from "../components/ClearButton";
-import { H2 } from "../components/Headers";
+import ClearButton from "../components/shared/ClearButton";
+import { H2 } from "../components/shared/Headers";
 // Context
 import { Context as AuthContext } from "../context/AuthContext";
 // Styling
@@ -13,7 +13,7 @@ import { FS18, SEMIBOLD } from "../design/typography";
 const ProfileScreen = () => {
   const {
     state: { userInfo },
-    signOut
+    signOut,
   } = useContext(AuthContext);
 
   if (userInfo === null) {
@@ -45,11 +45,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingTop: 50,
-    paddingBottom: 50
+    paddingBottom: 50,
   },
   userInfoContainer: {
-    alignItems: "center"
-  }
+    alignItems: "center",
+  },
 });
 
 export default ProfileScreen;

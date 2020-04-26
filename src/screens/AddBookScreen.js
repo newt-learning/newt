@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, FlatList, Text } from "react-native";
 // Components
-import SearchBar from "../components/SearchBar";
+import SearchBar from "../components/shared/SearchBar";
 import ContentListCard from "../components/ContentListCard";
 // API
 import { getBookInfo } from "../api/googleBooksApi";

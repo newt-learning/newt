@@ -12,12 +12,12 @@ import { useNavigation } from "@react-navigation/native";
 import _ from "lodash";
 import { Feather } from "@expo/vector-icons";
 // Components
-import { H2 } from "../components/Headers";
+import { H2 } from "../shared/Headers";
 // Styling
-import { REGULAR, SEMIBOLD, FS14 } from "../design/typography";
-import { OFF_BLACK, GRAY_2, GRAY_4, OFF_WHITE } from "../design/colors";
+import { REGULAR, SEMIBOLD, FS14 } from "../../design/typography";
+import { OFF_BLACK, GRAY_2, GRAY_4, OFF_WHITE } from "../../design/colors";
 // Helpers
-import { handleContentNavigation } from "../helpers/screenHelpers";
+import { handleContentNavigation } from "../../helpers/screenHelpers";
 
 const SeeAllCard = ({ onPress }) => (
   <TouchableHighlight

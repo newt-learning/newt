@@ -4,20 +4,20 @@ import _ from "lodash";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
-import Shelf from "../components/Shelf";
-import Loader from "../components/Loader";
-import ErrorMessage from "../components/ErrorMessage";
+import Shelf from "../components/MyLibrary/Shelf";
+import Loader from "../components/shared/Loader";
+import ErrorMessage from "../components/shared/ErrorMessage";
 // Design
 import { GRAY_5 } from "../design/colors";
 
 const MyLibraryScreen = ({ navigation }) => {
   const {
     state: { isFetching, items, errorMessage },
-    fetchContent
+    fetchContent,
   } = useContext(ContentContext);
 
-  const filterAndOrderContentByShelf = shelf => {
-    const filteredContent = _.filter(items, item => item.shelf === shelf);
+  const filterAndOrderContentByShelf = (shelf) => {
+    const filteredContent = _.filter(items, (item) => item.shelf === shelf);
     return _.orderBy(filteredContent, "lastUpdated", "desc");
   };
 
@@ -51,7 +51,7 @@ const MyLibraryScreen = ({ navigation }) => {
         numItems={currentlyLearningItems.length}
         onPressTitle={() =>
           navigation.navigate("IndividualShelf", {
-            title: "Currently Learning"
+            title: "Currently Learning",
           })
         }
       />
@@ -61,7 +61,7 @@ const MyLibraryScreen = ({ navigation }) => {
         numItems={wantToLearnItems.length}
         onPressTitle={() =>
           navigation.navigate("IndividualShelf", {
-            title: "Want to Learn"
+            title: "Want to Learn",
           })
         }
       />
@@ -71,7 +71,7 @@ const MyLibraryScreen = ({ navigation }) => {
         numItems={finishedLearningItems.length}
         onPressTitle={() =>
           navigation.navigate("IndividualShelf", {
-            title: "Finished Learning"
+            title: "Finished Learning",
           })
         }
       />
@@ -82,8 +82,8 @@ const MyLibraryScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: GRAY_5
-  }
+    backgroundColor: GRAY_5,
+  },
 });
 
 export default MyLibraryScreen;

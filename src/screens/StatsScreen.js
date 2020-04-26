@@ -3,9 +3,9 @@ import { View, ScrollView, StyleSheet, RefreshControl } from "react-native";
 // Context
 import { Context as StatsContext } from "../context/StatsContext";
 // Components
-import { H2 } from "../components/Headers";
-import StatsSummaryCard from "../components/StatsSummaryCard";
-import Loader from "../components/Loader";
+import { H2 } from "../components/shared/Headers";
+import StatsSummaryCard from "../components/Stats/StatsSummaryCard";
+import Loader from "../components/shared/Loader";
 // Design
 import { GRAY_5 } from "../design/colors";
 

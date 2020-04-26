@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 // Components
-import { NavHeaderTitle } from "../components/Headers";
+import { NavHeaderTitle } from "../components/shared/Headers";
 // Screens
 import StatsScreen from "../screens/StatsScreen";
 import StatsVisualsScreen from "../screens/StatsVisualsScreen";

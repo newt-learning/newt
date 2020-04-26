@@ -2,15 +2,15 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
 import { Feather } from "@expo/vector-icons";
 // Design
-import { OFF_WHITE, BLUE, GRAY_1, GRAY_4 } from "../design/colors";
-import { SEMIBOLD, FS18, FS16 } from "../design/typography";
+import { OFF_WHITE, BLUE, GRAY_1, GRAY_4 } from "../../design/colors";
+import { SEMIBOLD, FS18, FS16 } from "../../design/typography";
 
 const StatsSummaryCard = ({
   contentType,
   summarySentence,
   onPress,
   cardStyle: passedCardStyle,
-  showChevron = true
+  showChevron = true,
 }) => {
   const cardStyle = StyleSheet.flatten([styles.card, passedCardStyle]);
 
@@ -43,25 +43,25 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: 15,
     backgroundColor: OFF_WHITE,
-    borderRadius: 10
+    borderRadius: 10,
   },
   statsTitleContainer: {
     alignItems: "center",
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   statsTitle: {
     fontFamily: SEMIBOLD,
     fontSize: FS18,
     color: BLUE,
-    marginLeft: 5
+    marginLeft: 5,
   },
   summary: {
     fontFamily: SEMIBOLD,
     fontSize: FS16,
     color: GRAY_1,
-    marginTop: 15
-  }
+    marginTop: 15,
+  },
 });
 
 export default StatsSummaryCard;

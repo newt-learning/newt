@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { NavHeaderTitle } from "../components/Headers";
+import { NavHeaderTitle } from "../components/shared/Headers";
 // Screens
 import ProfileScreen from "../screens/ProfileScreen";
 // Design
