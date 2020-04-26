@@ -7,14 +7,25 @@ import ButtonGroup from "../components/shared/ButtonGroup";
 import BarChart from "../components/Stats/StatsBarChart";
 import Loader from "../components/shared/Loader";
 import StatsSummaryCard from "../components/Stats/StatsSummaryCard";
+import ErrorMessage from "../components/shared/ErrorMessage";
 // Design
 import { OFF_WHITE, GRAY_5 } from "../design/colors";
 
 // Main component to show in screen under Button Group
-const StatsVizualization = ({ data, selectedButtonIndex, period }) => {
+const StatsVizualization = ({
+  data,
+  selectedButtonIndex,
+  period,
+  errorMessage,
+}) => {
   // If selectedButtonIndex is out of range for whatever reason (it should never be), return nothing
   if (selectedButtonIndex < 0 || selectedButtonIndex >= 4) {
     return null;
+  }
+
+  // If there's an error message display error message screen
+  if (errorMessage) {
+    return <ErrorMessage message={errorMessage} backgroundColor={OFF_WHITE} />;
   }
 
   // For the day visual, show a summary card for each content type. Otherwise for the rest, show the bar chart
@@ -41,7 +52,7 @@ const StatsVizualization = ({ data, selectedButtonIndex, period }) => {
 const StatsVisualsScreen = () => {
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(1);
   const {
-    state: { isFetching, periodStats },
+    state: { isFetching, periodStats, errorMessage },
     fetchStatsByPeriod,
   } = useContext(StatsContext);
   const buttons = ["D", "W", "M", "Y"];
@@ -67,6 +78,7 @@ const StatsVisualsScreen = () => {
           data={periodStats[periods[selectedButtonIndex]]}
           selectedButtonIndex={selectedButtonIndex}
           period={periods[selectedButtonIndex]}
+          errorMessage={errorMessage}
         />
       )}
     </View>

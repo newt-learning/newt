@@ -3,9 +3,13 @@ import { View, Text, StyleSheet } from "react-native";
 import { GRAY_5, GRAY_2 } from "../../design/colors";
 import { REGULAR, FS14 } from "../../design/typography";
 
-const ErrorMessage = ({ message }) => {
+const ErrorMessage = ({ message, backgroundColor = GRAY_5 }) => {
+  const containerStyle = StyleSheet.compose(styles.container, {
+    backgroundColor,
+  });
+
   return (
-    <View style={styles.container}>
+    <View style={containerStyle}>
       <Text style={styles.text}>{message}</Text>
     </View>
   );
@@ -16,7 +20,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: GRAY_5,
     paddingHorizontal: 40,
   },
   text: {

@@ -9,13 +9,14 @@ import { H2 } from "../components/shared/Headers";
 import StatsSummaryCard from "../components/Stats/StatsSummaryCard";
 import Loader from "../components/shared/Loader";
 import NoContentMessage from "../components/shared/NoContentMessage";
+import ErrorMessage from "../components/shared/ErrorMessage";
 // Design
 import { GRAY_5 } from "../design/colors";
 
 const StatsScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const {
-    state: { isFetching, summaryStats },
+    state: { isFetching, summaryStats, errorMessage },
     fetchSummaryStats,
   } = useContext(StatsContext);
   const {
@@ -38,6 +39,11 @@ const StatsScreen = ({ navigation }) => {
   // then show the full screen loader.
   if (isFetching && !refreshing) {
     return <Loader isLoading={isFetching} />;
+  }
+
+  // If there's an error message display error message screen
+  if (errorMessage) {
+    return <ErrorMessage message={errorMessage} />;
   }
 
   // If there's no data and it's not currently being fetched, show the "No Content"
