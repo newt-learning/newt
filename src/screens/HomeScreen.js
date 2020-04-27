@@ -56,7 +56,7 @@ const HomeScreen = ({ navigation }) => {
 
   // If there's an error message display error message screen
   if (errorMessage) {
-    return <ErrorMessage message={errorMessage} />;
+    return <ErrorMessage message={errorMessage} onRetry={fetchContent} />;
   }
 
   // If there's no data and it's not currently being fetched, show the "No Content"
