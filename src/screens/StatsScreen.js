@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useCallback, useState } from "react";
+import React, { useEffect, useContext } from "react";
 import { View, ScrollView, StyleSheet, RefreshControl } from "react-native";
 import _ from "lodash";
 // Context
@@ -10,11 +10,12 @@ import StatsSummaryCard from "../components/Stats/StatsSummaryCard";
 import Loader from "../components/shared/Loader";
 import NoContentMessage from "../components/shared/NoContentMessage";
 import ErrorMessage from "../components/shared/ErrorMessage";
+// Hooks
+import useRefresh from "../hooks/useRefresh";
 // Design
 import { GRAY_5 } from "../design/colors";
 
 const StatsScreen = ({ navigation }) => {
-  const [refreshing, setRefreshing] = useState(false);
   const {
     state: { isFetching, summaryStats, errorMessage },
     fetchSummaryStats,
@@ -22,18 +23,12 @@ const StatsScreen = ({ navigation }) => {
   const {
     state: { items },
   } = useContext(ContentContext);
+  const [refreshing, onPullToRefresh] = useRefresh(fetchSummaryStats);
 
   // Fetch summary stats
   useEffect(() => {
     fetchSummaryStats();
   }, []);
-
-  // Function that's called when user scrolls down to refresh screen
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    await fetchSummaryStats();
-    setRefreshing(false);
-  }, [isFetching]);
 
   // If data is being fetched AND it's not initiated from a user refresh call
   // then show the full screen loader.
@@ -57,7 +52,7 @@ const StatsScreen = ({ navigation }) => {
       <ScrollView
         contentContainerStyle={styles.container}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl refreshing={refreshing} onRefresh={onPullToRefresh} />
         }
       >
         <H2 style={styles.title}>By Content</H2>

@@ -10,6 +10,8 @@ import ErrorMessage from "../components/shared/ErrorMessage";
 import HomeContentCard from "../components/Home/HomeContentCard";
 import ClearButton from "../components/shared/ClearButton";
 import NoContentMessage from "../components/shared/NoContentMessage";
+// Hooks
+import useRefresh from "../hooks/useRefresh";
 // Styling
 import { REGULAR, FS16, FS14 } from "../design/typography";
 import { GRAY_2, GRAY_5, NEWT_BLUE } from "../design/colors";
@@ -24,6 +26,7 @@ const HomeScreen = ({ navigation }) => {
     state: { isFetching, items, errorMessage },
     fetchContent,
   } = useContext(ContentContext);
+  const [refreshing, onPullToRefresh] = useRefresh(fetchContent);
 
   // Fetch content data
   useEffect(() => {
@@ -47,7 +50,7 @@ const HomeScreen = ({ navigation }) => {
   );
 
   // If data is being fetched, show loading spinner
-  if (isFetching) {
+  if (isFetching && !refreshing) {
     return <Loader isLoading={isFetching} />;
   }
 
@@ -96,6 +99,8 @@ const HomeScreen = ({ navigation }) => {
       )}
       ListHeaderComponent={<H1 style={styles.title}>In Progress</H1>}
       ListEmptyComponent={<NoCurrentlyLearningMessage />}
+      onRefresh={onPullToRefresh}
+      refreshing={refreshing}
       style={styles.container}
     />
   );
