@@ -46,7 +46,13 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     // route to 'BookScreen'. This will allow the Shelf button to change from
     // 'Add to Library' to whatever shelf was chosen (ex: 'Want to Learn').
     const newBook = await addContent(data, true);
-    navigation.navigate("BookScreen", { bookInfo: newBook });
+    // If the result is null, meaning there was an error in adding the book,
+    // go back to previous screen.
+    if (newBook === null) {
+      navigation.goBack();
+    } else {
+      navigation.navigate("BookScreen", { bookInfo: newBook });
+    }
   };
   const updateShelf = (selectedShelf) => {
     // If the selected shelf is "Finished Learning", add/update the date

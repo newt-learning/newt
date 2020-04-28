@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Image,
-  Platform,
-  Alert,
-} from "react-native";
+import { StyleSheet, View, ScrollView, Image, Platform } from "react-native";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
@@ -15,15 +8,14 @@ import ActionSection from "../components/Content/ActionSection";
 import Description from "../components/Content/Description";
 import BookInformationSection from "../components/Content/BookInformationSection";
 import Loader from "../components/shared/Loader";
+// Design
 import { OFF_WHITE } from "../design/colors";
 
 const BookScreen = ({ navigation, route }) => {
   // State to store whether the user wants to read more of the description
   const [showMore, setShowMore] = useState(false);
   const [bookExistsInLibrary, setBookExistsinLibrary] = useState(null);
-  const { state, checkIfBookExistsInLibrary, clearError } = useContext(
-    ContentContext
-  );
+  const { state, checkIfBookExistsInLibrary } = useContext(ContentContext);
 
   // Get book info from params sent through navigation prop
   const passedBookInfo = route.params.bookInfo;
@@ -83,38 +75,6 @@ const BookScreen = ({ navigation, route }) => {
   // If fetching data or the in-library-or-not check is ongoing, show Loader
   if (state.isFetching || bookExistsInLibrary === null) {
     return <Loader isLoading={state.isFetching} backgroundColor={OFF_WHITE} />;
-  }
-
-  // Alright this error handling code is absolute garbage but it works and I've
-  // tried better ways but all seem to throw out weird behaviour or crash so
-  // imma stick with this bec it's 4am and I've already spent 3+ hrs on this and
-  // don't wanna look at it anymore. Eventually I'll re-do all the hacky
-  // bookExists BS above and other hacky deviations from the normal systematic
-  // way, which is probably why I've had to come up with this repetitive crap in
-  // the first place.
-  if (passedBookInfo === null) {
-    if (state.error.source === "ADD") {
-      Alert.alert("Error", state.error.message, [
-        {
-          text: "Cancel",
-          onPress: () => {
-            navigation.goBack();
-            clearError();
-          },
-          style: "cancel",
-        },
-        {
-          text: "OK",
-          onPress: () => {
-            navigation.goBack();
-            clearError();
-          },
-          style: "default",
-        },
-      ]);
-
-      return <View style={styles.container}></View>;
-    }
   }
 
   if (bookInfo === null) {

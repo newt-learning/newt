@@ -16,7 +16,6 @@ const ADD_INDIVIDUAL_CONTENT = "ADD_INDIVIDUAL_CONTENT";
 const ADD_CONTENT_IF_DOES_NOT_EXIST = "ADD_CONTENT_IF_DOES_NOT_EXIST";
 const UPDATE_INDIVIDUAL_CONTENT = "UPDATE_INDIVIDUAL_CONTENT";
 const DELETE_CONTENT = "DELETE_CONTENT";
-const SET_ERROR = "SET_ERROR";
 const SET_ERROR_MESSAGE = "SET_ERROR_MESSAGE";
 
 const contentReducer = (state, action) => {
@@ -52,15 +51,6 @@ const contentReducer = (state, action) => {
       };
     case SET_ERROR_MESSAGE:
       return { ...state, isFetching: false, errorMessage: action.payload };
-    case SET_ERROR:
-      return {
-        ...state,
-        isFetching: false,
-        error: {
-          message: action.payload.message,
-          source: action.payload.source,
-        },
-      };
     default:
       return state;
   }
@@ -90,9 +80,6 @@ const deleteIndividualContent = (payload) => {
 };
 const setErrorMessage = (payload) => {
   return { type: SET_ERROR_MESSAGE, payload };
-};
-const setError = (payload) => {
-  return { type: SET_ERROR, payload };
 };
 
 // Dispatch functions
@@ -143,12 +130,12 @@ const addContent = (dispatch) => async (data, returnData = false) => {
       return res.data;
     }
   } catch (error) {
-    dispatch(
-      setError({
-        message: `Sorry, an error occured while trying to add the ${data.type}`,
-        source: "ADD",
-      })
+    // Show error Alert
+    Alert.alert(
+      "Error",
+      `Sorry, an error occurred while trying to add the ${data.type}.`
     );
+    dispatch(resolveContent());
 
     if (returnData) {
       return null;
@@ -219,10 +206,6 @@ const deleteContent = (dispatch) => async (contentId) => {
   }
 };
 
-const clearError = (dispatch) => () => {
-  dispatch(setError({ message: "", source: "" }));
-};
-
 export const { Provider, Context } = createDataContext(
   contentReducer,
   {
@@ -232,7 +215,6 @@ export const { Provider, Context } = createDataContext(
     updateContent,
     updateBookProgress,
     deleteContent,
-    clearError,
   },
   {
     isFetching: false,
