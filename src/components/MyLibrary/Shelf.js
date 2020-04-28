@@ -18,6 +18,7 @@ import { REGULAR, SEMIBOLD, FS14 } from "../../design/typography";
 import { OFF_BLACK, GRAY_2, GRAY_4, OFF_WHITE } from "../../design/colors";
 // Helpers
 import { handleContentNavigation } from "../../helpers/screenHelpers";
+import { shortenText } from "../../helpers/textHelpers";
 
 const SeeAllCard = ({ onPress }) => (
   <TouchableHighlight
@@ -45,7 +46,7 @@ let ShelfContentCard = ({ title, thumbnailUrl, onPress }) => {
           resizeMode="contain"
           source={thumbnailUrl ? { uri: thumbnailUrl } : null}
         />
-        <Text style={styles.bookTitle}>{title}</Text>
+        <Text style={styles.bookTitle}>{shortenText(title, 35)}</Text>
       </>
     </TouchableHighlight>
   );
