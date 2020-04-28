@@ -187,12 +187,12 @@ const updateBookProgress = (dispatch) => async (contentId, pagesRead) => {
     dispatch(updateIndividualContent(res.data));
     dispatch(resolveContent());
   } catch (error) {
-    dispatch(
-      setError({
-        message: `Sorry, an error occurred while trying to update your book.`,
-        source: "UPDATE",
-      })
+    // Show error Alert
+    Alert.alert(
+      "Error",
+      "Sorry, an error occurred while trying to update your book."
     );
+    dispatch(resolveContent());
   }
 };
 
