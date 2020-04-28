@@ -10,6 +10,6 @@ export async function getBookInfo(searchTerm) {
     );
     return res.data;
   } catch (error) {
-    console.log(error);
+    throw new Error(error);
   }
 }

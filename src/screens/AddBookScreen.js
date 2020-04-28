@@ -16,18 +16,24 @@ const AddBookScreen = ({ navigation }) => {
   const [searchBarText, setSearchBarText] = useState("");
   const [bookResults, setBookResults] = useState([]);
   const [totalBookResults, setTotalBookResults] = useState(null);
+  const [bookResultsError, setBookResultsError] = useState("");
 
   const clearBookResults = () => {
     setBookResults([]);
     setTotalBookResults(null);
+    setBookResultsError("");
   };
 
   // Fetch books from search bar text input
   useEffect(() => {
     const getResults = async (searchTerm) => {
-      const results = await getBookInfo(searchTerm);
-      setBookResults(results.items);
-      setTotalBookResults(results.totalItems);
+      try {
+        const results = await getBookInfo(searchTerm);
+        setBookResults(results.items);
+        setTotalBookResults(results.totalItems);
+      } catch (e) {
+        setBookResultsError("Sorry, there was an error searching for books.");
+      }
     };
 
     if (searchBarText) {
@@ -50,6 +56,11 @@ const AddBookScreen = ({ navigation }) => {
         />
       }
       ListEmptyComponent={() => {
+        // If there's an error, show error message
+        if (bookResultsError) {
+          return <Text style={styles.text}>{bookResultsError}</Text>;
+        }
+
         // Show text saying No results only after user has searched
         return totalBookResults !== null ? (
           <Text style={styles.text}>No results found</Text>
