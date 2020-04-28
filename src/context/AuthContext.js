@@ -3,14 +3,13 @@ import * as Google from "expo-google-app-auth";
 import firebase from "../config/firebase";
 import newtApi from "../api/newtApi";
 import keys from "../config/keys";
+import { Alert } from "react-native";
 
 // Action constants
 const REQUEST_SIGN_IN = "REQUEST_SIGN_IN";
 const RESOLVE_SIGN_IN = "RESOLVE_SIGN_IN";
 const SET_AUTHED_USER = "SET_AUTHED_USER";
 const REMOVE_AUTHED_USER = "REMOVE_AUTHED_USER";
-const SET_ERROR = "SET_ERROR";
-const CLEAR_ERROR = "CLEAR_ERROR";
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -33,8 +32,6 @@ const authReducer = (state, action) => {
         userInfo: null,
         exists: false,
       };
-    case SET_ERROR:
-      return { ...state, errorMessage: action.payload };
     default:
       return state;
   }
@@ -52,9 +49,6 @@ const setAuthedUser = (payload) => {
 };
 const removeAuthedUser = () => {
   return { type: REMOVE_AUTHED_USER };
-};
-const setError = (payload) => {
-  return { type: SET_ERROR, payload };
 };
 
 // Authenticate with Google through a popup
@@ -96,16 +90,16 @@ const authenticateWithGoogle = (dispatch) => async () => {
           dispatch(setAuthedUser(dbRes.data));
         })
         .catch((error) => {
+          Alert.alert("Error", "There was an error while trying to sign in.");
           dispatch(resolveSignIn());
-          dispatch(setError("There was an error while signing in."));
         });
     } else {
+      Alert.alert("Error", "There was an error while trying to sign in.");
       dispatch(resolveSignIn());
-      dispatch(setError("There was an error while signing in."));
     }
   } catch (error) {
+    Alert.alert("Error", "There was an error while trying to sign in.");
     dispatch(resolveSignIn());
-    dispatch(setError("There was an error while signing in."));
   }
 };
 
@@ -136,5 +130,5 @@ const signOut = (dispatch) => async () => {
 export const { Provider, Context } = createDataContext(
   authReducer,
   { authenticateWithGoogle, signOut, tryLocalSignIn },
-  { isFetching: true, exists: false, userInfo: null, errorMessage: "" }
+  { isFetching: true, exists: false, userInfo: null }
 );

@@ -9,11 +9,11 @@ const baseURL =
     : `${keys.ngrokUrl}/api`;
 
 const instance = axios.create({
-  baseURL
+  baseURL,
 });
 
 instance.interceptors.request.use(
-  async config => {
+  async (config) => {
     // Get current user token
     const token = await firebase.auth().currentUser.getIdToken(true);
 
@@ -23,8 +23,8 @@ instance.interceptors.request.use(
 
     return config;
   },
-  error => {
-    return Promise.reject(err);
+  (error) => {
+    return Promise.reject(error);
   }
 );
 
