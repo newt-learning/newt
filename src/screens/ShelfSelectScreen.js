@@ -1,5 +1,12 @@
 import React, { useState, useContext } from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Platform,
+  Alert,
+  ActionSheetIOS,
+} from "react-native";
 import _ from "lodash";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
@@ -7,6 +14,7 @@ import { Context as ContentContext } from "../context/ContentContext";
 import ShelfSelect from "../components/Content/ShelfSelect";
 import ActionButton from "../components/shared/ActionButton";
 import ClearButton from "../components/shared/ClearButton";
+import Loader from "../components/shared/Loader";
 // Hooks
 import useSingleCheckbox from "../hooks/useSingleCheckbox";
 // Styling
@@ -17,9 +25,12 @@ import { initializeShelves } from "../helpers/screenHelpers";
 
 const ShelfSelectScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const { addContent, deleteContent, updateContent, clearError } = useContext(
-    ContentContext
-  );
+  const {
+    state: { isFetching },
+    addContent,
+    deleteContent,
+    updateContent,
+  } = useContext(ContentContext);
 
   // Get params passed from route
   const { bookInfo, buttonText, showDeleteButton, addToLibrary } = route.params;
@@ -51,30 +62,41 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     navigation.goBack();
   };
   const deleteItem = async () => {
-    // Get error from deleteContent action
-    const error = await deleteContent(bookInfo._id);
-    // If there's an error, show error Alert. Otherthise navigate to top of stack
-    if (error) {
-      Alert.alert("Error", error.message, [
+    const deleteMessage = "Are you sure you want to delete this book?";
+    const deleteFlow = () => {
+      deleteContent(bookInfo._id);
+      navigation.popToTop();
+    };
+
+    // If it's iOS, show an ActionSheet for Delete confirmation. Otherwise, show
+    // Alert dialog
+    if (Platform.OS === "ios") {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: ["Cancel", "Delete"],
+          cancelButtonIndex: 0,
+          destructiveButtonIndex: 1,
+          message: deleteMessage,
+        },
+        (buttonIndex) => {
+          // If the user clicks the destructive button, delete item
+          if (buttonIndex === 1) {
+            deleteFlow();
+          }
+        }
+      );
+    } else {
+      Alert.alert("Delete", deleteMessage, [
         {
           text: "Cancel",
-          onPress: () => {
-            clearError();
-            navigation.popToTop();
-          },
           style: "cancel",
         },
         {
-          text: "OK",
-          onPress: () => {
-            clearError();
-            navigation.popToTop();
-          },
-          style: "default",
+          text: "Delete",
+          onPress: () => deleteFlow(),
+          style: "destructive",
         },
       ]);
-    } else {
-      navigation.popToTop();
     }
   };
 
@@ -88,6 +110,10 @@ const ShelfSelectScreen = ({ navigation, route }) => {
       updateShelf(selectedShelf);
     }
   };
+
+  if (isFetching) {
+    return <Loader />;
+  }
 
   return (
     <View style={styles.container}>

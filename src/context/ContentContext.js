@@ -6,6 +6,7 @@ import {
   addIfDoesNotExist,
   deleteObjectFromArray,
 } from "../helpers/contextHelpers";
+import { Alert } from "react-native";
 
 // Action constants
 const REQUEST_CONTENT = "REQUEST_CONTENT";
@@ -207,17 +208,14 @@ const deleteContent = (dispatch) => async (contentId) => {
     // Return false to not show error Alert
     return false;
   } catch (e) {
-    const error = {
-      message: `Sorry, an error occured while trying to delete your book.`,
-      source: "DELETE",
-    };
-
-    dispatch(setError(error));
-
-    // Return error so that it can be shown in the Alert (can't seem to do
-    // this nicely with context/state, but it would be better to do everything
-    // one way)
-    return error;
+    // Show Alert saying that an error has occured. No dispatch bec no other
+    // on-screen UI needs to be changed.
+    Alert.alert(
+      "Error",
+      "Sorry, an error occured while trying to delete your book."
+    );
+    // End fetching started by requestContent() in try block
+    dispatch(resolveContent());
   }
 };
 
