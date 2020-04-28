@@ -79,7 +79,7 @@ const AddBookScreen = ({ navigation }) => {
           }
         />
       )}
-      keyExtractor={(book) => book.id}
+      keyExtractor={(book) => `${book.id}-${book.etag}`}
     />
   );
 };
