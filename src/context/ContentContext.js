@@ -167,12 +167,12 @@ const updateContent = (dispatch) => async (contentId, data) => {
     dispatch(updateIndividualContent(res.data));
     dispatch(resolveContent());
   } catch (error) {
-    dispatch(
-      setError({
-        message: `Sorry, an error occured while trying to update your book.`,
-        source: "UPDATE",
-      })
+    // Show error Alert
+    Alert.alert(
+      "Error",
+      "Sorry, an error occurred while trying to update your book."
     );
+    dispatch(resolveContent());
   }
 };
 
@@ -189,7 +189,7 @@ const updateBookProgress = (dispatch) => async (contentId, pagesRead) => {
   } catch (error) {
     dispatch(
       setError({
-        message: `Sorry, an error occured while trying to update your book.`,
+        message: `Sorry, an error occurred while trying to update your book.`,
         source: "UPDATE",
       })
     );
@@ -208,11 +208,11 @@ const deleteContent = (dispatch) => async (contentId) => {
     // Return false to not show error Alert
     return false;
   } catch (e) {
-    // Show Alert saying that an error has occured. No dispatch bec no other
+    // Show Alert saying that an error has occurred. No dispatch bec no other
     // on-screen UI needs to be changed.
     Alert.alert(
       "Error",
-      "Sorry, an error occured while trying to delete your book."
+      "Sorry, an error occurred while trying to delete your book."
     );
     // End fetching started by requestContent() in try block
     dispatch(resolveContent());

@@ -117,21 +117,6 @@ const BookScreen = ({ navigation, route }) => {
     }
   }
 
-  if (state.error.source === "UPDATE") {
-    Alert.alert("Error", state.error.message, [
-      {
-        text: "Cancel",
-        onPress: () => clearError(),
-        style: "cancel",
-      },
-      {
-        text: "OK",
-        onPress: () => clearError(),
-        style: "default",
-      },
-    ]);
-  }
-
   if (bookInfo === null) {
     return <View style={styles.container}></View>;
   }
