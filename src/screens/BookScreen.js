@@ -36,7 +36,6 @@ const BookScreen = ({ navigation, route }) => {
     const checkBookInfo = async () => {
       if (passedBookInfo === null) return;
 
-      console.log("should not be here... ", passedBookInfo === null);
       if (!passedBookInfo._id) {
         const bookExists = await checkIfBookExistsInLibrary(
           passedBookInfo.bookInfo.bookId
@@ -95,7 +94,6 @@ const BookScreen = ({ navigation, route }) => {
   // the first place.
   if (passedBookInfo === null) {
     if (state.error.source === "ADD") {
-      console.log("Alerting adding error...");
       Alert.alert("Error", state.error.message, [
         {
           text: "Cancel",
@@ -120,8 +118,6 @@ const BookScreen = ({ navigation, route }) => {
   }
 
   if (state.error.source === "UPDATE") {
-    console.log("passedbookinfo: ", passedBookInfo);
-    console.log("Alerting updating error...");
     Alert.alert("Error", state.error.message, [
       {
         text: "Cancel",

@@ -203,9 +203,21 @@ const deleteContent = (dispatch) => async (contentId) => {
 
     dispatch(deleteIndividualContent(contentId));
     dispatch(resolveContent());
-  } catch (error) {
-    dispatch(resolveContent());
-    console.error(error);
+
+    // Return false to not show error Alert
+    return false;
+  } catch (e) {
+    const error = {
+      message: `Sorry, an error occured while trying to delete your book.`,
+      source: "DELETE",
+    };
+
+    dispatch(setError(error));
+
+    // Return error so that it can be shown in the Alert (can't seem to do
+    // this nicely with context/state, but it would be better to do everything
+    // one way)
+    return error;
   }
 };
 

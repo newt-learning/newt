@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import _ from "lodash";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
@@ -17,7 +17,7 @@ import { initializeShelves } from "../helpers/screenHelpers";
 
 const ShelfSelectScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const { addContent, deleteContent, updateContent } = useContext(
+  const { addContent, deleteContent, updateContent, clearError } = useContext(
     ContentContext
   );
 
@@ -50,9 +50,32 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     }
     navigation.goBack();
   };
-  const deleteItem = () => {
-    deleteContent(bookInfo._id);
-    navigation.popToTop();
+  const deleteItem = async () => {
+    // Get error from deleteContent action
+    const error = await deleteContent(bookInfo._id);
+    // If there's an error, show error Alert. Otherthise navigate to top of stack
+    if (error) {
+      Alert.alert("Error", error.message, [
+        {
+          text: "Cancel",
+          onPress: () => {
+            clearError();
+            navigation.popToTop();
+          },
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            clearError();
+            navigation.popToTop();
+          },
+          style: "default",
+        },
+      ]);
+    } else {
+      navigation.popToTop();
+    }
   };
 
   // Function that decided what to do when the Confirm/Add To Library button is
