@@ -220,9 +220,5 @@ export const { Provider, Context } = createDataContext(
     isFetching: false,
     items: [],
     errorMessage: "",
-    error: { message: "", source: "" },
-    // There's a perfectly valid excuse for this double error state... it's for
-    // the hacky BookScreen error handling, but might as well move the other
-    // error handling to the 2nd version of state.
   }
 );

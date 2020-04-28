@@ -71,7 +71,9 @@ const fetchLearningUpdates = (dispatch) => async () => {
     dispatch(setLearningUpdates(res.data));
     dispatch(resolveLearningUpdates());
   } catch (error) {
-    console.error(error);
+    if (process.env.NODE_ENV === "development") {
+      console.log(error);
+    }
     dispatch(resolveLearningUpdates());
   }
 };
@@ -123,7 +125,9 @@ const createLearningUpdate = (dispatch) => async (data) => {
     dispatch(addLearningUpdate(res.data));
     dispatch(resolveLearningUpdates());
   } catch (error) {
-    console.error(error);
+    if (process.env.NODE_ENV === "development") {
+      console.log(error);
+    }
     dispatch(resolveLearningUpdates());
   }
 };
