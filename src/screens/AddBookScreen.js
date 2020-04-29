@@ -30,7 +30,9 @@ const AddBookScreen = ({ navigation }) => {
     const getResults = async (searchTerm) => {
       try {
         const results = await getBookInfo(searchTerm);
-        setBookResults(results.items);
+        // If an items property exists in results object, set the items in state,
+        // otherwise set an empty array
+        results.items ? setBookResults(results.items) : setBookResults([]);
         setTotalBookResults(results.totalItems);
       } catch (e) {
         setBookResultsError("Sorry, there was an error searching for books.");
@@ -52,7 +54,9 @@ const AddBookScreen = ({ navigation }) => {
       // the length on the current results)
       const moreBooks = await getBookInfo(searchBarText, bookResults.length);
       // Combine the new books with existing books
-      setBookResults([...bookResults, ...moreBooks.items]);
+      if (moreBooks.items) {
+        setBookResults([...bookResults, ...moreBooks.items]);
+      }
     } catch (e) {
       setBookResultsError(
         "Sorry, there was an error searching for more books."
@@ -61,11 +65,36 @@ const AddBookScreen = ({ navigation }) => {
   };
 
   // Button at end of list to fetch more books
-  const SeeMoreBooksListItem = () => (
-    <TouchableHighlight style={styles.seeMoreBooks}>
-      <ClearButton title="See more books" onPress={getMoreBooks} />
-    </TouchableHighlight>
-  );
+  const SeeMoreBooksListItem = () => {
+    // First condition is of showing the button is if total book results are
+    // greater than zero (don't show it if books aren't there for that search
+    // term). Second condition is that the current shown results is less than
+    // total available results (don't show it if there are no more books to show)
+    if (totalBookResults > 0 && bookResults.length < totalBookResults) {
+      return (
+        <TouchableHighlight style={styles.seeMoreBooks}>
+          <ClearButton title="See more books" onPress={getMoreBooks} />
+        </TouchableHighlight>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  // Component that shows either the error message if there's an error, or
+  // notifies that there are no results for that particular search term (used in
+  // ListEmptyComponent in Flatlist)
+  const NoResultsOrError = () => {
+    // If there's an error, show error message
+    if (bookResultsError) {
+      return <Text style={styles.text}>{bookResultsError}</Text>;
+    }
+
+    // Show text saying No results only after user has searched
+    return totalBookResults !== null ? (
+      <Text style={styles.text}>No results found</Text>
+    ) : null;
+  };
 
   return (
     <FlatList
@@ -79,21 +108,8 @@ const AddBookScreen = ({ navigation }) => {
           onClear={clearBookResults}
         />
       }
-      ListEmptyComponent={() => {
-        // If there's an error, show error message
-        if (bookResultsError) {
-          return <Text style={styles.text}>{bookResultsError}</Text>;
-        }
-
-        // Show text saying No results only after user has searched
-        return totalBookResults !== null ? (
-          <Text style={styles.text}>No results found</Text>
-        ) : null;
-      }}
-      ListFooterComponent={() => {
-        // Only show 'See more' button if there are more than 0 books results
-        return totalBookResults > 0 ? <SeeMoreBooksListItem /> : null;
-      }}
+      ListEmptyComponent={<NoResultsOrError />}
+      ListFooterComponent={<SeeMoreBooksListItem />}
       renderItem={({ item }) => (
         <ContentListCard
           title={item.volumeInfo.title ? item.volumeInfo.title : null}
