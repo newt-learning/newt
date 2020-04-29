@@ -1,4 +1,6 @@
 dev.js
+staging.js
+prod.js
 environment.js
 node_modules
 node_modules/**/*
