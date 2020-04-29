@@ -23,7 +23,6 @@ const authReducer = (state, action) => {
         isFetching: false,
         userInfo: action.payload,
         exists: true,
-        errorMessage: "",
       };
     case REMOVE_AUTHED_USER:
       return {

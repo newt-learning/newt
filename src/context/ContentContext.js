@@ -108,7 +108,15 @@ const checkIfBookExistsInLibrary = (dispatch) => async (googleBookId) => {
     // Whether the book exists in the user's library or not
     return !_.isEmpty(res.data);
   } catch (error) {
-    console.error(error);
+    if (process.env.NODE_ENV === "development") {
+      console.log(error);
+    }
+    dispatch(resolveContent());
+
+    // If there's an error in checking, return false for now (not there in
+    // library) as the safe option. The API call is not user-requested (as in
+    // it's an internal check), so a error Alert might be a confusing UX.
+    return false;
   }
 };
 
