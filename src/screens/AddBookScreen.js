@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, FlatList, Text } from "react-native";
+import { StyleSheet, FlatList, Text, TouchableHighlight } from "react-native";
 // Components
 import SearchBar from "../components/shared/SearchBar";
 import ContentListCard from "../components/ContentListCard";
+import ClearButton from "../components/shared/ClearButton";
 // API
 import { getBookInfo } from "../api/googleBooksApi";
 // Styling
 import { FS16, SEMIBOLD } from "../design/typography";
-import { GRAY_2, OFF_WHITE } from "../design/colors";
+import { GRAY_2, OFF_WHITE, GRAY_4 } from "../design/colors";
 // Helpers
 import { checkThumbnailExistence } from "../helpers/imageHelpers";
 import { extractRelevantBookInfo } from "../helpers/apiHelpers";
@@ -43,6 +44,29 @@ const AddBookScreen = ({ navigation }) => {
     }
   }, [searchBarText]);
 
+  // Function to fetch more books when the "See more books" button is pressed at
+  // the bottom of the list.
+  const getMoreBooks = async () => {
+    try {
+      // Second argument to function is the start index for the search (set as
+      // the length on the current results)
+      const moreBooks = await getBookInfo(searchBarText, bookResults.length);
+      // Combine the new books with existing books
+      setBookResults([...bookResults, ...moreBooks.items]);
+    } catch (e) {
+      setBookResultsError(
+        "Sorry, there was an error searching for more books."
+      );
+    }
+  };
+
+  // Button at end of list to fetch more books
+  const SeeMoreBooksListItem = () => (
+    <TouchableHighlight style={styles.seeMoreBooks}>
+      <ClearButton title="See more books" onPress={getMoreBooks} />
+    </TouchableHighlight>
+  );
+
   return (
     <FlatList
       style={styles.container}
@@ -65,6 +89,10 @@ const AddBookScreen = ({ navigation }) => {
         return totalBookResults !== null ? (
           <Text style={styles.text}>No results found</Text>
         ) : null;
+      }}
+      ListFooterComponent={() => {
+        // Only show 'See more' button if there are more than 0 books results
+        return totalBookResults > 0 ? <SeeMoreBooksListItem /> : null;
       }}
       renderItem={({ item }) => (
         <ContentListCard
@@ -94,6 +122,13 @@ const styles = StyleSheet.create({
     fontFamily: SEMIBOLD,
     fontSize: FS16,
     color: GRAY_2,
+  },
+  seeMoreBooks: {
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: GRAY_4,
   },
 });
 
