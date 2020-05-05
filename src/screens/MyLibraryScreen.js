@@ -4,15 +4,16 @@ import _ from "lodash";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
-import Shelf from "../components/MyLibrary/Shelf";
 import Loader from "../components/shared/Loader";
 import ErrorMessage from "../components/shared/ErrorMessage";
 import NoContentMessage from "../components/shared/NoContentMessage";
 import ButtonGroup from "../components/shared/ButtonGroup";
+import ShelvesSection from "../components/MyLibrary/ShelvesSection";
+import TopicsSection from "../components/MyLibrary/TopicsSection";
 // Design
 import { GRAY_5, YELLOW } from "../design/colors";
 
-const MyLibraryScreen = ({ navigation }) => {
+const MyLibraryScreen = () => {
   const {
     state: { isFetching, items, errorMessage },
     fetchContent,
@@ -20,11 +21,6 @@ const MyLibraryScreen = ({ navigation }) => {
   // Buttons to switch screens
   const screenSwitchButtons = ["Shelves", "Topics"];
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(0);
-
-  const filterAndOrderContentByShelf = (shelf) => {
-    const filteredContent = _.filter(items, (item) => item.shelf === shelf);
-    return _.orderBy(filteredContent, "lastUpdated", "desc");
-  };
 
   // Fetch content data
   useEffect(() => {
@@ -46,14 +42,6 @@ const MyLibraryScreen = ({ navigation }) => {
     return <NoContentMessage />;
   }
 
-  const currentlyLearningItems = filterAndOrderContentByShelf(
-    "Currently Learning"
-  );
-  const wantToLearnItems = filterAndOrderContentByShelf("Want to Learn");
-  const finishedLearningItems = filterAndOrderContentByShelf(
-    "Finished Learning"
-  );
-
   return (
     <ScrollView style={styles.container}>
       <ButtonGroup
@@ -63,36 +51,12 @@ const MyLibraryScreen = ({ navigation }) => {
         containerStyle={styles.buttonGroup}
         selectedButtonColor={YELLOW}
       />
-      <Shelf
-        name="Currently Learning"
-        data={currentlyLearningItems.slice(0, 4)}
-        numItems={currentlyLearningItems.length}
-        onPressTitle={() =>
-          navigation.navigate("IndividualShelf", {
-            title: "Currently Learning",
-          })
-        }
-      />
-      <Shelf
-        name="Want to Learn"
-        data={wantToLearnItems.slice(0, 4)}
-        numItems={wantToLearnItems.length}
-        onPressTitle={() =>
-          navigation.navigate("IndividualShelf", {
-            title: "Want to Learn",
-          })
-        }
-      />
-      <Shelf
-        name="Finished Learning"
-        data={finishedLearningItems.slice(0, 4)}
-        numItems={finishedLearningItems.length}
-        onPressTitle={() =>
-          navigation.navigate("IndividualShelf", {
-            title: "Finished Learning",
-          })
-        }
-      />
+      {/* Display Shelves or Topics section based on button selected */}
+      {selectedButtonIndex === 0 ? (
+        <ShelvesSection items={items} />
+      ) : (
+        <TopicsSection />
+      )}
     </ScrollView>
   );
 };
