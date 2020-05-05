@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import _ from "lodash";
 // Context
@@ -8,14 +8,18 @@ import Shelf from "../components/MyLibrary/Shelf";
 import Loader from "../components/shared/Loader";
 import ErrorMessage from "../components/shared/ErrorMessage";
 import NoContentMessage from "../components/shared/NoContentMessage";
+import ButtonGroup from "../components/shared/ButtonGroup";
 // Design
-import { GRAY_5 } from "../design/colors";
+import { GRAY_5, YELLOW } from "../design/colors";
 
 const MyLibraryScreen = ({ navigation }) => {
   const {
     state: { isFetching, items, errorMessage },
     fetchContent,
   } = useContext(ContentContext);
+  // Buttons to switch screens
+  const screenSwitchButtons = ["Shelves", "Topics"];
+  const [selectedButtonIndex, setSelectedButtonIndex] = useState(0);
 
   const filterAndOrderContentByShelf = (shelf) => {
     const filteredContent = _.filter(items, (item) => item.shelf === shelf);
@@ -52,6 +56,13 @@ const MyLibraryScreen = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
+      <ButtonGroup
+        buttonsArray={screenSwitchButtons}
+        selectedIndex={selectedButtonIndex}
+        onPress={setSelectedButtonIndex}
+        containerStyle={styles.buttonGroup}
+        selectedButtonColor={YELLOW}
+      />
       <Shelf
         name="Currently Learning"
         data={currentlyLearningItems.slice(0, 4)}
@@ -90,6 +101,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: GRAY_5,
+  },
+  buttonGroup: {
+    marginTop: 10,
+    borderColor: YELLOW,
+    height: 32,
   },
 });
 
