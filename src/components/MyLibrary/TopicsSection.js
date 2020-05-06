@@ -1,31 +1,14 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import _ from "lodash";
-// Context
-import { Context as TopicsContext } from "../../context/TopicsContext";
 // Components
-import Loader from "../shared/Loader";
 import CreateTopicButton from "./CreateTopicButton";
 // Design
 import { GRAY_2 } from "../../design/colors";
 import { SEMIBOLD, FS14 } from "../../design/typography";
 
-const TopicsSection = () => {
-  const {
-    state: { isFetching, items },
-    fetchTopics,
-  } = useContext(TopicsContext);
-
-  // Fetch topics data
-  useEffect(() => {
-    fetchTopics();
-  }, []);
-
-  if (isFetching) {
-    return <Loader />;
-  }
-
-  if (!isFetching && _.isEmpty(items)) {
+const TopicsSection = ({ items }) => {
+  if (_.isEmpty(items)) {
     return (
       <View style={styles.container}>
         <Text style={styles.noDataText}>

@@ -10,7 +10,7 @@ const SET_TOPICS = "SET_TOPICS";
 const topicsReducer = (state, action) => {
   switch (action.type) {
     case REQUEST_TOPICS:
-      return { ...state, isFetching: false };
+      return { ...state, isFetching: true };
     case RESOLVE_TOPICS:
       return { ...state, isFetching: false, errorMessage: "" };
     case SET_TOPICS:
