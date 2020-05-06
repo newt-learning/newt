@@ -5,7 +5,7 @@ import { Button } from "react-native-elements";
 import { RUBY, RUBY_5 } from "../../design/colors";
 import { SEMIBOLD, FS16 } from "../../design/typography";
 
-const CreateTopicButton = () => {
+const CreateTopicButton = ({ onPress }) => {
   return (
     <Button
       title="Create topic"
@@ -14,7 +14,7 @@ const CreateTopicButton = () => {
       buttonStyle={styles.button}
       icon={<Feather name="plus" size={22} color={RUBY} />}
       titleStyle={styles.title}
-      onPress={() => console.log("Create a topic...")}
+      onPress={onPress}
     />
   );
 };

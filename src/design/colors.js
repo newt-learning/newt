@@ -36,3 +36,4 @@ export const LIME_GREEN = "#42e6a4";
 
 // Platform colors
 export const IOS_BLUE = "#007aff";
+export const ANDROID_GREEN = "#3ddc84";

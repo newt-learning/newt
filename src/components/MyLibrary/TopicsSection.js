@@ -1,21 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import _ from "lodash";
 // Components
 import CreateTopicButton from "./CreateTopicButton";
+import Dialog from "react-native-dialog";
 // Design
-import { GRAY_2 } from "../../design/colors";
+import { GRAY_2, ANDROID_GREEN } from "../../design/colors";
 import { SEMIBOLD, FS14 } from "../../design/typography";
 
 const TopicsSection = ({ items }) => {
+  const [topicName, setTopicName] = useState("");
+  const [dialogVisible, setDialogVisible] = useState(false);
+
   if (_.isEmpty(items)) {
     return (
       <View style={styles.container}>
         <Text style={styles.noDataText}>
-          Looks like you haven't created any topics. You can use them to
-          organize your content into... topics!
+          Looks like you haven't created any topics. You can use topics to
+          organize your content.
         </Text>
-        <CreateTopicButton />
+        <CreateTopicButton onPress={() => setDialogVisible(true)} />
+        <Dialog.Container visible={dialogVisible}>
+          <Dialog.Title>Create topic</Dialog.Title>
+          <Dialog.Input
+            value={topicName}
+            onChangeText={setTopicName}
+            underlineColorAndroid={ANDROID_GREEN}
+          />
+          <Dialog.Button
+            label="Cancel"
+            onPress={() => {
+              setDialogVisible(false);
+              setTopicName("");
+            }}
+          />
+          <Dialog.Button
+            label="Create"
+            onPress={() => {
+              console.log("creating topic...", topicName);
+              setDialogVisible(false);
+              setTopicName("");
+            }}
+          />
+        </Dialog.Container>
       </View>
     );
   }
