@@ -5,9 +5,10 @@ import _ from "lodash";
 import { Context as TopicsContext } from "../../context/TopicsContext";
 // Components
 import Loader from "../shared/Loader";
+import CreateTopicButton from "./CreateTopicButton";
 // Design
 import { GRAY_2 } from "../../design/colors";
-import { FS16, SEMIBOLD } from "../../design/typography";
+import { SEMIBOLD, FS14 } from "../../design/typography";
 
 const TopicsSection = () => {
   const {
@@ -27,7 +28,11 @@ const TopicsSection = () => {
   if (!isFetching && _.isEmpty(items)) {
     return (
       <View style={styles.container}>
-        <Text style={styles.noDataText}>You haven't created any topics.</Text>
+        <Text style={styles.noDataText}>
+          Looks like you haven't created any topics. You can use them to
+          organize your content into... topics!
+        </Text>
+        <CreateTopicButton />
       </View>
     );
   }
@@ -46,8 +51,9 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   noDataText: {
+    textAlign: "center",
     fontFamily: SEMIBOLD,
-    fontSize: FS16,
+    fontSize: FS14,
     color: GRAY_2,
   },
 });
