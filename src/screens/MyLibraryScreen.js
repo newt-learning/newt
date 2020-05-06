@@ -11,7 +11,7 @@ import ButtonGroup from "../components/shared/ButtonGroup";
 import ShelvesSection from "../components/MyLibrary/ShelvesSection";
 import TopicsSection from "../components/MyLibrary/TopicsSection";
 // Design
-import { GRAY_5, YELLOW } from "../design/colors";
+import { GRAY_2, GRAY_5 } from "../design/colors";
 
 const MyLibraryScreen = () => {
   const {
@@ -49,7 +49,7 @@ const MyLibraryScreen = () => {
         selectedIndex={selectedButtonIndex}
         onPress={setSelectedButtonIndex}
         containerStyle={styles.buttonGroup}
-        selectedButtonColor={YELLOW}
+        selectedButtonColor={GRAY_2}
       />
       {/* Display Shelves or Topics section based on button selected */}
       {selectedButtonIndex === 0 ? (
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   },
   buttonGroup: {
     marginTop: 10,
-    borderColor: YELLOW,
+    backgroundColor: GRAY_5,
     height: 32,
   },
 });
