@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 import _ from "lodash";
 // Components
 import CreateTopicButton from "./CreateTopicButton";
 import Dialog from "react-native-dialog";
+import TopicCard from "./TopicCard";
 // Design
 import { GRAY_2, ANDROID_GREEN } from "../../design/colors";
 import { SEMIBOLD, FS14 } from "../../design/typography";
 
-const TopicsSection = ({ items, onCreateTopic }) => {
+const TopicsSection = ({ items, onCreateTopic, ButtonGroupHeader }) => {
   const [topicName, setTopicName] = useState("");
   const [dialogVisible, setDialogVisible] = useState(false);
 
@@ -48,17 +49,21 @@ const TopicsSection = ({ items, onCreateTopic }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text>{JSON.stringify(items)}</Text>
-    </View>
+    <FlatList
+      ListHeaderComponent={<ButtonGroupHeader />}
+      ListHeaderComponentStyle={{ marginBottom: 15 }}
+      data={items}
+      numColumns={2}
+      renderItem={({ item }) => <TopicCard name={item.name} />}
+      keyExtractor={(topic) => topic._id}
+      columnWrapperStyle={styles.columnContainer}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginHorizontal: 15,
-    marginTop: 15,
+  columnContainer: {
+    marginHorizontal: 10,
   },
   noDataText: {
     textAlign: "center",

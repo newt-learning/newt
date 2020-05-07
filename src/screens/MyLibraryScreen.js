@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet } from "react-native";
 import _ from "lodash";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
@@ -49,23 +49,39 @@ const MyLibraryScreen = () => {
     return <NoContentMessage />;
   }
 
-  return (
-    <ScrollView style={styles.container}>
-      <ButtonGroup
-        buttonsArray={screenSwitchButtons}
-        selectedIndex={selectedButtonIndex}
-        onPress={setSelectedButtonIndex}
-        containerStyle={styles.buttonGroup}
-        selectedButtonColor={GRAY_2}
-      />
-      {/* Display Shelves or Topics section based on button selected */}
-      {selectedButtonIndex === 0 ? (
-        <ShelvesSection items={contentState.items} />
-      ) : (
-        <TopicsSection items={topicsState.items} onCreateTopic={createTopic} />
-      )}
-    </ScrollView>
+  // Button group to switch between Shelves and Topics
+  const MyLibraryButtonGroup = () => (
+    <ButtonGroup
+      buttonsArray={screenSwitchButtons}
+      selectedIndex={selectedButtonIndex}
+      onPress={setSelectedButtonIndex}
+      containerStyle={styles.buttonGroup}
+      selectedButtonColor={GRAY_2}
+    />
   );
+
+  // Display Shelves or Topics section based on button selected
+  if (selectedButtonIndex === 0) {
+    return (
+      <ScrollView style={styles.container}>
+        <MyLibraryButtonGroup />
+        <ShelvesSection items={contentState.items} />
+      </ScrollView>
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        {/* This component returns a FlatList if there's data, so send the 
+        ButtonGroup component to be the FlatList's header. Also needs to be 
+        wrapped in a View instead of ScrollView. Need to improve this screen */}
+        <TopicsSection
+          items={topicsState.items}
+          onCreateTopic={createTopic}
+          ButtonGroupHeader={MyLibraryButtonGroup}
+        />
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
