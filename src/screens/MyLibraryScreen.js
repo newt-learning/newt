@@ -15,9 +15,10 @@ import TopicsSection from "../components/MyLibrary/TopicsSection";
 import { GRAY_2, GRAY_5 } from "../design/colors";
 
 const MyLibraryScreen = () => {
-  // const contentContext = useContext(ContentContext);
   const { state: contentState, fetchContent } = useContext(ContentContext);
-  const { state: topicsState, fetchTopics } = useContext(TopicsContext);
+  const { state: topicsState, fetchTopics, createTopic } = useContext(
+    TopicsContext
+  );
   // Buttons to switch screens
   const screenSwitchButtons = ["Shelves", "Topics"];
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(0);
@@ -61,7 +62,7 @@ const MyLibraryScreen = () => {
       {selectedButtonIndex === 0 ? (
         <ShelvesSection items={contentState.items} />
       ) : (
-        <TopicsSection items={topicsState.items} />
+        <TopicsSection items={topicsState.items} onCreateTopic={createTopic} />
       )}
     </ScrollView>
   );

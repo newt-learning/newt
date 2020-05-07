@@ -8,7 +8,7 @@ import Dialog from "react-native-dialog";
 import { GRAY_2, ANDROID_GREEN } from "../../design/colors";
 import { SEMIBOLD, FS14 } from "../../design/typography";
 
-const TopicsSection = ({ items }) => {
+const TopicsSection = ({ items, onCreateTopic }) => {
   const [topicName, setTopicName] = useState("");
   const [dialogVisible, setDialogVisible] = useState(false);
 
@@ -37,7 +37,7 @@ const TopicsSection = ({ items }) => {
           <Dialog.Button
             label="Create"
             onPress={() => {
-              console.log("creating topic...", topicName);
+              onCreateTopic({ name: topicName });
               setDialogVisible(false);
               setTopicName("");
             }}
@@ -49,7 +49,7 @@ const TopicsSection = ({ items }) => {
 
   return (
     <View style={styles.container}>
-      <Text>Topics...</Text>
+      <Text>{JSON.stringify(items)}</Text>
     </View>
   );
 };

@@ -5,6 +5,7 @@ import newtApi from "../api/newtApi";
 const REQUEST_TOPICS = "REQUEST_TOPICS";
 const RESOLVE_TOPICS = "RESOLVE_TOPICS";
 const SET_TOPICS = "SET_TOPICS";
+const ADD_INDIVIDUAL_TOPIC = "ADD_INDIVIDUAL_TOPIC";
 
 // Reducer
 const topicsReducer = (state, action) => {
@@ -15,6 +16,8 @@ const topicsReducer = (state, action) => {
       return { ...state, isFetching: false, errorMessage: "" };
     case SET_TOPICS:
       return { ...state, items: action.payload };
+    case ADD_INDIVIDUAL_TOPIC:
+      return { ...state, items: [...state.items, action.payload] };
     default:
       return state;
   }
@@ -44,10 +47,23 @@ const fetchTopics = (dispatch) => async () => {
   }
 };
 
+const createTopic = (dispatch) => async (data) => {
+  try {
+    dispatch(requestTopics());
+
+    const res = await newtApi.post("/topics/create", data);
+    dispatch({ type: ADD_INDIVIDUAL_TOPIC, payload: res.data });
+    dispatch(resolveTopics());
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const { Provider, Context } = createDataContext(
   topicsReducer,
   {
     fetchTopics,
+    createTopic,
   },
   {
     isFetching: false,
