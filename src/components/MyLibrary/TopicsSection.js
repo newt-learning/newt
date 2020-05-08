@@ -38,7 +38,7 @@ const TopicsSection = ({ items, ButtonGroupHeader }) => {
         ListFooterComponentStyle={{ marginHorizontal: 15, marginTop: 20 }}
         data={items}
         numColumns={2}
-        renderItem={({ item }) => <TopicCard name={item.name} />}
+        renderItem={({ item }) => <TopicCard topicInfo={item} />}
         keyExtractor={(topic) => topic._id}
         columnWrapperStyle={styles.columnContainer}
       />

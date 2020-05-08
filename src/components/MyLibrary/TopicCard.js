@@ -4,16 +4,16 @@ import { useNavigation } from "@react-navigation/native";
 import { RUBY_2, OFF_BLACK } from "../../design/colors";
 import { SEMIBOLD, FS18 } from "../../design/typography";
 
-const TopicCard = ({ name }) => {
+const TopicCard = ({ topicInfo }) => {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity
       style={styles.card}
       activeOpacity={0.3}
-      onPress={() => navigation.navigate("Topic", { title: name })}
+      onPress={() => navigation.navigate("Topic", { topicInfo })}
     >
-      <Text style={styles.name}>{name}</Text>
+      <Text style={styles.name}>{topicInfo.name}</Text>
     </TouchableOpacity>
   );
 };

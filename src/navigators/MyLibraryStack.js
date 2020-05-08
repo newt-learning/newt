@@ -49,8 +49,10 @@ const MainStack = () => {
         name="Topic"
         component={TopicScreen}
         options={({ route }) => ({
-          title: route.params.title,
-          headerTitle: () => <NavHeaderTitle title={route.params.title} />,
+          title: route.params.topicInfo.name,
+          headerTitle: () => (
+            <NavHeaderTitle title={route.params.topicInfo.name} />
+          ),
         })}
       />
     </Stack.Navigator>
