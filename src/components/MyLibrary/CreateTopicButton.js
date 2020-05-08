@@ -5,15 +5,24 @@ import { Button } from "react-native-elements";
 import { RUBY, RUBY_5 } from "../../design/colors";
 import { SEMIBOLD, FS16 } from "../../design/typography";
 
-const CreateTopicButton = ({ onPress }) => {
+const CreateTopicButton = ({
+  title = "Create topic",
+  onPress,
+  buttonStyle: passedButtonStyle,
+  titleStyle: passedTitleStyle,
+  iconSize = 22,
+}) => {
+  const buttonStyle = StyleSheet.compose([styles.button, passedButtonStyle]);
+  const titleStyle = StyleSheet.compose([styles.title, passedTitleStyle]);
+
   return (
     <Button
-      title="Create topic"
+      title={title}
       type="outline"
       containerStyle={styles.container}
-      buttonStyle={styles.button}
-      icon={<Feather name="plus" size={22} color={RUBY} />}
-      titleStyle={styles.title}
+      buttonStyle={buttonStyle}
+      icon={<Feather name="plus" size={iconSize} color={RUBY} />}
+      titleStyle={titleStyle}
       onPress={onPress}
     />
   );

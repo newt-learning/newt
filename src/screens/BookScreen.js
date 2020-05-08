@@ -87,6 +87,7 @@ const BookScreen = ({ navigation, route }) => {
     description,
     thumbnailUrl,
     shelf,
+    topics,
     dateAdded,
     dateCompleted,
   } = bookInfo;
@@ -111,6 +112,7 @@ const BookScreen = ({ navigation, route }) => {
       <ActionSection
         contentId={bookExistsInLibrary ? bookInfo._id : null}
         shelf={shelf}
+        topics={topics}
         pageCount={pageCount}
         pagesRead={pagesRead}
         dateAdded={dateAdded}
