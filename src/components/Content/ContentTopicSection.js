@@ -1,14 +1,17 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import _ from "lodash";
 import CreateTopicButton from "../MyLibrary/CreateTopicButton";
 import { FS12 } from "../../design/typography";
 
 const AddToTopicButton = () => {
+  const navigation = useNavigation();
+
   return (
     <CreateTopicButton
-      title="Add to topic"
-      onPress={() => console.log("Add to topic")}
+      title="Add topic"
+      onPress={() => navigation.navigate("AddToTopic")}
       buttonStyle={styles.addToTopicBtn}
       titleStyle={styles.addToTopicBtnTitle}
       iconSize={18}
