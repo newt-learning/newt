@@ -1,19 +1,28 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
-import { INDIGO } from "../../design/colors";
+import { Feather } from "@expo/vector-icons";
+import { INDIGO, GRAY_3 } from "../../design/colors";
 import { SEMIBOLD } from "../../design/typography";
 
-const ActionButton = ({ title, onPress, showLoading, titleStyle }) => {
+const ActionButton = ({
+  title,
+  onPress,
+  showLoading,
+  titleStyle,
+  disabled,
+}) => {
   const buttonTitleStyle = StyleSheet.compose(styles.buttonTitle, titleStyle);
 
   return (
     <Button
-      title={title}
+      title={disabled ? null : title}
       buttonStyle={styles.button}
       titleStyle={buttonTitleStyle}
       loading={showLoading}
       onPress={onPress}
+      disabled={disabled}
+      icon={disabled ? <Feather name="slash" size={18} color={GRAY_3} /> : null}
       raised
     />
   );

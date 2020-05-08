@@ -31,17 +31,16 @@ const CreateTopicScreen = ({ navigation }) => {
             value={topicName}
             onChangeText={setTopicName}
           />
-          {topicName ? (
-            <View style={styles.btnContainer}>
-              <ActionButton
-                title="Create"
-                onPress={() => {
-                  createTopic({ name: topicName });
-                  navigation.goBack();
-                }}
-              />
-            </View>
-          ) : null}
+          <View style={styles.btnContainer}>
+            <ActionButton
+              title="Create"
+              onPress={() => {
+                createTopic({ name: topicName });
+                navigation.goBack();
+              }}
+              disabled={topicName.length === 0}
+            />
+          </View>
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
