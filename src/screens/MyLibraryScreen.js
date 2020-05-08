@@ -16,9 +16,7 @@ import { GRAY_2, GRAY_5 } from "../design/colors";
 
 const MyLibraryScreen = () => {
   const { state: contentState, fetchContent } = useContext(ContentContext);
-  const { state: topicsState, fetchTopics, createTopic } = useContext(
-    TopicsContext
-  );
+  const { state: topicsState, fetchTopics } = useContext(TopicsContext);
   // Buttons to switch screens
   const screenSwitchButtons = ["Shelves", "Topics"];
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(0);
@@ -76,7 +74,6 @@ const MyLibraryScreen = () => {
         wrapped in a View instead of ScrollView. Need to improve this screen */}
         <TopicsSection
           items={topicsState.items}
-          onCreateTopic={createTopic}
           ButtonGroupHeader={MyLibraryButtonGroup}
         />
       </View>
