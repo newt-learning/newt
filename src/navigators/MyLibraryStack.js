@@ -8,6 +8,7 @@ import BookScreen from "../screens/BookScreen";
 import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
 import CreateTopicScreen from "../screens/CreateTopicScreen";
+import TopicScreen from "../screens/TopicScreen";
 // Helpers
 import SCREEN_OPTIONS from "./screenOptions";
 // Design
@@ -43,6 +44,14 @@ const MainStack = () => {
         name="ShelfSelect"
         component={ShelfSelectScreen}
         options={{ title: null }}
+      />
+      <Stack.Screen
+        name="Topic"
+        component={TopicScreen}
+        options={({ route }) => ({
+          title: route.params.title,
+          headerTitle: () => <NavHeaderTitle title={route.params.title} />,
+        })}
       />
     </Stack.Navigator>
   );
