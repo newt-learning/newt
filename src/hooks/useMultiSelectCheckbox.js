@@ -19,7 +19,11 @@ const useMultiSelectCheckbox = (initialState) => {
     setCheckboxes(updatedCheckboxes);
   };
 
-  return [checkboxes, toggleCheckboxes];
+  const setCheckboxesFromOutside = (checkboxesState) => {
+    setCheckboxes(checkboxesState);
+  };
+
+  return [checkboxes, toggleCheckboxes, setCheckboxesFromOutside];
 };
 
 export default useMultiSelectCheckbox;

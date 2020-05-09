@@ -20,6 +20,13 @@ const AddToTopicScreen = ({ route }) => {
     fetchTopics,
   } = useContext(TopicsContext);
 
+  // Initialize empty multi-select list
+  const [
+    topicsList,
+    toggleTopicsList,
+    setCheckboxesFromOutside,
+  ] = useMultiSelectCheckbox([]);
+
   // Array of topic ids that the content (book, etc.) is already in
   const { contentTopics } = route.params;
 
@@ -27,10 +34,18 @@ const AddToTopicScreen = ({ route }) => {
     fetchTopics();
   }, []);
 
-  // Create multi-select list
-  const [topicsList, toggleTopicsList] = useMultiSelectCheckbox(
-    initializeMultiSelectCheckbox(items, contentTopics)
-  );
+  // This is a little hacky? way (I think, can't find anything cases like this),
+  // to fix the bug where the checkboxes were being initialized before the
+  // topics data loaded, thus showing an empty screen. Since hooks have to be
+  // top level, they can't be set conditionally or in useEffect, and there can't
+  // be the Loader return before as well (throws an error). This way, the
+  // topicsList is initialized again once the data has loaded (or if there's any
+  // change).
+  useEffect(() => {
+    setCheckboxesFromOutside(
+      initializeMultiSelectCheckbox(items, contentTopics)
+    );
+  }, [items, contentTopics]);
 
   if (isFetching) {
     return <Loader />;
