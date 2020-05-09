@@ -13,6 +13,10 @@ export const WHITE = "#ffffff";
 export const NEWT_BLUE = "#38ceff";
 
 export const BLUE = "#1089ff";
+export const BLUE_2 = "#4ba6ff";
+export const BLUE_3 = "#86c3ff";
+export const BLUE_4 = "#add6ff";
+export const BLUE_5 = "#d4eaff";
 
 export const RED = "#ff4d4d";
 
@@ -31,6 +35,10 @@ export const RUBY_5 = "#ffdbe4";
 
 // Indigos
 export const INDIGO = "#3a3aff";
+export const INDIGO_2 = "#6161ff";
+export const INDIGO_3 = "#8888ff";
+export const INDIGO_4 = "#b0b0ff";
+export const INDIGO_5 = "#d7d7ff";
 
 export const LIME_GREEN = "#42e6a4";
 
