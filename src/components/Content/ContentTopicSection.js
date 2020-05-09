@@ -5,13 +5,13 @@ import _ from "lodash";
 import CreateTopicButton from "../MyLibrary/CreateTopicButton";
 import { FS12 } from "../../design/typography";
 
-const AddToTopicButton = () => {
+const AddToTopicButton = ({ contentTopics }) => {
   const navigation = useNavigation();
 
   return (
     <CreateTopicButton
       title="Add topic"
-      onPress={() => navigation.navigate("AddToTopic")}
+      onPress={() => navigation.navigate("AddToTopic", { contentTopics })}
       buttonStyle={styles.addToTopicBtn}
       titleStyle={styles.addToTopicBtnTitle}
       iconSize={18}
@@ -21,7 +21,7 @@ const AddToTopicButton = () => {
 
 const ContentTopicSection = ({ topics }) => {
   if (_.isEmpty(topics)) {
-    return <AddToTopicButton />;
+    return <AddToTopicButton contentTopics={topics} />;
   }
 
   return <View></View>;

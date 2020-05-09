@@ -7,16 +7,28 @@ import Loader from "../components/shared/Loader";
 import ListSelect from "../components/shared/ListSelect";
 import { BOLD, FS20 } from "../design/typography";
 import { OFF_BLACK } from "../design/colors";
+// Hooks
+import useMultiSelectCheckbox from "../hooks/useMultiSelectCheckbox";
+// Helpers
+import { initializeMultiSelectCheckbox } from "../helpers/screenHelpers";
 
-const AddToTopicScreen = () => {
+const AddToTopicScreen = ({ route }) => {
   const {
     state: { isFetching, items },
     fetchTopics,
   } = useContext(TopicsContext);
 
+  // Array of topic ids that the content (book, etc.) is already in
+  const { contentTopics } = route.params;
+
   useEffect(() => {
     fetchTopics();
   }, []);
+
+  // Create multi-select list
+  const [topicsList, toggleTopicsList] = useMultiSelectCheckbox(
+    initializeMultiSelectCheckbox(items, contentTopics)
+  );
 
   if (isFetching) {
     return <Loader />;
@@ -25,8 +37,15 @@ const AddToTopicScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Select Topic(s)</Text>
-      {items.map((item) => (
-        <ListSelect name={item.name} key={item._id} />
+      {topicsList.map((topic, index) => (
+        <ListSelect
+          name={topic.name}
+          checked={topic.checked}
+          onPressCheckbox={() => {
+            toggleTopicsList(index);
+          }}
+          key={topic.name}
+        />
       ))}
     </View>
   );
