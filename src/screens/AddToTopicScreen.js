@@ -3,6 +3,7 @@ import { View, StyleSheet, Text } from "react-native";
 import _ from "lodash";
 // Context
 import { Context as TopicsContext } from "../context/TopicsContext";
+import { Context as ContentContext } from "../context/ContentContext";
 // Components
 import Loader from "../components/shared/Loader";
 import ListSelect from "../components/shared/ListSelect";
@@ -15,12 +16,13 @@ import { initializeMultiSelectCheckbox } from "../helpers/screenHelpers";
 import { BOLD, FS20 } from "../design/typography";
 import { OFF_BLACK } from "../design/colors";
 
-const AddToTopicScreen = ({ route }) => {
+const AddToTopicScreen = ({ navigation, route }) => {
   const {
     state: { isFetching, items },
     fetchTopics,
     addContentToTopics,
   } = useContext(TopicsContext);
+  const { updateContent } = useContext(ContentContext);
 
   // Initialize empty multi-select list
   const [
@@ -60,8 +62,14 @@ const AddToTopicScreen = ({ route }) => {
       .filter({ checked: true })
       .map((item) => item._id);
 
-    // Send request to add the content to the selected topics
+    // Removes repeated ids, so ensures only the new topic ids selected are
+    // added to the existing topic ids.
+    const updatedTopicIds = _.uniq([...contentTopics, ...selectedTopicsIds]);
+
+    // Send request to add the content to the selected topics, and update the
+    // content by adding the topics to it
     addContentToTopics({ topicIds: selectedTopicsIds, contentId });
+    updateContent(contentId, { topics: updatedTopicIds });
   };
 
   return (
@@ -86,6 +94,7 @@ const AddToTopicScreen = ({ route }) => {
           title="Confirm"
           onPress={() => {
             updateTopicsAndContent(topicsList);
+            navigation.goBack();
           }}
         />
       </View>
