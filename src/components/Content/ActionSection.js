@@ -90,7 +90,7 @@ const ActionSection = ({
             dateAdded={dateAdded}
             dateCompleted={dateCompleted}
           />
-          <ContentTopicSection topics={topics} />
+          <ContentTopicSection contentId={contentId} topics={topics} />
         </View>
       ) : (
         <ActionButton title="Add to Library" onPress={onPress} />

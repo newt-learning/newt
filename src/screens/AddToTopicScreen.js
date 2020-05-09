@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { View, StyleSheet, Text } from "react-native";
+import _ from "lodash";
 // Context
 import { Context as TopicsContext } from "../context/TopicsContext";
 // Components
@@ -18,6 +19,7 @@ const AddToTopicScreen = ({ route }) => {
   const {
     state: { isFetching, items },
     fetchTopics,
+    addContentToTopics,
   } = useContext(TopicsContext);
 
   // Initialize empty multi-select list
@@ -28,7 +30,7 @@ const AddToTopicScreen = ({ route }) => {
   ] = useMultiSelectCheckbox([]);
 
   // Array of topic ids that the content (book, etc.) is already in
-  const { contentTopics } = route.params;
+  const { contentId, contentTopics } = route.params;
 
   useEffect(() => {
     fetchTopics();
@@ -51,6 +53,17 @@ const AddToTopicScreen = ({ route }) => {
     return <Loader />;
   }
 
+  const updateTopicsAndContent = (topicsList) => {
+    // First filter through the topics list to get only the checked ones, then
+    // from those objects only take out the ids
+    const selectedTopicsIds = _.chain(topicsList)
+      .filter({ checked: true })
+      .map((item) => item._id);
+
+    // Send request to add the content to the selected topics
+    addContentToTopics({ topicIds: selectedTopicsIds, contentId });
+  };
+
   return (
     <View style={styles.container}>
       <View>
@@ -72,7 +85,7 @@ const AddToTopicScreen = ({ route }) => {
         <ActionButton
           title="Confirm"
           onPress={() => {
-            console.log(topicsList);
+            updateTopicsAndContent(topicsList);
           }}
         />
       </View>

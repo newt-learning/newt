@@ -59,11 +59,23 @@ const createTopic = (dispatch) => async (data) => {
   }
 };
 
+// Add content (contentId) to multiple topics
+const addContentToTopics = (dispatch) => async (data) => {
+  try {
+    dispatch(requestTopics());
+    const res = await newtApi.put("/topics/add-content", data);
+    dispatch(resolveTopics());
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const { Provider, Context } = createDataContext(
   topicsReducer,
   {
     fetchTopics,
     createTopic,
+    addContentToTopics,
   },
   {
     isFetching: false,
