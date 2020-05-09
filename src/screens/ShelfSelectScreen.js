@@ -11,7 +11,7 @@ import _ from "lodash";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
-import ShelfSelect from "../components/Content/ShelfSelect";
+import ListSelect from "../components/shared/ListSelect";
 import ActionButton from "../components/shared/ActionButton";
 import ClearButton from "../components/shared/ClearButton";
 import Loader from "../components/shared/Loader";
@@ -126,7 +126,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
       <View style={styles.option}>
         <Text style={styles.header}>Select Shelf</Text>
         {shelves.map((shelf, index) => (
-          <ShelfSelect
+          <ListSelect
             name={shelf.name}
             checked={shelf.checked}
             onPressCheckbox={() => {
