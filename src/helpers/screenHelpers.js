@@ -43,9 +43,9 @@ export const initializeMultiSelectCheckbox = (
 
   allItems.forEach((item) => {
     if (alreadySelectedItems.includes(item._id)) {
-      initialList.push({ name: item.name, checked: true });
+      initialList.push({ _id: item._id, name: item.name, checked: true });
     } else {
-      initialList.push({ name: item.name, checked: false });
+      initialList.push({ _id: item._id, name: item.name, checked: false });
     }
   });
 

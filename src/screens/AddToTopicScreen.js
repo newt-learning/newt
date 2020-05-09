@@ -5,12 +5,14 @@ import { Context as TopicsContext } from "../context/TopicsContext";
 // Components
 import Loader from "../components/shared/Loader";
 import ListSelect from "../components/shared/ListSelect";
-import { BOLD, FS20 } from "../design/typography";
-import { OFF_BLACK } from "../design/colors";
+import ActionButton from "../components/shared/ActionButton";
 // Hooks
 import useMultiSelectCheckbox from "../hooks/useMultiSelectCheckbox";
 // Helpers
 import { initializeMultiSelectCheckbox } from "../helpers/screenHelpers";
+// Design
+import { BOLD, FS20 } from "../design/typography";
+import { OFF_BLACK } from "../design/colors";
 
 const AddToTopicScreen = ({ route }) => {
   const {
@@ -36,17 +38,29 @@ const AddToTopicScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Select Topic(s)</Text>
-      {topicsList.map((topic, index) => (
-        <ListSelect
-          name={topic.name}
-          checked={topic.checked}
-          onPressCheckbox={() => {
-            toggleTopicsList(index);
+      <View>
+        <Text style={styles.header}>Select Topic(s)</Text>
+        <View>
+          {topicsList.map((topic, index) => (
+            <ListSelect
+              name={topic.name}
+              checked={topic.checked}
+              onPressCheckbox={() => {
+                toggleTopicsList(index);
+              }}
+              key={topic.name}
+            />
+          ))}
+        </View>
+      </View>
+      <View style={styles.btnContainer}>
+        <ActionButton
+          title="Confirm"
+          onPress={() => {
+            console.log(topicsList);
           }}
-          key={topic.name}
         />
-      ))}
+      </View>
     </View>
   );
 };
@@ -54,6 +68,7 @@ const AddToTopicScreen = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "space-between",
   },
   header: {
     fontFamily: BOLD,
@@ -62,6 +77,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 5,
     marginHorizontal: 15,
+  },
+  btnContainer: {
+    marginBottom: 30,
+    alignSelf: "center",
   },
 });
 

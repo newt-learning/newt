@@ -2,9 +2,7 @@ import { useState } from "react";
 
 // Hook to update checkboxes where multiple items can be selected.
 const useMultiSelectCheckbox = (initialState) => {
-  console.log("initialstate: ", initialState);
   const [checkboxes, setCheckboxes] = useState(initialState);
-  console.log("checkboxes: ", checkboxes);
 
   const toggleCheckboxes = (selectedIndex) => {
     const updatedCheckboxes = checkboxes.map((item, index) => {
