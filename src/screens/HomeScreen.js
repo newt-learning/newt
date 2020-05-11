@@ -3,6 +3,7 @@ import { Text, StyleSheet, FlatList } from "react-native";
 import _ from "lodash";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
+import { Context as TopicsContext } from "../context/TopicsContext";
 // Components
 import { H1 } from "../components/shared/Headers";
 import Loader from "../components/shared/Loader";
@@ -22,15 +23,14 @@ import {
 } from "../helpers/screenHelpers";
 
 const HomeScreen = ({ navigation }) => {
-  const {
-    state: { isFetching, items, errorMessage },
-    fetchContent,
-  } = useContext(ContentContext);
+  const { state: contentState, fetchContent } = useContext(ContentContext);
+  const { state: topicsState, fetchTopics } = useContext(TopicsContext);
   const [refreshing, onPullToRefresh] = useRefresh(fetchContent);
 
   // Fetch content data
   useEffect(() => {
     fetchContent();
+    fetchTopics();
   }, []);
 
   // Message if there's data/content but none in the "Currently Learning" shelf
@@ -50,24 +50,32 @@ const HomeScreen = ({ navigation }) => {
   );
 
   // If data is being fetched, show loading spinner
-  if (isFetching && !refreshing) {
-    return <Loader isLoading={isFetching} />;
+  if ((contentState.isFetching || topicsState.isFetching) && !refreshing) {
+    return <Loader />;
   }
 
   // If there's an error message display error message screen
-  if (errorMessage) {
-    return <ErrorMessage message={errorMessage} onRetry={fetchContent} />;
+  if (contentState.errorMessage) {
+    return (
+      <ErrorMessage
+        message={contentState.errorMessage}
+        onRetry={() => {
+          fetchContent();
+          fetchTopics();
+        }}
+      />
+    );
   }
 
   // If there's no data and it's not currently being fetched, show the "No Content"
   // message
-  if (!isFetching && _.isEmpty(items)) {
+  if (!contentState.isFetching && _.isEmpty(contentState.items)) {
     return <NoContentMessage />;
   }
 
   // Filter out only items in "Currently Learning" shelf
   const inProgressContent = _.filter(
-    items,
+    contentState.items,
     (item) => item.shelf === "Currently Learning"
   );
   // Then order the filtered content by descending order of when it was last updated (latest to oldest)

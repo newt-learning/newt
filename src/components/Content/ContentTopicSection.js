@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import _ from "lodash";
+// Context
+import { Context as TopicsContext } from "../../context/TopicsContext";
 // Components
 import CreateTopicButton from "../MyLibrary/CreateTopicButton";
 import Pill from "../shared/Pill";
@@ -26,17 +28,22 @@ const AddToTopicButton = ({ contentId, contentTopics }) => {
 };
 
 const ContentTopicSection = ({ contentId, topics }) => {
+  const {
+    state: { items },
+  } = useContext(TopicsContext);
+
   if (_.isEmpty(topics)) {
     return <AddToTopicButton contentId={contentId} contentTopics={topics} />;
   }
 
   return (
     <View style={styles.topicsContainer}>
-      {topics.map((topic) => (
+      {topics.map((topicId) => (
         <Pill
-          title={topic.substr(0, 17)}
+          title={_.find(items, { _id: topicId }).name}
           backgroundColor={RUBY_2}
           outlineColor={RUBY_2}
+          key={topicId}
         />
       ))}
     </View>
