@@ -10,10 +10,12 @@ import {
 import _ from "lodash";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
+import { Context as TopicsContext } from "../context/TopicsContext";
 // Components
 import ListSelect from "../components/shared/ListSelect";
 import ActionButton from "../components/shared/ActionButton";
 import ClearButton from "../components/shared/ClearButton";
+import MultiItemSelect from "../components/shared/MultiItemSelect";
 import Loader from "../components/shared/Loader";
 // Hooks
 import useSingleCheckbox from "../hooks/useSingleCheckbox";
@@ -31,6 +33,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     deleteContent,
     updateContent,
   } = useContext(ContentContext);
+  const { state: topicsState } = useContext(TopicsContext);
 
   // Get params passed from route
   const { bookInfo, buttonText, showDeleteButton, addToLibrary } = route.params;
@@ -148,8 +151,20 @@ const ShelfSelectScreen = ({ navigation, route }) => {
             titleStyle={styles.delete}
           />
         ) : null}
+        {/* If on Add to Library screen, show Topic Selector */}
+        {addToLibrary ? (
+          <View>
+            <Text style={styles.header}>Select Topic(s)</Text>
+            <View style={styles.topicSelectContainer}>
+              {/* {topicsState.items.map((item) => (
+                <TopicSelector title={item.name} key={item._id} />
+              ))} */}
+              <MultiItemSelect items={topicsState.items} />
+            </View>
+          </View>
+        ) : null}
       </View>
-      <View style={styles.button}>
+      <View style={styles.buttonContainer}>
         <ActionButton
           title={buttonText}
           onPress={() => {
@@ -179,8 +194,9 @@ const styles = StyleSheet.create({
     color: OFF_BLACK,
     marginTop: 20,
     marginHorizontal: 15,
+    marginBottom: 5,
   },
-  button: {
+  buttonContainer: {
     alignItems: "center",
     marginHorizontal: 15,
     marginBottom: 20,
@@ -190,6 +206,12 @@ const styles = StyleSheet.create({
   },
   delete: {
     color: RED,
+  },
+  topicSelectContainer: {
+    marginHorizontal: 8,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    flexWrap: "wrap",
   },
 });
 
