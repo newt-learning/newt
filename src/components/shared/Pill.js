@@ -23,7 +23,7 @@ const Pill = ({
   ]);
   // If the pill's for adding, add margin from plus icon and change font color
   const titleStyle = addPill
-    ? StyleSheet.compose([styles.title, { marginLeft: 8, color: RUBY }])
+    ? StyleSheet.compose([styles.title, { marginLeft: 5, color: RUBY }])
     : styles.title;
 
   return (
@@ -32,7 +32,7 @@ const Pill = ({
       type="outline"
       buttonStyle={buttonStyle}
       titleStyle={titleStyle}
-      icon={addPill ? <Feather name="plus" size={18} color={RUBY} /> : null}
+      icon={addPill ? <Feather name="plus" size={16} color={RUBY} /> : null}
       onPress={onPress}
     />
   );
