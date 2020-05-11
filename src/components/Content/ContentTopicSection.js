@@ -8,7 +8,6 @@ import { Context as TopicsContext } from "../../context/TopicsContext";
 import Pill from "../shared/Pill";
 // Design
 import { FS12 } from "../../design/typography";
-import { RUBY, RUBY_2, RUBY_5 } from "../../design/colors";
 
 const AddToTopicPill = ({ contentId, contentTopics }) => {
   const navigation = useNavigation();
@@ -16,8 +15,6 @@ const AddToTopicPill = ({ contentId, contentTopics }) => {
   return (
     <Pill
       title="Add topic"
-      backgroundColor={RUBY_5}
-      outlineColor={RUBY}
       addPill={true}
       onPress={() =>
         navigation.navigate("AddToTopic", {
@@ -45,12 +42,7 @@ const ContentTopicSection = ({ contentId, topics }) => {
   return (
     <View style={styles.topicsContainer}>
       {topics.map((topicId) => (
-        <Pill
-          title={_.find(items, { _id: topicId }).name}
-          backgroundColor={RUBY_2}
-          outlineColor={RUBY_2}
-          key={topicId}
-        />
+        <Pill title={_.find(items, { _id: topicId }).name} key={topicId} />
       ))}
       <AddToTopicPill contentId={contentId} contentTopics={topics} />
     </View>
