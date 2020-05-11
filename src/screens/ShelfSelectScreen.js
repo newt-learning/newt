@@ -19,11 +19,15 @@ import MultiItemSelect from "../components/shared/MultiItemSelect";
 import Loader from "../components/shared/Loader";
 // Hooks
 import useSingleCheckbox from "../hooks/useSingleCheckbox";
+import useMultiSelectCheckbox from "../hooks/useMultiSelectCheckbox";
 // Styling
 import { BOLD, FS20 } from "../design/typography";
 import { OFF_BLACK, RED, GRAY_5 } from "../design/colors";
 // Helpers
-import { initializeShelves } from "../helpers/screenHelpers";
+import {
+  initializeShelves,
+  initializeMultiSelectCheckbox,
+} from "../helpers/screenHelpers";
 
 const ShelfSelectScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -38,9 +42,12 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   // Get params passed from route
   const { bookInfo, buttonText, showDeleteButton, addToLibrary } = route.params;
 
-  // Initialize shelves
+  // Initialize shelves and topics checkboxes/selectors
   const [shelves, toggleShelves] = useSingleCheckbox(
     initializeShelves(bookInfo.shelf)
+  );
+  const [topicsList, toggleTopicsList] = useMultiSelectCheckbox(
+    initializeMultiSelectCheckbox(topicsState.items, [])
   );
 
   const addBookToLibrary = async (selectedShelf) => {
@@ -159,7 +166,10 @@ const ShelfSelectScreen = ({ navigation, route }) => {
               {/* {topicsState.items.map((item) => (
                 <TopicSelector title={item.name} key={item._id} />
               ))} */}
-              <MultiItemSelect items={topicsState.items} />
+              <MultiItemSelect
+                itemsList={topicsList}
+                onSelect={toggleTopicsList}
+              />
             </View>
           </View>
         ) : null}

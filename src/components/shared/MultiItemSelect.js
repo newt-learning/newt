@@ -2,19 +2,11 @@ import React from "react";
 import { StyleSheet } from "react-native";
 // Components
 import Pill from "./Pill";
-// Hooks
-import useMultiSelectCheckbox from "../../hooks/useMultiSelectCheckbox";
-// Helpers
-import { initializeMultiSelectCheckbox } from "../../helpers/screenHelpers";
 // Design
 import { RUBY_5, RUBY, GRAY_2, GRAY_4, RUBY_4 } from "../../design/colors";
 import { FS16 } from "../../design/typography";
 
-const MultiItemSelect = ({ items }) => {
-  const [itemsList, toggleItemsList] = useMultiSelectCheckbox(
-    initializeMultiSelectCheckbox(items, [])
-  );
-
+const MultiItemSelect = ({ itemsList, onSelect }) => {
   return itemsList.map((item, index) => {
     const buttonStyle = StyleSheet.compose([
       styles.pill,
@@ -28,7 +20,7 @@ const MultiItemSelect = ({ items }) => {
       <Pill
         title={item.name}
         key={item._id}
-        onPress={() => toggleItemsList(index)}
+        onPress={() => onSelect(index)}
         buttonStyle={buttonStyle}
         titleStyle={titleStyle}
       />
