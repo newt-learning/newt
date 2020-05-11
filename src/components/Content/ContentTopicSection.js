@@ -5,24 +5,26 @@ import _ from "lodash";
 // Context
 import { Context as TopicsContext } from "../../context/TopicsContext";
 // Components
-import CreateTopicButton from "../MyLibrary/CreateTopicButton";
 import Pill from "../shared/Pill";
 // Design
 import { FS12 } from "../../design/typography";
-import { RUBY_2 } from "../../design/colors";
+import { RUBY, RUBY_2, RUBY_5 } from "../../design/colors";
 
-const AddToTopicButton = ({ contentId, contentTopics }) => {
+const AddToTopicPill = ({ contentId, contentTopics }) => {
   const navigation = useNavigation();
 
   return (
-    <CreateTopicButton
+    <Pill
       title="Add topic"
+      backgroundColor={RUBY_5}
+      outlineColor={RUBY}
+      addPill={true}
       onPress={() =>
-        navigation.navigate("AddToTopic", { contentId, contentTopics })
+        navigation.navigate("AddToTopic", {
+          contentId,
+          contentTopics,
+        })
       }
-      buttonStyle={styles.addToTopicBtn}
-      titleStyle={styles.addToTopicBtnTitle}
-      iconSize={18}
     />
   );
 };
@@ -33,7 +35,11 @@ const ContentTopicSection = ({ contentId, topics }) => {
   } = useContext(TopicsContext);
 
   if (_.isEmpty(topics)) {
-    return <AddToTopicButton contentId={contentId} contentTopics={topics} />;
+    return (
+      <View style={styles.topicsContainer}>
+        <AddToTopicPill contentId={contentId} contentTopics={topics} />
+      </View>
+    );
   }
 
   return (
@@ -46,6 +52,7 @@ const ContentTopicSection = ({ contentId, topics }) => {
           key={topicId}
         />
       ))}
+      <AddToTopicPill contentId={contentId} contentTopics={topics} />
     </View>
   );
 };
