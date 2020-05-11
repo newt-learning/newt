@@ -2,8 +2,12 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import _ from "lodash";
+// Components
 import CreateTopicButton from "../MyLibrary/CreateTopicButton";
+import Pill from "../shared/Pill";
+// Design
 import { FS12 } from "../../design/typography";
+import { RUBY_2 } from "../../design/colors";
 
 const AddToTopicButton = ({ contentId, contentTopics }) => {
   const navigation = useNavigation();
@@ -26,10 +30,26 @@ const ContentTopicSection = ({ contentId, topics }) => {
     return <AddToTopicButton contentId={contentId} contentTopics={topics} />;
   }
 
-  return <View></View>;
+  return (
+    <View style={styles.topicsContainer}>
+      {topics.map((topic) => (
+        <Pill
+          title={topic.substr(0, 17)}
+          backgroundColor={RUBY_2}
+          outlineColor={RUBY_2}
+        />
+      ))}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
+  topicsContainer: {
+    marginTop: 15,
+    flexDirection: "row",
+    justifyContent: "center",
+    flexWrap: "wrap",
+  },
   addToTopicBtn: {
     borderRadius: 30,
     paddingVertical: 3,
