@@ -37,7 +37,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     deleteContent,
     updateContent,
   } = useContext(ContentContext);
-  const { state: topicsState } = useContext(TopicsContext);
+  const { state: topicsState, addContentToTopics } = useContext(TopicsContext);
 
   // Get params passed from route
   const { bookInfo, buttonText, showDeleteButton, addToLibrary } = route.params;
@@ -50,12 +50,22 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     initializeMultiSelectCheckbox(topicsState.items, [])
   );
 
-  const addBookToLibrary = async (selectedShelf) => {
-    const data = { ...bookInfo, shelf: selectedShelf, type: "book" };
+  const addBookToLibrary = async (selectedShelf, selectedTopics) => {
+    const data = {
+      ...bookInfo,
+      shelf: selectedShelf,
+      topics: selectedTopics,
+      type: "book",
+    };
+
     // Send request to add book and then send bookInfo as param in navigation
     // route to 'BookScreen'. This will allow the Shelf button to change from
     // 'Add to Library' to whatever shelf was chosen (ex: 'Want to Learn').
     const newBook = await addContent(data, true);
+
+    // Add book to selected topics
+    addContentToTopics({ topicIds: selectedTopics, contentId: newBook._id });
+
     // If the result is null, meaning there was an error in adding the book,
     // go back to previous screen.
     if (newBook === null) {
@@ -119,9 +129,9 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   // Function that decided what to do when the Confirm/Add To Library button is
   // pressed. If coming from the 'Add Content' screen, then add to Library.
   // Otherwise update the shelf of already existing content.
-  const onConfirmShelf = (selectedShelf) => {
+  const onConfirmShelf = (selectedShelf, selectedTopics) => {
     if (addToLibrary) {
-      addBookToLibrary(selectedShelf);
+      addBookToLibrary(selectedShelf, selectedTopics);
     } else {
       updateShelf(selectedShelf);
     }
@@ -179,8 +189,14 @@ const ShelfSelectScreen = ({ navigation, route }) => {
           title={buttonText}
           onPress={() => {
             setIsLoading(true);
+            // Get chosen shelf
             const currentShelf = _.find(shelves, (shelf) => shelf.checked);
-            onConfirmShelf(currentShelf.name);
+            // filter through the topics list to get only the checked ones, then
+            // from those objects only take out the ids
+            const selectedTopicIds = _.chain(topicsList)
+              .filter({ checked: true })
+              .map((item) => item._id);
+            onConfirmShelf(currentShelf.name, selectedTopicIds);
           }}
           showLoading={isLoading}
         />
