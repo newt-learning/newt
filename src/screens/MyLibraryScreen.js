@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet, RefreshControl } from "react-native";
 import _ from "lodash";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
@@ -11,6 +11,8 @@ import NoContentMessage from "../components/shared/NoContentMessage";
 import ButtonGroup from "../components/shared/ButtonGroup";
 import ShelvesSection from "../components/MyLibrary/ShelvesSection";
 import TopicsSection from "../components/MyLibrary/TopicsSection";
+// Hooks
+import useRefresh from "../hooks/useRefresh";
 // Design
 import { GRAY_2, GRAY_5 } from "../design/colors";
 
@@ -21,13 +23,20 @@ const MyLibraryScreen = () => {
   const screenSwitchButtons = ["Shelves", "Topics"];
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(0);
 
+  // Pull to refresh
+  const fetchData = () => {
+    fetchContent();
+    fetchTopics();
+  };
+  const [refreshing, onPullToRefresh] = useRefresh(fetchData);
+
   // Fetch content and topics data
   useEffect(() => {
     fetchContent();
     fetchTopics();
   }, []);
 
-  if (contentState.isFetching || topicsState.isFetching) {
+  if ((contentState.isFetching || topicsState.isFetching) && !refreshing) {
     return <Loader />;
   }
 
@@ -61,7 +70,12 @@ const MyLibraryScreen = () => {
   // Display Shelves or Topics section based on button selected
   if (selectedButtonIndex === 0) {
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onPullToRefresh} />
+        }
+      >
         <MyLibraryButtonGroup />
         <ShelvesSection items={contentState.items} />
       </ScrollView>
