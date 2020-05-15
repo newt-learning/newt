@@ -20,7 +20,11 @@ const TopicsSection = ({ items, ButtonGroupHeader }) => {
           Looks like you haven't created any topics. You can use topics to
           organize your content.
         </Text>
-        <CreateTopicButton onPress={() => navigation.navigate("CreateTopic")} />
+        <View style={styles.btnContainer}>
+          <CreateTopicButton
+            onPress={() => navigation.navigate("CreateTopic")}
+          />
+        </View>
       </View>
     );
   }
@@ -35,7 +39,7 @@ const TopicsSection = ({ items, ButtonGroupHeader }) => {
             onPress={() => navigation.navigate("CreateTopic")}
           />
         }
-        ListFooterComponentStyle={{ marginHorizontal: 15, marginTop: 20 }}
+        ListFooterComponentStyle={{ ...styles.btnContainer, marginTop: 20 }}
         data={items}
         numColumns={2}
         renderItem={({ item }) => <TopicCard topicInfo={item} />}
@@ -55,6 +59,10 @@ const styles = StyleSheet.create({
     fontFamily: SEMIBOLD,
     fontSize: FS14,
     color: GRAY_2,
+    marginTop: 10,
+  },
+  btnContainer: {
+    marginHorizontal: 15,
   },
 });
 

@@ -58,18 +58,35 @@ const AddToTopicScreen = ({ navigation, route }) => {
   const updateTopicsAndContent = (topicsList) => {
     // First filter through the topics list to get only the checked ones, then
     // from those objects only take out the ids
-    const selectedTopicsIds = _.chain(topicsList)
-      .filter({ checked: true })
-      .map((item) => item._id);
+    const selectedTopicsIds = _.filter(topicsList, { checked: true }).map(
+      (item) => item._id
+    );
 
-    // Removes repeated ids, so ensures only the new topic ids selected are
-    // added to the existing topic ids.
-    const updatedTopicIds = _.uniq([...contentTopics, ...selectedTopicsIds]);
+    let topicsToAdd = [];
+    let topicsToRemove = [];
+
+    // For each of the topics selected, if they're not in the existing topics,
+    // only then add it to the topicsToAdd array. Only those topics will then
+    // have the content added to it to avoid duplication.
+    selectedTopicsIds.forEach((topicId) => {
+      if (!_.includes(contentTopics, topicId)) {
+        topicsToAdd.push(topicId);
+      }
+    });
+
+    // For each of the existing topics, if they're not in the selected topics,
+    // then add it to the topicsToRemove array. It will be used to remove the
+    // topic <==> content associations.
+    contentTopics.forEach((topicId) => {
+      if (!_.includes(selectedTopicsIds, topicId)) {
+        topicsToRemove.push(topicId);
+      }
+    });
 
     // Send request to add the content to the selected topics, and update the
     // content by adding the topics to it
-    addContentToTopics({ topicIds: selectedTopicsIds, contentId });
-    updateContent(contentId, { topics: updatedTopicIds });
+    addContentToTopics({ topicIds: topicsToAdd, contentId });
+    updateContent(contentId, { topics: selectedTopicsIds });
   };
 
   return (
