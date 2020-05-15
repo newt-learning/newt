@@ -70,12 +70,24 @@ const addContentToTopics = (dispatch) => async (data) => {
   }
 };
 
+// Remove content (contentId) from multiple topics
+const removeContentTopics = (dispatch) => async (data) => {
+  try {
+    dispatch(requestTopics());
+    const res = await newtApi.put("/topics/remove-content", data);
+    dispatch(resolveTopics());
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const { Provider, Context } = createDataContext(
   topicsReducer,
   {
     fetchTopics,
     createTopic,
     addContentToTopics,
+    removeContentTopics,
   },
   {
     isFetching: false,

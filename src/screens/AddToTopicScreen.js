@@ -21,6 +21,7 @@ const AddToTopicScreen = ({ navigation, route }) => {
     state: { isFetching, items },
     fetchTopics,
     addContentToTopics,
+    removeContentTopics,
   } = useContext(TopicsContext);
   const { updateContent } = useContext(ContentContext);
 
@@ -83,9 +84,11 @@ const AddToTopicScreen = ({ navigation, route }) => {
       }
     });
 
-    // Send request to add the content to the selected topics, and update the
-    // content by adding the topics to it
+    // Send request to add the content to the newly selected topics, remove
+    // topics that were unselected, and update the content by adding the topics
+    // to it
     addContentToTopics({ topicIds: topicsToAdd, contentId });
+    removeContentTopics({ topicIds: topicsToRemove, contentId });
     updateContent(contentId, { topics: selectedTopicsIds });
   };
 
