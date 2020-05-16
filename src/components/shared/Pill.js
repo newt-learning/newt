@@ -11,6 +11,7 @@ const Pill = ({
   addPill = false, // whether the pill's for adding (for example, creating a topic)
   buttonStyle: passedButtonStyle,
   titleStyle: passedTitleStyle,
+  iconColor = RUBY,
 }) => {
   const buttonStyle = StyleSheet.compose([
     styles.pill,
@@ -30,7 +31,9 @@ const Pill = ({
       type="outline"
       buttonStyle={buttonStyle}
       titleStyle={titleStyle}
-      icon={addPill ? <Feather name="plus" size={16} color={RUBY} /> : null}
+      icon={
+        addPill ? <Feather name="plus" size={16} color={iconColor} /> : null
+      }
       onPress={onPress}
     />
   );

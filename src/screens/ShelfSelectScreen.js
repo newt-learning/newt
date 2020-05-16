@@ -179,6 +179,8 @@ const ShelfSelectScreen = ({ navigation, route }) => {
               <MultiItemSelect
                 itemsList={topicsList}
                 onSelect={toggleTopicsList}
+                showCreateItem={true}
+                onSelectCreateItem={() => navigation.navigate("CreateTopic")}
               />
             </View>
           </View>

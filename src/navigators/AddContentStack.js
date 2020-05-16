@@ -9,6 +9,7 @@ import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
 import AddToTopicScreen from "../screens/AddToTopicScreen";
 import TopicScreen from "../screens/TopicScreen";
+import CreateTopicScreen from "../screens/CreateTopicScreen";
 // Helpers
 import SCREEN_OPTIONS from "./screenOptions";
 // Design
@@ -77,6 +78,14 @@ const RootStack = () => {
         component={UpdateProgressScreen}
         options={{
           title: "Update Progress",
+          ...SCREEN_OPTIONS.presentationModalOptions,
+        }}
+      />
+      <Stack.Screen
+        name="CreateTopic"
+        component={CreateTopicScreen}
+        options={{
+          title: "Create Topic",
           ...SCREEN_OPTIONS.presentationModalOptions,
         }}
       />

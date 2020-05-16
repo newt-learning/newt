@@ -1,31 +1,64 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { StyleSheet } from "react-native";
 // Components
 import Pill from "./Pill";
 // Design
-import { RUBY_5, RUBY, GRAY_2, GRAY_4, RUBY_4 } from "../../design/colors";
+import {
+  RUBY,
+  RUBY_4,
+  RUBY_5,
+  GRAY_2,
+  GRAY_3,
+  GRAY_4,
+  GRAY_5,
+} from "../../design/colors";
 import { FS16 } from "../../design/typography";
 
-const MultiItemSelect = ({ itemsList, onSelect }) => {
-  return itemsList.map((item, index) => {
-    const buttonStyle = StyleSheet.compose([
-      styles.pill,
-      item.checked ? styles.activePill : styles.inactivePill,
-    ]);
-    const titleStyle = StyleSheet.compose([
-      styles.title,
-      item.checked ? styles.activeTitle : styles.inactiveTitle,
-    ]);
-    return (
-      <Pill
-        title={item.name}
-        key={item._id}
-        onPress={() => onSelect(index)}
-        buttonStyle={buttonStyle}
-        titleStyle={titleStyle}
-      />
-    );
-  });
+const MultiItemSelect = ({
+  itemsList,
+  onSelect,
+  showCreateItem = false,
+  onSelectCreateItem,
+}) => {
+  const renderItems = () => {
+    return itemsList.map((item, index) => {
+      const buttonStyle = StyleSheet.compose([
+        styles.pill,
+        item.checked ? styles.activePill : styles.inactivePill,
+      ]);
+      const titleStyle = StyleSheet.compose([
+        styles.title,
+        item.checked ? styles.activeTitle : styles.inactiveTitle,
+      ]);
+      return (
+        <Pill
+          title={item.name}
+          key={item._id}
+          onPress={() => onSelect(index)}
+          buttonStyle={buttonStyle}
+          titleStyle={titleStyle}
+        />
+      );
+    });
+  };
+
+  return (
+    <Fragment>
+      {/* Render all the items first */}
+      {renderItems()}
+      {/* If showCreateItem is true, show the pill to create an item */}
+      {showCreateItem ? (
+        <Pill
+          title="Create topic"
+          addPill={true}
+          onPress={onSelectCreateItem}
+          buttonStyle={StyleSheet.compose(styles.pill, styles.addItemPill)}
+          titleStyle={StyleSheet.compose(styles.title, styles.inactiveTitle)}
+          iconColor={GRAY_2}
+        />
+      ) : null}
+    </Fragment>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -41,6 +74,11 @@ const styles = StyleSheet.create({
   inactivePill: {
     backgroundColor: GRAY_4,
     borderColor: GRAY_4,
+  },
+  addItemPill: {
+    borderColor: GRAY_3,
+    backgroundColor: GRAY_5,
+    borderStyle: "dotted",
   },
   title: {
     fontSize: FS16,
