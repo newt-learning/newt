@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -46,9 +46,23 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   const [shelves, toggleShelves] = useSingleCheckbox(
     initializeShelves(bookInfo.shelf)
   );
-  const [topicsList, toggleTopicsList] = useMultiSelectCheckbox(
+  const [
+    topicsList,
+    toggleTopicsList,
+    setCheckboxesFromOutside,
+  ] = useMultiSelectCheckbox(
     initializeMultiSelectCheckbox(topicsState.items, [])
   );
+
+  // This useEffect call will re-initialize the topics to select if there's a
+  // change to topicState (i.e. if a user creates a topic), so that it shows the
+  // topic added. Not sure if this a valid way to deal with updates to hooks
+  // (pretty sure it's not tbh), but it works.
+  useEffect(() => {
+    setCheckboxesFromOutside(
+      initializeMultiSelectCheckbox(topicsState.items, [])
+    );
+  }, [topicsState.items]);
 
   const addBookToLibrary = async (selectedShelf, selectedTopics) => {
     const data = {
