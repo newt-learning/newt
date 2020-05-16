@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     paddingHorizontal: 15,
     alignSelf: "center",
-    marginHorizontal: 2,
+    margin: 2,
   },
   defaultPill: {
     backgroundColor: RUBY_2,

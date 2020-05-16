@@ -80,7 +80,7 @@ const ActionSection = ({
   return (
     <View style={styles.container}>
       {shelf ? (
-        <View>
+        <View style={styles.actionSection}>
           <ChangeShelfButton shelf={shelf} onPress={onPress} />
           <UserInteractionSection
             shelf={shelf}
@@ -105,6 +105,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomWidth: 1,
     borderColor: GRAY_4,
+  },
+  actionSection: {
+    maxWidth: 300,
   },
   progressBar: {
     marginTop: 15,
