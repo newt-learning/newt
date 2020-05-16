@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -54,14 +54,33 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     initializeMultiSelectCheckbox(topicsState.items, [])
   );
 
-  // This useEffect call will re-initialize the topics to select if there's a
-  // change to topicState (i.e. if a user creates a topic), so that it shows the
-  // topic added. Not sure if this a valid way to deal with updates to hooks
-  // (pretty sure it's not tbh), but it works.
+  // Create a ref to be used as the previous topics state for comparison with a
+  // new one should it be updated (so that the new topic can be added to the
+  // topics multi-checkbox)
+  const topicsRef = useRef(topicsState.items);
+
+  // This useEffect call will check if there's a change to topicState, if there
+  // is (i.e. if a user creates a topic), it will add the new topic to the
+  // multi-checkbox and set it as already checked. Not a fan of this
+  // implementation to deal with state updates and updates to hooks, but it works.
   useEffect(() => {
-    setCheckboxesFromOutside(
-      initializeMultiSelectCheckbox(topicsState.items, [])
-    );
+    // Get previous topic state from ref
+    const prevTopics = topicsRef.current;
+
+    // If the topics items state is not the same length (if they are then
+    // no useful change, we only care about whether a topic was added or not),
+    // then add the new topic to the mult-checkbox
+    if (prevTopics.length !== topicsState.items.length) {
+      // new topic is the last item in the array
+      const newTopic = topicsState.items[topicsState.items.length - 1];
+
+      setCheckboxesFromOutside([
+        ...topicsList,
+        { _id: newTopic._id, name: newTopic.name, checked: true },
+      ]);
+      // Update ref to new topic items state
+      topicsRef.current = topicsState.items;
+    }
   }, [topicsState.items]);
 
   const addBookToLibrary = async (selectedShelf, selectedTopics) => {
@@ -187,9 +206,6 @@ const ShelfSelectScreen = ({ navigation, route }) => {
           <View>
             <Text style={styles.header}>Select Topic(s)</Text>
             <View style={styles.topicSelectContainer}>
-              {/* {topicsState.items.map((item) => (
-                <TopicSelector title={item.name} key={item._id} />
-              ))} */}
               <MultiItemSelect
                 itemsList={topicsList}
                 onSelect={toggleTopicsList}
