@@ -30,6 +30,7 @@ const ContentTopicSection = ({ contentId, topics }) => {
   const {
     state: { items },
   } = useContext(TopicsContext);
+  const navigation = useNavigation();
 
   if (_.isEmpty(topics)) {
     return (
@@ -42,7 +43,15 @@ const ContentTopicSection = ({ contentId, topics }) => {
   return (
     <View style={styles.topicsContainer}>
       {topics.map((topicId) => (
-        <Pill title={_.find(items, { _id: topicId }).name} key={topicId} />
+        <Pill
+          title={_.find(items, { _id: topicId }).name}
+          key={topicId}
+          onPress={() =>
+            navigation.navigate("Topic", {
+              topicInfo: _.find(items, { _id: topicId }),
+            })
+          }
+        />
       ))}
       <AddToTopicPill contentId={contentId} contentTopics={topics} />
     </View>
