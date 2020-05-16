@@ -56,7 +56,7 @@ const AddToTopicScreen = ({ navigation, route }) => {
     return <Loader />;
   }
 
-  const updateTopicsAndContent = (topicsList) => {
+  const updateTopicsAndContent = async (topicsList) => {
     // First filter through the topics list to get only the checked ones, then
     // from those objects only take out the ids
     const selectedTopicsIds = _.filter(topicsList, { checked: true }).map(
@@ -87,9 +87,12 @@ const AddToTopicScreen = ({ navigation, route }) => {
     // Send request to add the content to the newly selected topics, remove
     // topics that were unselected, and update the content by adding the topics
     // to it
-    addContentToTopics({ topicIds: topicsToAdd, contentId });
-    removeContentTopics({ topicIds: topicsToRemove, contentId });
     updateContent(contentId, { topics: selectedTopicsIds });
+    await addContentToTopics({ topicIds: topicsToAdd, contentId });
+    await removeContentTopics({ topicIds: topicsToRemove, contentId });
+    // Temporarily fetch all topics after updating until I rethink db requests/
+    // db joins and/or complex state management.
+    await fetchTopics();
   };
 
   return (
