@@ -1,11 +1,13 @@
 import createDataContext from "./createDataContext";
 import newtApi from "../api/newtApi";
+import { updateObjectInArrayById } from "../helpers/contextHelpers";
 
 // Action constants
 const REQUEST_TOPICS = "REQUEST_TOPICS";
 const RESOLVE_TOPICS = "RESOLVE_TOPICS";
 const SET_TOPICS = "SET_TOPICS";
 const ADD_INDIVIDUAL_TOPIC = "ADD_INDIVIDUAL_TOPIC";
+const UPDATE_INDIVIDUAL_TOPIC = "UPDATE_INDIVIDUAL_TOPIC";
 
 // Reducer
 const topicsReducer = (state, action) => {
@@ -18,6 +20,11 @@ const topicsReducer = (state, action) => {
       return { ...state, items: action.payload };
     case ADD_INDIVIDUAL_TOPIC:
       return { ...state, items: [...state.items, action.payload] };
+    case UPDATE_INDIVIDUAL_TOPIC:
+      return {
+        ...state,
+        items: updateObjectInArrayById(state.items, action.payload),
+      };
     default:
       return state;
   }
@@ -59,6 +66,17 @@ const createTopic = (dispatch) => async (data) => {
   }
 };
 
+const updateTopic = (dispatch) => async (topicId, data) => {
+  try {
+    dispatch(requestTopics());
+    const res = await newtApi.post(`/topics/${topicId}/update`, data);
+    dispatch({ type: UPDATE_INDIVIDUAL_TOPIC, payload: res.data });
+    dispatch(resolveTopics());
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // Add content (contentId) to multiple topics
 const addContentToTopics = (dispatch) => async (data) => {
   try {
@@ -86,6 +104,7 @@ export const { Provider, Context } = createDataContext(
   {
     fetchTopics,
     createTopic,
+    updateTopic,
     addContentToTopics,
     removeContentTopics,
   },
