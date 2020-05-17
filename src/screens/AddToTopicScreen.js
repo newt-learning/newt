@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, FlatList } from "react-native";
 import _ from "lodash";
 // Context
 import { Context as TopicsContext } from "../context/TopicsContext";
@@ -96,23 +96,21 @@ const AddToTopicScreen = ({ navigation, route }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View>
-        <Text style={styles.header}>Select Topic(s)</Text>
-        <View>
-          {topicsList.map((topic, index) => (
-            <ListSelect
-              name={topic.name}
-              checked={topic.checked}
-              onPressCheckbox={() => {
-                toggleTopicsList(index);
-              }}
-              key={topic.name}
-            />
-          ))}
-        </View>
-      </View>
-      <View style={styles.btnContainer}>
+    <FlatList
+      contentContainerStyle={styles.container}
+      data={topicsList}
+      renderItem={({ item, index }) => (
+        <ListSelect
+          name={item.name}
+          checked={item.checked}
+          onPressCheckbox={() => {
+            toggleTopicsList(index);
+          }}
+        />
+      )}
+      keyExtractor={(item) => item.name}
+      ListHeaderComponent={<Text style={styles.header}>Select Topic(s)</Text>}
+      ListFooterComponent={
         <ActionButton
           title="Confirm"
           onPress={() => {
@@ -120,15 +118,15 @@ const AddToTopicScreen = ({ navigation, route }) => {
             navigation.goBack();
           }}
         />
-      </View>
-    </View>
+      }
+      ListFooterComponentStyle={styles.btnContainer}
+    />
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "space-between",
+    flexGrow: 1,
   },
   header: {
     fontFamily: BOLD,
@@ -139,6 +137,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
   },
   btnContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+    marginTop: 20,
     marginBottom: 30,
     alignSelf: "center",
   },
