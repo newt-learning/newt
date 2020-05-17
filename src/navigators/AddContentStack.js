@@ -10,6 +10,7 @@ import UpdateProgressScreen from "../screens/UpdateProgressScreen";
 import AddToTopicScreen from "../screens/AddToTopicScreen";
 import TopicScreen from "../screens/TopicScreen";
 import CreateTopicScreen from "../screens/CreateTopicScreen";
+import EditTopicScreen from "../screens/EditTopicScreen";
 // Helpers
 import SCREEN_OPTIONS from "./screenOptions";
 // Design
@@ -94,6 +95,14 @@ const RootStack = () => {
         component={AddToTopicScreen}
         options={{
           title: "Add to Topic",
+          ...SCREEN_OPTIONS.presentationModalOptions,
+        }}
+      />
+      <Stack.Screen
+        name="EditTopic"
+        component={EditTopicScreen}
+        options={{
+          title: "Edit Topic",
           ...SCREEN_OPTIONS.presentationModalOptions,
         }}
       />

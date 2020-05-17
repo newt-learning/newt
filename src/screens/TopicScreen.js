@@ -55,7 +55,10 @@ const TopicScreen = ({ route, navigation }) => {
   const modalOptions = [
     {
       title: "Edit",
-      onPress: () => console.log("Edit"),
+      onPress: () => {
+        navigation.navigate("EditTopic", { topicInfo });
+        setIsModalVisible(false);
+      },
     },
     {
       title: "Delete",
