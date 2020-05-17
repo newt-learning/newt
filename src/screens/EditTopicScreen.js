@@ -30,7 +30,7 @@ const EditTopicScreen = ({ route }) => {
             <ActionButton
               title="Update"
               onPress={() => console.log("edit topic")}
-              disabled={topicName.length === 0}
+              disabled={topicName === topicInfo.name}
             />
           </View>
         </View>

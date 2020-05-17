@@ -39,6 +39,7 @@ const CreateTopicScreen = ({ navigation }) => {
                 navigation.goBack();
               }}
               disabled={topicName.length === 0}
+              showOnlyDisabledIcon={true}
             />
           </View>
         </View>
