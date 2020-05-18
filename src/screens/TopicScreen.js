@@ -9,6 +9,7 @@ import { Context as TopicsContext } from "../context/TopicsContext";
 import OptionsModal from "../components/shared/OptionsModal";
 import ContentList from "../components/ContentList";
 import { NavHeaderTitle } from "../components/shared/Headers";
+import initiateDeleteConfirmation from "../components/shared/initiateDeleteConfirmation";
 // Design
 import { SEMIBOLD, FS16 } from "../design/typography";
 import { OFF_BLACK, GRAY_2 } from "../design/colors";
@@ -57,7 +58,6 @@ const TopicScreen = ({ route, navigation }) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       const topic = _.filter(topicsState.items, { _id: topicInfo._id })[0];
-      console.log(topic);
       setTopicInfo(topic);
     });
 
@@ -95,7 +95,23 @@ const TopicScreen = ({ route, navigation }) => {
     },
     {
       title: "Delete",
-      onPress: () => console.log("Delete"),
+      onPress: () => {
+        // Hide the options modal
+        setIsModalVisible(false);
+        // Put the delete ActionSheet/Alert in a timer so that the modal
+        // animation finishes first, otherwise the ActionSheet/Alert appears
+        // then immediately disappears. This is def not the proper way of
+        // handling this, but can't find good info on how to handle this
+        // particular case
+        setTimeout(function () {
+          const deleteMessage = "Are you sure you want to delete this topic?";
+          const onDelete = () => {
+            console.log("deleting topic...");
+          };
+
+          initiateDeleteConfirmation(deleteMessage, onDelete);
+        }, 400);
+      },
       isDelete: true,
     },
   ];

@@ -1,12 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Platform,
-  Alert,
-  ActionSheetIOS,
-} from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import _ from "lodash";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
@@ -17,6 +10,7 @@ import ActionButton from "../components/shared/ActionButton";
 import ClearButton from "../components/shared/ClearButton";
 import MultiItemSelect from "../components/shared/MultiItemSelect";
 import Loader from "../components/shared/Loader";
+import initiateDeleteConfirmation from "../components/shared/initiateDeleteConfirmation";
 // Hooks
 import useSingleCheckbox from "../hooks/useSingleCheckbox";
 import useMultiSelectCheckbox from "../hooks/useMultiSelectCheckbox";
@@ -127,36 +121,8 @@ const ShelfSelectScreen = ({ navigation, route }) => {
       navigation.popToTop();
     };
 
-    // If it's iOS, show an ActionSheet for Delete confirmation. Otherwise, show
-    // Alert dialog
-    if (Platform.OS === "ios") {
-      ActionSheetIOS.showActionSheetWithOptions(
-        {
-          options: ["Cancel", "Delete"],
-          cancelButtonIndex: 0,
-          destructiveButtonIndex: 1,
-          message: deleteMessage,
-        },
-        (buttonIndex) => {
-          // If the user clicks the destructive button, delete item
-          if (buttonIndex === 1) {
-            deleteFlow();
-          }
-        }
-      );
-    } else {
-      Alert.alert("Delete", deleteMessage, [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Delete",
-          onPress: () => deleteFlow(),
-          style: "destructive",
-        },
-      ]);
-    }
+    // Show delete ActionSheet/Alert
+    initiateDeleteConfirmation(deleteMessage, deleteFlow);
   };
 
   // Function that decided what to do when the Confirm/Add To Library button is
