@@ -18,8 +18,10 @@ const TopicScreen = ({ route, navigation }) => {
   const topic = route.params.topicInfo;
   const [topicInfo, setTopicInfo] = useState(topic);
 
-  const { state: contentState } = useContext(ContentContext);
-  const { state: topicsState } = useContext(TopicsContext);
+  const { state: contentState, fetchContent } = useContext(ContentContext);
+  const { state: topicsState, deleteTopicAndAssociatedContent } = useContext(
+    TopicsContext
+  );
   // Initialize modal visibility
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -105,8 +107,12 @@ const TopicScreen = ({ route, navigation }) => {
         // particular case
         setTimeout(function () {
           const deleteMessage = "Are you sure you want to delete this topic?";
-          const onDelete = () => {
-            console.log("deleting topic...");
+          const onDelete = async () => {
+            await deleteTopicAndAssociatedContent(topicInfo._id);
+            // Fetch all content (for now, should really be only changed ones),
+            // because they'll be updated after deleting the topic
+            fetchContent();
+            navigation.goBack();
           };
 
           initiateDeleteConfirmation(deleteMessage, onDelete);
