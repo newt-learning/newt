@@ -1,6 +1,9 @@
 import createDataContext from "./createDataContext";
 import newtApi from "../api/newtApi";
-import { updateObjectInArrayById } from "../helpers/contextHelpers";
+import {
+  updateObjectInArrayById,
+  deleteObjectFromArray,
+} from "../helpers/contextHelpers";
 
 // Action constants
 const REQUEST_TOPICS = "REQUEST_TOPICS";
@@ -8,6 +11,7 @@ const RESOLVE_TOPICS = "RESOLVE_TOPICS";
 const SET_TOPICS = "SET_TOPICS";
 const ADD_INDIVIDUAL_TOPIC = "ADD_INDIVIDUAL_TOPIC";
 const UPDATE_INDIVIDUAL_TOPIC = "UPDATE_INDIVIDUAL_TOPIC";
+const DELETE_TOPIC = "DELETE_TOPIC";
 
 // Reducer
 const topicsReducer = (state, action) => {
@@ -24,6 +28,11 @@ const topicsReducer = (state, action) => {
       return {
         ...state,
         items: updateObjectInArrayById(state.items, action.payload),
+      };
+    case DELETE_TOPIC:
+      return {
+        ...state,
+        items: deleteObjectFromArray(state.items, action.payload),
       };
     default:
       return state;
@@ -103,6 +112,7 @@ const deleteTopic = (dispatch) => async (topicId) => {
   try {
     dispatch(resolveTopics());
     await newtApi.delete(`/topics/${topicId}`);
+    dispatch({ type: DELETE_TOPIC, payload: topicId });
     dispatch(resolveTopics());
   } catch (error) {
     console.log(error);
