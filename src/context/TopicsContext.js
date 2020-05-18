@@ -99,6 +99,16 @@ const removeContentTopics = (dispatch) => async (data) => {
   }
 };
 
+const deleteTopic = (dispatch) => async (topicId) => {
+  try {
+    dispatch(resolveTopics());
+    await newtApi.delete(`/topics/${topicId}`);
+    dispatch(resolveTopics());
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const { Provider, Context } = createDataContext(
   topicsReducer,
   {
@@ -107,6 +117,7 @@ export const { Provider, Context } = createDataContext(
     updateTopic,
     addContentToTopics,
     removeContentTopics,
+    deleteTopic,
   },
   {
     isFetching: false,
