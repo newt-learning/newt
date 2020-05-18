@@ -69,7 +69,7 @@ const createTopic = (dispatch) => async (data) => {
 const updateTopic = (dispatch) => async (topicId, data) => {
   try {
     dispatch(requestTopics());
-    const res = await newtApi.post(`/topics/${topicId}/update`, data);
+    const res = await newtApi.put(`/topics/${topicId}/update`, data);
     dispatch({ type: UPDATE_INDIVIDUAL_TOPIC, payload: res.data });
     dispatch(resolveTopics());
   } catch (error) {

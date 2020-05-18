@@ -47,16 +47,7 @@ const MainStack = () => {
         component={ShelfSelectScreen}
         options={{ title: null }}
       />
-      <Stack.Screen
-        name="Topic"
-        component={TopicScreen}
-        options={({ route }) => ({
-          title: route.params.topicInfo.name,
-          headerTitle: () => (
-            <NavHeaderTitle title={route.params.topicInfo.name} />
-          ),
-        })}
-      />
+      <Stack.Screen name="Topic" component={TopicScreen} />
     </Stack.Navigator>
   );
 };

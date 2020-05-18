@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   TouchableWithoutFeedback,
   Keyboard,
@@ -7,15 +7,22 @@ import {
   KeyboardAvoidingView,
   View,
 } from "react-native";
+// Context
+import { Context as TopicsContext } from "../context/TopicsContext";
 // Components
 import ActionButton from "../components/shared/ActionButton";
 // Design
 import { SEMIBOLD, FS18, FS24 } from "../design/typography";
 import { GRAY_2 } from "../design/colors";
 
-const EditTopicScreen = ({ route }) => {
+const EditTopicScreen = ({ route, navigation }) => {
   const { topicInfo } = route.params;
   const [topicName, setTopicName] = useState(topicInfo.name);
+
+  const {
+    state: { isFetching },
+    updateTopic,
+  } = useContext(TopicsContext);
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -29,8 +36,12 @@ const EditTopicScreen = ({ route }) => {
           <View style={styles.btnContainer}>
             <ActionButton
               title="Update"
-              onPress={() => console.log("edit topic")}
+              onPress={async () => {
+                await updateTopic(topicInfo._id, { name: topicName });
+                navigation.goBack();
+              }}
               disabled={topicName === topicInfo.name}
+              showLoading={isFetching}
             />
           </View>
         </View>
