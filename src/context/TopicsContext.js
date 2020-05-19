@@ -1,5 +1,6 @@
 import createDataContext from "./createDataContext";
 import newtApi from "../api/newtApi";
+import displayErrorAlert from "../components/shared/displayErrorAlert";
 import {
   updateObjectInArrayById,
   deleteObjectFromArray,
@@ -59,7 +60,10 @@ const fetchTopics = (dispatch) => async () => {
     dispatch(setTopics(res.data));
     dispatch(resolveTopics());
   } catch (error) {
-    console.error(error);
+    displayErrorAlert(
+      "Sorry, we're having some trouble fetching your topics data."
+    );
+    dispatch(resolveTopics());
   }
 };
 

@@ -33,6 +33,9 @@ const HomeScreen = ({ navigation }) => {
     fetchTopics();
   }, []);
 
+  console.log("content fetching state: ", contentState.isFetching);
+  console.log("topic fetching state: ", topicsState.isFetching);
+
   // Message if there's data/content but none in the "Currently Learning" shelf
   const NoCurrentlyLearningMessage = () => (
     <>
