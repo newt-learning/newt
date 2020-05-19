@@ -8,13 +8,14 @@ import { Context as ContentContext } from "../context/ContentContext";
 import Loader from "../components/shared/Loader";
 import ListSelect from "../components/shared/ListSelect";
 import ActionButton from "../components/shared/ActionButton";
+import CreateTopicButton from "../components/MyLibrary/CreateTopicButton";
 // Hooks
 import useMultiSelectCheckbox from "../hooks/useMultiSelectCheckbox";
 // Helpers
 import { initializeMultiSelectCheckbox } from "../helpers/screenHelpers";
 // Design
-import { BOLD, FS20 } from "../design/typography";
-import { OFF_BLACK } from "../design/colors";
+import { SEMIBOLD, BOLD, FS16, FS20 } from "../design/typography";
+import { OFF_BLACK, GRAY_2 } from "../design/colors";
 
 const AddToTopicScreen = ({ navigation, route }) => {
   const {
@@ -95,6 +96,43 @@ const AddToTopicScreen = ({ navigation, route }) => {
     await fetchTopics();
   };
 
+  // Display message and button to go to Create Topic screen when there are no
+  // topics
+  const NoTopics = () => {
+    return (
+      <View style={styles.noTopicsContainer}>
+        <Text style={styles.noDataText}>
+          Looks like you haven't created any topics.
+        </Text>
+        <CreateTopicButton onPress={() => navigation.navigate("CreateTopic")} />
+      </View>
+    );
+  };
+
+  // Show "Select topics" header only if there are topics already created
+  const AddToTopicHeader = () => {
+    return (
+      !_.isEmpty(topicsList) && (
+        <Text style={styles.header}>Select Topic(s)</Text>
+      )
+    );
+  };
+
+  // Show Confirmation button at the end only if there are topics already created
+  const AddToTopicFooter = () => {
+    return (
+      !_.isEmpty(topicsList) && (
+        <ActionButton
+          title="Confirm"
+          onPress={() => {
+            updateTopicsAndContent(topicsList);
+            navigation.goBack();
+          }}
+        />
+      )
+    );
+  };
+
   return (
     <FlatList
       contentContainerStyle={styles.container}
@@ -109,16 +147,9 @@ const AddToTopicScreen = ({ navigation, route }) => {
         />
       )}
       keyExtractor={(item) => item.name}
-      ListHeaderComponent={<Text style={styles.header}>Select Topic(s)</Text>}
-      ListFooterComponent={
-        <ActionButton
-          title="Confirm"
-          onPress={() => {
-            updateTopicsAndContent(topicsList);
-            navigation.goBack();
-          }}
-        />
-      }
+      ListEmptyComponent={<NoTopics />}
+      ListHeaderComponent={<AddToTopicHeader />}
+      ListFooterComponent={<AddToTopicFooter />}
       ListFooterComponentStyle={styles.btnContainer}
     />
   );
@@ -127,6 +158,18 @@ const AddToTopicScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+  },
+  noTopicsContainer: {
+    marginHorizontal: 15,
+    marginVertical: 20,
+    flex: 1,
+    justifyContent: "space-between",
+  },
+  noDataText: {
+    fontFamily: SEMIBOLD,
+    fontSize: FS16,
+    color: GRAY_2,
+    textAlign: "center",
   },
   header: {
     fontFamily: BOLD,
