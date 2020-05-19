@@ -67,31 +67,6 @@ const TopicScreen = ({ route, navigation }) => {
     return unsubscribe;
   }, [navigation, topicsState.items]);
 
-  // If the topic has no content saved, show no content message
-  if (_.isEmpty(topicInfo.content)) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.noDataText}>
-          There is no content saved under this topic.
-        </Text>
-      </View>
-    );
-  }
-
-  // Show Loader if either content or topics is fetching
-  if (contentState.isFetching || topicsState.isFetching) {
-    return <Loader />;
-  }
-
-  // The topicInfo prop passed down has an array of contentIds which belong to
-  // this topic. For each contentId, find the content data and create an array
-  // of all content data to be passed to ContentList component (should really
-  // be done server-side or through state management, but client-side is a
-  // quicker temp. solution).
-  const contentData = _.map(topicInfo.content, (contentId) => {
-    return _.find(contentState.items, { _id: contentId });
-  });
-
   // List of buttons in the options modal
   const modalOptions = [
     {
@@ -127,6 +102,36 @@ const TopicScreen = ({ route, navigation }) => {
       isDelete: true,
     },
   ];
+
+  // Show Loader if either content or topics is fetching
+  if (contentState.isFetching || topicsState.isFetching) {
+    return <Loader />;
+  }
+
+  // If the topic has no content saved, show no content message
+  if (_.isEmpty(topicInfo.content)) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.noDataText}>
+          There is no content saved under this topic.
+        </Text>
+        <OptionsModal
+          isVisible={isModalVisible}
+          onBackdropPress={() => setIsModalVisible(false)}
+          options={modalOptions}
+        />
+      </View>
+    );
+  }
+
+  // The topicInfo prop passed down has an array of contentIds which belong to
+  // this topic. For each contentId, find the content data and create an array
+  // of all content data to be passed to ContentList component (should really
+  // be done server-side or through state management, but client-side is a
+  // quicker temp. solution).
+  const contentData = _.map(topicInfo.content, (contentId) => {
+    return _.find(contentState.items, { _id: contentId });
+  });
 
   return (
     <View style={{ flex: 1 }}>
