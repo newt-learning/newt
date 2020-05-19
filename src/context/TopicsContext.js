@@ -131,7 +131,10 @@ const deleteTopicAndAssociatedContent = (dispatch) => async (topicId) => {
     dispatch({ type: DELETE_TOPIC, payload: topicId });
     dispatch(resolveTopics());
   } catch (error) {
-    console.log(error);
+    displayErrorAlert(
+      "Sorry, an error occurred while trying to delete the topic."
+    );
+    dispatch(resolveTopics());
   }
 };
 
