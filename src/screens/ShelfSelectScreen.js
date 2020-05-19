@@ -26,12 +26,14 @@ import {
 const ShelfSelectScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false);
   const {
-    state: { isFetching },
+    state: contentState,
     addContent,
     deleteContent,
     updateContent,
   } = useContext(ContentContext);
-  const { state: topicsState, addContentToTopics } = useContext(TopicsContext);
+  const { state: topicsState, addContentToTopics, fetchTopics } = useContext(
+    TopicsContext
+  );
 
   // Get params passed from route
   const { bookInfo, buttonText, showDeleteButton, addToLibrary } = route.params;
@@ -91,7 +93,14 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     const newBook = await addContent(data, true);
 
     // Add book to selected topics
-    addContentToTopics({ topicIds: selectedTopics, contentId: newBook._id });
+    await addContentToTopics({
+      topicIds: selectedTopics,
+      contentId: newBook._id,
+    });
+    // Fetch all topics to show updates (again, inefficient because multiple
+    // updates together doesn't return the updated items, so can't update global
+    // state from dispatch)
+    fetchTopics();
 
     // If the result is null, meaning there was an error in adding the book,
     // go back to previous screen.
@@ -136,7 +145,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     }
   };
 
-  if (isFetching) {
+  if (contentState.isFetching || topicsState.isFetching) {
     return <Loader />;
   }
 
