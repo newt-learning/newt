@@ -100,10 +100,13 @@ const updateTopic = (dispatch) => async (topicId, data) => {
 const addContentToTopics = (dispatch) => async (data) => {
   try {
     dispatch(requestTopics());
-    const res = await newtApi.put("/topics/add-content", data);
+    await newtApi.put("/topics/add-content", data);
     dispatch(resolveTopics());
   } catch (error) {
-    console.log(error);
+    displayErrorAlert(
+      "Sorry, an error occurred while trying to update your topics."
+    );
+    dispatch(resolveTopics());
   }
 };
 
@@ -111,10 +114,13 @@ const addContentToTopics = (dispatch) => async (data) => {
 const removeContentTopics = (dispatch) => async (data) => {
   try {
     dispatch(requestTopics());
-    const res = await newtApi.put("/topics/remove-content", data);
+    await newtApi.put("/topics/remove-content", data);
     dispatch(resolveTopics());
   } catch (error) {
-    console.log(error);
+    displayErrorAlert(
+      "Sorry, an error occurred while trying to update your topics."
+    );
+    dispatch(resolveTopics());
   }
 };
 
