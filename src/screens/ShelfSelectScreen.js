@@ -125,9 +125,10 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   };
   const deleteItem = async () => {
     const deleteMessage = "Are you sure you want to delete this book?";
-    const deleteFlow = () => {
-      deleteContent(bookInfo._id);
+    const deleteFlow = async () => {
       navigation.popToTop();
+      await deleteContent(bookInfo._id);
+      fetchTopics();
     };
 
     // Show delete ActionSheet/Alert
