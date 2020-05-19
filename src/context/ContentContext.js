@@ -191,20 +191,6 @@ const updateBookProgress = (dispatch) => async (contentId, pagesRead) => {
   }
 };
 
-// Remove an individual topic (topicId) from the content
-const removeTopicFromContent = (dispatch) => async (contentId, topicId) => {
-  try {
-    dispatch(requestContent());
-    const res = await newtApi.put(
-      `/content/${contentId}/remove-topic/${topicId}`
-    );
-    dispatch(updateIndividualContent(res.data));
-    dispatch(resolveContent());
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 const deleteContent = (dispatch) => async (contentId) => {
   try {
     dispatch(requestContent());
@@ -236,7 +222,6 @@ export const { Provider, Context } = createDataContext(
     addContent,
     updateContent,
     updateBookProgress,
-    removeTopicFromContent,
     deleteContent,
   },
   {
