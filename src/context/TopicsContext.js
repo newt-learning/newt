@@ -89,7 +89,10 @@ const updateTopic = (dispatch) => async (topicId, data) => {
     dispatch({ type: UPDATE_INDIVIDUAL_TOPIC, payload: res.data });
     dispatch(resolveTopics());
   } catch (error) {
-    console.log(error);
+    displayErrorAlert(
+      "Sorry, an error occurred while trying to edit your topic."
+    );
+    dispatch(resolveTopics());
   }
 };
 
