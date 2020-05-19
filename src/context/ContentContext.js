@@ -6,7 +6,7 @@ import {
   addIfDoesNotExist,
   deleteObjectFromArray,
 } from "../helpers/contextHelpers";
-import { Alert } from "react-native";
+import displayErrorAlert from "../components/shared/displayErrorAlert";
 
 // Action constants
 const REQUEST_CONTENT = "REQUEST_CONTENT";
@@ -139,8 +139,7 @@ const addContent = (dispatch) => async (data, returnData = false) => {
     }
   } catch (error) {
     // Show error Alert
-    Alert.alert(
-      "Error",
+    displayErrorAlert(
       `Sorry, an error occurred while trying to add the ${data.type}.`
     );
     dispatch(resolveContent());
@@ -163,8 +162,7 @@ const updateContent = (dispatch) => async (contentId, data) => {
     dispatch(resolveContent());
   } catch (error) {
     // Show error Alert
-    Alert.alert(
-      "Error",
+    displayErrorAlert(
       "Sorry, an error occurred while trying to update your book."
     );
     dispatch(resolveContent());
@@ -183,8 +181,7 @@ const updateBookProgress = (dispatch) => async (contentId, pagesRead) => {
     dispatch(resolveContent());
   } catch (error) {
     // Show error Alert
-    Alert.alert(
-      "Error",
+    displayErrorAlert(
       "Sorry, an error occurred while trying to update your book."
     );
     dispatch(resolveContent());
@@ -205,8 +202,7 @@ const deleteContent = (dispatch) => async (contentId) => {
   } catch (e) {
     // Show Alert saying that an error has occurred. No dispatch bec no other
     // on-screen UI needs to be changed.
-    Alert.alert(
-      "Error",
+    displayErrorAlert(
       "Sorry, an error occurred while trying to delete your book."
     );
     // End fetching started by requestContent() in try block
