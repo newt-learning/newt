@@ -8,6 +8,7 @@ import { Context as TopicsContext } from "../context/TopicsContext";
 // Components
 import OptionsModal from "../components/shared/OptionsModal";
 import ContentList from "../components/ContentList";
+import Loader from "../components/shared/Loader";
 import { NavHeaderTitle } from "../components/shared/Headers";
 import initiateDeleteConfirmation from "../components/shared/initiateDeleteConfirmation";
 // Design
@@ -75,6 +76,11 @@ const TopicScreen = ({ route, navigation }) => {
         </Text>
       </View>
     );
+  }
+
+  // Show Loader if either content or topics is fetching
+  if (contentState.isFetching || topicsState.isFetching) {
+    return <Loader />;
   }
 
   // The topicInfo prop passed down has an array of contentIds which belong to

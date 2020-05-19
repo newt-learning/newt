@@ -110,7 +110,7 @@ const removeContentTopics = (dispatch) => async (data) => {
 
 const deleteTopicAndAssociatedContent = (dispatch) => async (topicId) => {
   try {
-    dispatch(resolveTopics());
+    dispatch(requestTopics());
     await newtApi.delete(`/topics/${topicId}`);
     dispatch({ type: DELETE_TOPIC, payload: topicId });
     dispatch(resolveTopics());
