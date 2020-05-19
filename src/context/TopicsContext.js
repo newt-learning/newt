@@ -75,7 +75,10 @@ const createTopic = (dispatch) => async (data) => {
     dispatch({ type: ADD_INDIVIDUAL_TOPIC, payload: res.data });
     dispatch(resolveTopics());
   } catch (error) {
-    console.log(error);
+    displayErrorAlert(
+      "Sorry, an error occurred while trying to create the topic."
+    );
+    dispatch(resolveTopics());
   }
 };
 
