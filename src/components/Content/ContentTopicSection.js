@@ -42,17 +42,23 @@ const ContentTopicSection = ({ contentId, topics }) => {
 
   return (
     <View style={styles.topicsContainer}>
-      {topics.map((topicId) => (
-        <Pill
-          title={_.find(items, { _id: topicId }).name}
-          key={topicId}
-          onPress={() =>
-            navigation.navigate("Topic", {
-              topicInfo: _.find(items, { _id: topicId }),
-            })
-          }
-        />
-      ))}
+      {topics.map((topicId) => {
+        const title = _.find(items, { _id: topicId }).name ?? null;
+
+        // If cannot find the topic title, return null to prevent display error.
+        // Otherwise show topic Pill
+        return title ? (
+          <Pill
+            title={_.find(items, { _id: topicId }).name}
+            key={topicId}
+            onPress={() =>
+              navigation.navigate("Topic", {
+                topicInfo: _.find(items, { _id: topicId }),
+              })
+            }
+          />
+        ) : null;
+      })}
       <AddToTopicPill contentId={contentId} contentTopics={topics} />
     </View>
   );
