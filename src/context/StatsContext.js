@@ -81,11 +81,15 @@ const fetchLearningUpdates = (dispatch) => async () => {
 // Summary stats sentence for the week displayed on main Stats screen
 const fetchSummaryStats = (dispatch) => async () => {
   try {
-    dispatch(requestLearningUpdates());
+    const startDate = moment().startOf("week");
+    const endDate = moment().endOf("week");
+    if (startDate && endDate) {
+      dispatch(requestLearningUpdates());
 
-    const res = await newtApi.get("/summary-stats");
-    dispatch(setSummaryStats(res.data));
-    dispatch(resolveLearningUpdates());
+      const res = await newtApi.get(`/summary-stats/${startDate}.${endDate}`);
+      dispatch(setSummaryStats(res.data));
+      dispatch(resolveLearningUpdates());
+    }
   } catch (error) {
     dispatch(
       setErrorMessage("Sorry, we're having some trouble getting your data.")
