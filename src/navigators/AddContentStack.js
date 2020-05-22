@@ -7,6 +7,10 @@ import AddBookScreen from "../screens/AddBookScreen";
 import BookScreen from "../screens/BookScreen";
 import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
+import AddToTopicScreen from "../screens/AddToTopicScreen";
+import TopicScreen from "../screens/TopicScreen";
+import CreateTopicScreen from "../screens/CreateTopicScreen";
+import EditTopicScreen from "../screens/EditTopicScreen";
 // Helpers
 import SCREEN_OPTIONS from "./screenOptions";
 // Design
@@ -45,6 +49,16 @@ const MainStack = () => {
         component={ShelfSelectScreen}
         options={{ title: null }}
       />
+      <Stack.Screen
+        name="Topic"
+        component={TopicScreen}
+        options={({ route }) => ({
+          title: route.params.topicInfo.name,
+          headerTitle: () => (
+            <NavHeaderTitle title={route.params.topicInfo.name} />
+          ),
+        })}
+      />
     </Stack.Navigator>
   );
 };
@@ -65,6 +79,30 @@ const RootStack = () => {
         component={UpdateProgressScreen}
         options={{
           title: "Update Progress",
+          ...SCREEN_OPTIONS.presentationModalOptions,
+        }}
+      />
+      <Stack.Screen
+        name="CreateTopic"
+        component={CreateTopicScreen}
+        options={{
+          title: "Create Topic",
+          ...SCREEN_OPTIONS.presentationModalOptions,
+        }}
+      />
+      <Stack.Screen
+        name="AddToTopic"
+        component={AddToTopicScreen}
+        options={{
+          title: "Add to Topic",
+          ...SCREEN_OPTIONS.presentationModalOptions,
+        }}
+      />
+      <Stack.Screen
+        name="EditTopic"
+        component={EditTopicScreen}
+        options={{
+          title: "Edit Topic",
           ...SCREEN_OPTIONS.presentationModalOptions,
         }}
       />

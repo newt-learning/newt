@@ -7,6 +7,7 @@ import ActionButton from "../shared/ActionButton";
 import ChangeShelfButton from "./ChangeShelfButton";
 import ClearButton from "../shared/ClearButton";
 import ProgressBar from "../shared/ProgressBar";
+import ContentTopicSection from "./ContentTopicSection";
 // Styling
 import { GRAY_4, GRAY_2 } from "../../design/colors";
 import { REGULAR, FS12 } from "../../design/typography";
@@ -69,6 +70,7 @@ const UserInteractionSection = ({
 const ActionSection = ({
   contentId,
   shelf,
+  topics,
   pageCount,
   pagesRead,
   dateAdded,
@@ -78,7 +80,7 @@ const ActionSection = ({
   return (
     <View style={styles.container}>
       {shelf ? (
-        <View>
+        <View style={styles.actionSection}>
           <ChangeShelfButton shelf={shelf} onPress={onPress} />
           <UserInteractionSection
             shelf={shelf}
@@ -88,6 +90,7 @@ const ActionSection = ({
             dateAdded={dateAdded}
             dateCompleted={dateCompleted}
           />
+          <ContentTopicSection contentId={contentId} topics={topics} />
         </View>
       ) : (
         <ActionButton title="Add to Library" onPress={onPress} />
@@ -102,6 +105,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomWidth: 1,
     borderColor: GRAY_4,
+  },
+  actionSection: {
+    maxWidth: 300,
   },
   progressBar: {
     marginTop: 15,

@@ -8,6 +8,7 @@ import {
 } from "./src/context/AuthContext";
 import { Provider as ContentProvider } from "./src/context/ContentContext";
 import { Provider as StatsProvider } from "./src/context/StatsContext";
+import { Provider as TopicsProvider } from "./src/context/TopicsContext";
 // Components
 import Loader from "./src/components/shared/Loader";
 // Stacks
@@ -59,7 +60,9 @@ export default () => {
     <AuthProvider>
       <ContentProvider>
         <StatsProvider>
-          <App />
+          <TopicsProvider>
+            <App />
+          </TopicsProvider>
         </StatsProvider>
       </ContentProvider>
     </AuthProvider>

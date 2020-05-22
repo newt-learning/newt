@@ -7,7 +7,7 @@ import { SEMIBOLD } from "../../design/typography";
 
 const ChangeShelfButton = ({ shelf, onPress }) => {
   // Change background color of button based on what shelf it's on
-  const getShelfColor = shelf => {
+  const getShelfColor = (shelf) => {
     switch (shelf) {
       case "Finished Learning":
         return LIME_GREEN;
@@ -23,7 +23,7 @@ const ChangeShelfButton = ({ shelf, onPress }) => {
   // Merge button styles
   const buttonStyle = StyleSheet.flatten([
     styles.button,
-    { backgroundColor: getShelfColor(shelf) }
+    { backgroundColor: getShelfColor(shelf) },
   ]);
 
   return (
@@ -41,13 +41,14 @@ const ChangeShelfButton = ({ shelf, onPress }) => {
 const styles = StyleSheet.create({
   button: {
     width: 300,
-    borderRadius: 5
+    borderRadius: 5,
+    alignSelf: "center",
   },
   buttonTitle: {
     fontFamily: SEMIBOLD,
     color: OFF_WHITE,
-    marginRight: 10
-  }
+    marginRight: 10,
+  },
 });
 
 export default ChangeShelfButton;
