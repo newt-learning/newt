@@ -44,8 +44,8 @@ const MyLibraryScreen = () => {
   if (contentState.errorMessage) {
     return (
       <ErrorMessage
-        message={contentContext.state.errorMessage}
-        onRetry={contentContext.fetchContent}
+        message={contentState.errorMessage}
+        onRetry={fetchContent}
       />
     );
   }
