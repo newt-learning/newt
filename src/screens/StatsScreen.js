@@ -1,8 +1,7 @@
-import React, { useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { View, ScrollView, StyleSheet, RefreshControl } from "react-native";
 import _ from "lodash";
 // Context
-import { Context as StatsContext } from "../context/StatsContext";
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
 import { H2 } from "../components/shared/Headers";
@@ -11,34 +10,35 @@ import Loader from "../components/shared/Loader";
 import NoContentMessage from "../components/shared/NoContentMessage";
 import ErrorMessage from "../components/shared/ErrorMessage";
 // Hooks
-import useRefresh from "../hooks/useRefresh";
+import useSummaryStats from "../hooks/useSummaryStats";
 // Design
 import { GRAY_5 } from "../design/colors";
 
 const StatsScreen = ({ navigation }) => {
   const {
-    state: { isFetching, summaryStats, errorMessage },
-    fetchSummaryStats,
-  } = useContext(StatsContext);
-  const {
     state: { items },
   } = useContext(ContentContext);
-  const [refreshing, onPullToRefresh] = useRefresh(fetchSummaryStats);
+  const [refreshing, setRefreshing] = useState(false);
 
-  // Fetch summary stats
-  useEffect(() => {
-    fetchSummaryStats();
-  }, []);
+  // Get stats data + status, error, etc.
+  const { status, data, error, refetch, isFetching } = useSummaryStats();
+
+  // Can't use useRefresh hook so brought it out here
+  const onPullToRefresh = () => {
+    setRefreshing(true);
+    refetch();
+    setRefreshing(false);
+  };
 
   // If data is being fetched AND it's not initiated from a user refresh call
   // then show the full screen loader.
-  if (isFetching && !refreshing) {
-    return <Loader isLoading={isFetching} />;
+  if (status === "loading" && !refreshing) {
+    return <Loader />;
   }
 
   // If there's an error message display error message screen
-  if (errorMessage) {
-    return <ErrorMessage message={errorMessage} onRetry={fetchSummaryStats} />;
+  if (error) {
+    return <ErrorMessage message={error.message} onRetry={refetch} />;
   }
 
   // If there's no data and it's not currently being fetched, show the "No Content"
@@ -58,7 +58,7 @@ const StatsScreen = ({ navigation }) => {
         <H2 style={styles.title}>By Content</H2>
         <StatsSummaryCard
           contentType="Books"
-          summarySentence={summaryStats.books}
+          summarySentence={data.books}
           onPress={() =>
             navigation.navigate("StatsVisuals", { title: "Books" })
           }
