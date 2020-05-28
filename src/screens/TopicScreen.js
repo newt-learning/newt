@@ -1,5 +1,11 @@
 import React, { useContext, useLayoutEffect, useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import _ from "lodash";
 import { Feather } from "@expo/vector-icons";
 // Context
@@ -41,6 +47,13 @@ const TopicScreen = ({ route, navigation }) => {
           <Feather name="more-horizontal" color={OFF_BLACK} size={24} />
         </TouchableOpacity>
       ),
+      // Work around to title truncation not working as expected in react-navigation
+      // https://github.com/react-navigation/react-navigation/issues/7057#issuecomment-593086348
+      headerTitleContainerStyle: {
+        width: Platform.OS === "ios" ? "60%" : "70%",
+        alignItems: Platform.OS === "ios" ? "center" : "flex-start",
+      },
+      headerBackTitle: "Back",
     });
   }, [topicInfo]);
 
