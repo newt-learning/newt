@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import _ from "lodash";
 import { Feather } from "@expo/vector-icons";
 // Design
@@ -8,11 +9,13 @@ import { SEMIBOLD, FS16 } from "../../design/typography";
 import moment from "moment";
 
 const CreateChallengeCard = () => {
+  const navigation = useNavigation();
+
   return (
     <TouchableHighlight
       style={styles.card}
       underlayColor={GRAY_4}
-      onPress={() => console.log("create challenge")}
+      onPress={() => navigation.navigate("CreateChallenge")}
     >
       <Fragment>
         <View style={styles.yearContainer}>
