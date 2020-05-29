@@ -12,7 +12,8 @@ import NoContentMessage from "../components/shared/NoContentMessage";
 import ErrorMessage from "../components/shared/ErrorMessage";
 // Hooks
 import useSummaryStats from "../hooks/useSummaryStats";
-import useChallenges from "../hooks/useChallenges";
+// API
+import { useFetchChallenges } from "../api/challenges";
 // Design
 import { GRAY_5 } from "../design/colors";
 
@@ -30,7 +31,7 @@ const StatsScreen = ({ navigation }) => {
     status: challengesStatus,
     data: challengesData,
     error: challengesError,
-  } = useChallenges();
+  } = useFetchChallenges();
 
   // Can't use useRefresh hook so brought it out here
   const onPullToRefresh = () => {
