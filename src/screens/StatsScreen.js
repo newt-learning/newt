@@ -6,11 +6,13 @@ import { Context as ContentContext } from "../context/ContentContext";
 // Components
 import { H2 } from "../components/shared/Headers";
 import StatsSummaryCard from "../components/Stats/StatsSummaryCard";
+import ChallengeCard from "../components/Stats/ChallengeCard";
 import Loader from "../components/shared/Loader";
 import NoContentMessage from "../components/shared/NoContentMessage";
 import ErrorMessage from "../components/shared/ErrorMessage";
 // Hooks
 import useSummaryStats from "../hooks/useSummaryStats";
+import useChallenges from "../hooks/useChallenges";
 // Design
 import { GRAY_5 } from "../design/colors";
 
@@ -23,6 +25,13 @@ const StatsScreen = ({ navigation }) => {
   // Get stats data + status, error, etc.
   const { status, data, error, refetch, isFetching } = useSummaryStats();
 
+  // Get challenges data + related stuff
+  const {
+    status: challengesStatus,
+    data: challengesData,
+    error: challengesError,
+  } = useChallenges();
+
   // Can't use useRefresh hook so brought it out here
   const onPullToRefresh = () => {
     setRefreshing(true);
@@ -32,7 +41,7 @@ const StatsScreen = ({ navigation }) => {
 
   // If data is being fetched AND it's not initiated from a user refresh call
   // then show the full screen loader.
-  if (status === "loading" && !refreshing) {
+  if ((status === "loading" || challengesStatus === "loading") && !refreshing) {
     return <Loader />;
   }
 
@@ -64,6 +73,7 @@ const StatsScreen = ({ navigation }) => {
           }
         />
         <H2 style={styles.title}>Challenges</H2>
+        <ChallengeCard data={challengesData} />
       </ScrollView>
     </View>
   );
