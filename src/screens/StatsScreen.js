@@ -63,6 +63,7 @@ const StatsScreen = ({ navigation }) => {
             navigation.navigate("StatsVisuals", { title: "Books" })
           }
         />
+        <H2 style={styles.title}>Challenges</H2>
       </ScrollView>
     </View>
   );
