@@ -10,12 +10,27 @@ import {
 } from "react-native";
 // Components
 import ActionButton from "../components/shared/ActionButton";
+// API
+import { useCreateChallenge } from "../api/challenges";
 // Design
 import { SEMIBOLD, FS18, FS24 } from "../design/typography";
 import { GRAY_2 } from "../design/colors";
 
 const CreateChallengeScreen = ({ navigation }) => {
   const [numBooks, setNumBooks] = useState("");
+  const [createChallenge] = useCreateChallenge();
+
+  // Initialize data and fire create challenge API call
+  const onSubmit = () => {
+    const data = {
+      contentTypes: ["book"],
+      challengeType: "reading",
+      totalItems: Number(numBooks),
+    };
+
+    createChallenge(data);
+    navigation.goBack();
+  };
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -34,7 +49,7 @@ const CreateChallengeScreen = ({ navigation }) => {
           <View style={styles.btnContainer}>
             <ActionButton
               title="Create"
-              onPress={() => console.log("create challenge")}
+              onPress={onSubmit}
               disabled={Number(numBooks) === 0}
               showOnlyDisabledIcon={true}
             />
