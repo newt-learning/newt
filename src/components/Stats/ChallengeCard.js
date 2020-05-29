@@ -9,13 +9,14 @@ import Loader from "../shared/Loader";
 import ProgressBar from "../shared/ProgressBar";
 // Design
 import {
+  GRAY_1,
   GRAY_2,
   GRAY_4,
   OFF_WHITE,
   ORANGE,
   ORANGE_5,
 } from "../../design/colors";
-import { SEMIBOLD, FS16, FS18 } from "../../design/typography";
+import { SEMIBOLD, REGULAR, FS18, FS16, FS14 } from "../../design/typography";
 // Helpers
 import { calculatePercentComplete } from "../../helpers/screenHelpers";
 
@@ -64,13 +65,21 @@ const ChallengeCard = ({ data, isFetching }) => {
         </View>
         <View style={styles.challengeInfoContainer}>
           <Text style={styles.title}>Reading Challenge</Text>
-          <ProgressBar
-            percentComplete={calculatePercentComplete(
-              numItemsFinished,
-              totalItems
-            )}
-            displayPercentText={false}
-          />
+          <View style={styles.progressBarContainer}>
+            {/* Progress bar of number of books read so far */}
+            <ProgressBar
+              percentComplete={calculatePercentComplete(
+                numItemsFinished,
+                totalItems
+              )}
+              barContainerStyle={{ width: "77%" }}
+              displayPercentText={false}
+            />
+            {/* Number of books read so far over total */}
+            <Text
+              style={styles.numCompleted}
+            >{`${numItemsFinished}/${totalItems}`}</Text>
+          </View>
         </View>
       </Fragment>
     </TouchableHighlight>
@@ -123,6 +132,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     marginLeft: 10,
   },
+  progressBarContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   createChallenge: {
     fontFamily: SEMIBOLD,
     fontSize: FS16,
@@ -132,6 +145,11 @@ const styles = StyleSheet.create({
     fontFamily: SEMIBOLD,
     fontSize: FS18,
     color: ORANGE,
+  },
+  numCompleted: {
+    fontFamily: REGULAR,
+    fontSize: FS14,
+    color: GRAY_1,
   },
 });
 
