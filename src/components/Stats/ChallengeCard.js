@@ -62,7 +62,9 @@ const ChallengeCard = ({ data, isFetching }) => {
     <TouchableHighlight
       style={styles.card}
       underlayColor={GRAY_4}
-      onPress={() => navigation.navigate("Challenge")}
+      onPress={() =>
+        navigation.navigate("Challenge", { totalItems, numItemsFinished })
+      }
     >
       <Fragment>
         <View style={[styles.yearContainer, styles.activeYearContainer]}>
