@@ -31,6 +31,7 @@ const StatsScreen = ({ navigation }) => {
     status: challengesStatus,
     data: challengesData,
     error: challengesError,
+    isFetching: challengesIsFetching,
   } = useFetchChallenges();
 
   // Can't use useRefresh hook so brought it out here
@@ -74,7 +75,7 @@ const StatsScreen = ({ navigation }) => {
           }
         />
         <H2 style={styles.title}>Challenges</H2>
-        <ChallengeCard data={challengesData} />
+        <ChallengeCard data={challengesData} isFetching={false} />
       </ScrollView>
     </View>
   );
