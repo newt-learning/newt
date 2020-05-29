@@ -6,6 +6,7 @@ import { NavHeaderTitle } from "../components/shared/Headers";
 import StatsScreen from "../screens/StatsScreen";
 import StatsVisualsScreen from "../screens/StatsVisualsScreen";
 import CreateChallengeScreen from "../screens/CreateChallengeScreen";
+import ChallengeScreen from "../screens/ChallengeScreen";
 // Design
 import { OFF_WHITE } from "../design/colors";
 // Helpers
@@ -34,6 +35,15 @@ const MainStack = () => {
           headerTitle: () => <NavHeaderTitle title={route.params.title} />,
           headerBackTitle: "Back",
         })}
+      />
+      <Stack.Screen
+        name="Challenge"
+        component={ChallengeScreen}
+        options={{
+          title: "Reading Challenge",
+          headerTitle: () => <NavHeaderTitle title="Reading Challenge" />,
+          headerBackTitle: "Back",
+        }}
       />
     </Stack.Navigator>
   );

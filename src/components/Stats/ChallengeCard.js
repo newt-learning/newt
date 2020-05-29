@@ -44,6 +44,7 @@ const CreateChallengeCard = () => {
 
 const ChallengeCard = ({ data, isFetching }) => {
   const { year, totalItems, numItemsFinished } = data[0];
+  const navigation = useNavigation();
 
   if (_.isEmpty(data)) {
     return <CreateChallengeCard />;
@@ -58,13 +59,21 @@ const ChallengeCard = ({ data, isFetching }) => {
   }
 
   return (
-    <TouchableHighlight style={styles.card}>
+    <TouchableHighlight
+      style={styles.card}
+      underlayColor={GRAY_4}
+      onPress={() => navigation.navigate("Challenge")}
+    >
       <Fragment>
         <View style={[styles.yearContainer, styles.activeYearContainer]}>
           <Text style={[styles.year, styles.activeYear]}>{year}</Text>
         </View>
         <View style={styles.challengeInfoContainer}>
-          <Text style={styles.title}>Reading Challenge</Text>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>Reading Challenge</Text>
+            <Feather name="chevron-right" size={20} color={ORANGE} />
+          </View>
+
           <View style={styles.progressBarContainer}>
             {/* Progress bar of number of books read so far */}
             <ProgressBar
@@ -140,6 +149,11 @@ const styles = StyleSheet.create({
     fontFamily: SEMIBOLD,
     fontSize: FS16,
     color: GRAY_2,
+  },
+  titleContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   title: {
     fontFamily: SEMIBOLD,
