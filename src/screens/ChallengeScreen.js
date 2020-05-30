@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useLayoutEffect } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import _ from "lodash";
 import { ProgressCircle } from "react-native-svg-charts";
@@ -6,6 +6,7 @@ import { Text as SVGText } from "react-native-svg";
 // Components
 import Loader from "../components/shared/Loader";
 import ContentListCard from "../components/ContentListCard";
+import MoreOptionsButton from "../components/shared/MoreOptionsButton";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Design
@@ -15,6 +16,15 @@ import { FS24, BOLD } from "../design/typography";
 import { handleContentNavigation } from "../helpers/screenHelpers";
 
 const ChallengeScreen = ({ navigation, route }) => {
+  // Display more options icon on the right side of the header
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <MoreOptionsButton onPress={() => console.log("options")} />
+      ),
+    });
+  });
+
   const STROKE_WIDTH = 14;
 
   const { numItemsFinished, totalItems, itemsFinished } = route.params;
