@@ -48,7 +48,7 @@ const ChallengeScreen = ({ navigation, route }) => {
     {
       title: "Edit",
       onPress: () => {
-        console.log("Edit");
+        navigation.navigate("EditChallenge", { totalItems });
         setIsModalVisible(false);
       },
     },

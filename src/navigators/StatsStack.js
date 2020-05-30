@@ -7,6 +7,7 @@ import StatsScreen from "../screens/StatsScreen";
 import StatsVisualsScreen from "../screens/StatsVisualsScreen";
 import CreateChallengeScreen from "../screens/CreateChallengeScreen";
 import ChallengeScreen from "../screens/ChallengeScreen";
+import EditChallengeScreen from "../screens/EditChallengeScreen";
 import BookScreen from "../screens/BookScreen";
 // Design
 import { OFF_WHITE } from "../design/colors";
@@ -71,6 +72,14 @@ const RootStack = () => {
         component={CreateChallengeScreen}
         options={{
           title: "Create Reading Challenge",
+          ...SCREEN_OPTIONS.presentationModalOptions,
+        }}
+      />
+      <Stack.Screen
+        name="EditChallenge"
+        component={EditChallengeScreen}
+        options={{
+          title: "Edit Challenge",
           ...SCREEN_OPTIONS.presentationModalOptions,
         }}
       />
