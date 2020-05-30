@@ -43,12 +43,13 @@ const CreateChallengeCard = () => {
 };
 
 const ChallengeCard = ({ data, isFetching }) => {
-  const { year, totalItems, numItemsFinished } = data[0];
   const navigation = useNavigation();
 
   if (_.isEmpty(data)) {
     return <CreateChallengeCard />;
   }
+
+  const { year, totalItems, numItemsFinished, itemsFinished } = data[0];
 
   if (isFetching) {
     return (
@@ -63,7 +64,11 @@ const ChallengeCard = ({ data, isFetching }) => {
       style={styles.card}
       underlayColor={GRAY_4}
       onPress={() =>
-        navigation.navigate("Challenge", { totalItems, numItemsFinished })
+        navigation.navigate("Challenge", {
+          totalItems,
+          numItemsFinished,
+          itemsFinished,
+        })
       }
     >
       <Fragment>

@@ -4,18 +4,26 @@ import {
   TouchableHighlight,
   StyleSheet,
   Text,
-  Image
+  Image,
 } from "react-native";
 import _ from "lodash";
 // Styling
 import { SEMIBOLD, REGULAR, FS16, FS14 } from "../design/typography";
 import { OFF_BLACK, GRAY_2, GRAY_4, OFF_WHITE } from "../design/colors";
 
-const ContentListCard = ({ title, authors, thumbnailUrl, onPress }) => {
+const ContentListCard = ({
+  title,
+  authors,
+  thumbnailUrl,
+  onPress,
+  cardStyle: passedCardStyle,
+}) => {
+  const cardStyle = StyleSheet.compose(styles.cardContainer, passedCardStyle);
+
   return (
     <TouchableHighlight
       underlayColor={GRAY_4}
-      style={styles.cardContainer}
+      style={cardStyle}
       onPress={onPress}
     >
       <>
@@ -24,7 +32,7 @@ const ContentListCard = ({ title, authors, thumbnailUrl, onPress }) => {
           source={
             thumbnailUrl
               ? {
-                  uri: thumbnailUrl
+                  uri: thumbnailUrl,
                 }
               : null
           }
@@ -48,12 +56,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderBottomWidth: 1,
     borderColor: GRAY_4,
-    backgroundColor: OFF_WHITE
+    backgroundColor: OFF_WHITE,
   },
   thumbnail: {
     height: 80,
     width: 53,
-    marginRight: 15
+    marginRight: 15,
   },
   bookInfo: {
     minHeight: 100,
@@ -62,19 +70,19 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     flexDirection: "column",
     justifyContent: "flex-start",
-    alignItems: "stretch"
+    alignItems: "stretch",
   },
   title: {
     fontFamily: SEMIBOLD,
     fontSize: FS16,
     color: OFF_BLACK,
-    marginBottom: 3
+    marginBottom: 3,
   },
   author: {
     fontFamily: REGULAR,
     fontSize: FS14,
-    color: GRAY_2
-  }
+    color: GRAY_2,
+  },
 });
 
 export default ContentListCard;
