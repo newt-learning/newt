@@ -7,6 +7,7 @@ import StatsScreen from "../screens/StatsScreen";
 import StatsVisualsScreen from "../screens/StatsVisualsScreen";
 import CreateChallengeScreen from "../screens/CreateChallengeScreen";
 import ChallengeScreen from "../screens/ChallengeScreen";
+import BookScreen from "../screens/BookScreen";
 // Design
 import { OFF_WHITE } from "../design/colors";
 // Helpers
@@ -44,6 +45,11 @@ const MainStack = () => {
           headerTitle: () => <NavHeaderTitle title="Reading Challenge" />,
           headerBackTitle: "Back",
         }}
+      />
+      <Stack.Screen
+        name="BookScreen"
+        component={BookScreen}
+        options={{ title: null }}
       />
     </Stack.Navigator>
   );
