@@ -9,6 +9,7 @@ import { useFetchIndividualChallenge } from "../../api/challenges";
 // Components
 import Loader from "../shared/Loader";
 import ProgressBar from "../shared/ProgressBar";
+import { ErrorText } from "../shared/ErrorMessage";
 // Design
 import {
   GRAY_1,
@@ -48,13 +49,23 @@ export const ChallengeCard = ({ challengeId }) => {
   const navigation = useNavigation();
 
   // Get status and data of challenge from id
-  const { status, data } = useFetchIndividualChallenge(challengeId);
+  const { status, data, error } = useFetchIndividualChallenge(challengeId);
 
   // If loading, show loading spinner in card
   if (status === "loading") {
     return (
       <TouchableHighlight style={[styles.card, styles.loadingCard]}>
         <Loader backgroundColor={OFF_WHITE} />
+      </TouchableHighlight>
+    );
+  }
+
+  if (error) {
+    return (
+      <TouchableHighlight style={[styles.card, styles.loadingCard]}>
+        <ErrorText>
+          There was an error fetching your Reading Challenge
+        </ErrorText>
       </TouchableHighlight>
     );
   }
