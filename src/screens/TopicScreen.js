@@ -1,13 +1,6 @@
 import React, { useContext, useLayoutEffect, useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Platform,
-} from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import _ from "lodash";
-import { Feather } from "@expo/vector-icons";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 import { Context as TopicsContext } from "../context/TopicsContext";
@@ -16,10 +9,11 @@ import OptionsModal from "../components/shared/OptionsModal";
 import ContentList from "../components/ContentList";
 import Loader from "../components/shared/Loader";
 import { NavHeaderTitle } from "../components/shared/Headers";
+import MoreOptionsButton from "../components/shared/MoreOptionsButton";
 import initiateDeleteConfirmation from "../components/shared/initiateDeleteConfirmation";
 // Design
 import { SEMIBOLD, FS16 } from "../design/typography";
-import { OFF_BLACK, GRAY_2 } from "../design/colors";
+import { GRAY_2 } from "../design/colors";
 
 const TopicScreen = ({ route, navigation }) => {
   const topic = route.params.topicInfo;
@@ -40,12 +34,7 @@ const TopicScreen = ({ route, navigation }) => {
       title: topicInfo.name,
       headerTitle: () => <NavHeaderTitle title={topicInfo.name} />,
       headerRight: () => (
-        <TouchableOpacity
-          style={{ marginRight: 15 }}
-          onPress={() => setIsModalVisible(true)}
-        >
-          <Feather name="more-horizontal" color={OFF_BLACK} size={24} />
-        </TouchableOpacity>
+        <MoreOptionsButton onPress={() => setIsModalVisible(true)} />
       ),
       // Work around to title truncation not working as expected in react-navigation
       // https://github.com/react-navigation/react-navigation/issues/7057#issuecomment-593086348

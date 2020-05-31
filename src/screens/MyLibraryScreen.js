@@ -44,8 +44,8 @@ const MyLibraryScreen = () => {
   if (contentState.errorMessage) {
     return (
       <ErrorMessage
-        message={contentContext.state.errorMessage}
-        onRetry={contentContext.fetchContent}
+        message={contentState.errorMessage}
+        onRetry={fetchContent}
       />
     );
   }
@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
   },
   buttonGroup: {
     marginTop: 10,
+    marginBottom: 10,
     backgroundColor: GRAY_5,
     height: 32,
   },

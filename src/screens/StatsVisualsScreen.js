@@ -1,31 +1,26 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-// Context
-import { Context as StatsContext } from "../context/StatsContext";
 // Components
 import ButtonGroup from "../components/shared/ButtonGroup";
 import BarChart from "../components/Stats/StatsBarChart";
 import Loader from "../components/shared/Loader";
 import StatsSummaryCard from "../components/Stats/StatsSummaryCard";
 import ErrorMessage from "../components/shared/ErrorMessage";
+// Hooks
+import useStatsByPeriod from "../hooks/useStatsByPeriod";
 // Design
 import { OFF_WHITE, GRAY_5 } from "../design/colors";
 
 // Main component to show in screen under Button Group
-const StatsVizualization = ({
-  data,
-  selectedButtonIndex,
-  period,
-  errorMessage,
-}) => {
+const StatsVizualization = ({ data, selectedButtonIndex, period, error }) => {
   // If selectedButtonIndex is out of range for whatever reason (it should never be), return nothing
   if (selectedButtonIndex < 0 || selectedButtonIndex >= 4) {
     return null;
   }
 
   // If there's an error message display error message screen
-  if (errorMessage) {
-    return <ErrorMessage message={errorMessage} backgroundColor={OFF_WHITE} />;
+  if (error) {
+    return <ErrorMessage message={error.message} backgroundColor={OFF_WHITE} />;
   }
 
   // For the day visual, show a summary card for each content type. Otherwise for the rest, show the bar chart
@@ -51,16 +46,11 @@ const StatsVizualization = ({
 
 const StatsVisualsScreen = () => {
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(1);
-  const {
-    state: { isFetching, periodStats, errorMessage },
-    fetchStatsByPeriod,
-  } = useContext(StatsContext);
   const buttons = ["D", "W", "M", "Y"];
   const periods = ["day", "week", "month", "year"];
-
-  useEffect(() => {
-    fetchStatsByPeriod(periods[selectedButtonIndex]);
-  }, [selectedButtonIndex]);
+  const { status, data, error } = useStatsByPeriod(
+    periods[selectedButtonIndex]
+  );
 
   return (
     <View style={styles.container}>
@@ -71,14 +61,14 @@ const StatsVisualsScreen = () => {
         containerStyle={styles.buttonGroup}
       />
       {/* If fetching, show Loader. Otherwise show the Chart component */}
-      {isFetching ? (
-        <Loader isLoading={isFetching} backgroundColor={OFF_WHITE} />
+      {status === "loading" ? (
+        <Loader backgroundColor={OFF_WHITE} />
       ) : (
         <StatsVizualization
-          data={periodStats[periods[selectedButtonIndex]]}
+          data={data[periods[selectedButtonIndex]]}
           selectedButtonIndex={selectedButtonIndex}
           period={periods[selectedButtonIndex]}
-          errorMessage={errorMessage}
+          error={error}
         />
       )}
     </View>

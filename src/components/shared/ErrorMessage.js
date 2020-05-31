@@ -4,6 +4,10 @@ import ClearButton from "./ClearButton";
 import { GRAY_5, GRAY_2 } from "../../design/colors";
 import { REGULAR, FS14, FS16 } from "../../design/typography";
 
+export const ErrorText = ({ children }) => {
+  return <Text style={styles.text}>{children}</Text>;
+};
+
 const ErrorMessage = ({ message, onRetry, backgroundColor = GRAY_5 }) => {
   const containerStyle = StyleSheet.compose(styles.container, {
     backgroundColor,
@@ -11,7 +15,7 @@ const ErrorMessage = ({ message, onRetry, backgroundColor = GRAY_5 }) => {
 
   return (
     <View style={containerStyle}>
-      <Text style={styles.text}>{message}</Text>
+      <ErrorText>{message}</ErrorText>
       <ClearButton
         title="Retry"
         onPress={onRetry}

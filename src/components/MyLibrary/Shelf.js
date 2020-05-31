@@ -94,7 +94,7 @@ const Shelf = ({ name, data, numItems, onPressTitle }) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    marginBottom: 15,
   },
   titleContainer: {
     marginHorizontal: 15,

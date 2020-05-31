@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import _ from "lodash";
+// API
+import { useAddContentToChallenge } from "../api/challenges";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 import { Context as TopicsContext } from "../context/TopicsContext";
@@ -50,6 +52,10 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     initializeMultiSelectCheckbox(topicsState.items, [])
   );
 
+  // Get function to add content to an existing challenge (used when shelf is
+  // changed to "Finished Learning")
+  const [addContentToChallenge] = useAddContentToChallenge();
+
   // Create a ref to be used as the previous topics state for comparison with a
   // new one should it be updated (so that the new topic can be added to the
   // topics multi-checkbox)
@@ -87,6 +93,11 @@ const ShelfSelectScreen = ({ navigation, route }) => {
       type: "book",
     };
 
+    // If the selected shelf is Finished, add the dateCompleted field
+    if (selectedShelf === "Finished Learning") {
+      data.dateCompleted = Date.now();
+    }
+
     // Send request to add book and then send bookInfo as param in navigation
     // route to 'BookScreen'. This will allow the Shelf button to change from
     // 'Add to Library' to whatever shelf was chosen (ex: 'Want to Learn').
@@ -97,6 +108,9 @@ const ShelfSelectScreen = ({ navigation, route }) => {
       topicIds: selectedTopics,
       contentId: newBook._id,
     });
+    // Update the reading challenge by adding this book to the finished list
+    // if a challenge exists.
+    addContentToChallenge(newBook._id);
     // Fetch all topics to show updates (again, inefficient because multiple
     // updates together doesn't return the updated items, so can't update global
     // state from dispatch)
@@ -118,6 +132,9 @@ const ShelfSelectScreen = ({ navigation, route }) => {
         shelf: selectedShelf,
         dateCompleted: Date.now(),
       });
+      // Update the reading challenge by adding this book to the finished list
+      // if a challenge exists.
+      addContentToChallenge(bookInfo._id);
     } else {
       updateContent(bookInfo._id, { shelf: selectedShelf });
     }

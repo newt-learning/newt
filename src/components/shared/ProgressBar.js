@@ -7,6 +7,7 @@ const ProgressBar = ({
   barContainerStyle,
   barStyle: passedBarStyle,
   percentComplete,
+  displayPercentText = true,
 }) => {
   const containerStyle = StyleSheet.compose(
     styles.barContainer,
@@ -23,7 +24,9 @@ const ProgressBar = ({
   return (
     <View style={containerStyle}>
       <View style={barStyle} />
-      <Text style={styles.barText}>{`${percentComplete}%`}</Text>
+      {displayPercentText && (
+        <Text style={styles.barText}>{`${percentComplete}%`}</Text>
+      )}
     </View>
   );
 };
