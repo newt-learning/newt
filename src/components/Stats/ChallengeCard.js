@@ -4,6 +4,8 @@ import { useNavigation } from "@react-navigation/native";
 import _ from "lodash";
 import moment from "moment";
 import { Feather } from "@expo/vector-icons";
+// API
+import { useFetchIndividualChallenge } from "../../api/challenges";
 // Components
 import Loader from "../shared/Loader";
 import ProgressBar from "../shared/ProgressBar";
@@ -42,16 +44,18 @@ const CreateChallengeCard = () => {
   );
 };
 
-const ChallengeCard = ({ data, isFetching }) => {
+const ChallengeCard = ({ challengeId }) => {
   const navigation = useNavigation();
 
-  if (_.isEmpty(data)) {
+  if (_.isEmpty(challengeId)) {
     return <CreateChallengeCard />;
   }
 
-  const { year, totalItems, numItemsFinished } = data[0];
+  // Get status and data of challenge from id
+  const { status, data } = useFetchIndividualChallenge(challengeId);
 
-  if (isFetching) {
+  // If loading, show loading spinner in card
+  if (status === "loading") {
     return (
       <TouchableHighlight style={[styles.card, styles.loadingCard]}>
         <Loader backgroundColor={OFF_WHITE} />
@@ -59,13 +63,15 @@ const ChallengeCard = ({ data, isFetching }) => {
     );
   }
 
+  const { year, totalItems, numItemsFinished } = data;
+
   return (
     <TouchableHighlight
       style={styles.card}
       underlayColor={GRAY_4}
       onPress={() =>
         navigation.navigate("Challenge", {
-          challengeId: data[0]._id,
+          challengeId: data._id,
         })
       }
     >

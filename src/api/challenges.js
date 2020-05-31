@@ -26,7 +26,7 @@ function useFetchIndividualChallenge(challengeId) {
 }
 function useCreateChallenge() {
   return useMutation(createChallenge, {
-    onError: (err) => console.log(error),
+    onError: (error) => console.log(error),
     onSettled: () => queryCache.refetchQueries("challenges"),
   });
 }
