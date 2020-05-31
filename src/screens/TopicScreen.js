@@ -36,6 +36,13 @@ const TopicScreen = ({ route, navigation }) => {
       headerRight: () => (
         <MoreOptionsButton onPress={() => setIsModalVisible(true)} />
       ),
+      // Work around to title truncation not working as expected in react-navigation
+      // https://github.com/react-navigation/react-navigation/issues/7057#issuecomment-593086348
+      headerTitleContainerStyle: {
+        width: Platform.OS === "ios" ? "60%" : "70%",
+        alignItems: Platform.OS === "ios" ? "center" : "flex-start",
+      },
+      headerBackTitle: "Back",
     });
   }, [topicInfo]);
 

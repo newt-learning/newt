@@ -26,12 +26,14 @@ const styles = StyleSheet.create({
     height: 100,
     backgroundColor: RUBY_2,
     margin: 5,
+    padding: 12,
     borderRadius: 12,
   },
   name: {
     fontFamily: SEMIBOLD,
     fontSize: FS18,
     color: OFF_BLACK,
+    textAlign: "center",
   },
 });
 
