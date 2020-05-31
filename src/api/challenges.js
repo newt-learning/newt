@@ -30,7 +30,14 @@ const updateChallenge = async ({ challengeId, data }) => {
   }
 };
 const addContentToChallenge = async (contentId) => {
-  return await newtApi.put("/challenges/add-content", { contentId });
+  try {
+    await newtApi.put("/challenges/add-content", { contentId });
+  } catch (error) {
+    // Need to figure out what the best thing to do here would be. If this fails,
+    // then the reading challenge will be one book behind than what's actually
+    // finished. Maybe just re-check the Reading Challenge periodically?
+    return;
+  }
 };
 const deleteChallenge = async (challengeId) => {
   try {
