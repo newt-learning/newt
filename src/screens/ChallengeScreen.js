@@ -14,6 +14,7 @@ import ContentListCard from "../components/ContentListCard";
 import MoreOptionsButton from "../components/shared/MoreOptionsButton";
 import OptionsModal from "../components/shared/OptionsModal";
 import initiateDeleteConfirmation from "../components/shared/initiateDeleteConfirmation";
+import ErrorMessage from "../components/shared/ErrorMessage";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Design
@@ -39,9 +40,12 @@ const ChallengeScreen = ({ navigation, route }) => {
   const { challengeId } = route.params;
 
   // Fetch challenge data given the id
-  const { status, data: challengeData } = useFetchIndividualChallenge(
-    challengeId
-  );
+  const {
+    status,
+    data: challengeData,
+    error,
+    refetch,
+  } = useFetchIndividualChallenge(challengeId);
   // Get delete challenge API request
   const [
     deleteChallenge,
@@ -55,6 +59,15 @@ const ChallengeScreen = ({ navigation, route }) => {
 
   if (status === "loading" || deleteChallengeStatus === "loading") {
     return <Loader />;
+  }
+
+  if (error) {
+    return (
+      <ErrorMessage
+        message="Sorry, there was an error getting your Reading Challenge data."
+        onRetry={refetch}
+      />
+    );
   }
 
   const { numItemsFinished, totalItems, itemsFinished } = challengeData;
