@@ -3,6 +3,8 @@ import { View, StyleSheet, FlatList } from "react-native";
 import _ from "lodash";
 import { ProgressCircle } from "react-native-svg-charts";
 import { Text as SVGText } from "react-native-svg";
+// API
+import { useFetchIndividualChallenge } from "../api/challenges";
 // Components
 import Loader from "../components/shared/Loader";
 import ContentListCard from "../components/ContentListCard";
@@ -32,14 +34,25 @@ const ChallengeScreen = ({ navigation, route }) => {
   const STROKE_WIDTH = 14;
 
   // Get challenge data passed into route
-  const { challengeData } = route.params;
-  const { numItemsFinished, totalItems, itemsFinished } = challengeData;
-  const finishedFraction = `${numItemsFinished} / ${totalItems}`;
+  const { challengeId } = route.params;
 
+  // Fetch challenge data given the id
+  const { status, data: challengeData } = useFetchIndividualChallenge(
+    challengeId
+  );
   // Get content data to display the books that have been finished
   const {
     state: { items: content, isFetching: contentIsFetching },
   } = useContext(ContentContext);
+
+  if (status === "loading") {
+    return <Loader />;
+  }
+
+  const { numItemsFinished, totalItems, itemsFinished } = challengeData;
+  const finishedFraction = `${numItemsFinished} / ${totalItems}`;
+
+  // Filter out only the finished books based on FinishedItems Ids in challenge data
   const finishedBooks = itemsFinished.map((finishedId) =>
     _.find(content, { _id: finishedId })
   );

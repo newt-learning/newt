@@ -65,7 +65,7 @@ const ChallengeCard = ({ data, isFetching }) => {
       underlayColor={GRAY_4}
       onPress={() =>
         navigation.navigate("Challenge", {
-          challengeData: data[0],
+          challengeId: data[0]._id,
         })
       }
     >
