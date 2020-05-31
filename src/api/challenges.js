@@ -16,6 +16,9 @@ const createChallenge = async (data) => {
 const updateChallenge = async ({ challengeId, data }) => {
   return await newtApi.put(`/challenges/${challengeId}/update`, data);
 };
+const addContentToChallenge = async (contentId) => {
+  return await newtApi.put("/challenges/add-content", { contentId });
+};
 const deleteChallenge = async (challengeId) => {
   return await newtApi.delete(`/challenges/${challengeId}`);
 };
@@ -39,6 +42,11 @@ function useUpdateChallenge() {
     onSettled: () => queryCache.refetchQueries("challenge"),
   });
 }
+function useAddContentToChallenge() {
+  return useMutation(addContentToChallenge, {
+    onError: () => console.log(error),
+  });
+}
 function useDeleteChallenge() {
   return useMutation(deleteChallenge, {
     onError: (error) => console.log(error),
@@ -51,5 +59,6 @@ export {
   useFetchIndividualChallenge,
   useCreateChallenge,
   useUpdateChallenge,
+  useAddContentToChallenge,
   useDeleteChallenge,
 };

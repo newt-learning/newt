@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import _ from "lodash";
+// API
+import { useAddContentToChallenge } from "../api/challenges";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 import { Context as TopicsContext } from "../context/TopicsContext";
@@ -49,6 +51,10 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   ] = useMultiSelectCheckbox(
     initializeMultiSelectCheckbox(topicsState.items, [])
   );
+
+  // Get function to add content to an existing challenge (used when shelf is
+  // changed to "Finished Learning")
+  const [addContentToChallenge] = useAddContentToChallenge();
 
   // Create a ref to be used as the previous topics state for comparison with a
   // new one should it be updated (so that the new topic can be added to the
@@ -118,6 +124,9 @@ const ShelfSelectScreen = ({ navigation, route }) => {
         shelf: selectedShelf,
         dateCompleted: Date.now(),
       });
+      // Update the reading challenge by adding this book to the finished list
+      // if a challenge exists.
+      addContentToChallenge(bookInfo._id);
     } else {
       updateContent(bookInfo._id, { shelf: selectedShelf });
     }
