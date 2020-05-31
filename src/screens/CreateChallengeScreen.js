@@ -18,7 +18,12 @@ import { GRAY_2 } from "../design/colors";
 
 const CreateChallengeScreen = ({ navigation }) => {
   const [numBooks, setNumBooks] = useState("");
-  const [createChallenge, { status }] = useCreateChallenge();
+  const [createChallenge, { status, error }] = useCreateChallenge();
+
+  // If there's an error while creating the challenge, go back to the previous screen
+  if (error) {
+    navigation.goBack();
+  }
 
   // Initialize data and fire create challenge API call
   const onSubmit = async () => {

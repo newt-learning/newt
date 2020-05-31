@@ -1,5 +1,6 @@
 import newtApi from "./newtApi";
 import { useQuery, useMutation, queryCache } from "react-query";
+import displayErrorAlert from "../components/shared/displayErrorAlert";
 
 // API calls
 const fetchChallenges = async () => {
@@ -11,7 +12,13 @@ const fetchIndividualChallenge = async (queryKey, challengeId) => {
   return data;
 };
 const createChallenge = async (data) => {
-  return await newtApi.post("/challenges/create", data);
+  try {
+    await newtApi.post("/challenges/create", data);
+  } catch (error) {
+    displayErrorAlert(
+      "There was an error while creating your Reading Challenge"
+    );
+  }
 };
 const updateChallenge = async ({ challengeId, data }) => {
   return await newtApi.put(`/challenges/${challengeId}/update`, data);
@@ -32,7 +39,6 @@ function useFetchIndividualChallenge(challengeId) {
 }
 function useCreateChallenge() {
   return useMutation(createChallenge, {
-    onError: (error) => console.log(error),
     onSettled: () => queryCache.refetchQueries("challenges"),
   });
 }
