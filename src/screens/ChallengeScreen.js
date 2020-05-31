@@ -32,7 +32,8 @@ const ChallengeScreen = ({ navigation, route }) => {
   const STROKE_WIDTH = 14;
 
   // Get challenge data passed into route
-  const { numItemsFinished, totalItems, itemsFinished } = route.params;
+  const { challengeData } = route.params;
+  const { numItemsFinished, totalItems, itemsFinished } = challengeData;
   const finishedFraction = `${numItemsFinished} / ${totalItems}`;
 
   // Get content data to display the books that have been finished
@@ -48,7 +49,7 @@ const ChallengeScreen = ({ navigation, route }) => {
     {
       title: "Edit",
       onPress: () => {
-        navigation.navigate("EditChallenge", { totalItems });
+        navigation.navigate("EditChallenge", { challengeData });
         setIsModalVisible(false);
       },
     },

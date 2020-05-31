@@ -8,6 +8,8 @@ import {
   View,
   Text,
 } from "react-native";
+// API
+import { useUpdateChallenge } from "../api/challenges";
 // Components
 import ActionButton from "../components/shared/ActionButton";
 // Design
@@ -15,8 +17,12 @@ import { SEMIBOLD, FS18, FS24 } from "../design/typography";
 import { GRAY_2 } from "../design/colors";
 
 const EditTopicScreen = ({ route, navigation }) => {
-  const { totalItems } = route.params;
+  const { challengeData } = route.params;
+  const { _id, totalItems } = challengeData;
   const [numBooks, setNumBooks] = useState(String(totalItems));
+
+  // API call query to update challenge
+  const [updateChallenge, { status }] = useUpdateChallenge();
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -34,9 +40,15 @@ const EditTopicScreen = ({ route, navigation }) => {
           <View style={styles.btnContainer}>
             <ActionButton
               title="Update"
-              onPress={() => console.log("update")}
+              onPress={async () => {
+                await updateChallenge({
+                  challengeId: _id,
+                  data: { totalItems: Number(numBooks) },
+                });
+                navigation.goBack();
+              }}
               disabled={numBooks === String(totalItems)}
-              // showLoading={isFetching}
+              showLoading={status === "loading"}
             />
           </View>
         </View>

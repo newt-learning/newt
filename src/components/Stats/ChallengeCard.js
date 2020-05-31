@@ -49,7 +49,7 @@ const ChallengeCard = ({ data, isFetching }) => {
     return <CreateChallengeCard />;
   }
 
-  const { year, totalItems, numItemsFinished, itemsFinished } = data[0];
+  const { year, totalItems, numItemsFinished } = data[0];
 
   if (isFetching) {
     return (
@@ -65,9 +65,7 @@ const ChallengeCard = ({ data, isFetching }) => {
       underlayColor={GRAY_4}
       onPress={() =>
         navigation.navigate("Challenge", {
-          totalItems,
-          numItemsFinished,
-          itemsFinished,
+          challengeData: data[0],
         })
       }
     >
