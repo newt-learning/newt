@@ -19,8 +19,6 @@ import { Context as ContentContext } from "../context/ContentContext";
 // Design
 import { ORANGE, GRAY_2, OFF_WHITE, GRAY_5 } from "../design/colors";
 import { FS24, BOLD } from "../design/typography";
-// Helpers
-import { handleContentNavigation } from "../helpers/screenHelpers";
 
 const ChallengeScreen = ({ navigation, route }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -136,7 +134,6 @@ const ChallengeScreen = ({ navigation, route }) => {
               title={item.name}
               authors={item.authors}
               thumbnailUrl={item.thumbnailUrl}
-              onPress={() => handleContentNavigation(item, navigation)}
               cardStyle={cardStyle}
             />
           );
