@@ -22,7 +22,11 @@ const EditTopicScreen = ({ route, navigation }) => {
   const [numBooks, setNumBooks] = useState(String(totalItems));
 
   // API call query to update challenge
-  const [updateChallenge, { status }] = useUpdateChallenge();
+  const [updateChallenge, { status, error }] = useUpdateChallenge();
+
+  if (error) {
+    navigation.goBack();
+  }
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>

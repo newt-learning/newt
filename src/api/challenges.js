@@ -16,12 +16,18 @@ const createChallenge = async (data) => {
     await newtApi.post("/challenges/create", data);
   } catch (error) {
     displayErrorAlert(
-      "There was an error while creating your Reading Challenge"
+      "Sorry, there was an error while creating your Reading Challenge"
     );
   }
 };
 const updateChallenge = async ({ challengeId, data }) => {
-  return await newtApi.put(`/challenges/${challengeId}/update`, data);
+  try {
+    await newtApi.put(`/challenges/${challengeId}/update`, data);
+  } catch (error) {
+    displayErrorAlert(
+      "Sorry, there was an error while updating your Reading Challenge"
+    );
+  }
 };
 const addContentToChallenge = async (contentId) => {
   return await newtApi.put("/challenges/add-content", { contentId });
@@ -44,7 +50,6 @@ function useCreateChallenge() {
 }
 function useUpdateChallenge() {
   return useMutation(updateChallenge, {
-    onError: (error) => console.log(error),
     onSettled: () => queryCache.refetchQueries("challenge"),
   });
 }
