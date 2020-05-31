@@ -18,17 +18,17 @@ import { GRAY_2 } from "../design/colors";
 
 const CreateChallengeScreen = ({ navigation }) => {
   const [numBooks, setNumBooks] = useState("");
-  const [createChallenge] = useCreateChallenge();
+  const [createChallenge, { status }] = useCreateChallenge();
 
   // Initialize data and fire create challenge API call
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const data = {
       contentTypes: ["book"],
       challengeType: "reading",
       totalItems: Number(numBooks),
     };
 
-    createChallenge(data);
+    await createChallenge(data);
     navigation.goBack();
   };
 
@@ -51,6 +51,7 @@ const CreateChallengeScreen = ({ navigation }) => {
               title="Create"
               onPress={onSubmit}
               disabled={Number(numBooks) === 0}
+              showLoading={status === "loading"}
               showOnlyDisabledIcon={true}
             />
           </View>

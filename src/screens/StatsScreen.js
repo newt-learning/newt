@@ -6,7 +6,10 @@ import { Context as ContentContext } from "../context/ContentContext";
 // Components
 import { H2 } from "../components/shared/Headers";
 import StatsSummaryCard from "../components/Stats/StatsSummaryCard";
-import ChallengeCard from "../components/Stats/ChallengeCard";
+import {
+  CreateChallengeCard,
+  ChallengeCard,
+} from "../components/Stats/ChallengeCard";
 import Loader from "../components/shared/Loader";
 import NoContentMessage from "../components/shared/NoContentMessage";
 import ErrorMessage from "../components/shared/ErrorMessage";
@@ -74,7 +77,11 @@ const StatsScreen = ({ navigation }) => {
           }
         />
         <H2 style={styles.title}>Challenges</H2>
-        <ChallengeCard challengeId={challengesData[0]?._id || null} />
+        {_.isEmpty(challengesData) ? (
+          <CreateChallengeCard />
+        ) : (
+          <ChallengeCard challengeId={challengesData[0]._id} />
+        )}
       </ScrollView>
     </View>
   );

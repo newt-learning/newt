@@ -22,7 +22,7 @@ import { SEMIBOLD, REGULAR, FS18, FS16, FS14 } from "../../design/typography";
 // Helpers
 import { calculatePercentComplete } from "../../helpers/screenHelpers";
 
-const CreateChallengeCard = () => {
+export const CreateChallengeCard = () => {
   const navigation = useNavigation();
 
   return (
@@ -44,12 +44,8 @@ const CreateChallengeCard = () => {
   );
 };
 
-const ChallengeCard = ({ challengeId }) => {
+export const ChallengeCard = ({ challengeId }) => {
   const navigation = useNavigation();
-
-  if (_.isEmpty(challengeId)) {
-    return <CreateChallengeCard />;
-  }
 
   // Get status and data of challenge from id
   const { status, data } = useFetchIndividualChallenge(challengeId);
@@ -177,5 +173,3 @@ const styles = StyleSheet.create({
     color: GRAY_1,
   },
 });
-
-export default ChallengeCard;
