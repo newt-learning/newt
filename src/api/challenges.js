@@ -67,9 +67,7 @@ function useUpdateChallenge() {
   });
 }
 function useAddContentToChallenge() {
-  return useMutation(addContentToChallenge, {
-    onError: () => console.log(error),
-  });
+  return useMutation(addContentToChallenge);
 }
 function useDeleteChallenge() {
   return useMutation(deleteChallenge, {
