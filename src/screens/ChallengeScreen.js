@@ -4,12 +4,16 @@ import _ from "lodash";
 import { ProgressCircle } from "react-native-svg-charts";
 import { Text as SVGText } from "react-native-svg";
 // API
-import { useFetchIndividualChallenge } from "../api/challenges";
+import {
+  useFetchIndividualChallenge,
+  useDeleteChallenge,
+} from "../api/challenges";
 // Components
 import Loader from "../components/shared/Loader";
 import ContentListCard from "../components/ContentListCard";
 import MoreOptionsButton from "../components/shared/MoreOptionsButton";
 import OptionsModal from "../components/shared/OptionsModal";
+import initiateDeleteConfirmation from "../components/shared/initiateDeleteConfirmation";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Design
@@ -40,12 +44,18 @@ const ChallengeScreen = ({ navigation, route }) => {
   const { status, data: challengeData } = useFetchIndividualChallenge(
     challengeId
   );
+  // Get delete challenge API request
+  const [
+    deleteChallenge,
+    { status: deleteChallengeStatus },
+  ] = useDeleteChallenge();
+
   // Get content data to display the books that have been finished
   const {
     state: { items: content, isFetching: contentIsFetching },
   } = useContext(ContentContext);
 
-  if (status === "loading") {
+  if (status === "loading" || deleteChallengeStatus === "loading") {
     return <Loader />;
   }
 
@@ -69,8 +79,18 @@ const ChallengeScreen = ({ navigation, route }) => {
     {
       title: "Delete",
       onPress: () => {
-        console.log("Delete");
-        setIsModalVisible(true);
+        setIsModalVisible(false);
+        // Rationale for this is in TopicScreen file
+        setTimeout(() => {
+          const deleteMessage =
+            "Are you sure you want to delete your reading challenge for this year?";
+          const onDelete = async () => {
+            await deleteChallenge(challengeId);
+            navigation.goBack();
+          };
+
+          initiateDeleteConfirmation(deleteMessage, onDelete);
+        }, 400);
       },
       isDelete: true,
     },

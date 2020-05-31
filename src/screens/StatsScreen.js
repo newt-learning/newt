@@ -74,7 +74,7 @@ const StatsScreen = ({ navigation }) => {
           }
         />
         <H2 style={styles.title}>Challenges</H2>
-        <ChallengeCard challengeId={challengesData[0]._id || null} />
+        <ChallengeCard challengeId={challengesData[0]?._id || null} />
       </ScrollView>
     </View>
   );

@@ -16,6 +16,9 @@ const createChallenge = async (data) => {
 const updateChallenge = async ({ challengeId, data }) => {
   return await newtApi.put(`/challenges/${challengeId}/update`, data);
 };
+const deleteChallenge = async (challengeId) => {
+  return await newtApi.delete(`/challenges/${challengeId}`);
+};
 
 // React-query bindings
 function useFetchChallenges() {
@@ -36,10 +39,17 @@ function useUpdateChallenge() {
     onSettled: () => queryCache.refetchQueries("challenge"),
   });
 }
+function useDeleteChallenge() {
+  return useMutation(deleteChallenge, {
+    onError: (error) => console.log(error),
+    onSettled: () => queryCache.refetchQueries("challenges"),
+  });
+}
 
 export {
   useFetchChallenges,
   useFetchIndividualChallenge,
   useCreateChallenge,
   useUpdateChallenge,
+  useDeleteChallenge,
 };
