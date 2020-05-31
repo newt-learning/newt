@@ -120,7 +120,7 @@ const ChallengeScreen = ({ navigation, route }) => {
   return contentIsFetching ? (
     <Loader />
   ) : (
-    <View style={{ flex: 1 }}>
+    <View>
       <FlatList
         data={finishedBooks}
         renderItem={({ item, index }) => {
@@ -176,6 +176,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
     borderBottomWidth: 0,
+    marginBottom: 20,
   },
 });
 

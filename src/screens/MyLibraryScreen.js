@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
   },
   buttonGroup: {
     marginTop: 10,
+    marginBottom: 10,
     backgroundColor: GRAY_5,
     height: 32,
   },
