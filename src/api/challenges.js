@@ -33,7 +33,13 @@ const addContentToChallenge = async (contentId) => {
   return await newtApi.put("/challenges/add-content", { contentId });
 };
 const deleteChallenge = async (challengeId) => {
-  return await newtApi.delete(`/challenges/${challengeId}`);
+  try {
+    await newtApi.delete(`/challenges/${challengeId}`);
+  } catch (error) {
+    displayErrorAlert(
+      "Sorry, there was an error trying to delete your Reading Challenge. Try again in a bit."
+    );
+  }
 };
 
 // React-query bindings
@@ -60,7 +66,6 @@ function useAddContentToChallenge() {
 }
 function useDeleteChallenge() {
   return useMutation(deleteChallenge, {
-    onError: (error) => console.log(error),
     onSettled: () => queryCache.refetchQueries("challenges"),
   });
 }
