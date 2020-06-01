@@ -5,7 +5,7 @@
     "description": "Organize your learning — all your books, articles, videos, online courses, etc. in one place! Organize by shelf (Currently Learning, Want to Learn, Finished Learning) or by topics, and improve your retention and understanding of select works with learning techniques like spaced repetition. Essentially, your personal learning management system.",
     "privacy": "public",
     "platforms": ["ios", "android", "web"],
-    "version": "0.4.0",
+    "version": "0.4.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {

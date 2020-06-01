@@ -1,13 +1,12 @@
 import React, { useContext } from "react";
-import { View, StyleSheet } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import { View, StyleSheet, Image } from "react-native";
 // Components
 import ClearButton from "../components/shared/ClearButton";
 import { H2 } from "../components/shared/Headers";
 // Context
 import { Context as AuthContext } from "../context/AuthContext";
 // Styling
-import { GRAY_3, GRAY_5, OFF_BLACK } from "../design/colors";
+import { GRAY_5, OFF_BLACK } from "../design/colors";
 import { FS18, SEMIBOLD } from "../design/typography";
 
 const ProfileScreen = () => {
@@ -23,7 +22,10 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.userInfoContainer}>
-        <AntDesign name="meh" size={70} color={GRAY_3} />
+        <Image
+          source={require("../../assets/icons8-owl-64.png")}
+          style={{ width: 64, height: 64 }}
+        />
         <H2 style={{ marginTop: 20, color: OFF_BLACK }}>
           {userInfo.firstName} {userInfo.lastName}
         </H2>

@@ -7,6 +7,7 @@ const ProgressBar = ({
   barContainerStyle,
   barStyle: passedBarStyle,
   percentComplete,
+  displayPercentText = true,
 }) => {
   const containerStyle = StyleSheet.compose(
     styles.barContainer,
@@ -15,15 +16,18 @@ const ProgressBar = ({
   const barStyle = StyleSheet.flatten([
     styles.bar,
     passedBarStyle,
+    // Ensure width of the bar isn't over 100%
     {
-      width: `${percentComplete}%`,
+      width: `${Math.min(percentComplete, 100)}%`,
     },
   ]);
 
   return (
     <View style={containerStyle}>
       <View style={barStyle} />
-      <Text style={styles.barText}>{`${percentComplete}%`}</Text>
+      {displayPercentText && (
+        <Text style={styles.barText}>{`${percentComplete}%`}</Text>
+      )}
     </View>
   );
 };

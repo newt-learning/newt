@@ -13,11 +13,14 @@ import { Context as TopicsContext } from "../context/TopicsContext";
 // Components
 import ActionButton from "../components/shared/ActionButton";
 // Design
-import { SEMIBOLD, FS18, FS24 } from "../design/typography";
-import { GRAY_2 } from "../design/colors";
+import { SEMIBOLD, FS18, FS24, REGULAR, FS14 } from "../design/typography";
+import { GRAY_2, RED } from "../design/colors";
+
+const CHARACTER_LIMIT = 24;
 
 const CreateTopicScreen = ({ navigation }) => {
   const [topicName, setTopicName] = useState("");
+  let nameCharRemaining = CHARACTER_LIMIT - topicName.length;
   const { createTopic } = useContext(TopicsContext);
 
   return (
@@ -31,6 +34,11 @@ const CreateTopicScreen = ({ navigation }) => {
             value={topicName}
             onChangeText={setTopicName}
           />
+          {/* If the topic is getting close to the character limit (8 characters
+            away), show number of characters remaining in red.  */}
+          <Text style={styles.charLimit}>
+            {nameCharRemaining <= 8 && nameCharRemaining}
+          </Text>
           <View style={styles.btnContainer}>
             <ActionButton
               title="Create"
@@ -38,7 +46,9 @@ const CreateTopicScreen = ({ navigation }) => {
                 createTopic({ name: topicName });
                 navigation.goBack();
               }}
-              disabled={topicName.length === 0}
+              // Disable button if there's no name or if the name is over the
+              // character limit
+              disabled={topicName.length === 0 || nameCharRemaining < 0}
               showOnlyDisabledIcon={true}
             />
           </View>
@@ -63,6 +73,13 @@ const styles = StyleSheet.create({
     fontFamily: SEMIBOLD,
     fontSize: FS18,
   },
+  charLimit: {
+    textAlign: "right",
+    marginTop: 5,
+    fontFamily: REGULAR,
+    fontSize: FS14,
+    color: RED,
+  },
   input: {
     fontFamily: SEMIBOLD,
     fontSize: FS24,
@@ -71,7 +88,7 @@ const styles = StyleSheet.create({
     borderColor: GRAY_2,
   },
   btnContainer: {
-    marginTop: 100,
+    marginTop: 95,
     alignItems: "center",
   },
 });

@@ -25,6 +25,10 @@ export const YELLOW = "#ffcd38";
 
 // Oranges
 export const ORANGE = "#ff8c00";
+export const ORANGE_2 = "#ff9e27";
+export const ORANGE_3 = "#ffb862";
+export const ORANGE_4 = "#ffd39d";
+export const ORANGE_5 = "#ffedd8";
 
 // Ruby Reds (Red-Pink)
 export const RUBY = "#ff386b";
