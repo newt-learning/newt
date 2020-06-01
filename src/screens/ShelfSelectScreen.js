@@ -109,8 +109,11 @@ const ShelfSelectScreen = ({ navigation, route }) => {
       contentId: newBook._id,
     });
     // Update the reading challenge by adding this book to the finished list
-    // if a challenge exists.
-    addContentToChallenge(newBook._id);
+    // if a challenge exists (if selected shelf is Finished).
+    if (selectedShelf === "Finished Learning") {
+      addContentToChallenge(newBook._id);
+    }
+
     // Fetch all topics to show updates (again, inefficient because multiple
     // updates together doesn't return the updated items, so can't update global
     // state from dispatch)
