@@ -44,7 +44,7 @@ const BookScreen = ({ navigation, route }) => {
     };
 
     checkBookInfo();
-  }, []);
+  }, [passedBookInfo]);
 
   let bookInfo = {};
 
