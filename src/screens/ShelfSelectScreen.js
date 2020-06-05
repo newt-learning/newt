@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { ScrollView, View, Text, StyleSheet, Platform } from "react-native";
 import _ from "lodash";
+import moment from "moment";
 // API
 import { useAddContentToChallenge } from "../api/challenges";
 // Context
@@ -20,7 +21,7 @@ import useSingleCheckbox from "../hooks/useSingleCheckbox";
 import useMultiSelectCheckbox from "../hooks/useMultiSelectCheckbox";
 // Styling
 import { BOLD, FS20, REGULAR } from "../design/typography";
-import { OFF_BLACK, RED, GRAY_5 } from "../design/colors";
+import { OFF_BLACK, RED, GRAY_5, BLUE_5 } from "../design/colors";
 // Helpers
 import {
   initializeShelves,
@@ -218,35 +219,37 @@ const ShelfSelectScreen = ({ navigation, route }) => {
             <ListItem
               title="Start Date"
               titleStyle={{ fontFamily: REGULAR }}
-              rightTitle={startDate.toLocaleDateString()}
-              rightTitleProps={{
-                onPress: () => setShowStartDatePicker(!showStartDatePicker),
+              rightTitle={moment(startDate).format("MMM DD, YYYY")}
+              onPress={() => {
+                setShowFinishDatePicker(false);
+                setShowStartDatePicker(!showStartDatePicker);
               }}
+              underlayColor={BLUE_5}
               bottomDivider
             />
             <ListItem
               title="Finish Date"
               titleStyle={{ fontFamily: REGULAR }}
-              rightTitle={finishDate.toLocaleDateString()}
-              rightTitleProps={{
-                onPress: () => setShowFinishDatePicker(!showFinishDatePicker),
+              rightTitle={moment(finishDate).format("MMM DD, YYYY")}
+              onPress={() => {
+                setShowStartDatePicker(false);
+                setShowFinishDatePicker(!showFinishDatePicker);
               }}
+              underlayColor={BLUE_5}
             />
-            {showStartDatePicker && (
+            {/* If either the start of finish date inputs are selected, show the
+              datepicker with the corresponding date */}
+            {(showStartDatePicker || showFinishDatePicker) && (
               <DateTimePicker
-                value={startDate}
+                value={showStartDatePicker ? startDate : finishDate}
                 onChange={(e, selectedDate) => {
-                  setShowStartDatePicker(Platform.OS === "ios");
-                  setStartDate(selectedDate);
-                }}
-              />
-            )}
-            {showFinishDatePicker && (
-              <DateTimePicker
-                value={finishDate}
-                onChange={(e, selectedDate) => {
-                  setShowFinishDatePicker(Platform.OS === "ios");
-                  setFinishDate(selectedDate);
+                  if (showStartDatePicker) {
+                    setShowStartDatePicker(Platform.OS === "ios");
+                    setStartDate(selectedDate);
+                  } else {
+                    setShowFinishDatePicker(Platform.OS === "ios");
+                    setFinishDate(selectedDate);
+                  }
                 }}
               />
             )}
