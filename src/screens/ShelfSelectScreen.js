@@ -105,7 +105,8 @@ const ShelfSelectScreen = ({ navigation, route }) => {
 
     // If the selected shelf is Finished, add the dateCompleted field
     if (selectedShelf === "Finished Learning") {
-      data.dateCompleted = Date.now();
+      data.dateStarted = startDate;
+      data.dateCompleted = finishDate;
     }
 
     // Send request to add book and then send bookInfo as param in navigation
@@ -251,6 +252,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
                     setFinishDate(selectedDate);
                   }
                 }}
+                maximumDate={new Date()}
               />
             )}
           </View>
