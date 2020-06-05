@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { ScrollView, View, Text, StyleSheet, Platform } from "react-native";
 import _ from "lodash";
 // API
 import { useAddContentToChallenge } from "../api/challenges";
@@ -13,11 +13,13 @@ import ClearButton from "../components/shared/ClearButton";
 import MultiItemSelect from "../components/shared/MultiItemSelect";
 import Loader from "../components/shared/Loader";
 import initiateDeleteConfirmation from "../components/shared/initiateDeleteConfirmation";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { ListItem } from "react-native-elements";
 // Hooks
 import useSingleCheckbox from "../hooks/useSingleCheckbox";
 import useMultiSelectCheckbox from "../hooks/useMultiSelectCheckbox";
 // Styling
-import { BOLD, FS20 } from "../design/typography";
+import { BOLD, FS20, REGULAR } from "../design/typography";
 import { OFF_BLACK, RED, GRAY_5 } from "../design/colors";
 // Helpers
 import {
@@ -27,6 +29,13 @@ import {
 
 const ShelfSelectScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false);
+  // State for start and end dates for Finished books, and whether to show the
+  // Datepicker
+  const [showStartDatePicker, setShowStartDatePicker] = useState(false);
+  const [showFinishDatePicker, setShowFinishDatePicker] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
+  const [finishDate, setFinishDate] = useState(new Date());
+
   const {
     state: contentState,
     addContent,
@@ -171,7 +180,11 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={
+        shelves[2].checked ? styles.container : { ...styles.container, flex: 1 }
+      }
+    >
       <View style={styles.option}>
         <Text style={styles.header}>Select Shelf</Text>
         {shelves.map((shelf, index) => (
@@ -196,6 +209,48 @@ const ShelfSelectScreen = ({ navigation, route }) => {
             containerStyle={styles.deleteButton}
             titleStyle={styles.delete}
           />
+        ) : null}
+        {/* If the Finished Learning shelf is selected, show input selectors for
+          start and finish dates */}
+        {shelves[2].checked && addToLibrary ? (
+          <View style={styles.datesContainer}>
+            <Text style={styles.header}>Set Start and Finish Dates</Text>
+            <ListItem
+              title="Start Date"
+              titleStyle={{ fontFamily: REGULAR }}
+              rightTitle={startDate.toLocaleDateString()}
+              rightTitleProps={{
+                onPress: () => setShowStartDatePicker(!showStartDatePicker),
+              }}
+              bottomDivider
+            />
+            <ListItem
+              title="Finish Date"
+              titleStyle={{ fontFamily: REGULAR }}
+              rightTitle={finishDate.toLocaleDateString()}
+              rightTitleProps={{
+                onPress: () => setShowFinishDatePicker(!showFinishDatePicker),
+              }}
+            />
+            {showStartDatePicker && (
+              <DateTimePicker
+                value={startDate}
+                onChange={(e, selectedDate) => {
+                  setShowStartDatePicker(Platform.OS === "ios");
+                  setStartDate(selectedDate);
+                }}
+              />
+            )}
+            {showFinishDatePicker && (
+              <DateTimePicker
+                value={finishDate}
+                onChange={(e, selectedDate) => {
+                  setShowFinishDatePicker(Platform.OS === "ios");
+                  setFinishDate(selectedDate);
+                }}
+              />
+            )}
+          </View>
         ) : null}
         {/* If on Add to Library screen, show Topic Selector */}
         {addToLibrary ? (
@@ -229,13 +284,12 @@ const ShelfSelectScreen = ({ navigation, route }) => {
           showLoading={isLoading}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: "space-between",
     backgroundColor: GRAY_5,
   },
@@ -253,7 +307,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     alignItems: "center",
     marginHorizontal: 15,
-    marginBottom: 20,
+    marginVertical: 30,
   },
   deleteButton: {
     marginTop: 30,
