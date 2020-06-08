@@ -228,6 +228,17 @@ const ShelfSelectScreen = ({ navigation, route }) => {
               underlayColor={BLUE_5}
               bottomDivider
             />
+            {/* If the start date input is selected, show the datepicker under it */}
+            {showStartDatePicker && (
+              <DateTimePicker
+                value={startDate}
+                onChange={(e, selectedDate) => {
+                  setShowStartDatePicker(Platform.OS === "ios");
+                  setStartDate(selectedDate);
+                }}
+                maximumDate={new Date()}
+              />
+            )}
             <ListItem
               title="Finish Date"
               titleStyle={{ fontFamily: REGULAR }}
@@ -238,19 +249,13 @@ const ShelfSelectScreen = ({ navigation, route }) => {
               }}
               underlayColor={BLUE_5}
             />
-            {/* If either the start of finish date inputs are selected, show the
-              datepicker with the corresponding date */}
-            {(showStartDatePicker || showFinishDatePicker) && (
+            {/* If the finish date input is selected, show the datepicker */}
+            {showFinishDatePicker && (
               <DateTimePicker
-                value={showStartDatePicker ? startDate : finishDate}
+                value={finishDate}
                 onChange={(e, selectedDate) => {
-                  if (showStartDatePicker) {
-                    setShowStartDatePicker(Platform.OS === "ios");
-                    setStartDate(selectedDate);
-                  } else {
-                    setShowFinishDatePicker(Platform.OS === "ios");
-                    setFinishDate(selectedDate);
-                  }
+                  setShowFinishDatePicker(Platform.OS === "ios");
+                  setFinishDate(selectedDate);
                 }}
                 maximumDate={new Date()}
               />
