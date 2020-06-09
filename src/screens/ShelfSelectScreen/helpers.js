@@ -11,6 +11,12 @@ export const figureOutShelfMovingDataChanges = (
         shelf: newShelf,
         dateStarted: bookInfo.dateStarted.slice(0, -1),
       };
+      // ... to Finished Learning, set date completed as now
+    } else if (newShelf === "Finished Learning") {
+      return {
+        shelf: newShelf,
+        dateCompleted: [...bookInfo.dateCompleted, Date.now()],
+      };
     }
   }
 
@@ -22,6 +28,16 @@ export const figureOutShelfMovingDataChanges = (
         shelf: newShelf,
         dateStarted: [...bookInfo.dateStarted, Date.now()],
       };
+      // ... to Finished Learning, set both start date and completion date as now
+      // (no start date would be there)
+    } else if (newShelf === "Finished Learning") {
+      return {
+        shelf: newShelf,
+        dateStarted: [...bookInfo.dateStarted, Date.now()],
+        dateCompleted: [...bookInfo.dateCompleted, Date.now()],
+      };
     }
   }
+
+  return { shelf: newShelf };
 };

@@ -145,26 +145,22 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     }
   };
   const updateShelf = (selectedShelf) => {
+    // Get the right data to change depending on which shelves the book is moving from/to.
     const updateData = figureOutShelfMovingDataChanges(
       bookInfo.shelf,
       selectedShelf,
       bookInfo
     );
 
+    // Update data with the data gotten above
     updateContent(bookInfo._id, updateData);
 
-    // If the selected shelf is "Finished Learning", add/update the date
-    // completed field as well. Otherwise only change the shelf
+    // If the selected shelf is "Finished Learning", do additional stuff like
+    // updating the reading challenge
     if (selectedShelf === "Finished Learning") {
-      updateContent(bookInfo._id, {
-        shelf: selectedShelf,
-        dateCompleted: Date.now(),
-      });
       // Update the reading challenge by adding this book to the finished list
       // if a challenge exists.
       addContentToChallenge(bookInfo._id);
-    } else {
-      updateContent(bookInfo._id, { shelf: selectedShelf });
     }
     navigation.goBack();
   };
