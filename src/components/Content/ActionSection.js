@@ -55,9 +55,12 @@ const UserInteractionSection = ({
         </Text>
       );
     case "Finished Learning":
+      // Get the last date completed from the array of dates completed
+      const latestDateCompleted = dateCompleted[dateCompleted.length - 1];
+
       return (
         <Text style={styles.dateInfoText}>
-          Completed on {moment(dateCompleted).format("DD MMM, YYYY")}
+          Completed on {moment(latestDateCompleted).format("DD MMM, YYYY")}
         </Text>
       );
     default:

@@ -103,10 +103,15 @@ const ShelfSelectScreen = ({ navigation, route }) => {
       type: "book",
     };
 
+    // If the selected shelf is Currently Learning, set first date started as now
+    if (selectedShelf === "Currently Learning") {
+      data.dateStarted = [Date.now()];
+    }
+
     // If the selected shelf is Finished, add the dateCompleted field
     if (selectedShelf === "Finished Learning") {
-      data.dateStarted = startDate;
-      data.dateCompleted = finishDate;
+      data.dateStarted = [startDate];
+      data.dateCompleted = [finishDate];
     }
 
     // Send request to add book and then send bookInfo as param in navigation
