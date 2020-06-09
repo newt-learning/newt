@@ -144,6 +144,18 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     }
   };
   const updateShelf = (selectedShelf) => {
+    // If going from Currently Learning to Want to Learn, remove the last
+    // date in the dateStarted array
+    if (
+      bookInfo.shelf === "Currently Learning" &&
+      selectedShelf === "Want to Learn"
+    ) {
+      updateContent(bookInfo._id, {
+        shelf: selectedShelf,
+        dateStarted: bookInfo.dateStarted.slice(0, -1),
+      });
+    }
+
     // If the selected shelf is "Finished Learning", add/update the date
     // completed field as well. Otherwise only change the shelf
     if (selectedShelf === "Finished Learning") {
