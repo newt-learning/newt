@@ -144,7 +144,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     }
   };
   const updateShelf = (selectedShelf) => {
-    // If going from Currently Learning to Want to Learn, remove the last
+    // If moving from Currently Learning to Want to Learn, remove the last
     // date in the dateStarted array
     if (
       bookInfo.shelf === "Currently Learning" &&
@@ -153,6 +153,18 @@ const ShelfSelectScreen = ({ navigation, route }) => {
       updateContent(bookInfo._id, {
         shelf: selectedShelf,
         dateStarted: bookInfo.dateStarted.slice(0, -1),
+      });
+    }
+
+    // If moving from Want to Learn to Currently Learning, add current date to
+    // dateStarted array
+    if (
+      bookInfo.shelf === "Want to Learn" &&
+      selectedShelf === "Currently Learning"
+    ) {
+      updateContent(bookInfo._id, {
+        shelf: selectedShelf,
+        dateStarted: [...bookInfo.dateStarted, Date.now()],
       });
     }
 
