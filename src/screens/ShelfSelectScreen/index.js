@@ -3,30 +3,31 @@ import { ScrollView, View, Text, StyleSheet, Platform } from "react-native";
 import _ from "lodash";
 import moment from "moment";
 // API
-import { useAddContentToChallenge } from "../api/challenges";
+import { useAddContentToChallenge } from "../../api/challenges";
 // Context
-import { Context as ContentContext } from "../context/ContentContext";
-import { Context as TopicsContext } from "../context/TopicsContext";
+import { Context as ContentContext } from "../../context/ContentContext";
+import { Context as TopicsContext } from "../../context/TopicsContext";
 // Components
-import ListSelect from "../components/shared/ListSelect";
-import ActionButton from "../components/shared/ActionButton";
-import ClearButton from "../components/shared/ClearButton";
-import MultiItemSelect from "../components/shared/MultiItemSelect";
-import Loader from "../components/shared/Loader";
-import initiateDeleteConfirmation from "../components/shared/initiateDeleteConfirmation";
+import ListSelect from "../../components/shared/ListSelect";
+import ActionButton from "../../components/shared/ActionButton";
+import ClearButton from "../../components/shared/ClearButton";
+import MultiItemSelect from "../../components/shared/MultiItemSelect";
+import Loader from "../../components/shared/Loader";
+import initiateDeleteConfirmation from "../../components/shared/initiateDeleteConfirmation";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { ListItem } from "react-native-elements";
 // Hooks
-import useSingleCheckbox from "../hooks/useSingleCheckbox";
-import useMultiSelectCheckbox from "../hooks/useMultiSelectCheckbox";
+import useSingleCheckbox from "../../hooks/useSingleCheckbox";
+import useMultiSelectCheckbox from "../../hooks/useMultiSelectCheckbox";
 // Styling
-import { BOLD, FS20, REGULAR } from "../design/typography";
-import { OFF_BLACK, RED, GRAY_5, BLUE_5 } from "../design/colors";
+import { BOLD, FS20, REGULAR } from "../../design/typography";
+import { OFF_BLACK, RED, GRAY_5, BLUE_5 } from "../../design/colors";
 // Helpers
 import {
   initializeShelves,
   initializeMultiSelectCheckbox,
-} from "../helpers/screenHelpers";
+} from "../../helpers/screenHelpers";
+import { figureOutShelfMovingDataChanges } from "./helpers";
 
 const ShelfSelectScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -144,29 +145,13 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     }
   };
   const updateShelf = (selectedShelf) => {
-    // If moving from Currently Learning to Want to Learn, remove the last
-    // date in the dateStarted array
-    if (
-      bookInfo.shelf === "Currently Learning" &&
-      selectedShelf === "Want to Learn"
-    ) {
-      updateContent(bookInfo._id, {
-        shelf: selectedShelf,
-        dateStarted: bookInfo.dateStarted.slice(0, -1),
-      });
-    }
+    const updateData = figureOutShelfMovingDataChanges(
+      bookInfo.shelf,
+      selectedShelf,
+      bookInfo
+    );
 
-    // If moving from Want to Learn to Currently Learning, add current date to
-    // dateStarted array
-    if (
-      bookInfo.shelf === "Want to Learn" &&
-      selectedShelf === "Currently Learning"
-    ) {
-      updateContent(bookInfo._id, {
-        shelf: selectedShelf,
-        dateStarted: [...bookInfo.dateStarted, Date.now()],
-      });
-    }
+    updateContent(bookInfo._id, updateData);
 
     // If the selected shelf is "Finished Learning", add/update the date
     // completed field as well. Otherwise only change the shelf
