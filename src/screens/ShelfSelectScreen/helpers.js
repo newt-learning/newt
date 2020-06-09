@@ -39,5 +39,16 @@ export const figureOutShelfMovingDataChanges = (
     }
   }
 
+  // If moving from Finished Learning...
+  if (currentShelf === "Finished Learning") {
+    // ...to Currently Learning, add now to the dateStarted array
+    if (newShelf === "Currently Learning") {
+      return {
+        shelf: newShelf,
+        dateStarted: [...bookInfo.dateStarted, Date.now()],
+      };
+    }
+  }
+
   return { shelf: newShelf };
 };
