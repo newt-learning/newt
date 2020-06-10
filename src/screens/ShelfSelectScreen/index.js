@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { ScrollView, View, Text, StyleSheet, Platform } from "react-native";
+import { ScrollView, View, Text, StyleSheet } from "react-native";
 import _ from "lodash";
-import moment from "moment";
 // API
 import { useAddContentToChallenge } from "../../api/challenges";
 // Context
@@ -14,27 +13,23 @@ import ClearButton from "../../components/shared/ClearButton";
 import MultiItemSelect from "../../components/shared/MultiItemSelect";
 import Loader from "../../components/shared/Loader";
 import initiateDeleteConfirmation from "../../components/shared/initiateDeleteConfirmation";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { ListItem } from "react-native-elements";
 // Hooks
 import useSingleCheckbox from "../../hooks/useSingleCheckbox";
 import useMultiSelectCheckbox from "../../hooks/useMultiSelectCheckbox";
 // Styling
-import { BOLD, FS20, REGULAR } from "../../design/typography";
-import { OFF_BLACK, RED, GRAY_5, BLUE_5 } from "../../design/colors";
+import { BOLD, FS20 } from "../../design/typography";
+import { OFF_BLACK, RED, GRAY_5 } from "../../design/colors";
 // Helpers
 import {
   initializeShelves,
   initializeMultiSelectCheckbox,
 } from "../../helpers/screenHelpers";
 import { figureOutShelfMovingDataChanges } from "./helpers";
+import SelectStartFinishDatesSection from "./SelectStartFinishDatesSection";
 
 const ShelfSelectScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false);
-  // State for start and end dates for Finished books, and whether to show the
-  // Datepicker
-  const [showStartDatePicker, setShowStartDatePicker] = useState(false);
-  const [showFinishDatePicker, setShowFinishDatePicker] = useState(false);
+  // State for start and end dates for Finished books
   const [startDate, setStartDate] = useState(new Date());
   const [finishDate, setFinishDate] = useState(new Date());
 
@@ -214,52 +209,12 @@ const ShelfSelectScreen = ({ navigation, route }) => {
         {/* If the Finished Learning shelf is selected, show input selectors for
           start and finish dates */}
         {shelves[2].checked && addToLibrary ? (
-          <View style={styles.datesContainer}>
-            <Text style={styles.header}>Set Start and Finish Dates</Text>
-            <ListItem
-              title="Start Date"
-              titleStyle={{ fontFamily: REGULAR }}
-              rightTitle={moment(startDate).format("MMM DD, YYYY")}
-              onPress={() => {
-                setShowFinishDatePicker(false);
-                setShowStartDatePicker(!showStartDatePicker);
-              }}
-              underlayColor={BLUE_5}
-              bottomDivider
-            />
-            {/* If the start date input is selected, show the datepicker under it */}
-            {showStartDatePicker && (
-              <DateTimePicker
-                value={startDate}
-                onChange={(e, selectedDate) => {
-                  setShowStartDatePicker(Platform.OS === "ios");
-                  setStartDate(selectedDate);
-                }}
-                maximumDate={new Date()}
-              />
-            )}
-            <ListItem
-              title="Finish Date"
-              titleStyle={{ fontFamily: REGULAR }}
-              rightTitle={moment(finishDate).format("MMM DD, YYYY")}
-              onPress={() => {
-                setShowStartDatePicker(false);
-                setShowFinishDatePicker(!showFinishDatePicker);
-              }}
-              underlayColor={BLUE_5}
-            />
-            {/* If the finish date input is selected, show the datepicker */}
-            {showFinishDatePicker && (
-              <DateTimePicker
-                value={finishDate}
-                onChange={(e, selectedDate) => {
-                  setShowFinishDatePicker(Platform.OS === "ios");
-                  setFinishDate(selectedDate);
-                }}
-                maximumDate={new Date()}
-              />
-            )}
-          </View>
+          <SelectStartFinishDatesSection
+            startDate={startDate}
+            finishDate={finishDate}
+            setStartDate={setStartDate}
+            setFinishDate={setFinishDate}
+          />
         ) : null}
         {/* If on Add to Library screen, show Topic Selector */}
         {addToLibrary ? (
