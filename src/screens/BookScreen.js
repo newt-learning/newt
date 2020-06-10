@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useLayoutEffect, useContext } from "react";
 import { StyleSheet, View, ScrollView, Image, Platform } from "react-native";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
@@ -8,6 +8,8 @@ import ActionSection from "../components/Content/ActionSection";
 import Description from "../components/Content/Description";
 import BookInformationSection from "../components/Content/BookInformationSection";
 import Loader from "../components/shared/Loader";
+import MoreOptionsButton from "../components/shared/MoreOptionsButton";
+import OptionsModal from "../components/shared/OptionsModal";
 // Design
 import { OFF_WHITE } from "../design/colors";
 
@@ -15,11 +17,25 @@ const BookScreen = ({ navigation, route }) => {
   // State to store whether the user wants to read more of the description
   const [showMore, setShowMore] = useState(false);
   const [bookExistsInLibrary, setBookExistsinLibrary] = useState(null);
-  const { state, checkIfBookExistsInLibrary } = useContext(ContentContext);
+  // Initialize modal visibility
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   // Get book info from params sent through navigation prop
   const passedBookInfo = route.params.bookInfo;
   const comingFromAddBookScreen = route.params?.comingFromAddBook ?? false;
+
+  // Add the 3-dot options icon which opens the options modal, only shown in
+  // My Library screen (not when adding a book)
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () =>
+        comingFromAddBookScreen ? null : (
+          <MoreOptionsButton onPress={() => setIsModalVisible(true)} />
+        ),
+    });
+  });
+
+  const { state, checkIfBookExistsInLibrary } = useContext(ContentContext);
 
   // Check if the book data passed, if coming from the 'Add Book Screen' (so
   // passedBookInfo won't have a '_id' field), is already in the user's library
@@ -80,6 +96,17 @@ const BookScreen = ({ navigation, route }) => {
   if (bookInfo === null) {
     return <View style={styles.container}></View>;
   }
+
+  // List of buttons in the options modal
+  modalOptions = [
+    {
+      title: "Add or Edit Dates Read",
+      onPress: () => {
+        console.log("go");
+        setIsModalVisible(false);
+      },
+    },
+  ];
 
   const {
     name,
@@ -143,6 +170,11 @@ const BookScreen = ({ navigation, route }) => {
         publisher={publisher}
         datePublished={datePublished}
         isbns={industryIdentifiers}
+      />
+      <OptionsModal
+        isVisible={isModalVisible}
+        onBackdropPress={() => setIsModalVisible(false)}
+        options={modalOptions}
       />
     </ScrollView>
   );
