@@ -8,7 +8,7 @@ import { useAddContentToChallenge } from "../../api/challenges";
 import { Context as ContentContext } from "../../context/ContentContext";
 import { Context as TopicsContext } from "../../context/TopicsContext";
 // Components
-import ListSelect from "../../components/shared/ListSelect";
+import SelectShelfSection from "./SelectShelfSection";
 import ActionButton from "../../components/shared/ActionButton";
 import ClearButton from "../../components/shared/ClearButton";
 import MultiItemSelect from "../../components/shared/MultiItemSelect";
@@ -199,22 +199,8 @@ const ShelfSelectScreen = ({ navigation, route }) => {
       }
     >
       <View style={styles.option}>
-        <Text style={styles.header}>Select Shelf</Text>
-        {shelves.map((shelf, index) => (
-          <ListSelect
-            name={shelf.name}
-            checked={shelf.checked}
-            onPressCheckbox={() => {
-              const currentCheckedShelfIndex = _.findIndex(
-                shelves,
-                (shelf) => shelf.checked
-              );
-
-              toggleShelves(currentCheckedShelfIndex, index);
-            }}
-            key={shelf.name}
-          />
-        ))}
+        {/* Section where you select the shelf */}
+        <SelectShelfSection shelves={shelves} onSelectShelf={toggleShelves} />
         {showDeleteButton ? (
           <ClearButton
             title="Delete book from Library"

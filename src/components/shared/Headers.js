@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, Platform } from "react-native";
 // Styling
-import { BOLD, FS32, FS24, FS18 } from "../../design/typography";
+import { BOLD, FS32, FS24, FS18, FS20 } from "../../design/typography";
 import { OFF_BLACK } from "../../design/colors";
 
 // Title for navigation header
@@ -19,6 +19,13 @@ export const H1 = ({ children, style }) => {
 // Header 2 (font size 24)
 export const H2 = ({ children, style }) => {
   const textStyle = StyleSheet.compose(styles.h2, style);
+
+  return <Text style={textStyle}>{children}</Text>;
+};
+
+// Header 3 (font size 20)
+export const H3 = ({ children, style }) => {
+  const textStyle = StyleSheet.compose(styles.h3, style);
 
   return <Text style={textStyle}>{children}</Text>;
 };
@@ -44,6 +51,11 @@ const styles = StyleSheet.create({
   h2: {
     fontFamily: BOLD,
     fontSize: FS24,
+    color: OFF_BLACK,
+  },
+  h3: {
+    fontFamily: BOLD,
+    fontSize: FS20,
     color: OFF_BLACK,
   },
 });
