@@ -8,7 +8,6 @@ const AddEditDatesReadScreen = ({ route }) => {
   const [datesRead, setDatesRead] = useState(startFinishDates);
 
   const handleDateChange = (index, title, selectedDate) => {
-    console.log(selectedDate);
     let updatedDatesRead = [...datesRead];
     switch (title) {
       case "Start date":
@@ -20,7 +19,6 @@ const AddEditDatesReadScreen = ({ route }) => {
         setDatesRead(updatedDatesRead);
         return;
       default:
-        console.log("nothing changed");
         return;
     }
   };
@@ -29,7 +27,7 @@ const AddEditDatesReadScreen = ({ route }) => {
     <View style={styles.container}>
       {datesRead.map((session, index) => {
         return (
-          <View style={styles.sessionContainer} key={session.dateStarted}>
+          <View style={styles.sessionContainer} key={index}>
             <H4 style={styles.header}>{`#${index + 1}`}</H4>
             <ListItemWithDatePicker
               title="Start date"
