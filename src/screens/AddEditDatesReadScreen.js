@@ -3,9 +3,12 @@ import { View, StyleSheet } from "react-native";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
-import ListItemWithDatePicker from "../components/shared/ListItemWithDatePicker";
 import { H4 } from "../components/shared/Headers";
+import ClearButton from "../components/shared/ClearButton";
 import ModalConfirmationButton from "../components/shared/ModalConfirmationButton";
+import ListItemWithDatePicker from "../components/shared/ListItemWithDatePicker";
+// Design
+import { RED } from "../design/colors";
 
 const AddEditDatesReadScreen = ({ route, navigation }) => {
   const { bookId, startFinishDates } = route.params;
@@ -53,7 +56,15 @@ const AddEditDatesReadScreen = ({ route, navigation }) => {
       {datesRead.map((session, index) => {
         return (
           <View style={styles.sessionContainer} key={index}>
-            <H4 style={styles.header}>{`#${index + 1}`}</H4>
+            <View style={styles.titleContainer}>
+              <H4>{`#${index + 1}`}</H4>
+              <ClearButton
+                title="Delete"
+                onPress={() => console.log("delete")}
+                titleStyle={{ color: RED }}
+                buttonStyle={{ paddingRight: 15 }}
+              />
+            </View>
             <ListItemWithDatePicker
               title="Start date"
               date={session.dateStarted}
@@ -82,8 +93,11 @@ const styles = StyleSheet.create({
   sessionContainer: {
     marginBottom: 15,
   },
-  header: {
-    marginHorizontal: 15,
+  titleContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginLeft: 15,
     marginBottom: 5,
   },
 });
