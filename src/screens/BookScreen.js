@@ -102,8 +102,8 @@ const BookScreen = ({ navigation, route }) => {
     {
       title: "Add or Edit Dates Read",
       onPress: () => {
-        console.log("go");
         setIsModalVisible(false);
+        navigation.navigate("AddEditDatesRead");
       },
     },
   ];
