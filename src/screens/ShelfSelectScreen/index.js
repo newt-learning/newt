@@ -7,6 +7,7 @@ import { useAddContentToChallenge } from "../../api/challenges";
 import { Context as ContentContext } from "../../context/ContentContext";
 import { Context as TopicsContext } from "../../context/TopicsContext";
 // Components
+import { H3 } from "../../components/shared/Headers";
 import SelectShelfSection from "./SelectShelfSection";
 import ActionButton from "../../components/shared/ActionButton";
 import ClearButton from "../../components/shared/ClearButton";
@@ -17,8 +18,7 @@ import initiateDeleteConfirmation from "../../components/shared/initiateDeleteCo
 import useSingleCheckbox from "../../hooks/useSingleCheckbox";
 import useMultiSelectCheckbox from "../../hooks/useMultiSelectCheckbox";
 // Styling
-import { BOLD, FS20 } from "../../design/typography";
-import { OFF_BLACK, RED, GRAY_5 } from "../../design/colors";
+import { RED, GRAY_5 } from "../../design/colors";
 // Helpers
 import {
   initializeShelves,
@@ -190,7 +190,9 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   return (
     <ScrollView
       contentContainerStyle={
-        shelves[2].checked ? styles.container : { ...styles.container, flex: 1 }
+        shelves[2].checked && addToLibrary
+          ? styles.container
+          : { ...styles.container, flex: 1 }
       }
     >
       <View style={styles.option}>
@@ -219,7 +221,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
         {/* If on Add to Library screen, show Topic Selector */}
         {addToLibrary ? (
           <View>
-            <Text style={styles.header}>Select Topic(s)</Text>
+            <H3 style={styles.header}>Select Topic(s)</H3>
             <View style={styles.topicSelectContainer}>
               <MultiItemSelect
                 itemsList={topicsList}
@@ -261,9 +263,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   header: {
-    fontFamily: BOLD,
-    fontSize: FS20,
-    color: OFF_BLACK,
     marginTop: 20,
     marginHorizontal: 15,
     marginBottom: 5,
