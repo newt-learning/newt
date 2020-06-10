@@ -35,6 +35,7 @@ const AddEditDatesReadScreen = ({ route, navigation }) => {
     });
   });
 
+  // Update the date in state
   const handleDateChange = (index, title, selectedDate) => {
     let updatedDatesRead = [...datesRead];
     switch (title) {
@@ -51,6 +52,13 @@ const AddEditDatesReadScreen = ({ route, navigation }) => {
     }
   };
 
+  const handleDeleteSession = (index) => {
+    let updatedDatesRead = [...datesRead];
+    // Remove 1 element starting at index
+    updatedDatesRead.splice(index, 1);
+    setDatesRead(updatedDatesRead);
+  };
+
   return (
     <View style={styles.container}>
       {datesRead.map((session, index) => {
@@ -60,7 +68,7 @@ const AddEditDatesReadScreen = ({ route, navigation }) => {
               <H4>{`#${index + 1}`}</H4>
               <ClearButton
                 title="Delete"
-                onPress={() => console.log("delete")}
+                onPress={() => handleDeleteSession(index)}
                 titleStyle={{ color: RED }}
                 buttonStyle={{ paddingRight: 15 }}
               />
