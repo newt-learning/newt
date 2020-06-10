@@ -1,31 +1,15 @@
 import React, { useState, useLayoutEffect, useContext } from "react";
-import {
-  View,
-  ScrollView,
-  Platform,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  TextInput,
-  ActivityIndicator,
-} from "react-native";
+import { View, ScrollView, Text, StyleSheet, TextInput } from "react-native";
 import _ from "lodash";
-import { Button as ElementButton } from "react-native-elements";
+// Components
+import ModalConfirmationButton from "../components/shared/ModalConfirmationButton";
 import ClearButton from "../components/shared/ClearButton";
-import { MaterialIcons } from "@expo/vector-icons";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 import { Context as StatsContext } from "../context/StatsContext";
 // Design
-import { SEMIBOLD, REGULAR, FS16, FS12, FS18 } from "../design/typography";
-import {
-  OFF_BLACK,
-  GRAY_5,
-  GRAY_2,
-  IOS_BLUE,
-  RED,
-  OFF_WHITE,
-} from "../design/colors";
+import { SEMIBOLD, REGULAR, FS16, FS12 } from "../design/typography";
+import { GRAY_5, GRAY_2, RED, OFF_WHITE } from "../design/colors";
 
 const UpdateProgressScreen = ({ navigation, route }) => {
   const { contentId, pagesRead, pageCount } = route.params;
@@ -44,38 +28,12 @@ const UpdateProgressScreen = ({ navigation, route }) => {
   // and check mark icon for Android (and pass the update functions)
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => {
-        if (Platform.OS === "ios") {
-          if (isFetching) {
-            return (
-              <ActivityIndicator
-                animating={isFetching}
-                color={IOS_BLUE}
-                style={{ paddingRight: 15 }}
-              />
-            );
-          } else {
-            return (
-              <TouchableOpacity
-                style={{ paddingRight: 15 }}
-                onPress={submitUpdatedPagesRead}
-              >
-                <Text style={{ color: IOS_BLUE, fontSize: FS18 }}>Done</Text>
-              </TouchableOpacity>
-            );
-          }
-        } else {
-          return (
-            <ElementButton
-              type="clear"
-              loading={isFetching}
-              loadingProps={{ color: OFF_BLACK }}
-              icon={<MaterialIcons name="check" size={24} />}
-              onPress={submitUpdatedPagesRead}
-            />
-          );
-        }
-      },
+      headerRight: () => (
+        <ModalConfirmationButton
+          isFetching={isFetching}
+          onSubmit={submitUpdatedPagesRead}
+        />
+      ),
     });
   });
 
