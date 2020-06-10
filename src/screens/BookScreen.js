@@ -89,7 +89,7 @@ const BookScreen = ({ navigation, route }) => {
     shelf,
     topics,
     dateAdded,
-    dateCompleted,
+    startFinishDates,
   } = bookInfo;
   const {
     pageCount,
@@ -116,7 +116,7 @@ const BookScreen = ({ navigation, route }) => {
         pageCount={pageCount}
         pagesRead={pagesRead}
         dateAdded={dateAdded}
-        dateCompleted={dateCompleted}
+        startFinishDates={startFinishDates}
         onPress={
           shelf
             ? () =>

@@ -22,7 +22,7 @@ const UserInteractionSection = ({
   pagesRead,
   pageCount,
   dateAdded,
-  dateCompleted,
+  startFinishDates,
 }) => {
   const navigation = useNavigation();
 
@@ -56,7 +56,8 @@ const UserInteractionSection = ({
       );
     case "Finished Learning":
       // Get the last date completed from the array of dates completed
-      const latestDateCompleted = dateCompleted[dateCompleted.length - 1];
+      const latestDateCompleted =
+        startFinishDates[startFinishDates.length - 1].dateCompleted;
 
       return (
         <Text style={styles.dateInfoText}>
@@ -77,7 +78,7 @@ const ActionSection = ({
   pageCount,
   pagesRead,
   dateAdded,
-  dateCompleted,
+  startFinishDates,
   onPress,
 }) => {
   return (
@@ -91,7 +92,7 @@ const ActionSection = ({
             pagesRead={pagesRead}
             pageCount={pageCount}
             dateAdded={dateAdded}
-            dateCompleted={dateCompleted}
+            startFinishDates={startFinishDates}
           />
           <ContentTopicSection contentId={contentId} topics={topics} />
         </View>
