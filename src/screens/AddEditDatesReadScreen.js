@@ -5,7 +5,7 @@ import { H4 } from "../components/shared/Headers";
 
 const AddEditDatesReadScreen = ({ route }) => {
   const { startFinishDates } = route.params;
-  const [datesRead, setDatesRead] = useState(startFinishDates);
+  const [datesRead, setDatesRead] = useState(JSON.parse(startFinishDates));
 
   const handleDateChange = (index, title, selectedDate) => {
     let updatedDatesRead = [...datesRead];
