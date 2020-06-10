@@ -123,14 +123,13 @@ const BookScreen = ({ navigation, route }) => {
                 navigation.navigate("ShelfSelect", {
                   bookInfo,
                   buttonText: "Confirm",
-                  showDeleteButton: true,
                   addToLibrary: false,
                 })
             : () =>
                 navigation.navigate("ShelfSelect", {
                   bookInfo,
-                  addToLibrary: true,
                   buttonText: "Add to Library",
+                  addToLibrary: true,
                 })
         }
       />

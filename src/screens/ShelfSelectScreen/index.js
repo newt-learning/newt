@@ -49,7 +49,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   );
 
   // Get params passed from route
-  const { bookInfo, buttonText, showDeleteButton, addToLibrary } = route.params;
+  const { bookInfo, buttonText, addToLibrary } = route.params;
 
   // Initialize shelves and topics checkboxes/selectors
   const [shelves, toggleShelves] = useSingleCheckbox(
@@ -201,7 +201,9 @@ const ShelfSelectScreen = ({ navigation, route }) => {
       <View style={styles.option}>
         {/* Section where you select the shelf */}
         <SelectShelfSection shelves={shelves} onSelectShelf={toggleShelves} />
-        {showDeleteButton ? (
+        {/* If not in the Add to Library flow (so we're in My Library), show 
+          button to delete content */}
+        {!addToLibrary ? (
           <ClearButton
             title="Delete book from Library"
             onPress={deleteItem}
