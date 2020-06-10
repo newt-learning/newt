@@ -1,5 +1,5 @@
 import React, { useState, useContext, useLayoutEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet } from "react-native";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
@@ -9,6 +9,7 @@ import ModalConfirmationButton from "../components/shared/ModalConfirmationButto
 import ListItemWithDatePicker from "../components/shared/ListItemWithDatePicker";
 // Design
 import { RED } from "../design/colors";
+import { FS16 } from "../design/typography";
 
 const AddEditDatesReadScreen = ({ route, navigation }) => {
   const { bookId, startFinishDates } = route.params;
@@ -52,6 +53,7 @@ const AddEditDatesReadScreen = ({ route, navigation }) => {
     }
   };
 
+  // Delete the session
   const handleDeleteSession = (index) => {
     let updatedDatesRead = [...datesRead];
     // Remove 1 element starting at index
@@ -59,8 +61,17 @@ const AddEditDatesReadScreen = ({ route, navigation }) => {
     setDatesRead(updatedDatesRead);
   };
 
+  // Add another session
+  const handleAddSession = () => {
+    let updatedDatesRead = [
+      ...datesRead,
+      { dateStarted: null, dateCompleted: null },
+    ];
+    setDatesRead(updatedDatesRead);
+  };
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {datesRead.map((session, index) => {
         return (
           <View style={styles.sessionContainer} key={index}>
@@ -90,13 +101,20 @@ const AddEditDatesReadScreen = ({ route, navigation }) => {
           </View>
         );
       })}
-    </View>
+      {/* Button to add another reading session */}
+      <ClearButton
+        title="Add dates read"
+        onPress={handleAddSession}
+        titleStyle={{ fontSize: FS16 }}
+        containerStyle={{ marginTop: 20, marginBottom: 30 }}
+      />
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    paddingTop: 20,
   },
   sessionContainer: {
     marginBottom: 15,
