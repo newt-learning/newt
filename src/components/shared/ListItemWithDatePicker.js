@@ -6,7 +6,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { REGULAR } from "../../design/typography";
 import { BLUE_5 } from "../../design/colors";
 
-const ListItemWithDatePicker = ({ title, date }) => {
+const ListItemWithDatePicker = ({ title, date, onDateChange }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   return (
@@ -24,7 +24,7 @@ const ListItemWithDatePicker = ({ title, date }) => {
           value={date ? date : new Date()}
           onChange={(e, selectedDate) => {
             setShowDatePicker(Platform.OS === "ios");
-            console.log(selectedDate);
+            onDateChange(selectedDate);
           }}
           maximumDate={new Date()}
         />

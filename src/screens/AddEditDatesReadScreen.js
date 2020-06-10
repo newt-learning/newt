@@ -1,24 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import ListItemWithDatePicker from "../components/shared/ListItemWithDatePicker";
 import { H4 } from "../components/shared/Headers";
 
 const AddEditDatesReadScreen = ({ route }) => {
   const { startFinishDates } = route.params;
+  const [datesRead, setDatesRead] = useState(startFinishDates);
+
+  const handleDateChange = (index, title, selectedDate) => {
+    console.log(selectedDate);
+    let updatedDatesRead = [...datesRead];
+    switch (title) {
+      case "Start date":
+        updatedDatesRead[index].dateStarted = selectedDate;
+        setDatesRead(updatedDatesRead);
+        return;
+      case "Finish date":
+        updatedDatesRead[index].dateCompleted = selectedDate;
+        setDatesRead(updatedDatesRead);
+        return;
+      default:
+        console.log("nothing changed");
+        return;
+    }
+  };
 
   return (
     <View style={styles.container}>
-      {startFinishDates.map((session, index) => {
+      {datesRead.map((session, index) => {
         return (
           <View style={styles.sessionContainer} key={session.dateStarted}>
             <H4 style={styles.header}>{`#${index + 1}`}</H4>
             <ListItemWithDatePicker
               title="Start date"
               date={session.dateStarted}
+              onDateChange={(selectedDate) =>
+                handleDateChange(index, "Start date", selectedDate)
+              }
             />
             <ListItemWithDatePicker
               title="Finish date"
               date={session.dateCompleted}
+              onDateChange={(selectedDate) =>
+                handleDateChange(index, "Finish date", selectedDate)
+              }
             />
           </View>
         );
