@@ -42,6 +42,7 @@ const UserInteractionSection = ({
                 contentId,
                 pagesRead,
                 pageCount,
+                startFinishDates,
               })
             }
           />

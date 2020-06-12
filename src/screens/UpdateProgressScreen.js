@@ -12,7 +12,7 @@ import { SEMIBOLD, REGULAR, FS16, FS12 } from "../design/typography";
 import { GRAY_5, GRAY_2, RED, OFF_WHITE } from "../design/colors";
 
 const UpdateProgressScreen = ({ navigation, route }) => {
-  const { contentId, pagesRead, pageCount } = route.params;
+  const { contentId, pagesRead, pageCount, startFinishDates } = route.params;
   const [updatedPagesRead, setUpdatedPagesRead] = useState(`${pagesRead}`);
   const [errorMessage, setErrorMessage] = useState(null);
   // Get state + functions from Content Context
@@ -96,12 +96,19 @@ const UpdateProgressScreen = ({ navigation, route }) => {
       numPagesRead: pageCount - pagesRead,
       contentType: "book",
     };
+    // Set the last readings session's dateCompleted as now
+    let updatedStartFinishDates = [...startFinishDates];
+    updatedStartFinishDates[
+      updatedStartFinishDates.length - 1
+    ].dateCompleted = Date.now();
+
     updateBookProgress(contentId, pageCount, false);
     updateContent(contentId, {
       shelf: "Finished Learning",
-      dateCompleted: Date.now(),
+      startFinishDates: updatedStartFinishDates,
     });
     createLearningUpdate(learningUpdateData);
+
     navigation.goBack();
   };
 
