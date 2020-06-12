@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
+import _ from "lodash";
 // Components
 import ActionButton from "../shared/ActionButton";
 import ChangeShelfButton from "./ChangeShelfButton";
@@ -57,8 +58,9 @@ const UserInteractionSection = ({
       );
     case "Finished Learning":
       // Get the last date completed from the array of dates completed
-      const latestDateCompleted =
-        startFinishDates[startFinishDates.length - 1].dateCompleted;
+      const latestDateCompleted = !_.isEmpty(startFinishDates)
+        ? startFinishDates[startFinishDates.length - 1].dateCompleted
+        : null;
 
       return (
         <Text style={styles.dateInfoText}>

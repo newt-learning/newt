@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect, useContext } from "react";
 import { StyleSheet, View, ScrollView, Image, Platform } from "react-native";
+import _ from "lodash";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
@@ -12,6 +13,8 @@ import MoreOptionsButton from "../components/shared/MoreOptionsButton";
 import OptionsModal from "../components/shared/OptionsModal";
 // Design
 import { OFF_WHITE } from "../design/colors";
+// Utilities
+import { updateToV2ContentSchema } from "../utils/schemaUpdates";
 
 const BookScreen = ({ navigation, route }) => {
   // State to store whether the user wants to read more of the description
@@ -35,7 +38,9 @@ const BookScreen = ({ navigation, route }) => {
     });
   });
 
-  const { state, checkIfBookExistsInLibrary } = useContext(ContentContext);
+  const { state, checkIfBookExistsInLibrary, updateContent } = useContext(
+    ContentContext
+  );
 
   // Check if the book data passed, if coming from the 'Add Book Screen' (so
   // passedBookInfo won't have a '_id' field), is already in the user's library
@@ -87,6 +92,12 @@ const BookScreen = ({ navigation, route }) => {
       )[0];
     }
   }
+
+  // This effect hook updates the schema to version 2 if it needs to, so that
+  // the add/edit reading dates feature is available
+  useEffect(() => {
+    updateToV2ContentSchema(bookInfo, bookExistsInLibrary, updateContent);
+  }, [bookInfo, bookExistsInLibrary]);
 
   // If fetching data or the in-library-or-not check is ongoing, show Loader
   if (state.isFetching || bookExistsInLibrary === null) {
