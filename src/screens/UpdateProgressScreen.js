@@ -1,6 +1,8 @@
 import React, { useState, useLayoutEffect, useContext } from "react";
 import { View, ScrollView, Text, StyleSheet, TextInput } from "react-native";
 import _ from "lodash";
+// API
+import { useAddContentToChallenge } from "../api/challenges";
 // Components
 import ModalConfirmationButton from "../components/shared/ModalConfirmationButton";
 import ClearButton from "../components/shared/ClearButton";
@@ -23,6 +25,9 @@ const UpdateProgressScreen = ({ navigation, route }) => {
   } = useContext(ContentContext);
   // Get function from Stats Context
   const { createLearningUpdate } = useContext(StatsContext);
+  // Get function to add content to an existing challenge (used when "Finished
+  // book" button is pressed)
+  const [addContentToChallenge] = useAddContentToChallenge();
 
   // Add the button for confirmation to the screen header: "Done" button for iOS
   // and check mark icon for Android (and pass the update functions)
@@ -108,6 +113,8 @@ const UpdateProgressScreen = ({ navigation, route }) => {
       startFinishDates: updatedStartFinishDates,
     });
     createLearningUpdate(learningUpdateData);
+    // Update reading challenge
+    addContentToChallenge(contentId);
 
     navigation.goBack();
   };
