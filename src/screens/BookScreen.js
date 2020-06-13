@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useLayoutEffect, useContext } from "react";
 import { StyleSheet, View, ScrollView, Image, Platform } from "react-native";
+import _ from "lodash";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
@@ -8,18 +9,38 @@ import ActionSection from "../components/Content/ActionSection";
 import Description from "../components/Content/Description";
 import BookInformationSection from "../components/Content/BookInformationSection";
 import Loader from "../components/shared/Loader";
+import MoreOptionsButton from "../components/shared/MoreOptionsButton";
+import OptionsModal from "../components/shared/OptionsModal";
 // Design
 import { OFF_WHITE } from "../design/colors";
+// Utilities
+import { updateToV2ContentSchema } from "../utils/schemaUpdates";
 
 const BookScreen = ({ navigation, route }) => {
   // State to store whether the user wants to read more of the description
   const [showMore, setShowMore] = useState(false);
   const [bookExistsInLibrary, setBookExistsinLibrary] = useState(null);
-  const { state, checkIfBookExistsInLibrary } = useContext(ContentContext);
+  // Initialize modal visibility
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   // Get book info from params sent through navigation prop
   const passedBookInfo = route.params.bookInfo;
   const comingFromAddBookScreen = route.params?.comingFromAddBook ?? false;
+
+  // Add the 3-dot options icon which opens the options modal, only shown in
+  // My Library screen (not when adding a book)
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () =>
+        comingFromAddBookScreen ? null : (
+          <MoreOptionsButton onPress={() => setIsModalVisible(true)} />
+        ),
+    });
+  });
+
+  const { state, checkIfBookExistsInLibrary, updateContent } = useContext(
+    ContentContext
+  );
 
   // Check if the book data passed, if coming from the 'Add Book Screen' (so
   // passedBookInfo won't have a '_id' field), is already in the user's library
@@ -72,6 +93,12 @@ const BookScreen = ({ navigation, route }) => {
     }
   }
 
+  // This effect hook updates the schema to version 2 if it needs to, so that
+  // the add/edit reading dates feature is available
+  useEffect(() => {
+    updateToV2ContentSchema(bookInfo, bookExistsInLibrary, updateContent);
+  }, [bookInfo, bookExistsInLibrary]);
+
   // If fetching data or the in-library-or-not check is ongoing, show Loader
   if (state.isFetching || bookExistsInLibrary === null) {
     return <Loader isLoading={state.isFetching} backgroundColor={OFF_WHITE} />;
@@ -81,6 +108,20 @@ const BookScreen = ({ navigation, route }) => {
     return <View style={styles.container}></View>;
   }
 
+  // List of buttons in the options modal
+  modalOptions = [
+    {
+      title: "Add or Edit Dates Read",
+      onPress: () => {
+        setIsModalVisible(false);
+        navigation.navigate("AddEditDatesRead", {
+          bookId: bookInfo._id,
+          startFinishDates: JSON.stringify(bookInfo.startFinishDates),
+        });
+      },
+    },
+  ];
+
   const {
     name,
     authors,
@@ -89,7 +130,7 @@ const BookScreen = ({ navigation, route }) => {
     shelf,
     topics,
     dateAdded,
-    dateCompleted,
+    startFinishDates,
   } = bookInfo;
   const {
     pageCount,
@@ -116,21 +157,20 @@ const BookScreen = ({ navigation, route }) => {
         pageCount={pageCount}
         pagesRead={pagesRead}
         dateAdded={dateAdded}
-        dateCompleted={dateCompleted}
+        startFinishDates={startFinishDates}
         onPress={
           shelf
             ? () =>
                 navigation.navigate("ShelfSelect", {
                   bookInfo,
                   buttonText: "Confirm",
-                  showDeleteButton: true,
                   addToLibrary: false,
                 })
             : () =>
                 navigation.navigate("ShelfSelect", {
                   bookInfo,
-                  addToLibrary: true,
                   buttonText: "Add to Library",
+                  addToLibrary: true,
                 })
         }
       />
@@ -144,6 +184,11 @@ const BookScreen = ({ navigation, route }) => {
         publisher={publisher}
         datePublished={datePublished}
         isbns={industryIdentifiers}
+      />
+      <OptionsModal
+        isVisible={isModalVisible}
+        onBackdropPress={() => setIsModalVisible(false)}
+        options={modalOptions}
       />
     </ScrollView>
   );

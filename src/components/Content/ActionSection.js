@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
+import _ from "lodash";
 // Components
 import ActionButton from "../shared/ActionButton";
 import ChangeShelfButton from "./ChangeShelfButton";
@@ -22,7 +23,7 @@ const UserInteractionSection = ({
   pagesRead,
   pageCount,
   dateAdded,
-  dateCompleted,
+  startFinishDates,
 }) => {
   const navigation = useNavigation();
 
@@ -42,6 +43,7 @@ const UserInteractionSection = ({
                 contentId,
                 pagesRead,
                 pageCount,
+                startFinishDates,
               })
             }
           />
@@ -55,9 +57,14 @@ const UserInteractionSection = ({
         </Text>
       );
     case "Finished Learning":
+      // Get the last date completed from the array of dates completed
+      const latestDateCompleted = !_.isEmpty(startFinishDates)
+        ? startFinishDates[startFinishDates.length - 1].dateCompleted
+        : null;
+
       return (
         <Text style={styles.dateInfoText}>
-          Completed on {moment(dateCompleted).format("DD MMM, YYYY")}
+          Completed on {moment(latestDateCompleted).format("DD MMM, YYYY")}
         </Text>
       );
     default:
@@ -74,7 +81,7 @@ const ActionSection = ({
   pageCount,
   pagesRead,
   dateAdded,
-  dateCompleted,
+  startFinishDates,
   onPress,
 }) => {
   return (
@@ -88,7 +95,7 @@ const ActionSection = ({
             pagesRead={pagesRead}
             pageCount={pageCount}
             dateAdded={dateAdded}
-            dateCompleted={dateCompleted}
+            startFinishDates={startFinishDates}
           />
           <ContentTopicSection contentId={contentId} topics={topics} />
         </View>

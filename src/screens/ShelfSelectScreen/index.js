@@ -1,32 +1,38 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { ScrollView, View, Text, StyleSheet } from "react-native";
 import _ from "lodash";
 // API
-import { useAddContentToChallenge } from "../api/challenges";
+import { useAddContentToChallenge } from "../../api/challenges";
 // Context
-import { Context as ContentContext } from "../context/ContentContext";
-import { Context as TopicsContext } from "../context/TopicsContext";
+import { Context as ContentContext } from "../../context/ContentContext";
+import { Context as TopicsContext } from "../../context/TopicsContext";
 // Components
-import ListSelect from "../components/shared/ListSelect";
-import ActionButton from "../components/shared/ActionButton";
-import ClearButton from "../components/shared/ClearButton";
-import MultiItemSelect from "../components/shared/MultiItemSelect";
-import Loader from "../components/shared/Loader";
-import initiateDeleteConfirmation from "../components/shared/initiateDeleteConfirmation";
+import { H3 } from "../../components/shared/Headers";
+import SelectShelfSection from "./SelectShelfSection";
+import ActionButton from "../../components/shared/ActionButton";
+import ClearButton from "../../components/shared/ClearButton";
+import MultiItemSelect from "../../components/shared/MultiItemSelect";
+import Loader from "../../components/shared/Loader";
+import initiateDeleteConfirmation from "../../components/shared/initiateDeleteConfirmation";
 // Hooks
-import useSingleCheckbox from "../hooks/useSingleCheckbox";
-import useMultiSelectCheckbox from "../hooks/useMultiSelectCheckbox";
+import useSingleCheckbox from "../../hooks/useSingleCheckbox";
+import useMultiSelectCheckbox from "../../hooks/useMultiSelectCheckbox";
 // Styling
-import { BOLD, FS20 } from "../design/typography";
-import { OFF_BLACK, RED, GRAY_5 } from "../design/colors";
+import { RED, GRAY_5 } from "../../design/colors";
 // Helpers
 import {
   initializeShelves,
   initializeMultiSelectCheckbox,
-} from "../helpers/screenHelpers";
+} from "../../helpers/screenHelpers";
+import { figureOutShelfMovingDataChanges } from "./helpers";
+import SelectStartFinishDatesSection from "./SelectStartFinishDatesSection";
 
 const ShelfSelectScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false);
+  // State for start and end dates for Finished books
+  const [startDate, setStartDate] = useState(new Date());
+  const [finishDate, setFinishDate] = useState(new Date());
+
   const {
     state: contentState,
     addContent,
@@ -38,7 +44,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   );
 
   // Get params passed from route
-  const { bookInfo, buttonText, showDeleteButton, addToLibrary } = route.params;
+  const { bookInfo, buttonText, addToLibrary } = route.params;
 
   // Initialize shelves and topics checkboxes/selectors
   const [shelves, toggleShelves] = useSingleCheckbox(
@@ -93,9 +99,16 @@ const ShelfSelectScreen = ({ navigation, route }) => {
       type: "book",
     };
 
+    // If the selected shelf is Currently Learning, set first date started as now
+    if (selectedShelf === "Currently Learning") {
+      data.startFinishDates = [{ dateStarted: Date.now() }];
+    }
+
     // If the selected shelf is Finished, add the dateCompleted field
     if (selectedShelf === "Finished Learning") {
-      data.dateCompleted = Date.now();
+      data.startFinishDates = [
+        { dateStarted: startDate, dateCompleted: finishDate },
+      ];
     }
 
     // Send request to add book and then send bookInfo as param in navigation
@@ -128,18 +141,22 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     }
   };
   const updateShelf = (selectedShelf) => {
-    // If the selected shelf is "Finished Learning", add/update the date
-    // completed field as well. Otherwise only change the shelf
+    // Get the right data to change depending on which shelves the book is moving from/to.
+    const updateData = figureOutShelfMovingDataChanges(
+      bookInfo.shelf,
+      selectedShelf,
+      bookInfo
+    );
+
+    // Update data with the data gotten above
+    updateContent(bookInfo._id, updateData);
+
+    // If the selected shelf is "Finished Learning", do additional stuff like
+    // updating the reading challenge
     if (selectedShelf === "Finished Learning") {
-      updateContent(bookInfo._id, {
-        shelf: selectedShelf,
-        dateCompleted: Date.now(),
-      });
       // Update the reading challenge by adding this book to the finished list
       // if a challenge exists.
       addContentToChallenge(bookInfo._id);
-    } else {
-      updateContent(bookInfo._id, { shelf: selectedShelf });
     }
     navigation.goBack();
   };
@@ -171,25 +188,19 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={
+        shelves[2].checked && addToLibrary
+          ? styles.container
+          : { ...styles.container, flex: 1 }
+      }
+    >
       <View style={styles.option}>
-        <Text style={styles.header}>Select Shelf</Text>
-        {shelves.map((shelf, index) => (
-          <ListSelect
-            name={shelf.name}
-            checked={shelf.checked}
-            onPressCheckbox={() => {
-              const currentCheckedShelfIndex = _.findIndex(
-                shelves,
-                (shelf) => shelf.checked
-              );
-
-              toggleShelves(currentCheckedShelfIndex, index);
-            }}
-            key={shelf.name}
-          />
-        ))}
-        {showDeleteButton ? (
+        {/* Section where you select the shelf */}
+        <SelectShelfSection shelves={shelves} onSelectShelf={toggleShelves} />
+        {/* If not in the Add to Library flow (so we're in My Library), show 
+          button to delete content */}
+        {!addToLibrary ? (
           <ClearButton
             title="Delete book from Library"
             onPress={deleteItem}
@@ -197,10 +208,20 @@ const ShelfSelectScreen = ({ navigation, route }) => {
             titleStyle={styles.delete}
           />
         ) : null}
+        {/* If the Finished Learning shelf is selected, show input selectors for
+          start and finish dates */}
+        {shelves[2].checked && addToLibrary ? (
+          <SelectStartFinishDatesSection
+            startDate={startDate}
+            finishDate={finishDate}
+            setStartDate={setStartDate}
+            setFinishDate={setFinishDate}
+          />
+        ) : null}
         {/* If on Add to Library screen, show Topic Selector */}
         {addToLibrary ? (
           <View>
-            <Text style={styles.header}>Select Topic(s)</Text>
+            <H3 style={styles.header}>Select Topic(s)</H3>
             <View style={styles.topicSelectContainer}>
               <MultiItemSelect
                 itemsList={topicsList}
@@ -229,13 +250,12 @@ const ShelfSelectScreen = ({ navigation, route }) => {
           showLoading={isLoading}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: "space-between",
     backgroundColor: GRAY_5,
   },
@@ -243,9 +263,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   header: {
-    fontFamily: BOLD,
-    fontSize: FS20,
-    color: OFF_BLACK,
     marginTop: 20,
     marginHorizontal: 15,
     marginBottom: 5,
@@ -253,7 +270,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     alignItems: "center",
     marginHorizontal: 15,
-    marginBottom: 20,
+    marginVertical: 30,
   },
   deleteButton: {
     marginTop: 30,
