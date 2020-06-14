@@ -7,9 +7,9 @@
     "platforms": ["ios", "android", "web"],
     "version": "0.4.5",
     "orientation": "portrait",
-    "icon": "./assets/logo.png",
+    "icon": "./assets/newt-logo-flor.jpg",
     "splash": {
-      "image": "./assets/newt-splash.png",
+      "image": "./assets/newt-splash-flor.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
