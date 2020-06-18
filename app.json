@@ -5,9 +5,10 @@
     "description": "Organize your learning — all your books, articles, videos, online courses, etc. in one place! Organize by shelf (Currently Learning, Want to Learn, Finished Learning) or by topics, and improve your retention and understanding of select works with learning techniques like spaced repetition. Essentially, your personal learning management system.",
     "privacy": "unlisted",
     "platforms": ["ios", "android"],
-    "version": "0.5.0",
+    "version": "0.5.2",
     "orientation": "portrait",
     "icon": "./assets/newt-text-logo.png",
+    "backgroundColor": "#38ceff",
     "splash": {
       "image": "./assets/newt-splash-flor.png",
       "resizeMode": "contain",
@@ -19,7 +20,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.newtlearning.newt",
-      "buildNumber": "0.5.0",
+      "buildNumber": "0.5.2",
       "supportsTablet": false
     },
     "android": {
