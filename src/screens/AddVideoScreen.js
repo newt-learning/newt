@@ -4,6 +4,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   StyleSheet,
+  Text,
 } from "react-native";
 import _ from "lodash";
 // API
@@ -13,10 +14,12 @@ import { H3 } from "../components/shared/Headers";
 import BoxTextInput from "../components/shared/BoxTextInput";
 import ActionButton from "../components/shared/ActionButton";
 // Design
-import { OFF_WHITE, GRAY_5 } from "../design/colors";
+import { OFF_WHITE, GRAY_5, RED } from "../design/colors";
+import { REGULAR, FS14 } from "../design/typography";
 
 const AddVideoScreen = () => {
   const [videoLink, setVideoLink] = useState("");
+  const [urlErrorMessage, setUrlErrorMessage] = useState("");
 
   const getYoutubeInfo = async (videoLink) => {
     // Get videoId from url inputted. If it's not a valid url, this will return null
@@ -27,7 +30,9 @@ const AddVideoScreen = () => {
       const results = await getYoutubeVideoInfo(videoId);
       console.log(results);
     } else {
-      console.log("not a youtube url");
+      setUrlErrorMessage(
+        "Hello friend, please make sure it's a valid YouTube URL."
+      );
     }
   };
 
@@ -39,8 +44,21 @@ const AddVideoScreen = () => {
           <BoxTextInput
             value={videoLink}
             onChangeText={setVideoLink}
-            style={styles.input}
+            onFocus={() => {
+              // If there's an error message, remove it when focusing on input
+              if (!_.isEmpty(urlErrorMessage)) {
+                setUrlErrorMessage("");
+              }
+            }}
+            style={StyleSheet.compose([
+              styles.input,
+              !_.isEmpty(urlErrorMessage) ? styles.inputError : null,
+            ])}
           />
+          {/* Show error message if there is one */}
+          {!_.isEmpty(urlErrorMessage) && (
+            <Text style={styles.urlError}>{urlErrorMessage}</Text>
+          )}
         </View>
         <View style={styles.btnContainer}>
           <ActionButton
@@ -90,6 +108,16 @@ const styles = StyleSheet.create({
   btnContainer: {
     alignItems: "center",
     marginBottom: 15,
+  },
+  urlError: {
+    fontFamily: REGULAR,
+    fontSize: FS14,
+    color: RED,
+    marginTop: 5,
+  },
+  inputError: {
+    borderWidth: 1,
+    borderColor: RED,
   },
 });
 
