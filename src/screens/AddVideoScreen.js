@@ -6,6 +6,8 @@ import {
   StyleSheet,
 } from "react-native";
 import _ from "lodash";
+// API
+import { getYoutubeVideoInfo } from "../api/youtubeApi";
 // Components
 import { H3 } from "../components/shared/Headers";
 import BoxTextInput from "../components/shared/BoxTextInput";
@@ -15,6 +17,19 @@ import { OFF_WHITE, GRAY_5 } from "../design/colors";
 
 const AddVideoScreen = () => {
   const [videoLink, setVideoLink] = useState("");
+
+  const getYoutubeInfo = async (videoLink) => {
+    // Get videoId from url inputted. If it's not a valid url, this will return null
+    const videoId = validateYoutubeUrl(videoLink);
+
+    // If an id can be extracted, get the video info with a request to YouTube API
+    if (videoId) {
+      const results = await getYoutubeVideoInfo(videoId);
+      console.log(results);
+    } else {
+      console.log("not a youtube url");
+    }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -30,7 +45,7 @@ const AddVideoScreen = () => {
         <View style={styles.btnContainer}>
           <ActionButton
             title="Next"
-            onPress={() => validateYoutubeUrl(videoLink)}
+            onPress={() => getYoutubeInfo(videoLink)}
             disabled={_.isEmpty(videoLink)}
           />
         </View>
