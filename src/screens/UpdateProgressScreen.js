@@ -1,17 +1,18 @@
 import React, { useState, useLayoutEffect, useContext } from "react";
-import { View, ScrollView, Text, StyleSheet, TextInput } from "react-native";
+import { View, ScrollView, Text, StyleSheet } from "react-native";
 import _ from "lodash";
 // API
 import { useAddContentToChallenge } from "../api/challenges";
 // Components
 import ModalConfirmationButton from "../components/shared/ModalConfirmationButton";
 import ClearButton from "../components/shared/ClearButton";
+import BoxTextInput from "../components/shared/BoxTextInput";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 import { Context as StatsContext } from "../context/StatsContext";
 // Design
 import { SEMIBOLD, REGULAR, FS16, FS12 } from "../design/typography";
-import { GRAY_5, GRAY_2, RED, OFF_WHITE } from "../design/colors";
+import { RED, OFF_WHITE } from "../design/colors";
 
 const UpdateProgressScreen = ({ navigation, route }) => {
   const { contentId, pagesRead, pageCount, startFinishDates } = route.params;
@@ -127,7 +128,7 @@ const UpdateProgressScreen = ({ navigation, route }) => {
     >
       <View style={{ flexDirection: "row" }}>
         <Text style={styles.text}>I'm on page</Text>
-        <TextInput
+        <BoxTextInput
           style={styles.input}
           value={updatedPagesRead}
           onFocus={() => setUpdatedPagesRead(null)}
@@ -163,13 +164,6 @@ const styles = StyleSheet.create({
     fontSize: FS16,
   },
   input: {
-    fontSize: FS16,
-    backgroundColor: GRAY_5,
-    paddingLeft: 5,
-    borderBottomWidth: 1,
-    borderColor: GRAY_2,
-    width: 100,
-    padding: 2,
     marginLeft: 10,
   },
   errorMessage: {
