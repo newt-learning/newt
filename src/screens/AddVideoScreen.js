@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   StyleSheet,
 } from "react-native";
+import _ from "lodash";
 // Components
 import { H3 } from "../components/shared/Headers";
 import BoxTextInput from "../components/shared/BoxTextInput";
@@ -19,7 +20,7 @@ const AddVideoScreen = () => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View style={styles.group}>
-          <H3>Video link</H3>
+          <H3>YouTube link</H3>
           <BoxTextInput
             value={videoLink}
             onChangeText={setVideoLink}
@@ -27,11 +28,27 @@ const AddVideoScreen = () => {
           />
         </View>
         <View style={styles.btnContainer}>
-          <ActionButton title="Next" onPress={() => console.log("next")} />
+          <ActionButton
+            title="Next"
+            onPress={() => validateYoutubeUrl(videoLink)}
+            disabled={_.isEmpty(videoLink)}
+          />
         </View>
       </View>
     </TouchableWithoutFeedback>
   );
+};
+
+// Youtube URL parser which only does full and short links, among others.
+// See: https://stackoverflow.com/questions/3452546/how-do-i-get-the-youtube-video-id-from-a-url
+const validateYoutubeUrl = (url) => {
+  const regex = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#&?]*).*/;
+  const match = url.match(regex);
+
+  // Get videoId from url if it exists
+  const videoId = match && match[1].length === 11 ? match[1] : null;
+
+  return videoId;
 };
 
 const styles = StyleSheet.create({
