@@ -17,7 +17,7 @@ import ActionButton from "../components/shared/ActionButton";
 import { OFF_WHITE, GRAY_5, RED } from "../design/colors";
 import { REGULAR, FS14 } from "../design/typography";
 
-const AddVideoScreen = () => {
+const VideoUrlForm = ({ setVideoInfo }) => {
   const [videoLink, setVideoLink] = useState("");
   const [urlErrorMessage, setUrlErrorMessage] = useState("");
 
@@ -28,7 +28,7 @@ const AddVideoScreen = () => {
     // If an id can be extracted, get the video info with a request to YouTube API
     if (videoId) {
       const results = await getYoutubeVideoInfo(videoId);
-      console.log(results);
+      results.items ? setVideoInfo(results.items[0]) : setVideoInfo(null);
     } else {
       setUrlErrorMessage(
         "Hello friend, please make sure it's a valid YouTube URL."
@@ -69,6 +69,25 @@ const AddVideoScreen = () => {
         </View>
       </View>
     </TouchableWithoutFeedback>
+  );
+};
+
+const VideoConfirmation = () => {
+  return (
+    <View>
+      <Text>Confirmation section</Text>
+    </View>
+  );
+};
+
+const AddVideoScreen = () => {
+  const [videoInfo, setVideoInfo] = useState(null);
+  const [onConfirmationSection, setOnConfirmationSection] = useState(false);
+
+  return onConfirmationSection ? (
+    <VideoConfirmation />
+  ) : (
+    <VideoUrlForm setVideoInfo={setVideoInfo} />
   );
 };
 
