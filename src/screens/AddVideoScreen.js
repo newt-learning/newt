@@ -1,23 +1,25 @@
 import React, { useState } from "react";
 import {
   View,
+  ScrollView,
   Keyboard,
   TouchableWithoutFeedback,
   StyleSheet,
   Text,
+  Image,
 } from "react-native";
 import _ from "lodash";
 // API
 import { getYoutubeVideoInfo } from "../api/youtubeApi";
 // Components
-import { H3 } from "../components/shared/Headers";
+import { H3, H4 } from "../components/shared/Headers";
 import BoxTextInput from "../components/shared/BoxTextInput";
 import ActionButton from "../components/shared/ActionButton";
 // Design
-import { OFF_WHITE, GRAY_5, RED } from "../design/colors";
+import { OFF_WHITE, GRAY_5, RED, GRAY_3 } from "../design/colors";
 import { REGULAR, FS14 } from "../design/typography";
 
-const VideoUrlForm = ({ setVideoInfo }) => {
+const VideoUrlForm = ({ setVideoInfo, setOnConfirmationSection }) => {
   const [videoLink, setVideoLink] = useState("");
   const [urlErrorMessage, setUrlErrorMessage] = useState("");
 
@@ -28,7 +30,13 @@ const VideoUrlForm = ({ setVideoInfo }) => {
     // If an id can be extracted, get the video info with a request to YouTube API
     if (videoId) {
       const results = await getYoutubeVideoInfo(videoId);
-      results.items ? setVideoInfo(results.items[0]) : setVideoInfo(null);
+
+      if (results.items) {
+        setVideoInfo(results.items[0]);
+        setOnConfirmationSection(true);
+      } else {
+        setVideoInfo(null);
+      }
     } else {
       setUrlErrorMessage(
         "Hello friend, please make sure it's a valid YouTube URL."
@@ -38,7 +46,7 @@ const VideoUrlForm = ({ setVideoInfo }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
+      <View style={styles.formContainer}>
         <View style={styles.group}>
           <H3>YouTube link</H3>
           <BoxTextInput
@@ -72,11 +80,46 @@ const VideoUrlForm = ({ setVideoInfo }) => {
   );
 };
 
-const VideoConfirmation = () => {
+const VideoConfirmation = ({ videoInfo, setOnConfirmationSection }) => {
+  const [name, setName] = useState(videoInfo.snippet.title);
+  const [description, setDescription] = useState(videoInfo.snippet.description);
+
   return (
-    <View>
-      <Text>Confirmation section</Text>
-    </View>
+    <ScrollView>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.confirmationContainer}>
+          <Image
+            source={{ uri: videoInfo.snippet.thumbnails.maxres.url }}
+            style={styles.thumbnail}
+            resizeMode="contain"
+          />
+          <View style={styles.group}>
+            <H4>Name</H4>
+            <BoxTextInput
+              value={name}
+              onChangeText={setName}
+              style={{ ...styles.input, marginBottom: 15 }}
+              multiline
+            />
+            <H4>Description</H4>
+            <BoxTextInput
+              value={description}
+              onChangeText={setDescription}
+              style={styles.input}
+              multiline
+            />
+          </View>
+          <View style={styles.confirmBtnContainer}>
+            <ActionButton
+              title="Back"
+              buttonStyle={styles.backBtn}
+              onPress={() => setOnConfirmationSection(false)}
+            />
+            <ActionButton title="Confirm" buttonStyle={styles.confirmBtn} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    </ScrollView>
   );
 };
 
@@ -85,9 +128,15 @@ const AddVideoScreen = () => {
   const [onConfirmationSection, setOnConfirmationSection] = useState(false);
 
   return onConfirmationSection ? (
-    <VideoConfirmation />
+    <VideoConfirmation
+      videoInfo={videoInfo}
+      setOnConfirmationSection={setOnConfirmationSection}
+    />
   ) : (
-    <VideoUrlForm setVideoInfo={setVideoInfo} />
+    <VideoUrlForm
+      setVideoInfo={setVideoInfo}
+      setOnConfirmationSection={setOnConfirmationSection}
+    />
   );
 };
 
@@ -104,11 +153,16 @@ const validateYoutubeUrl = (url) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  formContainer: {
     flex: 1,
     padding: 15,
     backgroundColor: GRAY_5,
     justifyContent: "space-between",
+  },
+  confirmationContainer: {
+    flex: 1,
+    padding: 15,
+    backgroundColor: GRAY_5,
   },
   group: {
     marginTop: 10,
@@ -137,6 +191,23 @@ const styles = StyleSheet.create({
   inputError: {
     borderWidth: 1,
     borderColor: RED,
+  },
+  thumbnail: {
+    borderRadius: 8,
+    height: 195,
+    marginBottom: 10,
+  },
+  confirmBtnContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginVertical: 20,
+  },
+  backBtn: {
+    width: 125,
+    backgroundColor: GRAY_3,
+  },
+  confirmBtn: {
+    width: 125,
   },
 });
 
