@@ -9,13 +9,19 @@ const SelectTopicsSection = ({
   topicsList,
   onSelectTopic,
   showCreateItem = true,
+  topicSelectContainer: passedTopicSelectContainer,
 }) => {
   const navigation = useNavigation();
+
+  const topicSelectContainer = StyleSheet.compose([
+    styles.topicSelectContainer,
+    passedTopicSelectContainer,
+  ]);
 
   return (
     <>
       <H3 style={styles.header}>Select Topic(s)</H3>
-      <View style={styles.topicSelectContainer}>
+      <View style={topicSelectContainer}>
         <MultiItemSelect
           itemsList={topicsList}
           onSelect={onSelectTopic}
