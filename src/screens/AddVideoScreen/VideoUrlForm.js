@@ -19,8 +19,12 @@ import { REGULAR, FS14 } from "../../design/typography";
 // Helpers
 import validateYoutubeUrl from "./validateYoutubeUrl";
 
-const VideoUrlForm = ({ setVideoInfo, setOnConfirmationSection }) => {
-  const [videoLink, setVideoLink] = useState("");
+const VideoUrlForm = ({
+  videoLink,
+  setVideoLink,
+  setVideoInfo,
+  setOnConfirmationSection,
+}) => {
   const [urlErrorMessage, setUrlErrorMessage] = useState("");
 
   const getYoutubeInfo = async (videoLink) => {

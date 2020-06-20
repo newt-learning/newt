@@ -5,6 +5,7 @@ import VideoUrlForm from "./VideoUrlForm";
 import VideoConfirmation from "./VideoConfirmation";
 
 const AddVideoScreen = () => {
+  const [videoLink, setVideoLink] = useState("");
   const [videoInfo, setVideoInfo] = useState(null);
   const [onConfirmationSection, setOnConfirmationSection] = useState(false);
 
@@ -15,6 +16,8 @@ const AddVideoScreen = () => {
     />
   ) : (
     <VideoUrlForm
+      videoLink={videoLink}
+      setVideoLink={setVideoLink}
       setVideoInfo={setVideoInfo}
       setOnConfirmationSection={setOnConfirmationSection}
     />
