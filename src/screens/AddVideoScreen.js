@@ -12,8 +12,10 @@ import _ from "lodash";
 // API
 import { getYoutubeVideoInfo } from "../api/youtubeApi";
 // Components
-import { H3, H4 } from "../components/shared/Headers";
+import { H3 } from "../components/shared/Headers";
+import SubHeader from "../components/Content/SubHeader";
 import BoxTextInput from "../components/shared/BoxTextInput";
+import Description from "../components/Content/Description";
 import ActionButton from "../components/shared/ActionButton";
 // Design
 import { OFF_WHITE, GRAY_5, RED, GRAY_3 } from "../design/colors";
@@ -81,8 +83,12 @@ const VideoUrlForm = ({ setVideoInfo, setOnConfirmationSection }) => {
 };
 
 const VideoConfirmation = ({ videoInfo, setOnConfirmationSection }) => {
-  const [name, setName] = useState(videoInfo.snippet.title);
-  const [description, setDescription] = useState(videoInfo.snippet.description);
+  // Used to expand or contract the description text
+  const [showMore, setShowMore] = useState(false);
+
+  const {
+    snippet: { title, description },
+  } = videoInfo;
 
   return (
     <ScrollView>
@@ -94,19 +100,15 @@ const VideoConfirmation = ({ videoInfo, setOnConfirmationSection }) => {
             resizeMode="contain"
           />
           <View style={styles.group}>
-            <H4>Name</H4>
-            <BoxTextInput
-              value={name}
-              onChangeText={setName}
-              style={{ ...styles.input, marginBottom: 15 }}
-              multiline
-            />
-            <H4>Description</H4>
-            <BoxTextInput
-              value={description}
-              onChangeText={setDescription}
-              style={styles.input}
-              multiline
+            <View style={{ padding: 5 }}>
+              <SubHeader>Name</SubHeader>
+              <Text style={styles.text}>{title}</Text>
+            </View>
+            <Description
+              text={description}
+              showMore={showMore}
+              setShowMore={setShowMore}
+              containerStyle={styles.description}
             />
           </View>
           <View style={styles.confirmBtnContainer}>
@@ -197,6 +199,11 @@ const styles = StyleSheet.create({
     height: 195,
     marginBottom: 10,
   },
+  description: {
+    padding: 5,
+    marginTop: 10,
+    borderBottomWidth: 0,
+  },
   confirmBtnContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -208,6 +215,10 @@ const styles = StyleSheet.create({
   },
   confirmBtn: {
     width: 125,
+  },
+  text: {
+    fontFamily: REGULAR,
+    fontSize: FS14,
   },
 });
 
