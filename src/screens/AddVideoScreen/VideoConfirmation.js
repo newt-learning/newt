@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ScrollView, View, StyleSheet, Text, Image } from "react-native";
+import { Feather } from "@expo/vector-icons";
 // Components
 import SubHeader from "../../components/Content/SubHeader";
 import Description from "../../components/Content/Description";
@@ -7,8 +8,10 @@ import SelectShelfSection from "../ShelfSelectScreen/SelectShelfSection";
 import SelectTopicsSection from "../ShelfSelectScreen/SelectTopicsSection";
 import ActionButton from "../../components/shared/ActionButton";
 // Design
-import { OFF_WHITE, GRAY_5, GRAY_3 } from "../../design/colors";
+import { OFF_WHITE, GRAY_5, GRAY_3, GRAY_4 } from "../../design/colors";
 import { REGULAR, FS14 } from "../../design/typography";
+// Helpers
+import { getBestThumbnail } from "./helpers";
 
 const VideoConfirmation = ({
   videoInfo,
@@ -22,16 +25,29 @@ const VideoConfirmation = ({
   const [showMore, setShowMore] = useState(false);
 
   const {
-    snippet: { title, description },
+    snippet: { title, description, thumbnails },
   } = videoInfo;
+
+  const bestThumbnail = getBestThumbnail(thumbnails);
+
+  // Placeholder image if there's no thumbnail provided
+  const ThumbnailPlaceholder = () => (
+    <View style={{ ...styles.thumbnail, ...styles.thumbnailPlaceholder }}>
+      <Feather name="image" size={52} color={GRAY_3} />
+    </View>
+  );
 
   return (
     <ScrollView contentContainerStyle={styles.confirmationContainer}>
-      <Image
-        source={{ uri: videoInfo.snippet.thumbnails.maxres.url }}
-        style={styles.thumbnail}
-        resizeMode="contain"
-      />
+      {bestThumbnail ? (
+        <Image
+          source={{ uri: bestThumbnail.url }}
+          style={styles.thumbnail}
+          resizeMode="contain"
+        />
+      ) : (
+        <ThumbnailPlaceholder />
+      )}
       <View style={styles.group}>
         <View style={{ padding: 5 }}>
           <SubHeader>Name</SubHeader>
@@ -82,6 +98,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     height: 195,
     marginBottom: 10,
+  },
+  thumbnailPlaceholder: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    backgroundColor: GRAY_4,
   },
   description: {
     padding: 5,

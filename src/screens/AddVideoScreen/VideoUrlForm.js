@@ -17,7 +17,7 @@ import ActionButton from "../../components/shared/ActionButton";
 import { OFF_WHITE, GRAY_5, RED } from "../../design/colors";
 import { REGULAR, FS14 } from "../../design/typography";
 // Helpers
-import validateYoutubeUrl from "./validateYoutubeUrl";
+import { validateYoutubeUrl } from "./helpers";
 
 const VideoUrlForm = ({
   videoLink,
