@@ -16,10 +16,15 @@ import { H3 } from "../components/shared/Headers";
 import SubHeader from "../components/Content/SubHeader";
 import BoxTextInput from "../components/shared/BoxTextInput";
 import Description from "../components/Content/Description";
+import SelectShelfSection from "./ShelfSelectScreen/SelectShelfSection";
 import ActionButton from "../components/shared/ActionButton";
+// Hooks
+import useSingleCheckbox from "../hooks/useSingleCheckbox";
 // Design
 import { OFF_WHITE, GRAY_5, RED, GRAY_3 } from "../design/colors";
 import { REGULAR, FS14 } from "../design/typography";
+// Helpers
+import { initializeShelves } from "../helpers/screenHelpers";
 
 const VideoUrlForm = ({ setVideoInfo, setOnConfirmationSection }) => {
   const [videoLink, setVideoLink] = useState("");
@@ -86,6 +91,11 @@ const VideoConfirmation = ({ videoInfo, setOnConfirmationSection }) => {
   // Used to expand or contract the description text
   const [showMore, setShowMore] = useState(false);
 
+  // Initialize shelves and topics checkboxes/selectors
+  const [shelves, toggleShelves] = useSingleCheckbox(
+    initializeShelves("Want to Learn")
+  );
+
   const {
     snippet: { title, description },
   } = videoInfo;
@@ -111,6 +121,11 @@ const VideoConfirmation = ({ videoInfo, setOnConfirmationSection }) => {
               containerStyle={styles.description}
             />
           </View>
+          <SelectShelfSection
+            shelves={shelves}
+            onSelectShelf={toggleShelves}
+            rounded
+          />
           <View style={styles.confirmBtnContainer}>
             <ActionButton
               title="Back"
@@ -171,7 +186,7 @@ const styles = StyleSheet.create({
     backgroundColor: OFF_WHITE,
     paddingHorizontal: 10,
     paddingVertical: 20,
-    borderRadius: 8,
+    borderRadius: 12,
   },
   input: {
     width: "100%",
