@@ -31,3 +31,39 @@ export function getBestThumbnail(thumbnails) {
 
   return bestOption;
 }
+
+// Extract only relevant video information from result of Youtube API + add
+// other content info like shelf and topics
+export function extractAndAssembleVideoInfo(videoInfo, shelf, topics) {
+  const {
+    id,
+    snippet: {
+      title,
+      description,
+      channelTitle,
+      thumbnails,
+      channelId,
+      publishedAt,
+    },
+  } = videoInfo;
+
+  const bestThumbnail = getBestThumbnail(thumbnails);
+
+  return {
+    name: _.isString(title) ? title : null,
+    description: _.isString(description) ? description : null,
+    authors: _.isString(channelTitle) ? [channelTitle] : null,
+    thumbnailUrl: bestThumbnail ? bestThumbnail.url : null,
+    type: "video",
+    shelf,
+    topics,
+    videoInfo: {
+      source: "youtube",
+      videoId: _.isString(id) ? id : null,
+      title: _.isString(title) ? title : null,
+      description: _.isString(description) ? description : null,
+      channelId: _.isString(channelId) ? channelId : null,
+      datePublished: _.isString(publishedAt) ? publishedAt : null,
+    },
+  };
+}

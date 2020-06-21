@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ScrollView, View, StyleSheet, Text, Image } from "react-native";
+import _ from "lodash";
 import { Feather } from "@expo/vector-icons";
 // Components
 import SubHeader from "../../components/Content/SubHeader";
@@ -20,9 +21,11 @@ const VideoConfirmation = ({
   onSelectShelf,
   topics,
   onSelectTopic,
+  onSubmit,
 }) => {
   // Used to expand or contract the description text
   const [showMore, setShowMore] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     snippet: { title, description, thumbnails },
@@ -76,7 +79,23 @@ const VideoConfirmation = ({
           buttonStyle={styles.backBtn}
           onPress={() => setOnConfirmationSection(false)}
         />
-        <ActionButton title="Confirm" buttonStyle={styles.confirmBtn} />
+        <ActionButton
+          title="Confirm"
+          buttonStyle={styles.confirmBtn}
+          onPress={() => {
+            setIsLoading(true);
+            // Get chosen shelf
+            const currentShelf = _.find(shelves, (shelf) => shelf.checked);
+            // filter through the topics list to get only the checked ones, then
+            // from those objects only take out the ids
+            const selectedTopicIds = _.chain(topics)
+              .filter({ checked: true })
+              .map((item) => item._id);
+
+            onSubmit(currentShelf.name, selectedTopicIds);
+          }}
+          showLoading={isLoading}
+        />
       </View>
     </ScrollView>
   );

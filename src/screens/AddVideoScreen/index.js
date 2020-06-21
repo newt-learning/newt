@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect, useRef } from "react";
 import _ from "lodash";
 // Context
 import { Context as TopicsContext } from "../../context/TopicsContext";
+import { Context as ContentContext } from "../../context/ContentContext";
 // Components
 import VideoUrlForm from "./VideoUrlForm";
 import VideoConfirmation from "./VideoConfirmation";
@@ -13,13 +14,15 @@ import {
   initializeShelves,
   initializeMultiSelectCheckbox,
 } from "../../helpers/screenHelpers";
+import { getBestThumbnail, extractAndAssembleVideoInfo } from "./helpers";
 
-const AddVideoScreen = () => {
+const AddVideoScreen = ({ navigation }) => {
   const [videoLink, setVideoLink] = useState("");
   const [videoInfo, setVideoInfo] = useState(null);
   const [onConfirmationSection, setOnConfirmationSection] = useState(false);
 
   const { state: topicsState } = useContext(TopicsContext);
+  const { addContent } = useContext(ContentContext);
 
   // Initialize shelves and topics checkboxes/selectors
   const [shelves, toggleShelves] = useSingleCheckbox(
@@ -62,6 +65,19 @@ const AddVideoScreen = () => {
     }
   }, [topicsState.items]);
 
+  const addVideo = async (selectedShelf, selectedTopics) => {
+    const bestThumbnail = getBestThumbnail(videoInfo.snippet.thumbnails);
+
+    const contentInfo = extractAndAssembleVideoInfo(
+      videoInfo,
+      selectedShelf,
+      selectedTopics
+    );
+
+    await addContent(contentInfo);
+    navigation.goBack();
+  };
+
   return onConfirmationSection ? (
     <VideoConfirmation
       videoInfo={videoInfo}
@@ -70,6 +86,7 @@ const AddVideoScreen = () => {
       onSelectShelf={toggleShelves}
       topics={topicsList}
       onSelectTopic={toggleTopicsList}
+      onSubmit={addVideo}
     />
   ) : (
     <VideoUrlForm
