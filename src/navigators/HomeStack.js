@@ -4,6 +4,7 @@ import { NavHeaderTitle } from "../components/shared/Headers";
 // Screens
 import HomeScreen from "../screens/HomeScreen";
 import BookScreen from "../screens/BookScreen";
+import VideoScreen from "../screens/VideoScreen";
 import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
 import AddToTopicScreen from "../screens/AddToTopicScreen";
@@ -37,6 +38,11 @@ const MainStack = () => {
           title: null,
           headerBackTitle: "Back",
         }}
+      />
+      <Stack.Screen
+        name="VideoScreen"
+        component={VideoScreen}
+        options={{ title: null }}
       />
       <Stack.Screen
         name="ShelfSelect"

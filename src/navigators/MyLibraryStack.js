@@ -5,6 +5,7 @@ import { NavHeaderTitle } from "../components/shared/Headers";
 import MyLibraryScreen from "../screens/MyLibraryScreen";
 import IndividualShelfScreen from "../screens/IndividualShelfScreen";
 import BookScreen from "../screens/BookScreen";
+import VideoScreen from "../screens/VideoScreen";
 import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
 import CreateTopicScreen from "../screens/CreateTopicScreen";
@@ -41,6 +42,11 @@ const MainStack = () => {
       <Stack.Screen
         name="BookScreen"
         component={BookScreen}
+        options={{ title: null }}
+      />
+      <Stack.Screen
+        name="VideoScreen"
+        component={VideoScreen}
         options={{ title: null }}
       />
       <Stack.Screen
