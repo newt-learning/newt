@@ -41,11 +41,11 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   const { state: topicsState, fetchTopics } = useContext(TopicsContext);
 
   // Get params passed from route
-  const { bookInfo, buttonText, addToLibrary } = route.params;
+  const { contentInfo, buttonText, addToLibrary } = route.params;
 
   // Initialize shelves and topics checkboxes/selectors
   const [shelves, toggleShelves] = useSingleCheckbox(
-    initializeShelves(bookInfo.shelf)
+    initializeShelves(contentInfo.shelf)
   );
   const [
     topicsList,
@@ -90,7 +90,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
 
   const addBookToLibrary = async (selectedShelf, selectedTopics) => {
     const data = {
-      ...bookInfo,
+      ...contentInfo,
       shelf: selectedShelf,
       topics: selectedTopics,
       type: "book",
@@ -135,20 +135,20 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   const updateShelf = (selectedShelf) => {
     // Get the right data to change depending on which shelves the book is moving from/to.
     const updateData = figureOutShelfMovingDataChanges(
-      bookInfo.shelf,
+      contentInfo.shelf,
       selectedShelf,
-      bookInfo
+      contentInfo
     );
 
     // Update data with the data gotten above
-    updateContent(bookInfo._id, updateData);
+    updateContent(contentInfo._id, updateData);
 
     // If the selected shelf is "Finished Learning", do additional stuff like
     // updating the reading challenge
     if (selectedShelf === "Finished Learning") {
       // Update the reading challenge by adding this book to the finished list
       // if a challenge exists.
-      addContentToChallenge(bookInfo._id);
+      addContentToChallenge(contentInfo._id);
     }
     navigation.goBack();
   };
@@ -156,7 +156,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     const deleteMessage = "Are you sure you want to delete this book?";
     const deleteFlow = async () => {
       navigation.popToTop();
-      await deleteContent(bookInfo._id);
+      await deleteContent(contentInfo._id);
       fetchTopics();
     };
 

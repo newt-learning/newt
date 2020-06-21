@@ -164,13 +164,13 @@ const BookScreen = ({ navigation, route }) => {
           shelf
             ? () =>
                 navigation.navigate("ShelfSelect", {
-                  bookInfo,
+                  contentInfo: bookInfo,
                   buttonText: "Confirm",
                   addToLibrary: false,
                 })
             : () =>
                 navigation.navigate("ShelfSelect", {
-                  bookInfo,
+                  contentInfo: bookInfo,
                   buttonText: "Add to Library",
                   addToLibrary: true,
                 })
