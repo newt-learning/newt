@@ -16,6 +16,7 @@ const VideoScreen = ({ route }) => {
     _id,
     name,
     authors,
+    type,
     shelf,
     topics,
     description,
@@ -35,6 +36,7 @@ const VideoScreen = ({ route }) => {
       <TitleSection title={name} authors={authors} />
       <ActionSection
         contentId={_id}
+        type={type}
         shelf={shelf}
         topics={topics}
         dateAdded={dateAdded}

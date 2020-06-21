@@ -127,6 +127,7 @@ const BookScreen = ({ navigation, route }) => {
     authors,
     description,
     thumbnailUrl,
+    type,
     shelf,
     topics,
     dateAdded,
@@ -152,6 +153,7 @@ const BookScreen = ({ navigation, route }) => {
       <TitleSection title={name} authors={authors} />
       <ActionSection
         contentId={bookExistsInLibrary ? bookInfo._id : null}
+        type={type}
         shelf={shelf}
         topics={topics}
         pageCount={pageCount}
