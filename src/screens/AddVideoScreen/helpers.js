@@ -63,6 +63,7 @@ export function extractAndAssembleVideoInfo(videoInfo, shelf, topics) {
       title: _.isString(title) ? title : null,
       description: _.isString(description) ? description : null,
       channelId: _.isString(channelId) ? channelId : null,
+      thumbnails: !_.isEmpty(thumbnails) ? thumbnails : null,
       datePublished: _.isString(publishedAt) ? publishedAt : null,
     },
   };

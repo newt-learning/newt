@@ -54,8 +54,9 @@ const styles = StyleSheet.create({
     backgroundColor: OFF_WHITE,
   },
   imageContainer: {
-    paddingTop: 15,
-    paddingBottom: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 15,
     ...Platform.select({
       ios: {
         shadowColor: "black",
@@ -70,7 +71,8 @@ const styles = StyleSheet.create({
   },
   thumbnail: {
     borderRadius: 8,
-    height: 195,
+    height: 150,
+    width: 266.67,
     marginHorizontal: 15,
   },
 });
