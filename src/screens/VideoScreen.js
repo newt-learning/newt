@@ -1,17 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { ScrollView, View, StyleSheet, Image } from "react-native";
+// Context
+import { Context as ContentContext } from "../context/ContentContext";
 // Components
+import Loader from "../components/shared/Loader";
 import TitleSection from "../components/Content/TitleSection";
 import ActionSection from "../components/Content/ActionSection";
 import Description from "../components/Content/Description";
 // Design
 import { OFF_WHITE } from "../design/colors";
 
-const VideoScreen = ({ route }) => {
+const VideoScreen = ({ route, navigation }) => {
   // Toggle show more/less description text
   const [showMore, setShowMore] = useState(false);
 
-  const { videoInfo } = route.params;
+  const passedVideoInfo = route.params.videoInfo;
+
+  const { state: contentState } = useContext(ContentContext);
+
+  // Need to come up with a better, more efficient way of ensuring the screen
+  // updates when the data updates.
+  const videoInfo = contentState.items.filter(
+    (item) => item._id === passedVideoInfo._id
+  )[0];
+
   const {
     _id,
     name,
@@ -23,6 +35,11 @@ const VideoScreen = ({ route }) => {
     thumbnailUrl,
     dateAdded,
   } = videoInfo;
+
+  // If data is loading, show Loader
+  if (contentState.isFetching) {
+    return <Loader />;
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -40,6 +57,13 @@ const VideoScreen = ({ route }) => {
         shelf={shelf}
         topics={topics}
         dateAdded={dateAdded}
+        onPress={() =>
+          navigation.navigate("ShelfSelect", {
+            contentInfo: videoInfo,
+            buttonText: "Confirm",
+            addToLibrary: false,
+          })
+        }
       />
       <Description
         text={description}

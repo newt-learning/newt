@@ -133,19 +133,25 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     }
   };
   const updateShelf = (selectedShelf) => {
-    // Get the right data to change depending on which shelves the book is moving from/to.
-    const updateData = figureOutShelfMovingDataChanges(
-      contentInfo.shelf,
-      selectedShelf,
-      contentInfo
-    );
+    let updateData;
+
+    if (contentInfo.type === "book") {
+      // Get the right data to change depending on which shelves the book is moving from/to.
+      updateData = figureOutShelfMovingDataChanges(
+        contentInfo.shelf,
+        selectedShelf,
+        contentInfo
+      );
+    } else {
+      updateData = { shelf: selectedShelf };
+    }
 
     // Update data with the data gotten above
     updateContent(contentInfo._id, updateData);
 
-    // If the selected shelf is "Finished Learning", do additional stuff like
-    // updating the reading challenge
-    if (selectedShelf === "Finished Learning") {
+    // If it's a book and the selected shelf is "Finished Learning", do
+    // additional stuff like updating the reading challenge
+    if (contentInfo.type === "book" && selectedShelf === "Finished Learning") {
       // Update the reading challenge by adding this book to the finished list
       // if a challenge exists.
       addContentToChallenge(contentInfo._id);
