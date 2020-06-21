@@ -21,7 +21,7 @@ const AddVideoScreen = ({ navigation }) => {
   const [videoInfo, setVideoInfo] = useState(null);
   const [onConfirmationSection, setOnConfirmationSection] = useState(false);
 
-  const { state: topicsState } = useContext(TopicsContext);
+  const { state: topicsState, fetchTopics } = useContext(TopicsContext);
   const { addContent } = useContext(ContentContext);
 
   // Initialize shelves and topics checkboxes/selectors
@@ -75,6 +75,12 @@ const AddVideoScreen = ({ navigation }) => {
     );
 
     await addContent(contentInfo);
+    // If the topics list is not empty, fetch topics because the video will be
+    // added to whatever topics that were selected, and this way it'll fetch the
+    // new data (not an ideal way of doing this).
+    if (!_.isEmpty(selectedTopics)) {
+      fetchTopics();
+    }
     navigation.goBack();
   };
 

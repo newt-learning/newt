@@ -38,9 +38,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     deleteContent,
     updateContent,
   } = useContext(ContentContext);
-  const { state: topicsState, addContentToTopics, fetchTopics } = useContext(
-    TopicsContext
-  );
+  const { state: topicsState, fetchTopics } = useContext(TopicsContext);
 
   // Get params passed from route
   const { bookInfo, buttonText, addToLibrary } = route.params;
@@ -115,11 +113,6 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     // 'Add to Library' to whatever shelf was chosen (ex: 'Want to Learn').
     const newBook = await addContent(data, true);
 
-    // Add book to selected topics
-    await addContentToTopics({
-      topicIds: selectedTopics,
-      contentId: newBook._id,
-    });
     // Update the reading challenge by adding this book to the finished list
     // if a challenge exists (if selected shelf is Finished).
     if (selectedShelf === "Finished Learning") {
