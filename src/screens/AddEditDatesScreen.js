@@ -12,7 +12,7 @@ import { RED } from "../design/colors";
 import { FS16 } from "../design/typography";
 
 const AddEditDatesScreen = ({ route, navigation }) => {
-  const { bookId, startFinishDates } = route.params;
+  const { contentId, contentType, startFinishDates } = route.params;
   const [datesRead, setDatesRead] = useState(JSON.parse(startFinishDates));
 
   const {
@@ -20,15 +20,28 @@ const AddEditDatesScreen = ({ route, navigation }) => {
     updateContent,
   } = useContext(ContentContext);
 
+  // Screen title depends on content type
+  const setTitle = (contentType) => {
+    switch (contentType) {
+      case "book":
+        return "Dates Read";
+      case "video":
+        return "Dates Watched";
+      default:
+        return "Add or Edit Dates";
+    }
+  };
+
   // Add the button for confirmation to the screen header: "Done" button for iOS
   // and check mark icon for Android (and pass the update functions)
   useLayoutEffect(() => {
     navigation.setOptions({
+      title: setTitle(contentType),
       headerRight: () => (
         <ModalConfirmationButton
           isFetching={isFetching}
           onSubmit={async () => {
-            await updateContent(bookId, { startFinishDates: datesRead });
+            await updateContent(contentId, { startFinishDates: datesRead });
             navigation.goBack();
           }}
         />
@@ -103,7 +116,7 @@ const AddEditDatesScreen = ({ route, navigation }) => {
       })}
       {/* Button to add another reading session */}
       <ClearButton
-        title="Add dates read"
+        title={`Add dates ${contentType === "book" ? "read" : "watched"}`}
         onPress={handleAddSession}
         titleStyle={{ fontSize: FS16 }}
         containerStyle={{ marginTop: 20, marginBottom: 30 }}

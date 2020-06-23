@@ -120,7 +120,6 @@ const RootStack = () => {
         name="AddEditDates"
         component={AddEditDatesScreen}
         options={{
-          title: "Dates Read",
           ...SCREEN_OPTIONS.presentationModalOptions,
         }}
       />

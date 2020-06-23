@@ -61,7 +61,8 @@ const VideoScreen = ({ route, navigation }) => {
       onPress: () => {
         setIsModalVisible(false);
         navigation.navigate("AddEditDates", {
-          bookId: videoInfo._id,
+          contentId: _id,
+          contentType: type,
           startFinishDates: JSON.stringify(videoInfo.startFinishDates),
         });
       },

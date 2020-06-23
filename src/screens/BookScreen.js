@@ -109,13 +109,14 @@ const BookScreen = ({ navigation, route }) => {
   }
 
   // List of buttons in the options modal
-  modalOptions = [
+  const modalOptions = [
     {
       title: "Add or Edit Dates Read",
       onPress: () => {
         setIsModalVisible(false);
         navigation.navigate("AddEditDates", {
-          bookId: bookInfo._id,
+          contentId: bookInfo._id,
+          contentType: bookInfo.type,
           startFinishDates: JSON.stringify(bookInfo.startFinishDates),
         });
       },
