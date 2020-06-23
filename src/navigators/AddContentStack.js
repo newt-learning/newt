@@ -12,7 +12,7 @@ import AddToTopicScreen from "../screens/AddToTopicScreen";
 import TopicScreen from "../screens/TopicScreen";
 import CreateTopicScreen from "../screens/CreateTopicScreen";
 import EditTopicScreen from "../screens/EditTopicScreen";
-import AddEditDatesReadScreen from "../screens/AddEditDatesReadScreen";
+import AddEditDatesScreen from "../screens/AddEditDatesScreen";
 // Helpers
 import SCREEN_OPTIONS from "./screenOptions";
 // Design
@@ -117,8 +117,8 @@ const RootStack = () => {
         }}
       />
       <Stack.Screen
-        name="AddEditDatesRead"
-        component={AddEditDatesReadScreen}
+        name="AddEditDates"
+        component={AddEditDatesScreen}
         options={{
           title: "Dates Read",
           ...SCREEN_OPTIONS.presentationModalOptions,

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useLayoutEffect } from "react";
 import { ScrollView, View, StyleSheet, Image } from "react-native";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
@@ -7,12 +7,25 @@ import Loader from "../components/shared/Loader";
 import TitleSection from "../components/Content/TitleSection";
 import ActionSection from "../components/Content/ActionSection";
 import Description from "../components/Content/Description";
+import MoreOptionsButton from "../components/shared/MoreOptionsButton";
+import OptionsModal from "../components/shared/OptionsModal";
 // Design
 import { OFF_WHITE } from "../design/colors";
 
 const VideoScreen = ({ route, navigation }) => {
   // Toggle show more/less description text
   const [showMore, setShowMore] = useState(false);
+  // Initialize modal visibility
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  // Add the 3-dot options icon which opens the options modal
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <MoreOptionsButton onPress={() => setIsModalVisible(true)} />
+      ),
+    });
+  });
 
   const passedVideoInfo = route.params.videoInfo;
 
@@ -40,6 +53,20 @@ const VideoScreen = ({ route, navigation }) => {
   if (contentState.isFetching) {
     return <Loader />;
   }
+
+  // List of buttons in the options modal
+  const modalOptions = [
+    {
+      title: "Add or Edit Dates Watched",
+      onPress: () => {
+        setIsModalVisible(false);
+        navigation.navigate("AddEditDates", {
+          bookId: videoInfo._id,
+          startFinishDates: JSON.stringify(videoInfo.startFinishDates),
+        });
+      },
+    },
+  ];
 
   return (
     <ScrollView style={styles.container}>
@@ -69,6 +96,11 @@ const VideoScreen = ({ route, navigation }) => {
         text={description}
         showMore={showMore}
         setShowMore={setShowMore}
+      />
+      <OptionsModal
+        isVisible={isModalVisible}
+        onBackdropPress={() => setIsModalVisible(false)}
+        options={modalOptions}
       />
     </ScrollView>
   );

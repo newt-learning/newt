@@ -133,18 +133,12 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     }
   };
   const updateShelf = (selectedShelf) => {
-    let updateData;
-
-    if (contentInfo.type === "book") {
-      // Get the right data to change depending on which shelves the book is moving from/to.
-      updateData = figureOutShelfMovingDataChanges(
-        contentInfo.shelf,
-        selectedShelf,
-        contentInfo
-      );
-    } else {
-      updateData = { shelf: selectedShelf };
-    }
+    // Get the right data to change depending on which shelves the book is moving from/to.
+    const updateData = figureOutShelfMovingDataChanges(
+      contentInfo.shelf,
+      selectedShelf,
+      contentInfo
+    );
 
     // Update data with the data gotten above
     updateContent(contentInfo._id, updateData);

@@ -11,7 +11,7 @@ import ListItemWithDatePicker from "../components/shared/ListItemWithDatePicker"
 import { RED } from "../design/colors";
 import { FS16 } from "../design/typography";
 
-const AddEditDatesReadScreen = ({ route, navigation }) => {
+const AddEditDatesScreen = ({ route, navigation }) => {
   const { bookId, startFinishDates } = route.params;
   const [datesRead, setDatesRead] = useState(JSON.parse(startFinishDates));
 
@@ -128,4 +128,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddEditDatesReadScreen;
+export default AddEditDatesScreen;

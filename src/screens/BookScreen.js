@@ -114,7 +114,7 @@ const BookScreen = ({ navigation, route }) => {
       title: "Add or Edit Dates Read",
       onPress: () => {
         setIsModalVisible(false);
-        navigation.navigate("AddEditDatesRead", {
+        navigation.navigate("AddEditDates", {
           bookId: bookInfo._id,
           startFinishDates: JSON.stringify(bookInfo.startFinishDates),
         });
