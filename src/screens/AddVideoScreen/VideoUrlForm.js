@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Keyboard,
   Text,
+  Platform,
 } from "react-native";
 import _ from "lodash";
 // API
@@ -55,9 +56,9 @@ const VideoUrlForm = ({
 
   return (
     <KeyboardAvoidingView
-      behavior="padding"
+      behavior={Platform.OS === "ios" ? "padding" : null}
       style={{ flex: 1 }}
-      keyboardVerticalOffset={80}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.formContainer}>
