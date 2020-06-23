@@ -46,6 +46,7 @@ const VideoScreen = ({ route, navigation }) => {
     topics,
     description,
     thumbnailUrl,
+    startFinishDates,
     dateAdded,
   } = videoInfo;
 
@@ -84,6 +85,7 @@ const VideoScreen = ({ route, navigation }) => {
         type={type}
         shelf={shelf}
         topics={topics}
+        startFinishDates={startFinishDates}
         dateAdded={dateAdded}
         onPress={() =>
           navigation.navigate("ShelfSelect", {
