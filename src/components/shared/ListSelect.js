@@ -5,12 +5,22 @@ import { ListItem } from "react-native-elements";
 import { REGULAR } from "../../design/typography";
 import { BLUE_5 } from "../../design/colors";
 
-const ListSelect = ({ name, checked, onPressCheckbox }) => {
+const ListSelect = ({
+  name,
+  checked,
+  onPressCheckbox,
+  containerStyle: passedContainerStyle,
+}) => {
+  const containerStyle = StyleSheet.compose([
+    checked && styles.checkedContainer,
+    passedContainerStyle,
+  ]);
+
   return (
     <ListItem
       title={name}
       titleStyle={styles.title}
-      containerStyle={checked ? styles.checkedContainer : null}
+      containerStyle={containerStyle}
       underlayColor={BLUE_5}
       bottomDivider
       iconType="feather"

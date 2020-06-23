@@ -18,6 +18,7 @@ import { calculatePercentComplete } from "../../helpers/screenHelpers";
 // Extra user-specific info based on shelf: Progress bar if Currently Learning,
 // Date added if Want to Learn, and Date finished if Finished Learning
 const UserInteractionSection = ({
+  type,
   shelf,
   contentId,
   pagesRead,
@@ -30,7 +31,7 @@ const UserInteractionSection = ({
   switch (shelf) {
     // If "Currently Learning", progress bar and button to update book progress
     case "Currently Learning":
-      return (
+      return type === "book" ? (
         <>
           <ProgressBar
             barContainerStyle={styles.progressBar}
@@ -48,7 +49,7 @@ const UserInteractionSection = ({
             }
           />
         </>
-      );
+      ) : null;
     // If "Want to Learn", the date it was added to the shelf
     case "Want to Learn":
       return (
@@ -76,6 +77,7 @@ const UserInteractionSection = ({
 // shelf it's on if it's already been saved
 const ActionSection = ({
   contentId,
+  type,
   shelf,
   topics,
   pageCount,
@@ -90,6 +92,7 @@ const ActionSection = ({
         <View style={styles.actionSection}>
           <ChangeShelfButton shelf={shelf} onPress={onPress} />
           <UserInteractionSection
+            type={type}
             shelf={shelf}
             contentId={contentId}
             pagesRead={pagesRead}

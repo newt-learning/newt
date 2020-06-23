@@ -5,13 +5,14 @@ import { NavHeaderTitle } from "../components/shared/Headers";
 import AddContentScreen from "../screens/AddContentScreen";
 import AddBookScreen from "../screens/AddBookScreen";
 import BookScreen from "../screens/BookScreen";
+import AddVideoScreen from "../screens/AddVideoScreen";
 import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
 import AddToTopicScreen from "../screens/AddToTopicScreen";
 import TopicScreen from "../screens/TopicScreen";
 import CreateTopicScreen from "../screens/CreateTopicScreen";
 import EditTopicScreen from "../screens/EditTopicScreen";
-import AddEditDatesReadScreen from "../screens/AddEditDatesReadScreen";
+import AddEditDatesScreen from "../screens/AddEditDatesScreen";
 // Helpers
 import SCREEN_OPTIONS from "./screenOptions";
 // Design
@@ -38,6 +39,14 @@ const MainStack = () => {
         options={{
           title: "Add Book",
           headerTitle: () => <NavHeaderTitle title="Add Book" />,
+        }}
+      />
+      <Stack.Screen
+        name="AddVideo"
+        component={AddVideoScreen}
+        options={{
+          title: "Add Video",
+          headerTitle: () => <NavHeaderTitle title="Add Video" />,
         }}
       />
       <Stack.Screen
@@ -108,10 +117,9 @@ const RootStack = () => {
         }}
       />
       <Stack.Screen
-        name="AddEditDatesRead"
-        component={AddEditDatesReadScreen}
+        name="AddEditDates"
+        component={AddEditDatesScreen}
         options={{
-          title: "Dates Read",
           ...SCREEN_OPTIONS.presentationModalOptions,
         }}
       />

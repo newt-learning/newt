@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { ScrollView, View, Text, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet } from "react-native";
 import _ from "lodash";
 // API
 import { useAddContentToChallenge } from "../../api/challenges";
@@ -7,11 +7,10 @@ import { useAddContentToChallenge } from "../../api/challenges";
 import { Context as ContentContext } from "../../context/ContentContext";
 import { Context as TopicsContext } from "../../context/TopicsContext";
 // Components
-import { H3 } from "../../components/shared/Headers";
 import SelectShelfSection from "./SelectShelfSection";
+import SelectTopicsSection from "./SelectTopicsSection";
 import ActionButton from "../../components/shared/ActionButton";
 import ClearButton from "../../components/shared/ClearButton";
-import MultiItemSelect from "../../components/shared/MultiItemSelect";
 import Loader from "../../components/shared/Loader";
 import initiateDeleteConfirmation from "../../components/shared/initiateDeleteConfirmation";
 // Hooks
@@ -39,16 +38,14 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     deleteContent,
     updateContent,
   } = useContext(ContentContext);
-  const { state: topicsState, addContentToTopics, fetchTopics } = useContext(
-    TopicsContext
-  );
+  const { state: topicsState, fetchTopics } = useContext(TopicsContext);
 
   // Get params passed from route
-  const { bookInfo, buttonText, addToLibrary } = route.params;
+  const { contentInfo, buttonText, addToLibrary } = route.params;
 
   // Initialize shelves and topics checkboxes/selectors
   const [shelves, toggleShelves] = useSingleCheckbox(
-    initializeShelves(bookInfo.shelf)
+    initializeShelves(contentInfo.shelf)
   );
   const [
     topicsList,
@@ -93,7 +90,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
 
   const addBookToLibrary = async (selectedShelf, selectedTopics) => {
     const data = {
-      ...bookInfo,
+      ...contentInfo,
       shelf: selectedShelf,
       topics: selectedTopics,
       type: "book",
@@ -116,11 +113,6 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     // 'Add to Library' to whatever shelf was chosen (ex: 'Want to Learn').
     const newBook = await addContent(data, true);
 
-    // Add book to selected topics
-    await addContentToTopics({
-      topicIds: selectedTopics,
-      contentId: newBook._id,
-    });
     // Update the reading challenge by adding this book to the finished list
     // if a challenge exists (if selected shelf is Finished).
     if (selectedShelf === "Finished Learning") {
@@ -143,28 +135,28 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   const updateShelf = (selectedShelf) => {
     // Get the right data to change depending on which shelves the book is moving from/to.
     const updateData = figureOutShelfMovingDataChanges(
-      bookInfo.shelf,
+      contentInfo.shelf,
       selectedShelf,
-      bookInfo
+      contentInfo
     );
 
     // Update data with the data gotten above
-    updateContent(bookInfo._id, updateData);
+    updateContent(contentInfo._id, updateData);
 
-    // If the selected shelf is "Finished Learning", do additional stuff like
-    // updating the reading challenge
-    if (selectedShelf === "Finished Learning") {
+    // If it's a book and the selected shelf is "Finished Learning", do
+    // additional stuff like updating the reading challenge
+    if (contentInfo.type === "book" && selectedShelf === "Finished Learning") {
       // Update the reading challenge by adding this book to the finished list
       // if a challenge exists.
-      addContentToChallenge(bookInfo._id);
+      addContentToChallenge(contentInfo._id);
     }
     navigation.goBack();
   };
   const deleteItem = async () => {
-    const deleteMessage = "Are you sure you want to delete this book?";
+    const deleteMessage = `Are you sure you want to delete this ${contentInfo.type}?`;
     const deleteFlow = async () => {
       navigation.popToTop();
-      await deleteContent(bookInfo._id);
+      await deleteContent(contentInfo._id);
       fetchTopics();
     };
 
@@ -202,7 +194,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
           button to delete content */}
         {!addToLibrary ? (
           <ClearButton
-            title="Delete book from Library"
+            title={`Delete ${contentInfo.type} from Library`}
             onPress={deleteItem}
             containerStyle={styles.deleteButton}
             titleStyle={styles.delete}
@@ -220,17 +212,10 @@ const ShelfSelectScreen = ({ navigation, route }) => {
         ) : null}
         {/* If on Add to Library screen, show Topic Selector */}
         {addToLibrary ? (
-          <View>
-            <H3 style={styles.header}>Select Topic(s)</H3>
-            <View style={styles.topicSelectContainer}>
-              <MultiItemSelect
-                itemsList={topicsList}
-                onSelect={toggleTopicsList}
-                showCreateItem={true}
-                onSelectCreateItem={() => navigation.navigate("CreateTopic")}
-              />
-            </View>
-          </View>
+          <SelectTopicsSection
+            topicsList={topicsList}
+            onSelectTopic={toggleTopicsList}
+          />
         ) : null}
       </View>
       <View style={styles.buttonContainer}>
@@ -262,11 +247,6 @@ const styles = StyleSheet.create({
   option: {
     justifyContent: "flex-start",
   },
-  header: {
-    marginTop: 20,
-    marginHorizontal: 15,
-    marginBottom: 5,
-  },
   buttonContainer: {
     alignItems: "center",
     marginHorizontal: 15,
@@ -277,12 +257,6 @@ const styles = StyleSheet.create({
   },
   delete: {
     color: RED,
-  },
-  topicSelectContainer: {
-    marginHorizontal: 8,
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    flexWrap: "wrap",
   },
 });
 

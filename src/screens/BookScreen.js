@@ -109,13 +109,14 @@ const BookScreen = ({ navigation, route }) => {
   }
 
   // List of buttons in the options modal
-  modalOptions = [
+  const modalOptions = [
     {
       title: "Add or Edit Dates Read",
       onPress: () => {
         setIsModalVisible(false);
-        navigation.navigate("AddEditDatesRead", {
-          bookId: bookInfo._id,
+        navigation.navigate("AddEditDates", {
+          contentId: bookInfo._id,
+          contentType: bookInfo.type,
           startFinishDates: JSON.stringify(bookInfo.startFinishDates),
         });
       },
@@ -127,6 +128,7 @@ const BookScreen = ({ navigation, route }) => {
     authors,
     description,
     thumbnailUrl,
+    type,
     shelf,
     topics,
     dateAdded,
@@ -152,6 +154,7 @@ const BookScreen = ({ navigation, route }) => {
       <TitleSection title={name} authors={authors} />
       <ActionSection
         contentId={bookExistsInLibrary ? bookInfo._id : null}
+        type={type}
         shelf={shelf}
         topics={topics}
         pageCount={pageCount}
@@ -162,13 +165,13 @@ const BookScreen = ({ navigation, route }) => {
           shelf
             ? () =>
                 navigation.navigate("ShelfSelect", {
-                  bookInfo,
+                  contentInfo: bookInfo,
                   buttonText: "Confirm",
                   addToLibrary: false,
                 })
             : () =>
                 navigation.navigate("ShelfSelect", {
-                  bookInfo,
+                  contentInfo: bookInfo,
                   buttonText: "Add to Library",
                   addToLibrary: true,
                 })

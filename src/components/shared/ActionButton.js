@@ -9,22 +9,32 @@ const ActionButton = ({
   title,
   onPress,
   showLoading,
+  buttonStyle: passedButtonStyle,
   titleStyle,
+  icon,
   disabled,
   showOnlyDisabledIcon = false, // If this is true, the button will show a disabled icon instead of a title
 }) => {
-  const buttonTitleStyle = StyleSheet.compose(styles.buttonTitle, titleStyle);
+  const buttonStyle = StyleSheet.compose(styles.button, passedButtonStyle);
+  const buttonTitleStyle = StyleSheet.compose([
+    styles.buttonTitle,
+    titleStyle,
+    icon && { marginLeft: 15 },
+  ]);
 
   return (
     <Button
       title={disabled && showOnlyDisabledIcon ? null : title}
-      buttonStyle={styles.button}
+      containerStyle={styles.btnContainer}
+      buttonStyle={buttonStyle}
       titleStyle={buttonTitleStyle}
       loading={showLoading}
       onPress={onPress}
       disabled={disabled}
       icon={
-        disabled && showOnlyDisabledIcon ? (
+        icon ? (
+          icon
+        ) : disabled && showOnlyDisabledIcon ? (
           <Feather name="slash" size={18} color={GRAY_3} />
         ) : null
       }
@@ -34,6 +44,9 @@ const ActionButton = ({
 };
 
 const styles = StyleSheet.create({
+  btnContainer: {
+    borderRadius: 5,
+  },
   button: {
     width: 300,
     minHeight: 45, // Should be a better way to make sure button size doesn't change when loading indicator is showing

@@ -3,22 +3,29 @@
     "name": "Newt",
     "slug": "newt",
     "description": "Organize your learning — all your books, articles, videos, online courses, etc. in one place! Organize by shelf (Currently Learning, Want to Learn, Finished Learning) or by topics, and improve your retention and understanding of select works with learning techniques like spaced repetition. Essentially, your personal learning management system.",
-    "privacy": "public",
-    "platforms": ["ios", "android", "web"],
-    "version": "0.4.5",
+    "privacy": "unlisted",
+    "platforms": ["ios", "android"],
+    "version": "0.5.3",
     "orientation": "portrait",
-    "icon": "./assets/newt-logo-flor.png",
+    "icon": "./assets/newt-text-logo.png",
+    "backgroundColor": "#38ceff",
     "splash": {
       "image": "./assets/newt-splash-flor.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#38ceff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.newtlearning.newt",
+      "buildNumber": "0.5.3",
+      "supportsTablet": false
+    },
+    "android": {
+      "package": "com.newtlearning.newt",
+      "versionCode": 1
     }
   }
 }

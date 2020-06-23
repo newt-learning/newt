@@ -11,13 +11,23 @@ import { shortenText } from "../../helpers/textHelpers";
 
 const TEXT_LIMIT = 400;
 
-const Description = ({ text, showMore, setShowMore }) => {
+const Description = ({
+  text,
+  showMore,
+  setShowMore,
+  containerStyle: passedContainerStyle,
+}) => {
   if (!text) {
     return null;
   }
 
+  const containerStyle = StyleSheet.compose(
+    styles.container,
+    passedContainerStyle
+  );
+
   return (
-    <View style={styles.container}>
+    <View style={containerStyle}>
       <SubHeader>Description</SubHeader>
       <Text style={styles.text}>
         {showMore ? text : shortenText(text, TEXT_LIMIT)}
@@ -33,12 +43,12 @@ const styles = StyleSheet.create({
   container: {
     padding: 15,
     borderBottomWidth: 1,
-    borderColor: GRAY_4
+    borderColor: GRAY_4,
   },
   text: {
     fontFamily: REGULAR,
-    fontSize: FS14
-  }
+    fontSize: FS14,
+  },
 });
 
 export default Description;

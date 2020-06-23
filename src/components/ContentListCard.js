@@ -36,6 +36,7 @@ const ContentListCard = ({
                 }
               : null
           }
+          resizeMode="contain"
         />
         <View style={styles.bookInfo}>
           {title ? <Text style={styles.title}>{title}</Text> : null}
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
   },
   thumbnail: {
     height: 80,
-    width: 53,
+    width: 70,
     marginRight: 15,
   },
   bookInfo: {
