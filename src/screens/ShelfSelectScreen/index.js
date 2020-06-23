@@ -153,7 +153,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     navigation.goBack();
   };
   const deleteItem = async () => {
-    const deleteMessage = "Are you sure you want to delete this book?";
+    const deleteMessage = `Are you sure you want to delete this ${contentInfo.type}?`;
     const deleteFlow = async () => {
       navigation.popToTop();
       await deleteContent(contentInfo._id);
@@ -194,7 +194,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
           button to delete content */}
         {!addToLibrary ? (
           <ClearButton
-            title="Delete book from Library"
+            title={`Delete ${contentInfo.type} from Library`}
             onPress={deleteItem}
             containerStyle={styles.deleteButton}
             titleStyle={styles.delete}
