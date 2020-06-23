@@ -27,6 +27,7 @@ const VideoUrlForm = ({
   setOnConfirmationSection,
 }) => {
   const [urlErrorMessage, setUrlErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const getYoutubeInfo = async (videoLink) => {
     // Get videoId from url inputted. If it's not a valid url, this will return null
@@ -34,13 +35,16 @@ const VideoUrlForm = ({
 
     // If an id can be extracted, get the video info with a request to YouTube API
     if (videoId) {
+      setIsLoading(true);
       const results = await getYoutubeVideoInfo(videoId);
 
       if (results.items) {
         setVideoInfo(results.items[0]);
+        setIsLoading(false);
         setOnConfirmationSection(true);
       } else {
         setVideoInfo(null);
+        setIsLoading(false);
       }
     } else {
       setUrlErrorMessage(
@@ -83,6 +87,7 @@ const VideoUrlForm = ({
               title="Next"
               onPress={() => getYoutubeInfo(videoLink)}
               disabled={_.isEmpty(videoLink)}
+              showLoading={isLoading}
             />
           </View>
         </View>
