@@ -19,6 +19,10 @@ import { getBestThumbnail, extractAndAssembleVideoInfo } from "./helpers";
 const AddVideoScreen = ({ navigation }) => {
   const [videoLink, setVideoLink] = useState("");
   const [videoInfo, setVideoInfo] = useState(null);
+  // State for start and end dates for Finished books
+  const [startDate, setStartDate] = useState(new Date());
+  const [finishDate, setFinishDate] = useState(new Date());
+  // Used to move between the form and confirmation sections
   const [onConfirmationSection, setOnConfirmationSection] = useState(false);
 
   const { state: topicsState, fetchTopics } = useContext(TopicsContext);
@@ -92,6 +96,10 @@ const AddVideoScreen = ({ navigation }) => {
       onSelectShelf={toggleShelves}
       topics={topicsList}
       onSelectTopic={toggleTopicsList}
+      startDate={startDate}
+      finishDate={finishDate}
+      setStartDate={setStartDate}
+      setFinishDate={setFinishDate}
       onSubmit={addVideo}
     />
   ) : (

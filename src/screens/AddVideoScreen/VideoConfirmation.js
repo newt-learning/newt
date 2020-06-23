@@ -7,6 +7,7 @@ import SubHeader from "../../components/Content/SubHeader";
 import Description from "../../components/Content/Description";
 import SelectShelfSection from "../ShelfSelectScreen/SelectShelfSection";
 import SelectTopicsSection from "../ShelfSelectScreen/SelectTopicsSection";
+import SelectStartFinishDatesSection from "../ShelfSelectScreen/SelectStartFinishDatesSection";
 import ActionButton from "../../components/shared/ActionButton";
 // Design
 import { OFF_WHITE, GRAY_5, GRAY_3, GRAY_4 } from "../../design/colors";
@@ -21,6 +22,10 @@ const VideoConfirmation = ({
   onSelectShelf,
   topics,
   onSelectTopic,
+  startDate,
+  finishDate,
+  setStartDate,
+  setFinishDate,
   onSubmit,
 }) => {
   // Used to expand or contract the description text
@@ -68,6 +73,17 @@ const VideoConfirmation = ({
         onSelectShelf={onSelectShelf}
         rounded
       />
+      {/* If the Finished Learning shelf is selected, show input selectors for
+          start and finish dates */}
+      {shelves[2].checked && (
+        <SelectStartFinishDatesSection
+          startDate={startDate}
+          finishDate={finishDate}
+          setStartDate={setStartDate}
+          setFinishDate={setFinishDate}
+          rounded
+        />
+      )}
       <SelectTopicsSection
         topicsList={topics}
         onSelectTopic={onSelectTopic}

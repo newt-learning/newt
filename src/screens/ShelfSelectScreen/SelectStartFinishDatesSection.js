@@ -14,6 +14,7 @@ const SelectStartFinishDatesSection = ({
   finishDate,
   setStartDate,
   setFinishDate,
+  rounded = false,
 }) => {
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showFinishDatePicker, setShowFinishDatePicker] = useState(false);
@@ -23,8 +24,10 @@ const SelectStartFinishDatesSection = ({
       <H3 style={styles.header}>Set Start and Finish Dates</H3>
       <ListItem
         title="Start Date"
+        containerStyle={rounded && styles.firstItem}
         titleStyle={styles.text}
         rightTitle={moment(startDate).format("MMM DD, YYYY")}
+        rightContentContainerStyle={styles.rightContainer}
         onPress={() => {
           setShowFinishDatePicker(false);
           setShowStartDatePicker(!showStartDatePicker);
@@ -45,8 +48,10 @@ const SelectStartFinishDatesSection = ({
       )}
       <ListItem
         title="Finish Date"
+        containerStyle={rounded && styles.lastItem}
         titleStyle={styles.text}
         rightTitle={moment(finishDate).format("MMM DD, YYYY")}
+        rightContentContainerStyle={styles.rightContainer}
         onPress={() => {
           setShowStartDatePicker(false);
           setShowFinishDatePicker(!showFinishDatePicker);
@@ -74,8 +79,19 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     marginBottom: 5,
   },
+  firstItem: {
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+  },
+  lastItem: {
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+  },
   text: {
     fontFamily: REGULAR,
+  },
+  rightContainer: {
+    flex: 1,
   },
 });
 
