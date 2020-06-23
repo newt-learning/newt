@@ -1,5 +1,6 @@
 import React, { useState, useContext, useLayoutEffect } from "react";
 import { ScrollView, View, StyleSheet, Image } from "react-native";
+import * as Linking from "expo-linking";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
@@ -70,6 +71,11 @@ const VideoScreen = ({ route, navigation }) => {
     },
   ];
 
+  // Open video either on YouTube app or browser
+  const handleOpenLink = () => {
+    Linking.openURL(`https://youtu.be/${videoInfo.videoInfo.videoId}`);
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.imageContainer}>
@@ -79,7 +85,12 @@ const VideoScreen = ({ route, navigation }) => {
           resizeMode="contain"
         />
       </View>
-      <TitleSection title={name} authors={authors} />
+      <TitleSection
+        title={name}
+        authors={authors}
+        contentType={type}
+        onPress={handleOpenLink}
+      />
       <ActionSection
         contentId={_id}
         type={type}
