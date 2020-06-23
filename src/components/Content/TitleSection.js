@@ -1,9 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
+// Components
+import ActionButton from "../shared/ActionButton";
 // Styling
 import { SEMIBOLD, REGULAR, FS24, FS16 } from "../../design/typography";
 import { OFF_BLACK, GRAY_2, GRAY_4, RED } from "../../design/colors";
-import ActionButton from "../shared/ActionButton";
 
 const TitleSection = ({ title, authors, contentType, onPress }) => {
   return (
@@ -18,6 +20,7 @@ const TitleSection = ({ title, authors, contentType, onPress }) => {
         <View style={styles.btnContainer}>
           <ActionButton
             title="Play on YouTube"
+            icon={<FontAwesome name="play" size={18} color={"#fff"} />}
             buttonStyle={styles.btn}
             onPress={onPress}
           />

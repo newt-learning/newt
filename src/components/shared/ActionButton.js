@@ -11,11 +11,16 @@ const ActionButton = ({
   showLoading,
   buttonStyle: passedButtonStyle,
   titleStyle,
+  icon,
   disabled,
   showOnlyDisabledIcon = false, // If this is true, the button will show a disabled icon instead of a title
 }) => {
   const buttonStyle = StyleSheet.compose(styles.button, passedButtonStyle);
-  const buttonTitleStyle = StyleSheet.compose(styles.buttonTitle, titleStyle);
+  const buttonTitleStyle = StyleSheet.compose([
+    styles.buttonTitle,
+    titleStyle,
+    icon && { marginLeft: 15 },
+  ]);
 
   return (
     <Button
@@ -27,7 +32,9 @@ const ActionButton = ({
       onPress={onPress}
       disabled={disabled}
       icon={
-        disabled && showOnlyDisabledIcon ? (
+        icon ? (
+          icon
+        ) : disabled && showOnlyDisabledIcon ? (
           <Feather name="slash" size={18} color={GRAY_3} />
         ) : null
       }
