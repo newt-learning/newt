@@ -70,12 +70,12 @@ const AddVideoScreen = ({ navigation }) => {
   }, [topicsState.items]);
 
   const addVideo = async (selectedShelf, selectedTopics) => {
-    const bestThumbnail = getBestThumbnail(videoInfo.snippet.thumbnails);
-
     const contentInfo = extractAndAssembleVideoInfo(
       videoInfo,
       selectedShelf,
-      selectedTopics
+      selectedTopics,
+      startDate,
+      finishDate
     );
 
     await addContent(contentInfo);

@@ -34,7 +34,13 @@ export function getBestThumbnail(thumbnails) {
 
 // Extract only relevant video information from result of Youtube API + add
 // other content info like shelf and topics
-export function extractAndAssembleVideoInfo(videoInfo, shelf, topics) {
+export function extractAndAssembleVideoInfo(
+  videoInfo,
+  shelf,
+  topics,
+  startDate,
+  finishDate
+) {
   const {
     id,
     snippet: {
@@ -49,7 +55,7 @@ export function extractAndAssembleVideoInfo(videoInfo, shelf, topics) {
 
   const bestThumbnail = getBestThumbnail(thumbnails);
 
-  return {
+  let data = {
     name: _.isString(title) ? title : null,
     description: _.isString(description) ? description : null,
     authors: _.isString(channelTitle) ? [channelTitle] : null,
@@ -67,4 +73,18 @@ export function extractAndAssembleVideoInfo(videoInfo, shelf, topics) {
       datePublished: _.isString(publishedAt) ? publishedAt : null,
     },
   };
+
+  // If the selected shelf is Currently Learning, set first date started as now
+  if (shelf === "Currently Learning") {
+    data.startFinishDates = [{ dateStarted: Date.now() }];
+  }
+
+  // If the selected shelf is Finished, add the dateCompleted field
+  if (shelf === "Finished Learning") {
+    data.startFinishDates = [
+      { dateStarted: startDate, dateCompleted: finishDate },
+    ];
+  }
+
+  return data;
 }
