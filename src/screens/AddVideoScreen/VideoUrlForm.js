@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   View,
+  KeyboardAvoidingView,
   TouchableWithoutFeedback,
   StyleSheet,
   Keyboard,
@@ -49,38 +50,44 @@ const VideoUrlForm = ({
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.formContainer}>
-        <View style={styles.group}>
-          <H3>YouTube link</H3>
-          <BoxTextInput
-            value={videoLink}
-            onChangeText={setVideoLink}
-            onFocus={() => {
-              // If there's an error message, remove it when focusing on input
-              if (!_.isEmpty(urlErrorMessage)) {
-                setUrlErrorMessage("");
-              }
-            }}
-            style={StyleSheet.compose([
-              styles.input,
-              !_.isEmpty(urlErrorMessage) ? styles.inputError : null,
-            ])}
-          />
-          {/* Show error message if there is one */}
-          {!_.isEmpty(urlErrorMessage) && (
-            <Text style={styles.urlError}>{urlErrorMessage}</Text>
-          )}
+    <KeyboardAvoidingView
+      behavior="padding"
+      style={{ flex: 1 }}
+      keyboardVerticalOffset={80}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.formContainer}>
+          <View style={styles.group}>
+            <H3>YouTube link</H3>
+            <BoxTextInput
+              value={videoLink}
+              onChangeText={setVideoLink}
+              onFocus={() => {
+                // If there's an error message, remove it when focusing on input
+                if (!_.isEmpty(urlErrorMessage)) {
+                  setUrlErrorMessage("");
+                }
+              }}
+              style={StyleSheet.compose([
+                styles.input,
+                !_.isEmpty(urlErrorMessage) ? styles.inputError : null,
+              ])}
+            />
+            {/* Show error message if there is one */}
+            {!_.isEmpty(urlErrorMessage) && (
+              <Text style={styles.urlError}>{urlErrorMessage}</Text>
+            )}
+          </View>
+          <View style={styles.btnContainer}>
+            <ActionButton
+              title="Next"
+              onPress={() => getYoutubeInfo(videoLink)}
+              disabled={_.isEmpty(videoLink)}
+            />
+          </View>
         </View>
-        <View style={styles.btnContainer}>
-          <ActionButton
-            title="Next"
-            onPress={() => getYoutubeInfo(videoLink)}
-            disabled={_.isEmpty(videoLink)}
-          />
-        </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
