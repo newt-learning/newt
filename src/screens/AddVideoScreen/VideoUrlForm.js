@@ -12,18 +12,20 @@ import _ from "lodash";
 // API
 import { getYoutubeVideoInfo } from "../../api/youtubeApi";
 // Components
-import { H3 } from "../../components/shared/Headers";
+import { H3, H4 } from "../../components/shared/Headers";
 import BoxTextInput from "../../components/shared/BoxTextInput";
 import ActionButton from "../../components/shared/ActionButton";
 // Design
-import { OFF_WHITE, GRAY_5, RED } from "../../design/colors";
+import { OFF_WHITE, GRAY_5, RED, GRAY_1, GRAY_2 } from "../../design/colors";
 import { REGULAR, FS14 } from "../../design/typography";
 // Helpers
 import { validateYoutubeUrl } from "./helpers";
 
 const VideoUrlForm = ({
   videoLink,
+  seriesLink,
   setVideoLink,
+  setSeriesLink,
   setVideoInfo,
   setOnConfirmationSection,
 }) => {
@@ -62,27 +64,39 @@ const VideoUrlForm = ({
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.formContainer}>
-          <View style={styles.group}>
-            <H3>YouTube link</H3>
-            <BoxTextInput
-              value={videoLink}
-              onChangeText={setVideoLink}
-              onFocus={() => {
-                // If there's an error message, remove it when focusing on input
-                if (!_.isEmpty(urlErrorMessage)) {
-                  setUrlErrorMessage("");
-                }
-              }}
-              style={StyleSheet.compose([
-                styles.input,
-                !_.isEmpty(urlErrorMessage) ? styles.inputError : null,
-              ])}
-            />
-            {/* Show error message if there is one */}
-            {!_.isEmpty(urlErrorMessage) && (
-              <Text style={styles.urlError}>{urlErrorMessage}</Text>
-            )}
+          <View>
+            <View style={styles.group}>
+              <H3>YouTube video link</H3>
+              <BoxTextInput
+                value={videoLink}
+                onChangeText={setVideoLink}
+                onFocus={() => {
+                  // If there's an error message, remove it when focusing on input
+                  if (!_.isEmpty(urlErrorMessage)) {
+                    setUrlErrorMessage("");
+                  }
+                }}
+                style={StyleSheet.compose([
+                  styles.input,
+                  !_.isEmpty(urlErrorMessage) ? styles.inputError : null,
+                ])}
+              />
+              {/* Show error message if there is one */}
+              {!_.isEmpty(urlErrorMessage) && (
+                <Text style={styles.urlError}>{urlErrorMessage}</Text>
+              )}
+            </View>
+            <H4 style={styles.or}>OR</H4>
+            <View style={styles.group}>
+              <H3>YouTube playlist link</H3>
+              <BoxTextInput
+                value={seriesLink}
+                onChangeText={setSeriesLink}
+                style={styles.input}
+              />
+            </View>
           </View>
+
           <View style={styles.btnContainer}>
             <ActionButton
               title="Next"
@@ -127,6 +141,11 @@ const styles = StyleSheet.create({
   inputError: {
     borderWidth: 1,
     borderColor: RED,
+  },
+  or: {
+    textAlign: "center",
+    marginTop: 10,
+    color: GRAY_1,
   },
   btnContainer: {
     alignItems: "center",

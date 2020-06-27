@@ -18,6 +18,7 @@ import { getBestThumbnail, extractAndAssembleVideoInfo } from "./helpers";
 
 const AddVideoScreen = ({ navigation }) => {
   const [videoLink, setVideoLink] = useState("");
+  const [seriesLink, setSeriesLink] = useState("");
   const [videoInfo, setVideoInfo] = useState(null);
   // State for start and end dates for Finished books
   const [startDate, setStartDate] = useState(new Date());
@@ -105,7 +106,9 @@ const AddVideoScreen = ({ navigation }) => {
   ) : (
     <VideoUrlForm
       videoLink={videoLink}
+      seriesLink={seriesLink}
       setVideoLink={setVideoLink}
+      setSeriesLink={setSeriesLink}
       setVideoInfo={setVideoInfo}
       setOnConfirmationSection={setOnConfirmationSection}
     />
