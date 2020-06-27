@@ -69,10 +69,10 @@ const VideoUrlForm = ({
     const playlistId = validateYoutubePlaylistUrl(seriesLink);
 
     if (playlistId) {
-      const results = await getYoutubePlaylistInfo(playlistId);
+      const seriesInfo = await getYoutubePlaylistInfo(playlistId);
 
-      if (results.items) {
-        setSeriesInfo(results.items);
+      if (seriesInfo) {
+        setSeriesInfo(seriesInfo);
         setIsLoading(false);
         setOnConfirmationSection(true);
       } else {
