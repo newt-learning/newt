@@ -59,6 +59,7 @@ const authenticateWithGoogle = (dispatch) => async () => {
     const result = await Google.logInAsync({
       iosClientId: keys.googleIosClientId,
       androidClientId: keys.googleAndroidClientId,
+      iosStandaloneAppClientId: keys.googleIosUrlScheme,
     });
 
     if (result.type === "success") {

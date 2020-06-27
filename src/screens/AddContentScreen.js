@@ -3,7 +3,7 @@ import { View, StatusBar, StyleSheet } from "react-native";
 // Components
 import ContentButton from "../components/ContentButton";
 // Styling
-import { GRAY_5, OFF_WHITE, WHITE, RUBY } from "../design/colors";
+import { GRAY_5, OFF_WHITE, WHITE, RUBY, ORANGE } from "../design/colors";
 
 const AddContentScreen = ({ navigation }) => {
   return (
@@ -13,8 +13,14 @@ const AddContentScreen = ({ navigation }) => {
         <ContentButton
           text="Add a book"
           onPress={() => navigation.navigate("Add Book")}
-          buttonStyle={styles.bookBtn}
-          textStyle={styles.bookBtnText}
+          buttonStyle={StyleSheet.compose(styles.btn, styles.bookBtn)}
+          textStyle={styles.btnText}
+        />
+        <ContentButton
+          text="Add a video"
+          onPress={() => navigation.navigate("AddVideo")}
+          buttonStyle={StyleSheet.compose(styles.btn, styles.videoBtn)}
+          textStyle={styles.btnText}
         />
       </View>
     </View>
@@ -24,19 +30,25 @@ const AddContentScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: GRAY_5
+    backgroundColor: GRAY_5,
   },
   contentContainer: {
     flex: 1,
     justifyContent: "center",
-    margin: 15
+    margin: 15,
+  },
+  btn: {
+    marginVertical: 10,
   },
   bookBtn: {
-    backgroundColor: RUBY
+    backgroundColor: RUBY,
   },
-  bookBtnText: {
-    color: WHITE
-  }
+  videoBtn: {
+    backgroundColor: ORANGE,
+  },
+  btnText: {
+    color: WHITE,
+  },
 });
 
 export default AddContentScreen;

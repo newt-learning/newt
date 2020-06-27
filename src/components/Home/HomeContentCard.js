@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
   thumbnail: {
     height: 100,
-    width: 66,
+    width: 70,
     marginRight: 15,
   },
   info: {

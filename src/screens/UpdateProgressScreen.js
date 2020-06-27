@@ -1,34 +1,21 @@
 import React, { useState, useLayoutEffect, useContext } from "react";
-import {
-  View,
-  ScrollView,
-  Platform,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  TextInput,
-  ActivityIndicator,
-} from "react-native";
+import { View, ScrollView, Text, StyleSheet } from "react-native";
 import _ from "lodash";
-import { Button as ElementButton } from "react-native-elements";
+// API
+import { useAddContentToChallenge } from "../api/challenges";
+// Components
+import ModalConfirmationButton from "../components/shared/ModalConfirmationButton";
 import ClearButton from "../components/shared/ClearButton";
-import { MaterialIcons } from "@expo/vector-icons";
+import BoxTextInput from "../components/shared/BoxTextInput";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 import { Context as StatsContext } from "../context/StatsContext";
 // Design
-import { SEMIBOLD, REGULAR, FS16, FS12, FS18 } from "../design/typography";
-import {
-  OFF_BLACK,
-  GRAY_5,
-  GRAY_2,
-  IOS_BLUE,
-  RED,
-  OFF_WHITE,
-} from "../design/colors";
+import { SEMIBOLD, REGULAR, FS16, FS12 } from "../design/typography";
+import { RED, OFF_WHITE } from "../design/colors";
 
 const UpdateProgressScreen = ({ navigation, route }) => {
-  const { contentId, pagesRead, pageCount } = route.params;
+  const { contentId, pagesRead, pageCount, startFinishDates } = route.params;
   const [updatedPagesRead, setUpdatedPagesRead] = useState(`${pagesRead}`);
   const [errorMessage, setErrorMessage] = useState(null);
   // Get state + functions from Content Context
@@ -39,43 +26,20 @@ const UpdateProgressScreen = ({ navigation, route }) => {
   } = useContext(ContentContext);
   // Get function from Stats Context
   const { createLearningUpdate } = useContext(StatsContext);
+  // Get function to add content to an existing challenge (used when "Finished
+  // book" button is pressed)
+  const [addContentToChallenge] = useAddContentToChallenge();
 
   // Add the button for confirmation to the screen header: "Done" button for iOS
   // and check mark icon for Android (and pass the update functions)
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => {
-        if (Platform.OS === "ios") {
-          if (isFetching) {
-            return (
-              <ActivityIndicator
-                animating={isFetching}
-                color={IOS_BLUE}
-                style={{ paddingRight: 15 }}
-              />
-            );
-          } else {
-            return (
-              <TouchableOpacity
-                style={{ paddingRight: 15 }}
-                onPress={submitUpdatedPagesRead}
-              >
-                <Text style={{ color: IOS_BLUE, fontSize: FS18 }}>Done</Text>
-              </TouchableOpacity>
-            );
-          }
-        } else {
-          return (
-            <ElementButton
-              type="clear"
-              loading={isFetching}
-              loadingProps={{ color: OFF_BLACK }}
-              icon={<MaterialIcons name="check" size={24} />}
-              onPress={submitUpdatedPagesRead}
-            />
-          );
-        }
-      },
+      headerRight: () => (
+        <ModalConfirmationButton
+          isFetching={isFetching}
+          onSubmit={submitUpdatedPagesRead}
+        />
+      ),
     });
   });
 
@@ -138,12 +102,21 @@ const UpdateProgressScreen = ({ navigation, route }) => {
       numPagesRead: pageCount - pagesRead,
       contentType: "book",
     };
+    // Set the last readings session's dateCompleted as now
+    let updatedStartFinishDates = [...startFinishDates];
+    updatedStartFinishDates[
+      updatedStartFinishDates.length - 1
+    ].dateCompleted = Date.now();
+
     updateBookProgress(contentId, pageCount, false);
     updateContent(contentId, {
       shelf: "Finished Learning",
-      dateCompleted: Date.now(),
+      startFinishDates: updatedStartFinishDates,
     });
     createLearningUpdate(learningUpdateData);
+    // Update reading challenge
+    addContentToChallenge(contentId);
+
     navigation.goBack();
   };
 
@@ -155,7 +128,7 @@ const UpdateProgressScreen = ({ navigation, route }) => {
     >
       <View style={{ flexDirection: "row" }}>
         <Text style={styles.text}>I'm on page</Text>
-        <TextInput
+        <BoxTextInput
           style={styles.input}
           value={updatedPagesRead}
           onFocus={() => setUpdatedPagesRead(null)}
@@ -191,13 +164,6 @@ const styles = StyleSheet.create({
     fontSize: FS16,
   },
   input: {
-    fontSize: FS16,
-    backgroundColor: GRAY_5,
-    paddingLeft: 5,
-    borderBottomWidth: 1,
-    borderColor: GRAY_2,
-    width: 100,
-    padding: 2,
     marginLeft: 10,
   },
   errorMessage: {

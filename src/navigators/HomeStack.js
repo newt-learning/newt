@@ -4,12 +4,14 @@ import { NavHeaderTitle } from "../components/shared/Headers";
 // Screens
 import HomeScreen from "../screens/HomeScreen";
 import BookScreen from "../screens/BookScreen";
+import VideoScreen from "../screens/VideoScreen";
 import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
 import AddToTopicScreen from "../screens/AddToTopicScreen";
 import TopicScreen from "../screens/TopicScreen";
 import EditTopicScreen from "../screens/EditTopicScreen";
 import CreateTopicScreen from "../screens/CreateTopicScreen";
+import AddEditDatesScreen from "../screens/AddEditDatesScreen";
 // Helpers
 import SCREEN_OPTIONS from "./screenOptions";
 // Design
@@ -36,6 +38,11 @@ const MainStack = () => {
           title: null,
           headerBackTitle: "Back",
         }}
+      />
+      <Stack.Screen
+        name="VideoScreen"
+        component={VideoScreen}
+        options={{ title: null }}
       />
       <Stack.Screen
         name="ShelfSelect"
@@ -96,6 +103,13 @@ const RootStack = () => {
         component={EditTopicScreen}
         options={{
           title: "Edit Topic",
+          ...SCREEN_OPTIONS.presentationModalOptions,
+        }}
+      />
+      <Stack.Screen
+        name="AddEditDates"
+        component={AddEditDatesScreen}
+        options={{
           ...SCREEN_OPTIONS.presentationModalOptions,
         }}
       />

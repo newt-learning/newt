@@ -75,11 +75,7 @@ const Shelf = ({ name, data, numItems, onPressTitle }) => {
           renderItem={({ item }) => (
             <ShelfContentCard
               title={item.name}
-              thumbnailUrl={
-                item.bookInfo.imageLinks.thumbnail
-                  ? item.bookInfo.imageLinks.thumbnail
-                  : null
-              }
+              thumbnailUrl={item.thumbnailUrl}
               onPress={() => handleContentNavigation(item, navigation)}
             />
           )}
