@@ -19,7 +19,7 @@ import ActionButton from "../../components/shared/ActionButton";
 import { OFF_WHITE, GRAY_5, RED, GRAY_1 } from "../../design/colors";
 import { REGULAR, FS14 } from "../../design/typography";
 // Helpers
-import { validateYoutubeUrl } from "./helpers";
+import { validateYoutubeVideoUrl, validateYoutubePlaylistUrl } from "./helpers";
 
 const VideoUrlForm = ({
   videoLink,
@@ -34,7 +34,7 @@ const VideoUrlForm = ({
 
   const getYoutubeInfo = async (videoLink) => {
     // Get videoId from url inputted. If it's not a valid url, this will return null
-    const videoId = validateYoutubeUrl(videoLink);
+    const videoId = validateYoutubeVideoUrl(videoLink);
 
     // If an id can be extracted, get the video info with a request to YouTube API
     if (videoId) {
@@ -56,11 +56,18 @@ const VideoUrlForm = ({
     }
   };
 
+  const getYoutubePlaylistInfo = (seriesLink) => {
+    // Get playlistId from url inputted. If it's not a valid url, this will return null
+    const playlistId = validateYoutubePlaylistUrl(seriesLink);
+
+    console.log(playlistId);
+  };
+
   const onSubmit = () => {
     if (!_.isEmpty(videoLink)) {
       getYoutubeInfo(videoLink);
     } else {
-      console.log(seriesLink);
+      getYoutubePlaylistInfo(seriesLink);
     }
   };
 

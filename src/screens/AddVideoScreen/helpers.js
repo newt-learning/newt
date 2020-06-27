@@ -2,7 +2,7 @@ import _ from "lodash";
 
 // Youtube URL parser which only does full and short links, among others.
 // See: https://stackoverflow.com/questions/3452546/how-do-i-get-the-youtube-video-id-from-a-url
-export function validateYoutubeUrl(url) {
+export function validateYoutubeVideoUrl(url) {
   const regex = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#&?]*).*/;
   const match = url.match(regex);
 
@@ -30,6 +30,18 @@ export function getBestThumbnail(thumbnails) {
   }
 
   return bestOption;
+}
+
+// Youtube playlist URL parser
+// See: https://stackoverflow.com/questions/5288941/validating-youtube-playlist-url-using-regex
+export function validateYoutubePlaylistUrl(url) {
+  const regex = /^.*(youtu.be\/|list=)([^#\&\?]*).*/;
+  const match = url.match(regex);
+
+  // Get playlistId from url if it exists
+  const playlistId = match && match[2] ? match[2] : null;
+
+  return playlistId;
 }
 
 // Extract only relevant video information from result of Youtube API + add
