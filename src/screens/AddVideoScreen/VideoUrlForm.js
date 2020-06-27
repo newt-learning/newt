@@ -10,7 +10,10 @@ import {
 } from "react-native";
 import _ from "lodash";
 // API
-import { getYoutubeVideoInfo } from "../../api/youtubeApi";
+import {
+  getYoutubeVideoInfo,
+  getYoutubePlaylistInfo,
+} from "../../api/youtubeApi";
 // Components
 import { H3, H4 } from "../../components/shared/Headers";
 import BoxTextInput from "../../components/shared/BoxTextInput";
@@ -60,12 +63,14 @@ const VideoUrlForm = ({
     }
   };
 
-  const getYoutubePlaylistInfo = (seriesLink) => {
+  const getPlaylistInfo = async (seriesLink) => {
     // Get playlistId from url inputted. If it's not a valid url, this will return null
     const playlistId = validateYoutubePlaylistUrl(seriesLink);
 
     if (playlistId) {
-      console.log(playlistId);
+      const results = await getYoutubePlaylistInfo(playlistId);
+
+      console.log(results);
     } else {
       setUrlErrorMessage({
         ...urlErrorMessage,
@@ -78,7 +83,7 @@ const VideoUrlForm = ({
     if (!_.isEmpty(videoLink)) {
       getYoutubeInfo(videoLink);
     } else {
-      getYoutubePlaylistInfo(seriesLink);
+      getPlaylistInfo(seriesLink);
     }
   };
 

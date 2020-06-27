@@ -19,3 +19,23 @@ export async function getYoutubeVideoInfo(videoId) {
     throw new Error(error);
   }
 }
+
+export async function getYoutubePlaylistInfo(playlistId) {
+  try {
+    const res = await axios.get(
+      "https://www.googleapis.com/youtube/v3/playlistItems",
+      {
+        params: {
+          playlistId,
+          part: "snippet",
+          maxResults: 50,
+          key: keys.youtubeApiKey,
+        },
+      }
+    );
+
+    return res.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
