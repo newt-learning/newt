@@ -29,7 +29,10 @@ const VideoUrlForm = ({
   setVideoInfo,
   setOnConfirmationSection,
 }) => {
-  const [urlErrorMessage, setUrlErrorMessage] = useState("");
+  const [urlErrorMessage, setUrlErrorMessage] = useState({
+    video: "",
+    series: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
 
   const getYoutubeInfo = async (videoLink) => {
@@ -50,9 +53,10 @@ const VideoUrlForm = ({
         setIsLoading(false);
       }
     } else {
-      setUrlErrorMessage(
-        "Hello friend, please make sure it's a valid YouTube URL."
-      );
+      setUrlErrorMessage({
+        ...urlErrorMessage,
+        video: "Hello friend, please make sure it's a valid YouTube URL.",
+      });
     }
   };
 
@@ -60,7 +64,14 @@ const VideoUrlForm = ({
     // Get playlistId from url inputted. If it's not a valid url, this will return null
     const playlistId = validateYoutubePlaylistUrl(seriesLink);
 
-    console.log(playlistId);
+    if (playlistId) {
+      console.log(playlistId);
+    } else {
+      setUrlErrorMessage({
+        ...urlErrorMessage,
+        series: "Hello friend, please make sure it's a valid YouTube URL.",
+      });
+    }
   };
 
   const onSubmit = () => {
@@ -87,19 +98,19 @@ const VideoUrlForm = ({
                 onChangeText={setVideoLink}
                 onFocus={() => {
                   // If there's an error message, remove it when focusing on input
-                  if (!_.isEmpty(urlErrorMessage)) {
-                    setUrlErrorMessage("");
+                  if (!_.isEmpty(urlErrorMessage.video)) {
+                    setUrlErrorMessage({ ...urlErrorMessage, video: "" });
                   }
                 }}
                 style={StyleSheet.compose([
                   styles.input,
-                  !_.isEmpty(urlErrorMessage) ? styles.inputError : null,
+                  !_.isEmpty(urlErrorMessage.video) ? styles.inputError : null,
                 ])}
                 autoCorrect={false}
               />
               {/* Show error message if there is one */}
-              {!_.isEmpty(urlErrorMessage) && (
-                <Text style={styles.urlError}>{urlErrorMessage}</Text>
+              {!_.isEmpty(urlErrorMessage.video) && (
+                <Text style={styles.urlError}>{urlErrorMessage.video}</Text>
               )}
             </View>
             <H4 style={styles.or}>OR</H4>
@@ -108,9 +119,22 @@ const VideoUrlForm = ({
               <BoxTextInput
                 value={seriesLink}
                 onChangeText={setSeriesLink}
-                style={styles.input}
+                onFocus={() => {
+                  // If there's an error message, remove it when focusing on input
+                  if (!_.isEmpty(urlErrorMessage.series)) {
+                    setUrlErrorMessage({ ...urlErrorMessage, series: "" });
+                  }
+                }}
+                style={StyleSheet.compose([
+                  styles.input,
+                  !_.isEmpty(urlErrorMessage.series) ? styles.inputError : null,
+                ])}
                 autoCorrect={false}
               />
+              {/* Show error message if there is one */}
+              {!_.isEmpty(urlErrorMessage.series) && (
+                <Text style={styles.urlError}>{urlErrorMessage.series}</Text>
+              )}
             </View>
           </View>
 
