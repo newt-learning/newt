@@ -14,7 +14,7 @@ import {
   initializeShelves,
   initializeMultiSelectCheckbox,
 } from "../../helpers/screenHelpers";
-import { getBestThumbnail, extractAndAssembleVideoInfo } from "./helpers";
+import { extractAndAssembleVideoInfo } from "./helpers";
 
 const AddVideoScreen = ({ navigation }) => {
   const [videoLink, setVideoLink] = useState("");

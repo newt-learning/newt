@@ -16,7 +16,7 @@ import { H3, H4 } from "../../components/shared/Headers";
 import BoxTextInput from "../../components/shared/BoxTextInput";
 import ActionButton from "../../components/shared/ActionButton";
 // Design
-import { OFF_WHITE, GRAY_5, RED, GRAY_1, GRAY_2 } from "../../design/colors";
+import { OFF_WHITE, GRAY_5, RED, GRAY_1 } from "../../design/colors";
 import { REGULAR, FS14 } from "../../design/typography";
 // Helpers
 import { validateYoutubeUrl } from "./helpers";
@@ -56,6 +56,14 @@ const VideoUrlForm = ({
     }
   };
 
+  const onSubmit = () => {
+    if (!_.isEmpty(videoLink)) {
+      getYoutubeInfo(videoLink);
+    } else {
+      console.log(seriesLink);
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : null}
@@ -80,6 +88,7 @@ const VideoUrlForm = ({
                   styles.input,
                   !_.isEmpty(urlErrorMessage) ? styles.inputError : null,
                 ])}
+                autoCorrect={false}
               />
               {/* Show error message if there is one */}
               {!_.isEmpty(urlErrorMessage) && (
@@ -93,6 +102,7 @@ const VideoUrlForm = ({
                 value={seriesLink}
                 onChangeText={setSeriesLink}
                 style={styles.input}
+                autoCorrect={false}
               />
             </View>
           </View>
@@ -100,8 +110,8 @@ const VideoUrlForm = ({
           <View style={styles.btnContainer}>
             <ActionButton
               title="Next"
-              onPress={() => getYoutubeInfo(videoLink)}
-              disabled={_.isEmpty(videoLink)}
+              onPress={onSubmit}
+              disabled={_.isEmpty(videoLink) && _.isEmpty(seriesLink)}
               showLoading={isLoading}
             />
           </View>
