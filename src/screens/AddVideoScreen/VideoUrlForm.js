@@ -30,6 +30,7 @@ const VideoUrlForm = ({
   setVideoLink,
   setSeriesLink,
   setVideoInfo,
+  setSeriesInfo,
   setOnConfirmationSection,
 }) => {
   const [urlErrorMessage, setUrlErrorMessage] = useState({
@@ -70,7 +71,14 @@ const VideoUrlForm = ({
     if (playlistId) {
       const results = await getYoutubePlaylistInfo(playlistId);
 
-      console.log(results);
+      if (results.items) {
+        setSeriesInfo(results.items);
+        setIsLoading(false);
+        setOnConfirmationSection(true);
+      } else {
+        setSeriesInfo(false);
+        setIsLoading(false);
+      }
     } else {
       setUrlErrorMessage({
         ...urlErrorMessage,

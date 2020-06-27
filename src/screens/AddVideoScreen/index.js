@@ -6,6 +6,7 @@ import { Context as ContentContext } from "../../context/ContentContext";
 // Components
 import VideoUrlForm from "./VideoUrlForm";
 import VideoConfirmation from "./VideoConfirmation";
+import SeriesConfirmation from "./SeriesConfirmation";
 // Hooks
 import useSingleCheckbox from "../../hooks/useSingleCheckbox";
 import useMultiSelectCheckbox from "../../hooks/useMultiSelectCheckbox";
@@ -20,6 +21,7 @@ const AddVideoScreen = ({ navigation }) => {
   const [videoLink, setVideoLink] = useState("");
   const [seriesLink, setSeriesLink] = useState("");
   const [videoInfo, setVideoInfo] = useState(null);
+  const [seriesInfo, setSeriesInfo] = useState(null);
   // State for start and end dates for Finished books
   const [startDate, setStartDate] = useState(new Date());
   const [finishDate, setFinishDate] = useState(new Date());
@@ -89,30 +91,42 @@ const AddVideoScreen = ({ navigation }) => {
     navigation.goBack();
   };
 
-  return onConfirmationSection ? (
-    <VideoConfirmation
-      videoInfo={videoInfo}
-      setOnConfirmationSection={setOnConfirmationSection}
-      shelves={shelves}
-      onSelectShelf={toggleShelves}
-      topics={topicsList}
-      onSelectTopic={toggleTopicsList}
-      startDate={startDate}
-      finishDate={finishDate}
-      setStartDate={setStartDate}
-      setFinishDate={setFinishDate}
-      onSubmit={addVideo}
-    />
-  ) : (
-    <VideoUrlForm
-      videoLink={videoLink}
-      seriesLink={seriesLink}
-      setVideoLink={setVideoLink}
-      setSeriesLink={setSeriesLink}
-      setVideoInfo={setVideoInfo}
-      setOnConfirmationSection={setOnConfirmationSection}
-    />
-  );
+  // If on the confirmation section, show either the video confirmation or series
+  // confirmation depending on the request that was made. Otherwise show the
+  // input fields to enter the links
+  if (onConfirmationSection) {
+    if (!_.isEmpty(videoInfo)) {
+      return (
+        <VideoConfirmation
+          videoInfo={videoInfo}
+          setOnConfirmationSection={setOnConfirmationSection}
+          shelves={shelves}
+          onSelectShelf={toggleShelves}
+          topics={topicsList}
+          onSelectTopic={toggleTopicsList}
+          startDate={startDate}
+          finishDate={finishDate}
+          setStartDate={setStartDate}
+          setFinishDate={setFinishDate}
+          onSubmit={addVideo}
+        />
+      );
+    } else {
+      return <SeriesConfirmation seriesInfo={seriesInfo} />;
+    }
+  } else {
+    return (
+      <VideoUrlForm
+        videoLink={videoLink}
+        seriesLink={seriesLink}
+        setVideoLink={setVideoLink}
+        setSeriesLink={setSeriesLink}
+        setVideoInfo={setVideoInfo}
+        setSeriesInfo={setSeriesInfo}
+        setOnConfirmationSection={setOnConfirmationSection}
+      />
+    );
+  }
 };
 
 export default AddVideoScreen;
