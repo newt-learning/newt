@@ -6,7 +6,6 @@ import {
   Platform,
   FlatList,
   TouchableHighlight,
-  Text,
 } from "react-native";
 import _ from "lodash";
 // Components
@@ -15,8 +14,9 @@ import TitleSection from "../../components/Content/TitleSection";
 import Description from "../../components/Content/Description";
 import ContentListCard from "../../components/ContentListCard";
 import ClearButton from "../../components/shared/ClearButton";
+import ActionButton from "../../components/shared/ActionButton";
 // Design
-import { GRAY_5, OFF_WHITE } from "../../design/colors";
+import { GRAY_5, OFF_WHITE, GRAY_3 } from "../../design/colors";
 // Helpers
 import { getBestThumbnail } from "./helpers";
 
@@ -55,23 +55,44 @@ const SeriesHeader = ({
           containerStyle={styles.description}
         />
       </View>
-      <H3 style={{ marginTop: 15, marginBottom: 5 }}>Videos</H3>
+      <H3 style={{ marginTop: 15, marginBottom: 5, marginLeft: 10 }}>Videos</H3>
     </>
   );
 };
 
-const SeeAllVideosItem = ({ showAllVideos, onPress }) => {
+const SeriesFooter = ({
+  numOfVideos,
+  showAllVideos,
+  onPressSeeAll,
+  onGoBack,
+}) => {
   return (
-    <TouchableHighlight style={styles.seeAllVideos}>
-      <ClearButton
-        title={showAllVideos ? "See less" : "See all"}
-        onPress={onPress}
-      />
-    </TouchableHighlight>
+    <>
+      {numOfVideos > 5 ? (
+        <TouchableHighlight style={styles.seeAllVideos}>
+          <ClearButton
+            title={showAllVideos ? "See less" : "See all"}
+            onPress={onPressSeeAll}
+          />
+        </TouchableHighlight>
+      ) : null}
+      <View style={styles.confirmBtnContainer}>
+        <ActionButton
+          title="Go Back"
+          buttonContainerStyle={{ marginBottom: 15 }}
+          buttonStyle={styles.backBtn}
+          onPress={onGoBack}
+        />
+        <ActionButton
+          title="Add Series"
+          onPress={() => console.log("add series")}
+        />
+      </View>
+    </>
   );
 };
 
-const SeriesConfirmation = ({ seriesInfo }) => {
+const SeriesConfirmation = ({ seriesInfo, onGoBack }) => {
   const {
     name,
     authors,
@@ -121,12 +142,12 @@ const SeriesConfirmation = ({ seriesInfo }) => {
       }}
       keyExtractor={(item) => item.snippet.resourceId.videoId}
       ListFooterComponent={
-        numOfVideos > 5 ? (
-          <SeeAllVideosItem
-            showAllVideos={showAllVideos}
-            onPress={() => setShowAllVideos(!showAllVideos)}
-          />
-        ) : null
+        <SeriesFooter
+          numOfVideos={numOfVideos}
+          showAllVideos={showAllVideos}
+          onPressSeeAll={() => setShowAllVideos(!showAllVideos)}
+          onGoBack={onGoBack}
+        />
       }
       contentContainerStyle={styles.confirmationContainer}
     />
@@ -189,6 +210,14 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
     backgroundColor: OFF_WHITE,
+  },
+  backBtn: {
+    backgroundColor: GRAY_3,
+  },
+  confirmBtnContainer: {
+    alignItems: "center",
+    marginTop: 40,
+    marginBottom: 15,
   },
 });
 

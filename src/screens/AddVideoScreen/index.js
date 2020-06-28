@@ -112,7 +112,12 @@ const AddVideoScreen = ({ navigation }) => {
         />
       );
     } else {
-      return <SeriesConfirmation seriesInfo={seriesInfo} />;
+      return (
+        <SeriesConfirmation
+          seriesInfo={seriesInfo}
+          onGoBack={() => setOnConfirmationSection(false)}
+        />
+      );
     }
   } else {
     return (
