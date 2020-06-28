@@ -6,6 +6,7 @@ import {
   Platform,
   FlatList,
   TouchableHighlight,
+  Text,
 } from "react-native";
 import _ from "lodash";
 // Components
@@ -19,7 +20,13 @@ import { GRAY_5, OFF_WHITE } from "../../design/colors";
 // Helpers
 import { getBestThumbnail } from "./helpers";
 
-const SeriesHeader = ({ thumbnail, name, authors, description }) => {
+const SeriesHeader = ({
+  thumbnail,
+  name,
+  authors,
+  description,
+  numOfVideos,
+}) => {
   // Used to expand or contract the description text
   const [showMore, setShowMore] = useState(false);
 
@@ -34,7 +41,12 @@ const SeriesHeader = ({ thumbnail, name, authors, description }) => {
           />
         </View>
       ) : null}
-      <TitleSection title={name} authors={authors} noBottomBorder />
+      <TitleSection
+        title={name}
+        authors={authors}
+        subtitle={`${numOfVideos} videos`}
+        noBottomBorder
+      />
       <View style={styles.group}>
         <Description
           text={description}
@@ -84,6 +96,7 @@ const SeriesConfirmation = ({ seriesInfo }) => {
           name={name}
           authors={authors}
           description={description}
+          numOfVideos={numOfVideos}
         />
       }
       data={showAllVideos ? videos : videos.slice(0, initialVideosToRender)}

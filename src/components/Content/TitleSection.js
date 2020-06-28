@@ -11,6 +11,7 @@ const TitleSection = ({
   title,
   authors,
   contentType,
+  subtitle,
   onPress,
   noBottomBorder = false,
 }) => {
@@ -24,6 +25,7 @@ const TitleSection = ({
       {authors ? (
         <Text style={styles.author}>by {authors.join(", ")}</Text>
       ) : null}
+      {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
       {/* If content is a video, show button that plays video wherever (right 
         now only YouTube) */}
       {contentType === "video" && (
