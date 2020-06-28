@@ -1,11 +1,19 @@
 import React, { useState } from "react";
-import { Image, StyleSheet, View, Platform, FlatList } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  View,
+  Platform,
+  FlatList,
+  TouchableHighlight,
+} from "react-native";
 import _ from "lodash";
 // Components
 import { H3 } from "../../components/shared/Headers";
 import TitleSection from "../../components/Content/TitleSection";
 import Description from "../../components/Content/Description";
 import ContentListCard from "../../components/ContentListCard";
+import ClearButton from "../../components/shared/ClearButton";
 // Design
 import { GRAY_5, OFF_WHITE } from "../../design/colors";
 // Helpers
@@ -40,6 +48,17 @@ const SeriesHeader = ({ thumbnail, name, authors, description }) => {
   );
 };
 
+const SeeAllVideosItem = ({ showAllVideos, onPress }) => {
+  return (
+    <TouchableHighlight style={styles.seeAllVideos}>
+      <ClearButton
+        title={showAllVideos ? "See less" : "See all"}
+        onPress={onPress}
+      />
+    </TouchableHighlight>
+  );
+};
+
 const SeriesConfirmation = ({ seriesInfo }) => {
   const {
     name,
@@ -52,6 +71,11 @@ const SeriesConfirmation = ({ seriesInfo }) => {
   // thumbnail for playlist
   const bestThumbnail = getBestThumbnail(thumbnails);
 
+  const numOfVideos = videos.length;
+  const initialVideosToRender = numOfVideos > 5 ? 5 : numOfVideos;
+  // Toggle between seeing first 5 or all videos
+  const [showAllVideos, setShowAllVideos] = useState(false);
+
   return (
     <FlatList
       ListHeaderComponent={
@@ -62,13 +86,15 @@ const SeriesConfirmation = ({ seriesInfo }) => {
           description={description}
         />
       }
-      data={videos}
+      data={showAllVideos ? videos : videos.slice(0, initialVideosToRender)}
       renderItem={({ item, index }) => {
         const bestThumbnail = getBestThumbnail(item.snippet.thumbnails);
         // Rounded corners for first and last card
         const cardStyle = StyleSheet.compose([
           index === 0 && styles.firstVideoCard,
-          index === videos.length - 1 && styles.lastVideoCard,
+          numOfVideos <= 5 && index === numOfVideos - 1
+            ? styles.lastVideoCard
+            : null,
         ]);
 
         return (
@@ -81,6 +107,14 @@ const SeriesConfirmation = ({ seriesInfo }) => {
         );
       }}
       keyExtractor={(item) => item.snippet.resourceId.videoId}
+      ListFooterComponent={
+        numOfVideos > 5 ? (
+          <SeeAllVideosItem
+            showAllVideos={showAllVideos}
+            onPress={() => setShowAllVideos(!showAllVideos)}
+          />
+        ) : null
+      }
       contentContainerStyle={styles.confirmationContainer}
     />
   );
@@ -131,9 +165,17 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 12,
   },
   lastVideoCard: {
+    borderBottomRightRadius: 12,
+    borderBottomLeftRadius: 12,
+    borderBottomWidth: 0,
+  },
+  seeAllVideos: {
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
-    borderBottomWidth: 0,
+    backgroundColor: OFF_WHITE,
   },
 });
 
