@@ -99,7 +99,6 @@ const AddVideoScreen = ({ navigation }) => {
       return (
         <VideoConfirmation
           videoInfo={videoInfo}
-          setOnConfirmationSection={setOnConfirmationSection}
           shelves={shelves}
           onSelectShelf={toggleShelves}
           topics={topicsList}
@@ -108,6 +107,7 @@ const AddVideoScreen = ({ navigation }) => {
           finishDate={finishDate}
           setStartDate={setStartDate}
           setFinishDate={setFinishDate}
+          onGoBack={() => setOnConfirmationSection(false)}
           onSubmit={addVideo}
         />
       );

@@ -17,7 +17,7 @@ import { getBestThumbnail } from "./helpers";
 
 const VideoConfirmation = ({
   videoInfo,
-  setOnConfirmationSection,
+  onGoBack,
   shelves,
   onSelectShelf,
   topics,
@@ -93,7 +93,7 @@ const VideoConfirmation = ({
         <ActionButton
           title="Back"
           buttonStyle={styles.backBtn}
-          onPress={() => setOnConfirmationSection(false)}
+          onPress={onGoBack}
         />
         <ActionButton
           title="Confirm"

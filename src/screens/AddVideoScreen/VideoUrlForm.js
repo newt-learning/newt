@@ -69,6 +69,7 @@ const VideoUrlForm = ({
     const playlistId = validateYoutubePlaylistUrl(seriesLink);
 
     if (playlistId) {
+      setIsLoading(true);
       const seriesInfo = await getYoutubePlaylistInfo(playlistId);
 
       if (seriesInfo) {
