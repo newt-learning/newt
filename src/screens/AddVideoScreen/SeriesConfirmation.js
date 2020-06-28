@@ -47,13 +47,20 @@ const SeriesConfirmation = ({ seriesInfo }) => {
         />
       </View>
       <H3 style={{ marginTop: 15, marginBottom: 5 }}>Videos</H3>
-      {_.map(videos, (video) => {
+      {_.map(videos, (video, index) => {
         const bestThumbnail = getBestThumbnail(video.snippet.thumbnails);
+        // Rounded corners for first and last card
+        const cardStyle = StyleSheet.compose([
+          index === 0 && styles.firstVideoCard,
+          index === videos.length - 1 && styles.lastVideoCard,
+        ]);
 
         return (
           <ContentListCard
             title={video.snippet.title}
             thumbnailUrl={bestThumbnail ? bestThumbnail.url : null}
+            cardStyle={cardStyle}
+            titleContainerStyle={styles.videoCardTitleContainer}
             key={video.snippet.resourceId.videoId}
           />
         );
@@ -97,6 +104,18 @@ const styles = StyleSheet.create({
   },
   description: {
     padding: 5,
+    borderBottomWidth: 0,
+  },
+  videoCardTitleContainer: {
+    justifyContent: "center",
+  },
+  firstVideoCard: {
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+  },
+  lastVideoCard: {
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
     borderBottomWidth: 0,
   },
 });

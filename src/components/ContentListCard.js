@@ -17,8 +17,13 @@ const ContentListCard = ({
   thumbnailUrl,
   onPress,
   cardStyle: passedCardStyle,
+  titleContainerStyle: passedTitleContainerStyle,
 }) => {
   const cardStyle = StyleSheet.compose(styles.cardContainer, passedCardStyle);
+  const titleContainerStyle = StyleSheet.compose(
+    styles.bookInfo,
+    passedTitleContainerStyle
+  );
 
   return (
     <TouchableHighlight
@@ -38,7 +43,7 @@ const ContentListCard = ({
           }
           resizeMode="contain"
         />
-        <View style={styles.bookInfo}>
+        <View style={titleContainerStyle}>
           {title ? <Text style={styles.title}>{title}</Text> : null}
           {!_.isEmpty(authors) ? (
             <Text style={styles.author}>by {authors.join(", ")}</Text>
