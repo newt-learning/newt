@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ScrollView, Image, StyleSheet, View, Platform } from "react-native";
+import { Image, StyleSheet, View, Platform, FlatList } from "react-native";
 import _ from "lodash";
 // Components
 import { H3 } from "../../components/shared/Headers";
@@ -11,27 +11,16 @@ import { GRAY_5, OFF_WHITE } from "../../design/colors";
 // Helpers
 import { getBestThumbnail } from "./helpers";
 
-const SeriesConfirmation = ({ seriesInfo }) => {
+const SeriesHeader = ({ thumbnail, name, authors, description }) => {
   // Used to expand or contract the description text
   const [showMore, setShowMore] = useState(false);
 
-  const {
-    name,
-    authors,
-    description,
-    videos,
-    seriesInfo: { thumbnails },
-  } = seriesInfo;
-
-  // thumbnail for playlist
-  const bestThumbnail = getBestThumbnail(thumbnails);
-
   return (
-    <ScrollView contentContainerStyle={styles.confirmationContainer}>
-      {bestThumbnail ? (
+    <>
+      {thumbnail ? (
         <View style={styles.thumbnailContainer}>
           <Image
-            source={{ uri: bestThumbnail.url }}
+            source={{ uri: thumbnail }}
             style={styles.thumbnail}
             resizeMode="contain"
           />
@@ -47,8 +36,35 @@ const SeriesConfirmation = ({ seriesInfo }) => {
         />
       </View>
       <H3 style={{ marginTop: 15, marginBottom: 5 }}>Videos</H3>
-      {_.map(videos, (video, index) => {
-        const bestThumbnail = getBestThumbnail(video.snippet.thumbnails);
+    </>
+  );
+};
+
+const SeriesConfirmation = ({ seriesInfo }) => {
+  const {
+    name,
+    authors,
+    description,
+    videos,
+    seriesInfo: { thumbnails },
+  } = seriesInfo;
+
+  // thumbnail for playlist
+  const bestThumbnail = getBestThumbnail(thumbnails);
+
+  return (
+    <FlatList
+      ListHeaderComponent={
+        <SeriesHeader
+          thumbnail={bestThumbnail ? bestThumbnail.url : null}
+          name={name}
+          authors={authors}
+          description={description}
+        />
+      }
+      data={videos}
+      renderItem={({ item, index }) => {
+        const bestThumbnail = getBestThumbnail(item.snippet.thumbnails);
         // Rounded corners for first and last card
         const cardStyle = StyleSheet.compose([
           index === 0 && styles.firstVideoCard,
@@ -57,15 +73,16 @@ const SeriesConfirmation = ({ seriesInfo }) => {
 
         return (
           <ContentListCard
-            title={video.snippet.title}
+            title={item.snippet.title}
             thumbnailUrl={bestThumbnail ? bestThumbnail.url : null}
             cardStyle={cardStyle}
             titleContainerStyle={styles.videoCardTitleContainer}
-            key={video.snippet.resourceId.videoId}
           />
         );
-      })}
-    </ScrollView>
+      }}
+      keyExtractor={(item) => item.snippet.resourceId.videoId}
+      contentContainerStyle={styles.confirmationContainer}
+    />
   );
 };
 
