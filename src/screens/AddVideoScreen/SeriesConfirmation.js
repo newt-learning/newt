@@ -65,6 +65,7 @@ const SeriesFooter = ({
   showAllVideos,
   onPressSeeAll,
   onGoBack,
+  onSubmit,
 }) => {
   return (
     <>
@@ -83,16 +84,13 @@ const SeriesFooter = ({
           buttonStyle={styles.backBtn}
           onPress={onGoBack}
         />
-        <ActionButton
-          title="Add Series"
-          onPress={() => console.log("add series")}
-        />
+        <ActionButton title="Add Series" onPress={onSubmit} />
       </View>
     </>
   );
 };
 
-const SeriesConfirmation = ({ seriesInfo, onGoBack }) => {
+const SeriesConfirmation = ({ seriesInfo, onGoBack, onSubmit }) => {
   const {
     name,
     authors,
@@ -147,6 +145,7 @@ const SeriesConfirmation = ({ seriesInfo, onGoBack }) => {
           showAllVideos={showAllVideos}
           onPressSeeAll={() => setShowAllVideos(!showAllVideos)}
           onGoBack={onGoBack}
+          onSubmit={onSubmit}
         />
       }
       contentContainerStyle={styles.confirmationContainer}

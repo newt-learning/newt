@@ -15,7 +15,10 @@ import {
   initializeShelves,
   initializeMultiSelectCheckbox,
 } from "../../helpers/screenHelpers";
-import { extractAndAssembleVideoInfo } from "./helpers";
+import {
+  extractAndAssembleVideoInfo,
+  extractAndAssemblePlaylistInfo,
+} from "./helpers";
 
 const AddVideoScreen = ({ navigation }) => {
   const [videoLink, setVideoLink] = useState("");
@@ -91,6 +94,12 @@ const AddVideoScreen = ({ navigation }) => {
     navigation.goBack();
   };
 
+  const addSeries = () => {
+    const formattedSeriesInfo = extractAndAssemblePlaylistInfo(seriesInfo);
+
+    console.log(formattedSeriesInfo.videos[4]);
+  };
+
   // If on the confirmation section, show either the video confirmation or series
   // confirmation depending on the request that was made. Otherwise show the
   // input fields to enter the links
@@ -116,6 +125,7 @@ const AddVideoScreen = ({ navigation }) => {
         <SeriesConfirmation
           seriesInfo={seriesInfo}
           onGoBack={() => setOnConfirmationSection(false)}
+          onSubmit={addSeries}
         />
       );
     }
