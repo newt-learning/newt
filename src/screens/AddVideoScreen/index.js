@@ -34,9 +34,9 @@ const AddVideoScreen = ({ navigation }) => {
   const [onConfirmationSection, setOnConfirmationSection] = useState(false);
 
   const { state: topicsState, fetchTopics } = useContext(TopicsContext);
-  const { addContent } = useContext(ContentContext);
+  const { addContent, fetchContent } = useContext(ContentContext);
   // API request func. to DB to create a series
-  const [createSeries] = useCreateSeries();
+  const [createSeries, { status }] = useCreateSeries();
 
   // Initialize shelves and topics checkboxes/selectors
   const [shelves, toggleShelves] = useSingleCheckbox(
@@ -98,10 +98,13 @@ const AddVideoScreen = ({ navigation }) => {
     navigation.goBack();
   };
 
-  const addSeries = () => {
+  const addSeries = async () => {
     const formattedSeriesInfo = extractAndAssemblePlaylistInfo(seriesInfo);
 
-    createSeries(formattedSeriesInfo);
+    // Create series and fetch content so it's updated
+    await createSeries(formattedSeriesInfo);
+    fetchContent();
+    navigation.goBack();
   };
 
   // If on the confirmation section, show either the video confirmation or series
@@ -130,6 +133,7 @@ const AddVideoScreen = ({ navigation }) => {
           seriesInfo={seriesInfo}
           onGoBack={() => setOnConfirmationSection(false)}
           onSubmit={addSeries}
+          isSubmitting={status === "loading"}
         />
       );
     }
