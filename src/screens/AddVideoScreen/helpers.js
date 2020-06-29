@@ -105,7 +105,17 @@ export function extractAndAssembleVideoInfo(
 // API + add other content info like shelf
 export function extractAndAssemblePlaylistInfo(seriesInfo) {
   const { videos } = seriesInfo;
+  const seriesThumbnails = seriesInfo.seriesInfo.thumbnails;
+  const bestSeriesThumbnail = getBestThumbnail(seriesThumbnails);
+
   let formattedSeriesInfo = { ...seriesInfo };
+
+  // Add best thumbnail for series
+  formattedSeriesInfo.thumbnailUrl = bestSeriesThumbnail
+    ? bestSeriesThumbnail.url
+    : null;
+  // Default shelf to "Want to Learn"
+  formattedSeriesInfo.shelf = "Want to Learn";
 
   // Format the videos from YouTube's API response to content schema
   if (!_.isEmpty(videos)) {
