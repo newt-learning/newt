@@ -1,5 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import _ from "lodash";
+// API
+import { useCreateSeries } from "../../api/series";
 // Context
 import { Context as TopicsContext } from "../../context/TopicsContext";
 import { Context as ContentContext } from "../../context/ContentContext";
@@ -33,6 +35,8 @@ const AddVideoScreen = ({ navigation }) => {
 
   const { state: topicsState, fetchTopics } = useContext(TopicsContext);
   const { addContent } = useContext(ContentContext);
+  // API request func. to DB to create a series
+  const [createSeries] = useCreateSeries();
 
   // Initialize shelves and topics checkboxes/selectors
   const [shelves, toggleShelves] = useSingleCheckbox(
@@ -97,7 +101,7 @@ const AddVideoScreen = ({ navigation }) => {
   const addSeries = () => {
     const formattedSeriesInfo = extractAndAssemblePlaylistInfo(seriesInfo);
 
-    console.log(formattedSeriesInfo.videos[4]);
+    createSeries(formattedSeriesInfo);
   };
 
   // If on the confirmation section, show either the video confirmation or series
