@@ -6,6 +6,7 @@ import MyLibraryScreen from "../screens/MyLibraryScreen";
 import IndividualShelfScreen from "../screens/IndividualShelfScreen";
 import BookScreen from "../screens/BookScreen";
 import VideoScreen from "../screens/VideoScreen";
+import SeriesScreen from "../screens/SeriesScreen";
 import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
 import CreateTopicScreen from "../screens/CreateTopicScreen";
@@ -47,6 +48,11 @@ const MainStack = () => {
       <Stack.Screen
         name="VideoScreen"
         component={VideoScreen}
+        options={{ title: null }}
+      />
+      <Stack.Screen
+        name="SeriesScreen"
+        component={SeriesScreen}
         options={{ title: null }}
       />
       <Stack.Screen

@@ -69,6 +69,8 @@ export const handleContentNavigation = (content, navigationProp) => {
       return navigationProp.navigate("BookScreen", { bookInfo: content });
     case "video":
       return navigationProp.navigate("VideoScreen", { videoInfo: content });
+    case "series":
+      return navigationProp.navigate("SeriesScreen", { seriesInfo: content });
     default:
       return;
   }
