@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import {
-  Image,
   StyleSheet,
   View,
   Platform,
@@ -11,6 +10,7 @@ import _ from "lodash";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
+import StackedImages from "../components/shared/StackedImages";
 import { H3 } from "../components/shared/Headers";
 import TitleSection from "../components/Content/TitleSection";
 import Description from "../components/Content/Description";
@@ -22,7 +22,7 @@ import { GRAY_5, OFF_WHITE } from "../design/colors";
 import { handleContentNavigation } from "../helpers/screenHelpers";
 
 const SeriesHeader = ({
-  thumbnail,
+  thumbnailUrls,
   name,
   authors,
   description,
@@ -33,13 +33,9 @@ const SeriesHeader = ({
 
   return (
     <>
-      {thumbnail ? (
+      {!_.isEmpty(thumbnailUrls) ? (
         <View style={styles.thumbnailContainer}>
-          <Image
-            source={{ uri: thumbnail }}
-            style={styles.thumbnail}
-            resizeMode="contain"
-          />
+          <StackedImages imageUrls={thumbnailUrls} />
         </View>
       ) : null}
       <TitleSection
@@ -92,6 +88,12 @@ const SeriesScreen = ({ route, navigation }) => {
   );
   const numOfVideos = videos.length;
   const initialVideosToRender = numOfVideos > 5 ? 5 : numOfVideos;
+
+  // Get the first 3 thumbnail URLs to display in the stacked image
+  let thumbnailUrls = [];
+  for (let i = 0; i < 3; i++) {
+    thumbnailUrls.push(videos[i].thumbnailUrl);
+  }
   // Toggle between seeing first 5 or all videos
   const [showAllVideos, setShowAllVideos] = useState(false);
 
@@ -99,7 +101,7 @@ const SeriesScreen = ({ route, navigation }) => {
     <FlatList
       ListHeaderComponent={
         <SeriesHeader
-          thumbnail={thumbnailUrl}
+          thumbnailUrls={thumbnailUrls}
           name={name}
           authors={authors}
           description={description}
@@ -158,12 +160,7 @@ const styles = StyleSheet.create({
         elevation: 0,
       },
     }),
-  },
-  thumbnail: {
-    borderRadius: 8,
-    height: 150,
-    width: 266.67,
-    marginBottom: 10,
+    marginTop: 20,
   },
   group: {
     marginTop: 10,
