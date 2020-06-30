@@ -8,7 +8,11 @@ const ShelvesSection = ({ items }) => {
   const navigation = useNavigation();
 
   const filterAndOrderContentByShelf = (shelf) => {
-    const filteredContent = _.filter(items, (item) => item.shelf === shelf);
+    // Filter items by shelf and remove items that are part of a series
+    const filteredContent = _.filter(
+      items,
+      (item) => item.shelf === shelf && !item.partOfSeries
+    );
     return _.orderBy(filteredContent, "lastUpdated", "desc");
   };
 
