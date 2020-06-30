@@ -46,6 +46,7 @@ export async function getYoutubePlaylistInfo(playlistId) {
         name: youtubePlaylist.snippet.title,
         description: youtubePlaylist.snippet.description,
         authors: [youtubePlaylist.snippet.channelTitle],
+        type: "series",
         contentType: "video",
         seriesInfo: {
           source: "youtube",
