@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import _ from "lodash";
+// API
+import { useFetchSeries } from "../api/series";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
@@ -8,9 +10,12 @@ import ContentList from "../components/ContentList";
 
 const IndividualShelfScreen = ({ route }) => {
   const {
-    state: { items },
+    state: { items: contentItems },
   } = useContext(ContentContext);
+  const { data: seriesData } = useFetchSeries();
   const { title } = route.params;
+
+  const items = [...contentItems, ...seriesData];
 
   const filterAndOrderContentByShelf = (shelf) => {
     const filteredContent = _.filter(
