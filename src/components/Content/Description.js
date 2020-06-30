@@ -15,6 +15,7 @@ const Description = ({
   text,
   showMore,
   setShowMore,
+  numCharacters = TEXT_LIMIT,
   containerStyle: passedContainerStyle,
 }) => {
   if (!text) {
@@ -30,7 +31,7 @@ const Description = ({
     <View style={containerStyle}>
       <SubHeader>Description</SubHeader>
       <Text style={styles.text}>
-        {showMore ? text : shortenText(text, TEXT_LIMIT)}
+        {showMore ? text : shortenText(text, numCharacters)}
       </Text>
       {text.length > TEXT_LIMIT ? (
         <ShowMoreShowLess showMore={showMore} setShowMore={setShowMore} />

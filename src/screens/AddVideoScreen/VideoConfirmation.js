@@ -65,6 +65,7 @@ const VideoConfirmation = ({
           text={description}
           showMore={showMore}
           setShowMore={setShowMore}
+          numCharacters={200}
           containerStyle={styles.description}
         />
       </View>

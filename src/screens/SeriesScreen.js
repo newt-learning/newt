@@ -18,6 +18,7 @@ import ContentListCard from "../components/ContentListCard";
 import ClearButton from "../components/shared/ClearButton";
 // Design
 import { GRAY_5, OFF_WHITE } from "../design/colors";
+// Helpers
 import { handleContentNavigation } from "../helpers/screenHelpers";
 
 const SeriesHeader = ({
@@ -52,6 +53,7 @@ const SeriesHeader = ({
           text={description}
           showMore={showMore}
           setShowMore={setShowMore}
+          numCharacters={200}
           containerStyle={styles.description}
         />
       </View>
