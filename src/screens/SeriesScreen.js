@@ -18,6 +18,7 @@ import ContentListCard from "../components/ContentListCard";
 import ClearButton from "../components/shared/ClearButton";
 // Design
 import { GRAY_5, OFF_WHITE } from "../design/colors";
+import { handleContentNavigation } from "../helpers/screenHelpers";
 
 const SeriesHeader = ({
   thumbnail,
@@ -74,7 +75,7 @@ const SeriesFooter = ({ numOfVideos, showAllVideos, onPressSeeAll }) => {
   );
 };
 
-const SeriesScreen = ({ route }) => {
+const SeriesScreen = ({ route, navigation }) => {
   const { seriesInfo } = route.params;
   const { name, authors, description, thumbnailUrl, contentIds } = seriesInfo;
 
@@ -119,6 +120,7 @@ const SeriesScreen = ({ route }) => {
             thumbnailUrl={item.thumbnailUrl}
             cardStyle={cardStyle}
             titleContainerStyle={styles.videoCardTitleContainer}
+            onPress={() => handleContentNavigation(item, navigation)}
           />
         );
       }}
