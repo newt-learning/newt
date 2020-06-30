@@ -15,7 +15,13 @@ import { Feather } from "@expo/vector-icons";
 import { H2 } from "../shared/Headers";
 // Styling
 import { REGULAR, SEMIBOLD, FS14 } from "../../design/typography";
-import { OFF_BLACK, GRAY_2, GRAY_4, OFF_WHITE } from "../../design/colors";
+import {
+  OFF_BLACK,
+  GRAY_2,
+  GRAY_4,
+  OFF_WHITE,
+  ORANGE_5,
+} from "../../design/colors";
 // Helpers
 import { handleContentNavigation } from "../../helpers/screenHelpers";
 import { shortenText } from "../../helpers/textHelpers";
@@ -33,10 +39,15 @@ const SeeAllCard = ({ onPress }) => (
   </TouchableHighlight>
 );
 
-let ShelfContentCard = ({ title, thumbnailUrl, onPress }) => {
+let ShelfContentCard = ({ title, thumbnailUrl, type, onPress }) => {
+  const cardStyle = StyleSheet.compose([
+    styles.card,
+    type === "series" && styles.seriesCard,
+  ]);
+
   return (
     <TouchableHighlight
-      style={styles.card}
+      style={cardStyle}
       onPress={onPress}
       underlayColor={GRAY_4}
     >
@@ -76,6 +87,7 @@ const Shelf = ({ name, data, numItems, onPressTitle }) => {
             <ShelfContentCard
               title={item.name}
               thumbnailUrl={item.thumbnailUrl}
+              type={item.type}
               onPress={() => handleContentNavigation(item, navigation)}
             />
           )}
@@ -107,6 +119,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
     padding: 10,
     backgroundColor: OFF_WHITE,
+  },
+  seriesCard: {
+    backgroundColor: ORANGE_5,
   },
   emptyText: {
     fontSize: FS14,
