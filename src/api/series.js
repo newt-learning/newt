@@ -1,7 +1,11 @@
 import newtApi from "./newtApi";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 
 // API calls
+const fetchSeries = async () => {
+  const { data } = await newtApi.get("/series");
+  return data;
+};
 const createSeries = async (data) => {
   try {
     await newtApi.post("/series/create", data);
@@ -11,8 +15,11 @@ const createSeries = async (data) => {
 };
 
 // React-query bindings
+function useFetchSeries() {
+  return useQuery("series", fetchSeries);
+}
 function useCreateSeries() {
   return useMutation(createSeries);
 }
 
-export { useCreateSeries };
+export { useFetchSeries, useCreateSeries };
