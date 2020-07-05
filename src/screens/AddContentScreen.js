@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StatusBar, StyleSheet } from "react-native";
+import { View, StatusBar, StyleSheet, FlatList } from "react-native";
 // API
 import { useFetchNewtContent } from "../api/newtContent";
 // Components
@@ -8,7 +8,8 @@ import ShelfContentCard from "../components/MyLibrary/ShelfContentCard";
 import ContentButton from "../components/ContentButton";
 // Styling
 import { GRAY_5, OFF_WHITE, WHITE, RUBY, ORANGE } from "../design/colors";
-import { FlatList } from "react-native-gesture-handler";
+// Helpers
+import { handleContentNavigation } from "../helpers/screenHelpers";
 
 const AddContentScreen = ({ navigation }) => {
   const { data: newtContentData } = useFetchNewtContent();
@@ -26,7 +27,12 @@ const AddContentScreen = ({ navigation }) => {
         data={newtContentData}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
-          <ShelfContentCard title={item.name} type={item.type} />
+          <ShelfContentCard
+            title={item.name}
+            thumbnailUrl={item.thumbnailUrl}
+            type={item.type}
+            onPress={() => handleContentNavigation(item, navigation)}
+          />
         )}
       />
       <StatusBar barStyle="dark-content" backgroundColor={OFF_WHITE} />

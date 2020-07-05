@@ -34,9 +34,9 @@ const VideoScreen = ({ route, navigation }) => {
 
   // Need to come up with a better, more efficient way of ensuring the screen
   // updates when the data updates.
-  const videoInfo = contentState.items.filter(
-    (item) => item._id === passedVideoInfo._id
-  )[0];
+  const videoInfo =
+    contentState.items.filter((item) => item._id === passedVideoInfo._id)[0] ??
+    passedVideoInfo;
 
   const {
     _id,
