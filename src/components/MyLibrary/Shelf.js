@@ -4,7 +4,6 @@ import {
   View,
   StyleSheet,
   FlatList,
-  Image,
   TouchableOpacity,
   TouchableHighlight,
 } from "react-native";
@@ -13,18 +12,12 @@ import _ from "lodash";
 import { Feather } from "@expo/vector-icons";
 // Components
 import { H2 } from "../shared/Headers";
+import ShelfContentCard from "./ShelfContentCard";
 // Styling
-import { REGULAR, SEMIBOLD, FS14 } from "../../design/typography";
-import {
-  OFF_BLACK,
-  GRAY_2,
-  GRAY_4,
-  OFF_WHITE,
-  ORANGE_5,
-} from "../../design/colors";
+import { REGULAR, FS14 } from "../../design/typography";
+import { OFF_BLACK, GRAY_2, GRAY_4, OFF_WHITE } from "../../design/colors";
 // Helpers
 import { handleContentNavigation } from "../../helpers/screenHelpers";
-import { shortenText } from "../../helpers/textHelpers";
 
 const SeeAllCard = ({ onPress }) => (
   <TouchableHighlight
@@ -38,30 +31,6 @@ const SeeAllCard = ({ onPress }) => (
     </>
   </TouchableHighlight>
 );
-
-let ShelfContentCard = ({ title, thumbnailUrl, type, onPress }) => {
-  const cardStyle = StyleSheet.compose([
-    styles.card,
-    type === "series" && styles.seriesCard,
-  ]);
-
-  return (
-    <TouchableHighlight
-      style={cardStyle}
-      onPress={onPress}
-      underlayColor={GRAY_4}
-    >
-      <>
-        <Image
-          style={styles.thumbnail}
-          resizeMode="contain"
-          source={thumbnailUrl ? { uri: thumbnailUrl } : null}
-        />
-        <Text style={styles.bookTitle}>{shortenText(title, 35)}</Text>
-      </>
-    </TouchableHighlight>
-  );
-};
 
 const Shelf = ({ name, data, numItems, onPressTitle }) => {
   const navigation = useNavigation();
@@ -111,33 +80,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  card: {
-    height: 150,
-    width: 150,
-    justifyContent: "center",
-    borderRadius: 10,
-    marginRight: 10,
-    padding: 10,
-    backgroundColor: OFF_WHITE,
-  },
-  seriesCard: {
-    backgroundColor: ORANGE_5,
-  },
   emptyText: {
     fontSize: FS14,
     fontFamily: REGULAR,
     marginLeft: 15,
     color: GRAY_2,
-  },
-  thumbnail: {
-    height: 80,
-    marginBottom: 10,
-  },
-  bookTitle: {
-    fontFamily: SEMIBOLD,
-    fontSize: FS14,
-    alignSelf: "center",
-    textAlign: "center",
   },
   seeAllCard: {
     height: 150,
