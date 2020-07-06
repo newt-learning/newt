@@ -98,12 +98,21 @@ const VideoScreen = ({ route, navigation }) => {
         topics={topics}
         startFinishDates={startFinishDates}
         dateAdded={dateAdded}
-        onPress={() =>
-          navigation.navigate("ShelfSelect", {
-            contentInfo: videoInfo,
-            buttonText: "Confirm",
-            addToLibrary: false,
-          })
+        onPress={
+          shelf
+            ? () =>
+                navigation.navigate("ShelfSelect", {
+                  contentInfo: videoInfo,
+                  buttonText: "Confirm",
+                  addToLibrary: false,
+                })
+            : () =>
+                navigation.navigate("ShelfSelect", {
+                  contentInfo: videoInfo,
+                  buttonText: "Add to Library",
+                  addToLibrary: true,
+                  contentType: "video",
+                })
         }
       />
       <Description
