@@ -171,13 +171,18 @@ export function extractAndAssemblePlaylistInfo(seriesInfo) {
 export function convertFromNewtContentToUserContent(contentInfo) {
   let convertedContentInfo = { ...contentInfo };
 
-  convertedContentInfo.isOnNewtContentDatabase = true;
-  convertedContentInfo.newtContentId = contentInfo._id;
-  convertedContentInfo.newtContentCreatorId =
+  // Add Newt Content info
+  convertedContentInfo.newtContentInfo = {};
+  convertedContentInfo.newtContentInfo.isOnNewtContentDatabase = true;
+  convertedContentInfo.newtContentInfo.newtContentId = contentInfo._id;
+  convertedContentInfo.newtContentInfo.newtContentCreatorId =
     contentInfo.contentCreator.contentCreatorId;
-  convertedContentInfo.author = [contentInfo.contentCreator.name];
-  convertedContentInfo.newtSeriesId = contentInfo.series.newtSeriesId;
+  convertedContentInfo.newtContentInfo.newtSeriesId =
+    contentInfo.series.newtSeriesId;
+  // Add author and source
+  convertedContentInfo.authors = [contentInfo.contentCreator.name];
   convertedContentInfo.source = contentInfo.source.name.toLowerCase();
+
   // Delete unnecessary fields
   delete convertedContentInfo._id;
   delete convertedContentInfo.contentCreator;
