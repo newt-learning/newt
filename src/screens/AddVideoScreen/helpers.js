@@ -165,3 +165,27 @@ export function extractAndAssemblePlaylistInfo(seriesInfo) {
     return null;
   }
 }
+
+// Convert from centrally created "Newt Content" to content model saved to User's
+// library
+export function convertFromNewtContentToUserContent(contentInfo) {
+  let convertedContentInfo = { ...contentInfo };
+
+  convertedContentInfo.isOnNewtContentDatabase = true;
+  convertedContentInfo.newtContentId = contentInfo._id;
+  convertedContentInfo.newtContentCreatorId =
+    contentInfo.contentCreator.contentCreatorId;
+  convertedContentInfo.author = [contentInfo.contentCreator.name];
+  convertedContentInfo.newtSeriesId = contentInfo.series.newtSeriesId;
+  convertedContentInfo.source = contentInfo.source.name.toLowerCase();
+  // Delete unnecessary fields
+  delete convertedContentInfo._id;
+  delete convertedContentInfo.contentCreator;
+  delete convertedContentInfo.source;
+  delete convertedContentInfo.url;
+  delete convertedContentInfo.series;
+  // Temporarily keep it out of series
+  delete convertedContentInfo.partOfSeries;
+
+  return convertedContentInfo;
+}

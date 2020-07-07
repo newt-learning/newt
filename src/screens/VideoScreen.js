@@ -12,6 +12,8 @@ import MoreOptionsButton from "../components/shared/MoreOptionsButton";
 import OptionsModal from "../components/shared/OptionsModal";
 // Design
 import { OFF_WHITE } from "../design/colors";
+// Helpers
+import { convertFromNewtContentToUserContent } from "./AddVideoScreen/helpers";
 
 const VideoScreen = ({ route, navigation }) => {
   // Toggle show more/less description text
@@ -108,7 +110,7 @@ const VideoScreen = ({ route, navigation }) => {
                 })
             : () =>
                 navigation.navigate("ShelfSelect", {
-                  contentInfo: videoInfo,
+                  contentInfo: convertFromNewtContentToUserContent(videoInfo),
                   buttonText: "Add to Library",
                   addToLibrary: true,
                   contentType: "video",
