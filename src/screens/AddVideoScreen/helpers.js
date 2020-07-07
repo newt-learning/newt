@@ -172,13 +172,14 @@ export function convertFromNewtContentToUserContent(contentInfo) {
   let convertedContentInfo = { ...contentInfo };
 
   // Add Newt Content info
+  convertedContentInfo.isOnNewtContentDatabase = true;
   convertedContentInfo.newtContentInfo = {};
-  convertedContentInfo.newtContentInfo.isOnNewtContentDatabase = true;
   convertedContentInfo.newtContentInfo.newtContentId = contentInfo._id;
   convertedContentInfo.newtContentInfo.newtContentCreatorId =
     contentInfo.contentCreator.contentCreatorId;
   convertedContentInfo.newtContentInfo.newtSeriesId =
-    contentInfo.series.newtSeriesId;
+    contentInfo.series.newtSeriesId ?? null;
+  convertedContentInfo.newtContentInfo.newtQuizId = contentInfo.quizId ?? null;
   // Add author and source
   convertedContentInfo.authors = [contentInfo.contentCreator.name];
   convertedContentInfo.source = contentInfo.source.name.toLowerCase();
@@ -189,6 +190,7 @@ export function convertFromNewtContentToUserContent(contentInfo) {
   delete convertedContentInfo.source;
   delete convertedContentInfo.url;
   delete convertedContentInfo.series;
+  delete convertedContentInfo.quizId;
   // Temporarily keep it out of series
   delete convertedContentInfo.partOfSeries;
 
