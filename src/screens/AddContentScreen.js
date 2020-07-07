@@ -31,7 +31,11 @@ const AddContentScreen = ({ navigation }) => {
             title={item.name}
             thumbnailUrl={item.thumbnailUrl}
             type={item.type}
-            onPress={() => handleContentNavigation(item, navigation)}
+            onPress={() =>
+              handleContentNavigation(item, navigation, {
+                comingFromDiscoverSection: true,
+              })
+            }
           />
         )}
       />

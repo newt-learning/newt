@@ -31,14 +31,31 @@ const VideoScreen = ({ route, navigation }) => {
   });
 
   const passedVideoInfo = route.params.videoInfo;
+  // If coming from the Discover section in Add Content Screen
+  const comingFromDiscoverSection =
+    route.params.comingFromDiscoverSection ?? false;
 
   const { state: contentState } = useContext(ContentContext);
 
   // Need to come up with a better, more efficient way of ensuring the screen
   // updates when the data updates.
-  const videoInfo =
-    contentState.items.filter((item) => item._id === passedVideoInfo._id)[0] ??
-    passedVideoInfo;
+  let videoInfo = {};
+
+  // If coming from the Discover section, filter items with Newt content Id
+  // (since the section displays stuff part of Newt Content DB) so if the item
+  // is already in the user's library, it shows that instead of a new one.
+  // Otherwise filter by _id to get the latest data
+  if (comingFromDiscoverSection) {
+    videoInfo =
+      contentState.items.filter(
+        (item) => item.newtContentId === passedVideoInfo._id
+      )[0] ?? passedVideoInfo;
+  } else {
+    videoInfo =
+      contentState.items.filter(
+        (item) => item._id === passedVideoInfo._id
+      )[0] ?? passedVideoInfo;
+  }
 
   const {
     _id,
