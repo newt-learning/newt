@@ -7,6 +7,7 @@ import { Context as ContentContext } from "../context/ContentContext";
 import Loader from "../components/shared/Loader";
 import TitleSection from "../components/Content/TitleSection";
 import ActionSection from "../components/Content/ActionSection";
+import QuizSection from "../components/Content/QuizSection";
 import Description from "../components/Content/Description";
 import MoreOptionsButton from "../components/shared/MoreOptionsButton";
 import OptionsModal from "../components/shared/OptionsModal";
@@ -67,6 +68,7 @@ const VideoScreen = ({ route, navigation }) => {
     description,
     thumbnailUrl,
     startFinishDates,
+    isOnNewtContentDatabase,
     dateAdded,
   } = videoInfo;
 
@@ -134,6 +136,7 @@ const VideoScreen = ({ route, navigation }) => {
                 })
         }
       />
+      {isOnNewtContentDatabase && <QuizSection />}
       <Description
         text={description}
         showMore={showMore}
