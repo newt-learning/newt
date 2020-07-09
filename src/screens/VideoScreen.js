@@ -26,7 +26,7 @@ const VideoScreen = ({ route, navigation }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   // Get function to create a quiz
-  const [createPersonalQuiz] = useCreatePersonalQuiz();
+  const [createPersonalQuiz, { status: quizStatus }] = useCreatePersonalQuiz();
 
   // Add the 3-dot options icon which opens the options modal
   useLayoutEffect(() => {
@@ -75,7 +75,7 @@ const VideoScreen = ({ route, navigation }) => {
     thumbnailUrl,
     startFinishDates,
     isOnNewtContentDatabase,
-    newtContentInfo: { newtQuizId },
+    newtContentInfo,
     quizInfo,
     dateAdded,
   } = videoInfo;
@@ -109,7 +109,7 @@ const VideoScreen = ({ route, navigation }) => {
     if (_.isEmpty(quizInfo)) {
       // Create personal quiz for user
       const personalQuiz = await createPersonalQuiz({
-        newtQuizId,
+        newtQuizId: newtContentInfo.newtQuizId,
         userContentId: _id,
       });
       // Add quiz to the user's content
@@ -119,8 +119,11 @@ const VideoScreen = ({ route, navigation }) => {
           { quizId: personalQuiz._id, dateCreated: personalQuiz.dateCreated },
         ],
       });
+      // Navigate to quiz screen
+      navigation.navigate("QuizScreen");
     } else {
       // Fetch already taken quiz for now
+      navigation.navigate("QuizScreen");
     }
   };
 
@@ -163,7 +166,13 @@ const VideoScreen = ({ route, navigation }) => {
                 })
         }
       />
-      {isOnNewtContentDatabase && <QuizSection onPress={handleTakeQuiz} />}
+      {isOnNewtContentDatabase && (
+        <QuizSection
+          quizInfo={quizInfo}
+          onPress={handleTakeQuiz}
+          isLoading={quizStatus === "loading" || contentState.isFetching}
+        />
+      )}
       <Description
         text={description}
         showMore={showMore}

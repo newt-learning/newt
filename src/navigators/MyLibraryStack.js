@@ -14,6 +14,7 @@ import TopicScreen from "../screens/TopicScreen";
 import AddToTopicScreen from "../screens/AddToTopicScreen";
 import EditTopicScreen from "../screens/EditTopicScreen";
 import AddEditDatesScreen from "../screens/AddEditDatesScreen";
+import QuizScreen from "../screens/QuizScreen";
 // Helpers
 import SCREEN_OPTIONS from "./screenOptions";
 // Design
@@ -61,6 +62,11 @@ const MainStack = () => {
         options={{ title: null }}
       />
       <Stack.Screen name="Topic" component={TopicScreen} />
+      <Stack.Screen
+        name="QuizScreen"
+        component={QuizScreen}
+        options={{ title: null }}
+      />
     </Stack.Navigator>
   );
 };

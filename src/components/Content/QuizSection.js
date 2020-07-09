@@ -1,14 +1,19 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
+import _ from "lodash";
 // Components
 import ActionButton from "../shared/ActionButton";
 // Design
 import { GRAY_4 } from "../../design/colors";
 
-const QuizSection = ({ onPress }) => {
+const QuizSection = ({ quizInfo, isLoading, onPress }) => {
   return (
     <View style={styles.container}>
-      <ActionButton title="Take the quiz" onPress={onPress} />
+      <ActionButton
+        title={_.isEmpty(quizInfo) ? "Take the quiz" : "See quiz results"}
+        onPress={onPress}
+        showLoading={isLoading}
+      />
     </View>
   );
 };
