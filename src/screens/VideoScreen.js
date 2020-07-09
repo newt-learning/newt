@@ -1,6 +1,9 @@
 import React, { useState, useContext, useLayoutEffect } from "react";
 import { ScrollView, View, StyleSheet, Image } from "react-native";
+import _ from "lodash";
 import * as Linking from "expo-linking";
+// API
+import { useCreatePersonalQuiz } from "../api/quizzes";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
@@ -21,6 +24,9 @@ const VideoScreen = ({ route, navigation }) => {
   const [showMore, setShowMore] = useState(false);
   // Initialize modal visibility
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  // Get function to create a quiz
+  const [createPersonalQuiz] = useCreatePersonalQuiz();
 
   // Add the 3-dot options icon which opens the options modal
   useLayoutEffect(() => {
@@ -69,6 +75,8 @@ const VideoScreen = ({ route, navigation }) => {
     thumbnailUrl,
     startFinishDates,
     isOnNewtContentDatabase,
+    newtContentInfo: { newtQuizId },
+    quizInfo,
     dateAdded,
   } = videoInfo;
 
@@ -95,6 +103,19 @@ const VideoScreen = ({ route, navigation }) => {
   // Open video either on YouTube app or browser
   const handleOpenLink = () => {
     Linking.openURL(`https://youtu.be/${videoInfo.videoInfo.videoId}`);
+  };
+
+  const handleTakeQuiz = async () => {
+    if (_.isEmpty(quizInfo)) {
+      // Create personal quiz for user
+      const personalQuiz = await createPersonalQuiz({
+        newtQuizId,
+        userContentId: _id,
+      });
+      console.log(personalQuiz);
+    } else {
+      // Fetch already taken quiz for now
+    }
   };
 
   return (
@@ -136,7 +157,7 @@ const VideoScreen = ({ route, navigation }) => {
                 })
         }
       />
-      {isOnNewtContentDatabase && <QuizSection />}
+      {isOnNewtContentDatabase && <QuizSection onPress={handleTakeQuiz} />}
       <Description
         text={description}
         showMore={showMore}

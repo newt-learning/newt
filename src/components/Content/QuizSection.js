@@ -5,13 +5,10 @@ import ActionButton from "../shared/ActionButton";
 // Design
 import { GRAY_4 } from "../../design/colors";
 
-const QuizSection = () => {
+const QuizSection = ({ onPress }) => {
   return (
     <View style={styles.container}>
-      <ActionButton
-        title="Take the quiz"
-        onPress={() => console.log("take the quiz")}
-      />
+      <ActionButton title="Take the quiz" onPress={onPress} />
     </View>
   );
 };
