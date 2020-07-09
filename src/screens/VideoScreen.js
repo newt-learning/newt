@@ -48,7 +48,7 @@ const VideoScreen = ({ route, navigation }) => {
   if (comingFromDiscoverSection) {
     videoInfo =
       contentState.items.filter(
-        (item) => item.newtContentId === passedVideoInfo._id
+        (item) => item.newtContentInfo?.newtContentId === passedVideoInfo._id
       )[0] ?? passedVideoInfo;
   } else {
     videoInfo =
