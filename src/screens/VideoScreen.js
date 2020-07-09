@@ -42,7 +42,7 @@ const VideoScreen = ({ route, navigation }) => {
   const comingFromDiscoverSection =
     route.params.comingFromDiscoverSection ?? false;
 
-  const { state: contentState } = useContext(ContentContext);
+  const { state: contentState, updateContent } = useContext(ContentContext);
 
   // Need to come up with a better, more efficient way of ensuring the screen
   // updates when the data updates.
@@ -112,7 +112,13 @@ const VideoScreen = ({ route, navigation }) => {
         newtQuizId,
         userContentId: _id,
       });
-      console.log(personalQuiz);
+      // Add quiz to the user's content
+      await updateContent(_id, {
+        quizInfo: [
+          ...quizInfo,
+          { quizId: personalQuiz._id, dateCreated: personalQuiz.dateCreated },
+        ],
+      });
     } else {
       // Fetch already taken quiz for now
     }
