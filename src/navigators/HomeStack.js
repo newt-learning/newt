@@ -63,7 +63,7 @@ const MainStack = () => {
       <Stack.Screen
         name="QuizScreen"
         component={QuizScreen}
-        options={{ title: null }}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

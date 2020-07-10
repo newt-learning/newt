@@ -120,10 +120,10 @@ const VideoScreen = ({ route, navigation }) => {
         ],
       });
       // Navigate to quiz screen
-      navigation.navigate("QuizScreen");
+      navigation.navigate("QuizScreen", { quizId: personalQuiz._id });
     } else {
       // Fetch already taken quiz for now
-      navigation.navigate("QuizScreen");
+      navigation.navigate("QuizScreen", { quizId: quizInfo[0].quizId });
     }
   };
 
