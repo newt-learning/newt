@@ -32,7 +32,13 @@ import {
 import { SEMIBOLD, REGULAR, FS24, FS16, FS14 } from "../design/typography";
 import ActionButton from "../components/shared/ActionButton";
 
-const OptionButton = ({ title, isSelected, isChoiceCorrect, onPress }) => {
+const OptionButton = ({
+  title,
+  isSelected,
+  isChoiceCorrect,
+  onPress,
+  disabled,
+}) => {
   // Add colour to the selected option
   const buttonStyle = StyleSheet.compose([
     // Default button style
@@ -54,6 +60,9 @@ const OptionButton = ({ title, isSelected, isChoiceCorrect, onPress }) => {
       buttonStyle={buttonStyle}
       titleStyle={styles.option}
       underlayColor={NEWT_BLUE_4}
+      disabled={disabled}
+      disabledStyle={buttonStyle}
+      disabledTitleStyle={styles.option}
     />
   );
 };
@@ -67,6 +76,7 @@ const QuizScreen = ({ route, navigation }) => {
   // State for answer options selected by user
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [disableOptionSelection, setDisableOptionSelection] = useState(false);
 
   // Add the questions and answer choices to state once data is loaded
   useEffect(() => {
@@ -81,8 +91,11 @@ const QuizScreen = ({ route, navigation }) => {
 
   // Handle pressing an option
   const handleOptionSelection = (index, selectedOption) => {
-    setSelectedOptionIndex(index);
-    setSelectedOption(selectedOption);
+    // Only update index if selection has not been disabled
+    if (!disableOptionSelection) {
+      setSelectedOptionIndex(index);
+      setSelectedOption(selectedOption);
+    }
   };
 
   // Handle checking the answer
@@ -100,6 +113,8 @@ const QuizScreen = ({ route, navigation }) => {
 
     // Update quiz/question progress
     setQuizQuestions(quizQuestionsAndResults);
+    // Disable option selection
+    setDisableOptionSelection(true);
   };
 
   return (
@@ -139,6 +154,7 @@ const QuizScreen = ({ route, navigation }) => {
                     isSelected={isSelected}
                     isChoiceCorrect={isChoiceCorrect}
                     onPress={() => handleOptionSelection(index, option.option)}
+                    disabled={disableOptionSelection}
                     key={option._id}
                   />
                 );
