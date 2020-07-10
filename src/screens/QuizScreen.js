@@ -20,19 +20,27 @@ import {
   GRAY_1,
   GRAY_2,
   GRAY_4,
-  GRAY_5,
   OFF_BLACK,
+  NEWT_BLUE,
+  NEWT_BLUE_4,
 } from "../design/colors";
 import { SEMIBOLD, REGULAR, FS24, FS16, FS14 } from "../design/typography";
 
-const OptionButton = ({ title }) => {
+const OptionButton = ({ title, isSelected, onPress }) => {
+  // Add colour to the selected option
+  const buttonStyle = isSelected
+    ? StyleSheet.compose([styles.optionButton, styles.selectedOptionButton])
+    : styles.optionButton;
+
   return (
     <Button
       title={title}
       type="outline"
+      onPress={onPress}
       containerStyle={styles.optionButtonContainer}
-      buttonStyle={styles.optionButton}
+      buttonStyle={buttonStyle}
       titleStyle={styles.option}
+      underlayColor={NEWT_BLUE_4}
     />
   );
 };
@@ -41,7 +49,9 @@ const QuizScreen = ({ route, navigation }) => {
   const { quizId, contentTitle } = route.params;
 
   const { status, data } = useFetchQuiz(quizId);
+  // Quiz questions and answers
   const [quizQuestions, setQuizQuestions] = useState(null);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
 
   // Add the questions and answer choices to state once data is loaded
   useEffect(() => {
@@ -54,12 +64,17 @@ const QuizScreen = ({ route, navigation }) => {
     return <Loader />;
   }
 
+  // Handle pressing an option
+  const handleOptionSelection = (index) => {
+    setSelectedOptionIndex(index);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.quizHeader}>
         <TouchableHighlight
           onPress={() => navigation.goBack()}
-          underlayColor={GRAY_5}
+          underlayColor={OFF_WHITE}
         >
           <Feather name="x" size={24} color={GRAY_2} />
         </TouchableHighlight>
@@ -70,9 +85,19 @@ const QuizScreen = ({ route, navigation }) => {
         <View style={styles.quizBody}>
           <Text style={styles.question}>{quizQuestions[0].question}</Text>
           <View style={styles.optionsContainer}>
-            {_.map(quizQuestions[0].options, (option) => (
-              <OptionButton title={option.option} key={option._id} />
-            ))}
+            {_.map(quizQuestions[0].options, (option, index) => {
+              // Check if option is selected, which will affect styling
+              const isSelected = index === selectedOptionIndex;
+
+              return (
+                <OptionButton
+                  title={option.option}
+                  isSelected={isSelected}
+                  onPress={() => handleOptionSelection(index)}
+                  key={option._id}
+                />
+              );
+            })}
           </View>
         </View>
       )}
@@ -130,6 +155,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderRadius: 12,
     borderColor: GRAY_4,
+  },
+  selectedOptionButton: {
+    borderColor: NEWT_BLUE,
+    backgroundColor: NEWT_BLUE_4,
   },
   option: {
     fontFamily: REGULAR,
