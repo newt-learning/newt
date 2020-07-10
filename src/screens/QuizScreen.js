@@ -23,8 +23,10 @@ import {
   OFF_BLACK,
   NEWT_BLUE,
   NEWT_BLUE_4,
+  NEWT_BLUE_5,
 } from "../design/colors";
 import { SEMIBOLD, REGULAR, FS24, FS16, FS14 } from "../design/typography";
+import ActionButton from "../components/shared/ActionButton";
 
 const OptionButton = ({ title, isSelected, onPress }) => {
   // Add colour to the selected option
@@ -71,36 +73,45 @@ const QuizScreen = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.quizHeader}>
-        <TouchableHighlight
-          onPress={() => navigation.goBack()}
-          underlayColor={OFF_WHITE}
-        >
-          <Feather name="x" size={24} color={GRAY_2} />
-        </TouchableHighlight>
-        <Text style={styles.contentTitle}>{contentTitle}</Text>
-        <View style={{ width: 24 }} />
-      </View>
-      {quizQuestions && (
-        <View style={styles.quizBody}>
-          <Text style={styles.question}>{quizQuestions[0].question}</Text>
-          <View style={styles.optionsContainer}>
-            {_.map(quizQuestions[0].options, (option, index) => {
-              // Check if option is selected, which will affect styling
-              const isSelected = index === selectedOptionIndex;
-
-              return (
-                <OptionButton
-                  title={option.option}
-                  isSelected={isSelected}
-                  onPress={() => handleOptionSelection(index)}
-                  key={option._id}
-                />
-              );
-            })}
-          </View>
+      <View>
+        <View style={styles.quizHeader}>
+          <TouchableHighlight
+            onPress={() => navigation.goBack()}
+            underlayColor={OFF_WHITE}
+          >
+            <Feather name="x" size={24} color={GRAY_2} />
+          </TouchableHighlight>
+          <Text style={styles.contentTitle}>{contentTitle}</Text>
+          <View style={{ width: 24 }} />
         </View>
-      )}
+        {quizQuestions && (
+          <View style={styles.quizBody}>
+            <Text style={styles.question}>{quizQuestions[0].question}</Text>
+            <View style={styles.optionsContainer}>
+              {_.map(quizQuestions[0].options, (option, index) => {
+                // Check if option is selected, which will affect styling
+                const isSelected = index === selectedOptionIndex;
+
+                return (
+                  <OptionButton
+                    title={option.option}
+                    isSelected={isSelected}
+                    onPress={() => handleOptionSelection(index)}
+                    key={option._id}
+                  />
+                );
+              })}
+            </View>
+          </View>
+        )}
+      </View>
+      <View style={styles.checkButtonContainer}>
+        <ActionButton
+          title="CHECK"
+          buttonStyle={styles.checkButton}
+          disabled={selectedOptionIndex === null}
+        />
+      </View>
     </SafeAreaView>
   );
 };
@@ -109,6 +120,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: OFF_WHITE,
     flex: 1,
+    justifyContent: "space-between",
   },
   quizHeader: {
     paddingVertical: 10,
@@ -158,12 +170,20 @@ const styles = StyleSheet.create({
   },
   selectedOptionButton: {
     borderColor: NEWT_BLUE,
-    backgroundColor: NEWT_BLUE_4,
+    backgroundColor: NEWT_BLUE_5,
   },
   option: {
     fontFamily: REGULAR,
     fontSize: FS16,
     color: OFF_BLACK,
+  },
+  checkButtonContainer: {
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  checkButton: {
+    backgroundColor: NEWT_BLUE,
+    borderColor: NEWT_BLUE,
   },
 });
 
