@@ -53,12 +53,12 @@ export const INDIGO_3 = "#8888ff";
 export const INDIGO_4 = "#b0b0ff";
 export const INDIGO_5 = "#d7d7ff";
 
-export const LIME_GREEN_DARK = "#1cd188";
+export const LIME_GREEN_DARK = "#19c07d";
 export const LIME_GREEN = "#42e6a4";
-export const LIME_GREEN_2 = "#76edbd";
-export const LIME_GREEN_3 = "#99f1ce";
-export const LIME_GREEN_4 = "#bbf6de";
-export const LIME_GREEN_5 = "#defbef";
+export const LIME_GREEN_2 = "#65ebb5";
+export const LIME_GREEN_3 = "#87efc5";
+export const LIME_GREEN_4 = "#aaf4d6";
+export const LIME_GREEN_5 = "#cdf8e7";
 
 // Platform colors
 export const IOS_BLUE = "#007aff";
