@@ -14,7 +14,6 @@ import TopicScreen from "../screens/TopicScreen";
 import CreateTopicScreen from "../screens/CreateTopicScreen";
 import EditTopicScreen from "../screens/EditTopicScreen";
 import AddEditDatesScreen from "../screens/AddEditDatesScreen";
-import QuizScreen from "../screens/QuizScreen";
 // Helpers
 import SCREEN_OPTIONS from "./screenOptions";
 // Design
@@ -75,11 +74,6 @@ const MainStack = () => {
             <NavHeaderTitle title={route.params.topicInfo.name} />
           ),
         })}
-      />
-      <Stack.Screen
-        name="QuizScreen"
-        component={QuizScreen}
-        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
