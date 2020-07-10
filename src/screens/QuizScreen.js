@@ -24,10 +24,12 @@ import {
   NEWT_BLUE,
   NEWT_BLUE_4,
   NEWT_BLUE_5,
+  NEWT_BLUE_DARK,
   RED,
   RED_5,
   LIME_GREEN,
-  LIME_GREEN_4,
+  LIME_GREEN_5,
+  LIME_GREEN_DARK,
 } from "../design/colors";
 import { SEMIBOLD, REGULAR, FS24, FS16, FS14 } from "../design/typography";
 import ActionButton from "../components/shared/ActionButton";
@@ -51,6 +53,17 @@ const OptionButton = ({
     isChoiceCorrect === false && styles.wrongOption,
   ]);
 
+  const titleStyle = StyleSheet.compose([
+    // Default text style
+    styles.optionText,
+    // If selected, make text blue
+    isSelected && styles.selectedOptionText,
+    // If correct, make text green
+    isChoiceCorrect && styles.correctOptionText,
+    // If wrong, make text red
+    isChoiceCorrect === false && styles.wrongOptionText,
+  ]);
+
   return (
     <Button
       title={title}
@@ -58,11 +71,11 @@ const OptionButton = ({
       onPress={onPress}
       containerStyle={styles.optionButtonContainer}
       buttonStyle={buttonStyle}
-      titleStyle={styles.option}
+      titleStyle={titleStyle}
       underlayColor={NEWT_BLUE_4}
       disabled={disabled}
       disabledStyle={buttonStyle}
-      disabledTitleStyle={styles.option}
+      disabledTitleStyle={titleStyle}
     />
   );
 };
@@ -233,16 +246,27 @@ const styles = StyleSheet.create({
   },
   correctOption: {
     borderColor: LIME_GREEN,
-    backgroundColor: LIME_GREEN_4,
+    backgroundColor: LIME_GREEN_5,
   },
   wrongOption: {
     borderColor: RED,
     backgroundColor: RED_5,
   },
-  option: {
+  optionText: {
     fontFamily: REGULAR,
     fontSize: FS16,
     color: OFF_BLACK,
+  },
+  selectedOptionText: {
+    color: NEWT_BLUE_DARK,
+  },
+  correctOptionText: {
+    fontFamily: SEMIBOLD,
+    color: LIME_GREEN_DARK,
+  },
+  wrongOptionText: {
+    fontFamily: SEMIBOLD,
+    color: RED,
   },
   checkButtonContainer: {
     alignItems: "center",

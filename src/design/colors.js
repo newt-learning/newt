@@ -10,6 +10,7 @@ export const OFF_WHITE = "#fafafa";
 export const WHITE = "#ffffff";
 
 // Newt Blue
+export const NEWT_BLUE_DARK = "#00afe9";
 export const NEWT_BLUE = "#38ceff";
 export const NEWT_BLUE_2 = "#5fd8ff";
 export const NEWT_BLUE_3 = "#86e1ff";
@@ -52,6 +53,7 @@ export const INDIGO_3 = "#8888ff";
 export const INDIGO_4 = "#b0b0ff";
 export const INDIGO_5 = "#d7d7ff";
 
+export const LIME_GREEN_DARK = "#1cd188";
 export const LIME_GREEN = "#42e6a4";
 export const LIME_GREEN_2 = "#76edbd";
 export const LIME_GREEN_3 = "#99f1ce";
