@@ -53,7 +53,9 @@ const QuizScreen = ({ route, navigation }) => {
   const { status, data } = useFetchQuiz(quizId);
   // Quiz questions and answers
   const [quizQuestions, setQuizQuestions] = useState(null);
+  // State for answer options selected by user
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null);
 
   // Add the questions and answer choices to state once data is loaded
   useEffect(() => {
@@ -67,8 +69,26 @@ const QuizScreen = ({ route, navigation }) => {
   }
 
   // Handle pressing an option
-  const handleOptionSelection = (index) => {
+  const handleOptionSelection = (index, selectedOption) => {
     setSelectedOptionIndex(index);
+    setSelectedOption(selectedOption);
+  };
+
+  // Handle checking the answer
+  const handleAnswerCheck = () => {
+    // Create a new array that can be modified
+    let quizQuestionsAndResults = [...quizQuestions];
+
+    // Check if the option selected is the correct answer
+    const isChoiceCorrect =
+      selectedOption === quizQuestionsAndResults[0].correctAnswer;
+
+    // Add option selected and whether it's correct to question object
+    quizQuestionsAndResults[0].optionChosen = selectedOption;
+    quizQuestionsAndResults[0].isChoiceCorrect = isChoiceCorrect;
+
+    // Update quiz/question progress
+    setQuizQuestions(quizQuestionsAndResults);
   };
 
   return (
@@ -96,7 +116,7 @@ const QuizScreen = ({ route, navigation }) => {
                   <OptionButton
                     title={option.option}
                     isSelected={isSelected}
-                    onPress={() => handleOptionSelection(index)}
+                    onPress={() => handleOptionSelection(index, option.option)}
                     key={option._id}
                   />
                 );
@@ -110,6 +130,7 @@ const QuizScreen = ({ route, navigation }) => {
           title="CHECK"
           buttonStyle={styles.checkButton}
           disabled={selectedOptionIndex === null}
+          onPress={handleAnswerCheck}
         />
       </View>
     </SafeAreaView>
