@@ -24,15 +24,26 @@ import {
   NEWT_BLUE,
   NEWT_BLUE_4,
   NEWT_BLUE_5,
+  RED,
+  RED_5,
+  LIME_GREEN,
+  LIME_GREEN_4,
 } from "../design/colors";
 import { SEMIBOLD, REGULAR, FS24, FS16, FS14 } from "../design/typography";
 import ActionButton from "../components/shared/ActionButton";
 
-const OptionButton = ({ title, isSelected, onPress }) => {
+const OptionButton = ({ title, isSelected, isChoiceCorrect, onPress }) => {
   // Add colour to the selected option
-  const buttonStyle = isSelected
-    ? StyleSheet.compose([styles.optionButton, styles.selectedOptionButton])
-    : styles.optionButton;
+  const buttonStyle = StyleSheet.compose([
+    // Default button style
+    styles.optionButton,
+    // If selected, show selected button styling (blue colour)
+    isSelected && styles.selectedOptionButton,
+    // If the choice is correct, show green styling
+    isChoiceCorrect && styles.correctOption,
+    // If choice is wrong, show red styling
+    isChoiceCorrect === false && styles.wrongOption,
+  ]);
 
   return (
     <Button
@@ -112,10 +123,21 @@ const QuizScreen = ({ route, navigation }) => {
                 // Check if option is selected, which will affect styling
                 const isSelected = index === selectedOptionIndex;
 
+                // If the options is selected, check if a option has been made
+                // (_.isUndefined check). If it hasn't (isChoiceCorrect property
+                // won't be defined), return null. Otherwise return whether the
+                // answer is correct or not.
+                const isChoiceCorrect = isSelected
+                  ? _.isUndefined(quizQuestions[0].isChoiceCorrect)
+                    ? null
+                    : quizQuestions[0].isChoiceCorrect
+                  : null;
+
                 return (
                   <OptionButton
                     title={option.option}
                     isSelected={isSelected}
+                    isChoiceCorrect={isChoiceCorrect}
                     onPress={() => handleOptionSelection(index, option.option)}
                     key={option._id}
                   />
@@ -192,6 +214,14 @@ const styles = StyleSheet.create({
   selectedOptionButton: {
     borderColor: NEWT_BLUE,
     backgroundColor: NEWT_BLUE_5,
+  },
+  correctOption: {
+    borderColor: LIME_GREEN,
+    backgroundColor: LIME_GREEN_4,
+  },
+  wrongOption: {
+    borderColor: RED,
+    backgroundColor: RED_5,
   },
   option: {
     fontFamily: REGULAR,

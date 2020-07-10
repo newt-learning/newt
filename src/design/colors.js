@@ -23,6 +23,10 @@ export const BLUE_4 = "#add6ff";
 export const BLUE_5 = "#d4eaff";
 
 export const RED = "#ff4d4d";
+export const RED_2 = "#ff6161";
+export const RED_3 = "#ff8888";
+export const RED_4 = "#ffafaf";
+export const RED_5 = "#ffd6d6";
 
 // Yellows
 export const YELLOW = "#ffcd38";
@@ -49,6 +53,10 @@ export const INDIGO_4 = "#b0b0ff";
 export const INDIGO_5 = "#d7d7ff";
 
 export const LIME_GREEN = "#42e6a4";
+export const LIME_GREEN_2 = "#76edbd";
+export const LIME_GREEN_3 = "#99f1ce";
+export const LIME_GREEN_4 = "#bbf6de";
+export const LIME_GREEN_5 = "#defbef";
 
 // Platform colors
 export const IOS_BLUE = "#007aff";
