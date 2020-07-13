@@ -1,18 +1,52 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { useSafeArea } from "react-native-safe-area-context";
 // Components
 import ActionButton from "../../components/shared/ActionButton";
 // Design
-import { NEWT_BLUE, RED_5, LIME_GREEN_5 } from "../../design/colors";
+import {
+  NEWT_BLUE,
+  LIME_GREEN_DARK,
+  LIME_GREEN_5,
+  RED,
+  RED_5,
+} from "../../design/colors";
+import { BOLD, FS20 } from "../../design/typography";
 
 const AnswerFeedback = ({ isChoiceCorrect }) => {
+  const insets = useSafeArea();
+  const BOTTOM_PADDING = insets.bottom + 20;
+
   const containerStyle = StyleSheet.compose([
     styles.answerFeedbackContainer,
-    isChoiceCorrect ? styles.correctChoice : styles.wrongChoice,
+    { paddingBottom: BOTTOM_PADDING },
+    isChoiceCorrect
+      ? styles.correctChoiceBackground
+      : styles.wrongChoiceBackground,
   ]);
+  const nextButtonStyle = isChoiceCorrect
+    ? styles.correctChoiceButton
+    : styles.wrongChoiceButton;
 
-  return <View style={containerStyle}></View>;
+  return (
+    <View style={containerStyle}>
+      <Text
+        style={[
+          styles.answerFeedback,
+          isChoiceCorrect ? { color: LIME_GREEN_DARK } : { color: RED },
+        ]}
+      >
+        {isChoiceCorrect ? "Excellent!" : "Incorrect choice"}
+      </Text>
+      <View style={{ alignItems: "center" }}>
+        <ActionButton
+          title="NEXT"
+          buttonContainerStyle={{ alignItems: "center" }}
+          buttonStyle={nextButtonStyle}
+        />
+      </View>
+    </View>
+  );
 };
 
 // This shows the bottom of the quiz screen, which is a "Check" button if the
@@ -48,13 +82,27 @@ const styles = StyleSheet.create({
     borderColor: NEWT_BLUE,
   },
   answerFeedbackContainer: {
-    height: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 15,
+    paddingTop: 15,
   },
-  correctChoice: {
+  correctChoiceBackground: {
     backgroundColor: LIME_GREEN_5,
   },
-  wrongChoice: {
+  wrongChoiceBackground: {
     backgroundColor: RED_5,
+  },
+  answerFeedback: {
+    fontFamily: BOLD,
+    fontSize: FS20,
+    marginBottom: 15,
+  },
+  correctChoiceButton: {
+    backgroundColor: LIME_GREEN_DARK,
+  },
+  wrongChoiceButton: {
+    backgroundColor: RED,
   },
 });
 
