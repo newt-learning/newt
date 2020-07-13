@@ -5,13 +5,12 @@ import {
   StyleSheet,
   TouchableHighlight,
   Text,
-  Platform,
 } from "react-native";
-import { Button } from "react-native-elements";
 import _ from "lodash";
 import { Feather } from "@expo/vector-icons";
 // Components
 import Loader from "../../components/shared/Loader";
+import QuizOptionButton from "./QuizOptionButton";
 import ActionButton from "../../components/shared/ActionButton";
 // API
 import { useFetchQuiz } from "../../api/quizzes";
@@ -20,67 +19,12 @@ import {
   OFF_WHITE,
   GRAY_1,
   GRAY_2,
-  GRAY_4,
   OFF_BLACK,
   NEWT_BLUE,
-  NEWT_BLUE_4,
-  NEWT_BLUE_5,
-  NEWT_BLUE_DARK,
-  RED,
-  RED_5,
-  LIME_GREEN,
-  LIME_GREEN_5,
-  LIME_GREEN_DARK,
 } from "../../design/colors";
-import { SEMIBOLD, REGULAR, FS24, FS16, FS14 } from "../../design/typography";
+import { SEMIBOLD, REGULAR, FS24, FS14 } from "../../design/typography";
 // Helpers
 import { checkIfChoiceIsCorrect } from "./helpers";
-
-const OptionButton = ({
-  title,
-  isSelected,
-  isChoiceCorrect,
-  onPress,
-  disabled,
-}) => {
-  // Add colour to the selected option
-  const buttonStyle = StyleSheet.compose([
-    // Default button style
-    styles.optionButton,
-    // If selected, show selected button styling (blue colour)
-    isSelected && styles.selectedOptionButton,
-    // If the choice is correct, show green styling
-    isChoiceCorrect && styles.correctOption,
-    // If choice is wrong, show red styling
-    isChoiceCorrect === false && styles.wrongOption,
-  ]);
-
-  const titleStyle = StyleSheet.compose([
-    // Default text style
-    styles.optionText,
-    // If selected, make text blue
-    isSelected && styles.selectedOptionText,
-    // If correct, make text green
-    isChoiceCorrect && styles.correctOptionText,
-    // If wrong, make text red
-    isChoiceCorrect === false && styles.wrongOptionText,
-  ]);
-
-  return (
-    <Button
-      title={title}
-      type="outline"
-      onPress={onPress}
-      containerStyle={styles.optionButtonContainer}
-      buttonStyle={buttonStyle}
-      titleStyle={titleStyle}
-      underlayColor={NEWT_BLUE_4}
-      disabled={disabled}
-      disabledStyle={buttonStyle}
-      disabledTitleStyle={titleStyle}
-    />
-  );
-};
 
 const QuizScreen = ({ route, navigation }) => {
   const { quizId, contentTitle } = route.params;
@@ -162,7 +106,7 @@ const QuizScreen = ({ route, navigation }) => {
                   : null;
 
                 return (
-                  <OptionButton
+                  <QuizOptionButton
                     title={option.option}
                     isSelected={isSelected}
                     isChoiceCorrect={isChoiceCorrect}
@@ -224,54 +168,6 @@ const styles = StyleSheet.create({
     fontSize: FS24,
     color: OFF_BLACK,
     marginBottom: 50,
-  },
-  optionButtonContainer: {
-    marginBottom: 10,
-    ...Platform.select({
-      ios: {
-        shadowColor: "black",
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-      },
-      android: {
-        elevation: 0,
-      },
-    }),
-  },
-  optionButton: {
-    backgroundColor: OFF_WHITE,
-    borderBottomWidth: 2,
-    borderRadius: 12,
-    borderColor: GRAY_4,
-  },
-  selectedOptionButton: {
-    borderColor: NEWT_BLUE,
-    backgroundColor: NEWT_BLUE_5,
-  },
-  correctOption: {
-    borderColor: LIME_GREEN,
-    backgroundColor: LIME_GREEN_5,
-  },
-  wrongOption: {
-    borderColor: RED,
-    backgroundColor: RED_5,
-  },
-  optionText: {
-    fontFamily: REGULAR,
-    fontSize: FS16,
-    color: OFF_BLACK,
-  },
-  selectedOptionText: {
-    color: NEWT_BLUE_DARK,
-  },
-  correctOptionText: {
-    fontFamily: SEMIBOLD,
-    color: LIME_GREEN_DARK,
-  },
-  wrongOptionText: {
-    fontFamily: SEMIBOLD,
-    color: RED,
   },
   checkButtonContainer: {
     alignItems: "center",
