@@ -11,7 +11,6 @@ import { Feather } from "@expo/vector-icons";
 // Components
 import Loader from "../../components/shared/Loader";
 import QuizOptionButton from "./QuizOptionButton";
-import ActionButton from "../../components/shared/ActionButton";
 // API
 import { useFetchQuiz } from "../../api/quizzes";
 // Design
@@ -25,6 +24,7 @@ import {
 import { SEMIBOLD, REGULAR, FS24, FS14 } from "../../design/typography";
 // Helpers
 import { checkIfChoiceIsCorrect } from "./helpers";
+import QuizFooter from "./QuizFooter";
 
 const QuizScreen = ({ route, navigation }) => {
   const { quizId, contentTitle } = route.params;
@@ -44,7 +44,7 @@ const QuizScreen = ({ route, navigation }) => {
     }
   }, [data, status]);
 
-  if (status === "loading") {
+  if (status === "loading" || _.isEmpty(quizQuestions)) {
     return <Loader />;
   }
 
@@ -120,19 +120,13 @@ const QuizScreen = ({ route, navigation }) => {
           </View>
         )}
       </View>
-      {quizQuestions &&
-      checkIfChoiceIsCorrect(quizQuestions[0].isChoiceCorrect) === null ? (
-        <View style={styles.checkButtonContainer}>
-          <ActionButton
-            title="CHECK"
-            buttonStyle={styles.checkButton}
-            disabled={selectedOptionIndex === null}
-            onPress={handleAnswerCheck}
-          />
-        </View>
-      ) : (
-        <Text>correct/wrong ui</Text>
-      )}
+      <QuizFooter
+        isChoiceCorrect={checkIfChoiceIsCorrect(
+          quizQuestions[0].isChoiceCorrect
+        )}
+        onPressCheckButton={handleAnswerCheck}
+        isDisabled={selectedOptionIndex === null}
+      />
     </SafeAreaView>
   );
 };
@@ -168,14 +162,6 @@ const styles = StyleSheet.create({
     fontSize: FS24,
     color: OFF_BLACK,
     marginBottom: 50,
-  },
-  checkButtonContainer: {
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  checkButton: {
-    backgroundColor: NEWT_BLUE,
-    borderColor: NEWT_BLUE,
   },
 });
 
