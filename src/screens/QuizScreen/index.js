@@ -11,9 +11,10 @@ import { Button } from "react-native-elements";
 import _ from "lodash";
 import { Feather } from "@expo/vector-icons";
 // Components
-import Loader from "../components/shared/Loader";
+import Loader from "../../components/shared/Loader";
+import ActionButton from "../../components/shared/ActionButton";
 // API
-import { useFetchQuiz } from "../api/quizzes";
+import { useFetchQuiz } from "../../api/quizzes";
 // Design
 import {
   OFF_WHITE,
@@ -30,9 +31,10 @@ import {
   LIME_GREEN,
   LIME_GREEN_5,
   LIME_GREEN_DARK,
-} from "../design/colors";
-import { SEMIBOLD, REGULAR, FS24, FS16, FS14 } from "../design/typography";
-import ActionButton from "../components/shared/ActionButton";
+} from "../../design/colors";
+import { SEMIBOLD, REGULAR, FS24, FS16, FS14 } from "../../design/typography";
+// Helpers
+import { checkIfChoiceIsCorrect } from "./helpers";
 
 const OptionButton = ({
   title,
@@ -151,14 +153,12 @@ const QuizScreen = ({ route, navigation }) => {
                 // Check if option is selected, which will affect styling
                 const isSelected = index === selectedOptionIndex;
 
-                // If the options is selected, check if a option has been made
+                // If the options is selected, check if a check has been made
                 // (_.isUndefined check). If it hasn't (isChoiceCorrect property
                 // won't be defined), return null. Otherwise return whether the
                 // answer is correct or not.
                 const isChoiceCorrect = isSelected
-                  ? _.isUndefined(quizQuestions[0].isChoiceCorrect)
-                    ? null
-                    : quizQuestions[0].isChoiceCorrect
+                  ? checkIfChoiceIsCorrect(quizQuestions[0].isChoiceCorrect)
                   : null;
 
                 return (
@@ -176,14 +176,19 @@ const QuizScreen = ({ route, navigation }) => {
           </View>
         )}
       </View>
-      <View style={styles.checkButtonContainer}>
-        <ActionButton
-          title="CHECK"
-          buttonStyle={styles.checkButton}
-          disabled={selectedOptionIndex === null}
-          onPress={handleAnswerCheck}
-        />
-      </View>
+      {quizQuestions &&
+      checkIfChoiceIsCorrect(quizQuestions[0].isChoiceCorrect) === null ? (
+        <View style={styles.checkButtonContainer}>
+          <ActionButton
+            title="CHECK"
+            buttonStyle={styles.checkButton}
+            disabled={selectedOptionIndex === null}
+            onPress={handleAnswerCheck}
+          />
+        </View>
+      ) : (
+        <Text>correct/wrong ui</Text>
+      )}
     </SafeAreaView>
   );
 };
