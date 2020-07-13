@@ -13,7 +13,12 @@ import {
 } from "../../design/colors";
 import { BOLD, FS20 } from "../../design/typography";
 
-const AnswerFeedback = ({ isChoiceCorrect }) => {
+const AnswerFeedback = ({
+  isChoiceCorrect,
+  isQuizFinished,
+  onPressNext,
+  onFinish,
+}) => {
   const insets = useSafeArea();
   const BOTTOM_PADDING = insets.bottom + 20;
 
@@ -39,11 +44,21 @@ const AnswerFeedback = ({ isChoiceCorrect }) => {
         {isChoiceCorrect ? "Excellent!" : "Incorrect choice"}
       </Text>
       <View style={{ alignItems: "center" }}>
-        <ActionButton
-          title="NEXT"
-          buttonContainerStyle={{ alignItems: "center" }}
-          buttonStyle={nextButtonStyle}
-        />
+        {isQuizFinished ? (
+          <ActionButton
+            title="FINISH"
+            onPress={onFinish}
+            buttonContainerStyle={{ alignItems: "center" }}
+            buttonStyle={nextButtonStyle}
+          />
+        ) : (
+          <ActionButton
+            title="NEXT"
+            onPress={onPressNext}
+            buttonContainerStyle={{ alignItems: "center" }}
+            buttonStyle={nextButtonStyle}
+          />
+        )}
       </View>
     </View>
   );
@@ -53,7 +68,14 @@ const AnswerFeedback = ({ isChoiceCorrect }) => {
 // answer has not yet been verified, or if it has, then something to indicate
 // whether the answer was right/wrong, an explanation if available, and a button
 // to continue the quiz
-const QuizFooter = ({ isChoiceCorrect, onPressCheckButton, isDisabled }) => {
+const QuizFooter = ({
+  isChoiceCorrect,
+  onPressCheckButton,
+  onPressNextButton,
+  onFinish,
+  isQuizFinished,
+  isDisabled,
+}) => {
   const insets = useSafeArea();
   const BOTTOM_MARGIN = insets.bottom + 20;
 
@@ -69,7 +91,12 @@ const QuizFooter = ({ isChoiceCorrect, onPressCheckButton, isDisabled }) => {
       />
     </View>
   ) : (
-    <AnswerFeedback isChoiceCorrect={isChoiceCorrect} />
+    <AnswerFeedback
+      isChoiceCorrect={isChoiceCorrect}
+      isQuizFinished={isQuizFinished}
+      onPressNext={onPressNextButton}
+      onFinish={onFinish}
+    />
   );
 };
 

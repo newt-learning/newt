@@ -21,6 +21,8 @@ const QuizScreen = ({ route, navigation }) => {
   const { status, data } = useFetchQuiz(quizId);
   // Quiz questions and answers
   const [quizQuestions, setQuizQuestions] = useState(null);
+  const [currentQuestion, setCurrentQuestion] = useState(1);
+  const [numQuestions, setNumQuestions] = useState(0);
   // State for answer options selected by user
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -30,6 +32,7 @@ const QuizScreen = ({ route, navigation }) => {
   useEffect(() => {
     if (status === "success") {
       setQuizQuestions(data.results);
+      setNumQuestions(data.results.length);
     }
   }, [data, status]);
 
@@ -53,17 +56,31 @@ const QuizScreen = ({ route, navigation }) => {
 
     // Check if the option selected is the correct answer
     const isChoiceCorrect =
-      selectedOption === quizQuestionsAndResults[0].correctAnswer;
+      selectedOption ===
+      quizQuestionsAndResults[currentQuestion - 1].correctAnswer;
 
     // Add option selected and whether it's correct to question object
-    quizQuestionsAndResults[0].optionChosen = selectedOption;
-    quizQuestionsAndResults[0].isChoiceCorrect = isChoiceCorrect;
+    quizQuestionsAndResults[currentQuestion - 1].optionChosen = selectedOption;
+    quizQuestionsAndResults[
+      currentQuestion - 1
+    ].isChoiceCorrect = isChoiceCorrect;
 
     // Update quiz/question progress
     setQuizQuestions(quizQuestionsAndResults);
     // Disable option selection
     setDisableOptionSelection(true);
   };
+
+  // Handle going to the next question. Increment current question by 1, and
+  // reset other question-related state to defaults
+  const handleGoNext = () => {
+    setCurrentQuestion(currentQuestion + 1);
+    setSelectedOptionIndex(null);
+    setSelectedOption(null);
+    setDisableOptionSelection(false);
+  };
+
+  const isQuizFinished = currentQuestion === quizQuestions.length;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -80,43 +97,59 @@ const QuizScreen = ({ route, navigation }) => {
         </View>
         {quizQuestions && (
           <View style={styles.quizBody}>
-            <Text style={styles.question}>{quizQuestions[0].question}</Text>
+            <Text style={styles.question}>
+              {quizQuestions[currentQuestion - 1].question}
+            </Text>
             <View style={styles.optionsContainer}>
-              {_.map(quizQuestions[0].options, (option, index) => {
-                // Check if option is selected, which will affect styling
-                const isSelected = index === selectedOptionIndex;
+              {_.map(
+                quizQuestions[currentQuestion - 1].options,
+                (option, index) => {
+                  // Check if option is selected, which will affect styling
+                  const isSelected = index === selectedOptionIndex;
 
-                // If the options is selected, check if a check has been made
-                // (_.isUndefined check). If it hasn't (isChoiceCorrect property
-                // won't be defined), return null. Otherwise return whether the
-                // answer is correct or not.
-                const isChoiceCorrect = isSelected
-                  ? checkIfChoiceIsCorrect(quizQuestions[0].isChoiceCorrect)
-                  : null;
+                  // If the options is selected, check if a check has been made
+                  // (_.isUndefined check). If it hasn't (isChoiceCorrect property
+                  // won't be defined), return null. Otherwise return whether the
+                  // answer is correct or not.
+                  const isChoiceCorrect = isSelected
+                    ? checkIfChoiceIsCorrect(
+                        quizQuestions[currentQuestion - 1].isChoiceCorrect
+                      )
+                    : null;
 
-                return (
-                  <QuizOption
-                    title={option.option}
-                    isSelected={isSelected}
-                    isChoiceCorrect={isChoiceCorrect}
-                    optionChosen={quizQuestions[0].optionChosen}
-                    correctAnswer={quizQuestions[0].correctAnswer}
-                    explanation={option.explanation}
-                    onPress={() => handleOptionSelection(index, option.option)}
-                    disabled={disableOptionSelection}
-                    key={option._id}
-                  />
-                );
-              })}
+                  return (
+                    <QuizOption
+                      title={option.option}
+                      isSelected={isSelected}
+                      isChoiceCorrect={isChoiceCorrect}
+                      optionChosen={
+                        quizQuestions[currentQuestion - 1].optionChosen
+                      }
+                      correctAnswer={
+                        quizQuestions[currentQuestion - 1].correctAnswer
+                      }
+                      explanation={option.explanation}
+                      onPress={() =>
+                        handleOptionSelection(index, option.option)
+                      }
+                      disabled={disableOptionSelection}
+                      key={option._id}
+                    />
+                  );
+                }
+              )}
             </View>
           </View>
         )}
       </View>
       <QuizFooter
         isChoiceCorrect={checkIfChoiceIsCorrect(
-          quizQuestions[0].isChoiceCorrect
+          quizQuestions[currentQuestion - 1].isChoiceCorrect
         )}
         onPressCheckButton={handleAnswerCheck}
+        onPressNextButton={handleGoNext}
+        onFinish={() => console.log("finish")}
+        isQuizFinished={currentQuestion === numQuestions}
         isDisabled={selectedOptionIndex === null}
       />
     </SafeAreaView>
