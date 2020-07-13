@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  SafeAreaView,
-  StyleSheet,
-  TouchableHighlight,
-  Text,
-} from "react-native";
+import { View, StyleSheet, TouchableHighlight, Text } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import _ from "lodash";
 import { Feather } from "@expo/vector-icons";
 // Components
@@ -14,13 +9,7 @@ import QuizOptionButton from "./QuizOptionButton";
 // API
 import { useFetchQuiz } from "../../api/quizzes";
 // Design
-import {
-  OFF_WHITE,
-  GRAY_1,
-  GRAY_2,
-  OFF_BLACK,
-  NEWT_BLUE,
-} from "../../design/colors";
+import { OFF_WHITE, GRAY_1, GRAY_2, OFF_BLACK } from "../../design/colors";
 import { SEMIBOLD, REGULAR, FS24, FS14 } from "../../design/typography";
 // Helpers
 import { checkIfChoiceIsCorrect } from "./helpers";
@@ -136,6 +125,7 @@ const styles = StyleSheet.create({
     backgroundColor: OFF_WHITE,
     flex: 1,
     justifyContent: "space-between",
+    paddingBottom: 0,
   },
   quizHeader: {
     paddingVertical: 10,
