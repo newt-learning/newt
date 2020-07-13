@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useSafeArea } from "react-native-safe-area-context";
 // Components
 import ActionButton from "../../components/shared/ActionButton";
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     borderColor: NEWT_BLUE,
   },
   answerFeedbackContainer: {
-    height: 175,
+    height: 100,
   },
   correctChoice: {
     backgroundColor: LIME_GREEN_5,

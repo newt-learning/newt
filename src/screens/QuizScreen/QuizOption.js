@@ -1,10 +1,11 @@
 import React from "react";
-import { StyleSheet, Platform } from "react-native";
+import { View, StyleSheet, Platform, Text } from "react-native";
 // Components
 import { Button } from "react-native-elements";
 // Design
 import {
   OFF_WHITE,
+  GRAY_2,
   GRAY_4,
   OFF_BLACK,
   NEWT_BLUE,
@@ -17,12 +18,14 @@ import {
   LIME_GREEN_5,
   LIME_GREEN_DARK,
 } from "../../design/colors";
-import { SEMIBOLD, REGULAR, FS16 } from "../../design/typography";
+import { SEMIBOLD, REGULAR, FS16, FS12 } from "../../design/typography";
 
-const QuizOptionButton = ({
+const QuizOption = ({
   title,
   isSelected,
   isChoiceCorrect,
+  optionChosen,
+  explanation,
   onPress,
   disabled,
 }) => {
@@ -50,24 +53,34 @@ const QuizOptionButton = ({
   ]);
 
   return (
-    <Button
-      title={title}
-      type="outline"
-      onPress={onPress}
-      containerStyle={styles.optionButtonContainer}
-      buttonStyle={buttonStyle}
-      titleStyle={titleStyle}
-      underlayColor={NEWT_BLUE_4}
-      disabled={disabled}
-      disabledStyle={buttonStyle}
-      disabledTitleStyle={titleStyle}
-    />
+    <View style={styles.container}>
+      <Button
+        title={title}
+        type="outline"
+        onPress={onPress}
+        containerStyle={styles.optionButtonContainer}
+        buttonStyle={buttonStyle}
+        titleStyle={titleStyle}
+        underlayColor={NEWT_BLUE_4}
+        disabled={disabled}
+        disabledStyle={buttonStyle}
+        disabledTitleStyle={titleStyle}
+      />
+      {/* Display the answer explanation if an option has been chosen and
+        an explanation exists */}
+      {optionChosen && explanation && (
+        <Text style={styles.explanation}>{explanation}</Text>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  optionButtonContainer: {
+  container: {
     marginBottom: 10,
+  },
+  optionButtonContainer: {
+    marginBottom: 5,
     ...Platform.select({
       ios: {
         shadowColor: "black",
@@ -114,6 +127,11 @@ const styles = StyleSheet.create({
     fontFamily: SEMIBOLD,
     color: RED,
   },
+  explanation: {
+    paddingHorizontal: 10,
+    fontSize: FS12,
+    color: GRAY_2,
+  },
 });
 
-export default QuizOptionButton;
+export default QuizOption;

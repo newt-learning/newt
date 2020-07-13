@@ -5,7 +5,7 @@ import _ from "lodash";
 import { Feather } from "@expo/vector-icons";
 // Components
 import Loader from "../../components/shared/Loader";
-import QuizOptionButton from "./QuizOptionButton";
+import QuizOption from "./QuizOption";
 // API
 import { useFetchQuiz } from "../../api/quizzes";
 // Design
@@ -95,10 +95,12 @@ const QuizScreen = ({ route, navigation }) => {
                   : null;
 
                 return (
-                  <QuizOptionButton
+                  <QuizOption
                     title={option.option}
                     isSelected={isSelected}
                     isChoiceCorrect={isChoiceCorrect}
+                    optionChosen={quizQuestions[0].optionChosen}
+                    explanation={option.explanation}
                     onPress={() => handleOptionSelection(index, option.option)}
                     disabled={disableOptionSelection}
                     key={option._id}
