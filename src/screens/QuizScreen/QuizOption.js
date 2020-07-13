@@ -25,6 +25,7 @@ const QuizOption = ({
   isSelected,
   isChoiceCorrect,
   optionChosen,
+  correctAnswer,
   explanation,
   onPress,
   disabled,
@@ -39,6 +40,8 @@ const QuizOption = ({
     isChoiceCorrect && styles.correctOption,
     // If choice is wrong, show red styling
     isChoiceCorrect === false && styles.wrongOption,
+    // If an option has been checked, show which one is the correct answer
+    optionChosen && title === correctAnswer && styles.correctOption,
   ]);
 
   const titleStyle = StyleSheet.compose([
@@ -50,6 +53,8 @@ const QuizOption = ({
     isChoiceCorrect && styles.correctOptionText,
     // If wrong, make text red
     isChoiceCorrect === false && styles.wrongOptionText,
+    // If an option has been checked, show which one is the correct answer
+    optionChosen && title === correctAnswer && styles.correctOptionText,
   ]);
 
   return (

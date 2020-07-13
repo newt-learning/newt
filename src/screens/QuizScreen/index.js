@@ -100,6 +100,7 @@ const QuizScreen = ({ route, navigation }) => {
                     isSelected={isSelected}
                     isChoiceCorrect={isChoiceCorrect}
                     optionChosen={quizQuestions[0].optionChosen}
+                    correctAnswer={quizQuestions[0].correctAnswer}
                     explanation={option.explanation}
                     onPress={() => handleOptionSelection(index, option.option)}
                     disabled={disableOptionSelection}
