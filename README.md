@@ -11,4 +11,5 @@
 <img src="https://github.com/newt-learning/newt-app/blob/master/assets/screenshots/my_library_screen.png" alt="Newt My Library Screen" height="500" />
 <img src="https://github.com/newt-learning/newt-app/blob/master/assets/screenshots/add_book_screen.png" alt="Newt Add Book Screen" height="500" />
 <img src="https://github.com/newt-learning/newt-app/blob/master/assets/screenshots/book_screen.png" alt="Newt Book Screen" height="500" />
+<img src="https://github.com/newt-learning/newt-app/blob/master/assets/screenshots/video_screen.png" alt="Newt Book Screen" height="500" />
 </div>
