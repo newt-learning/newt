@@ -6,6 +6,8 @@ import { Feather } from "@expo/vector-icons";
 // Components
 import Loader from "../../components/shared/Loader";
 import QuizOption from "./QuizOption";
+import QuizFooter from "./QuizFooter";
+import QuizOutro from "./QuizOutro";
 // API
 import { useFetchQuiz, useUpdatePersonalQuiz } from "../../api/quizzes";
 // Design
@@ -13,17 +15,15 @@ import { OFF_WHITE, GRAY_1, GRAY_2, OFF_BLACK } from "../../design/colors";
 import { SEMIBOLD, REGULAR, FS24, FS14 } from "../../design/typography";
 // Helpers
 import { checkIfChoiceIsCorrect } from "./helpers";
-import QuizFooter from "./QuizFooter";
 
 const QuizScreen = ({ route, navigation }) => {
   const { quizId, contentTitle } = route.params;
 
   const { status, data } = useFetchQuiz(quizId);
-  const [
-    updatePersonalQuiz,
-    { status: quizUpdateStatus },
-  ] = useUpdatePersonalQuiz();
+  const [updatePersonalQuiz] = useUpdatePersonalQuiz();
 
+  // Show either questions on screen, or the outri
+  const [quizSection, setQuizSection] = useState("questions");
   // Quiz questions and answers
   const [quizQuestions, setQuizQuestions] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(1);
@@ -93,77 +93,84 @@ const QuizScreen = ({ route, navigation }) => {
     completedQuiz.dateCompleted = Date.now();
     // Send request to update quiz
     updatePersonalQuiz({ quizId, data: completedQuiz });
+    // Go to quiz outro
+    setQuizSection("outro");
   };
-
-  const isQuizFinished = currentQuestion === quizQuestions.length;
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <View style={styles.quizHeader}>
-          <TouchableHighlight
-            onPress={() => navigation.goBack()}
-            underlayColor={OFF_WHITE}
-          >
-            <Feather name="x" size={24} color={GRAY_2} />
-          </TouchableHighlight>
-          <Text style={styles.contentTitle}>{contentTitle}</Text>
-          <View style={{ width: 24 }} />
-        </View>
-        {quizQuestions && (
-          <View style={styles.quizBody}>
-            <Text style={styles.question}>
-              {quizQuestions[currentQuestion - 1].question}
-            </Text>
-            <View style={styles.optionsContainer}>
-              {_.map(
-                quizQuestions[currentQuestion - 1].options,
-                (option, index) => {
-                  // Check if option is selected, which will affect styling
-                  const isSelected = index === selectedOptionIndex;
-
-                  // If the options is selected, check if a check has been made
-                  // (_.isUndefined check). If it hasn't (isChoiceCorrect property
-                  // won't be defined), return null. Otherwise return whether the
-                  // answer is correct or not.
-                  const isChoiceCorrect = isSelected
-                    ? checkIfChoiceIsCorrect(
-                        quizQuestions[currentQuestion - 1].isChoiceCorrect
-                      )
-                    : null;
-
-                  return (
-                    <QuizOption
-                      title={option.option}
-                      isSelected={isSelected}
-                      isChoiceCorrect={isChoiceCorrect}
-                      optionChosen={
-                        quizQuestions[currentQuestion - 1].optionChosen
-                      }
-                      correctAnswer={
-                        quizQuestions[currentQuestion - 1].correctAnswer
-                      }
-                      explanation={option.explanation}
-                      onPress={() =>
-                        handleOptionSelection(index, option.option)
-                      }
-                      disabled={disableOptionSelection}
-                      key={option._id}
-                    />
-                  );
-                }
-              )}
-            </View>
+      {quizSection === "questions" ? (
+        <View>
+          <View style={styles.quizHeader}>
+            <TouchableHighlight
+              onPress={() => navigation.goBack()}
+              underlayColor={OFF_WHITE}
+            >
+              <Feather name="x" size={24} color={GRAY_2} />
+            </TouchableHighlight>
+            <Text style={styles.contentTitle}>{contentTitle}</Text>
+            <View style={{ width: 24 }} />
           </View>
-        )}
-      </View>
+          {quizQuestions && (
+            <View style={styles.quizBody}>
+              <Text style={styles.question}>
+                {quizQuestions[currentQuestion - 1].question}
+              </Text>
+              <View style={styles.optionsContainer}>
+                {_.map(
+                  quizQuestions[currentQuestion - 1].options,
+                  (option, index) => {
+                    // Check if option is selected, which will affect styling
+                    const isSelected = index === selectedOptionIndex;
+
+                    // If the options is selected, check if a check has been made
+                    // (_.isUndefined check). If it hasn't (isChoiceCorrect property
+                    // won't be defined), return null. Otherwise return whether the
+                    // answer is correct or not.
+                    const isChoiceCorrect = isSelected
+                      ? checkIfChoiceIsCorrect(
+                          quizQuestions[currentQuestion - 1].isChoiceCorrect
+                        )
+                      : null;
+
+                    return (
+                      <QuizOption
+                        title={option.option}
+                        isSelected={isSelected}
+                        isChoiceCorrect={isChoiceCorrect}
+                        optionChosen={
+                          quizQuestions[currentQuestion - 1].optionChosen
+                        }
+                        correctAnswer={
+                          quizQuestions[currentQuestion - 1].correctAnswer
+                        }
+                        explanation={option.explanation}
+                        onPress={() =>
+                          handleOptionSelection(index, option.option)
+                        }
+                        disabled={disableOptionSelection}
+                        key={option._id}
+                      />
+                    );
+                  }
+                )}
+              </View>
+            </View>
+          )}
+        </View>
+      ) : (
+        <QuizOutro />
+      )}
+
       <QuizFooter
+        quizSection={quizSection}
         isChoiceCorrect={checkIfChoiceIsCorrect(
           quizQuestions[currentQuestion - 1].isChoiceCorrect
         )}
         onPressCheckButton={handleAnswerCheck}
         onPressNextButton={handleGoNext}
         onFinish={handleFinish}
+        onClose={() => navigation.goBack()}
         isQuizFinished={currentQuestion === numQuestions}
         isDisabled={selectedOptionIndex === null}
       />

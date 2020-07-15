@@ -10,6 +10,7 @@ import {
   LIME_GREEN_5,
   RED,
   RED_5,
+  GRAY_3,
 } from "../../design/colors";
 import { BOLD, FS20 } from "../../design/typography";
 
@@ -69,35 +70,59 @@ const AnswerFeedback = ({
 // whether the answer was right/wrong, an explanation if available, and a button
 // to continue the quiz
 const QuizFooter = ({
+  quizSection,
   isChoiceCorrect,
   onPressCheckButton,
   onPressNextButton,
   onFinish,
+  onClose,
   isQuizFinished,
   isDisabled,
 }) => {
   const insets = useSafeArea();
   const BOTTOM_MARGIN = insets.bottom + 20;
 
-  return isChoiceCorrect === null ? (
-    <View
-      style={[styles.checkButtonContainer, { marginBottom: BOTTOM_MARGIN }]}
-    >
-      <ActionButton
-        title="CHECK"
-        buttonStyle={styles.checkButton}
-        disabled={isDisabled}
-        onPress={onPressCheckButton}
-      />
-    </View>
-  ) : (
-    <AnswerFeedback
-      isChoiceCorrect={isChoiceCorrect}
-      isQuizFinished={isQuizFinished}
-      onPressNext={onPressNextButton}
-      onFinish={onFinish}
-    />
-  );
+  // If the user is in the Outro section, show a close button. Otherwise they're
+  // in the questions section. In that case, if an answer hasn't been selected,
+  // show the Check button, otherwise provide Answer feedback.
+  if (quizSection === "outro") {
+    return (
+      <View
+        style={[styles.checkButtonContainer, { marginBottom: BOTTOM_MARGIN }]}
+      >
+        <ActionButton
+          title="CLOSE"
+          buttonStyle={styles.closeButton}
+          onPress={onClose}
+        />
+      </View>
+    );
+  } else {
+    if (isChoiceCorrect === null) {
+      return (
+        <View
+          style={[styles.checkButtonContainer, { marginBottom: BOTTOM_MARGIN }]}
+        >
+          <ActionButton
+            title="CHECK"
+            buttonStyle={styles.checkButton}
+            disabled={isDisabled}
+            onPress={onPressCheckButton}
+          />
+        </View>
+      );
+    } else {
+      return (
+        <AnswerFeedback
+          isChoiceCorrect={isChoiceCorrect}
+          isQuizFinished={isQuizFinished}
+          onPressNext={onPressNextButton}
+          onFinish={onFinish}
+          onClose={onClose}
+        />
+      );
+    }
+  }
 };
 
 const styles = StyleSheet.create({
@@ -130,6 +155,9 @@ const styles = StyleSheet.create({
   },
   wrongChoiceButton: {
     backgroundColor: RED,
+  },
+  closeButton: {
+    backgroundColor: GRAY_3,
   },
 });
 
