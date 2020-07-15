@@ -1,5 +1,6 @@
 import newtApi from "./newtApi";
 import { useMutation, useQuery, queryCache } from "react-query";
+import displayErrorAlert from "../components/shared/displayErrorAlert";
 
 // API calls
 const fetchQuiz = async (queryKey, quizId) => {
@@ -14,7 +15,7 @@ const createPersonalQuiz = async (data) => {
     );
     return personalQuizData;
   } catch (error) {
-    console.log(error);
+    displayErrorAlert("Sorry, there was an error while creating your quiz");
   }
 };
 const updatePersonalQuiz = async ({ quizId, data }) => {
@@ -22,7 +23,9 @@ const updatePersonalQuiz = async ({ quizId, data }) => {
     const res = await newtApi.put(`/quizzes/${quizId}/update`, data);
     return res.data;
   } catch (error) {
-    console.log(error);
+    displayErrorAlert(
+      "Sorry, there was an error while updating your Reading Challenge"
+    );
   }
 };
 
