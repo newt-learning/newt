@@ -123,12 +123,17 @@ const VideoScreen = ({ route, navigation }) => {
       navigation.navigate("QuizScreen", {
         quizId: personalQuiz._id,
         contentTitle: name,
+        contentQuizInfo: [
+          ...quizInfo,
+          { quizId: personalQuiz._id, dateCreated: personalQuiz.dateCreated },
+        ],
       });
     } else {
       // Fetch already taken quiz for now
       navigation.navigate("QuizScreen", {
         quizId: quizInfo[0].quizId,
         contentTitle: name,
+        contentQuizInfo: quizInfo,
       });
     }
   };

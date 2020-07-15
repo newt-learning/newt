@@ -19,7 +19,8 @@ const createPersonalQuiz = async (data) => {
 };
 const updatePersonalQuiz = async ({ quizId, data }) => {
   try {
-    await newtApi.put(`/quizzes/${quizId}/update`, data);
+    const res = await newtApi.put(`/quizzes/${quizId}/update`, data);
+    return res.data;
   } catch (error) {
     console.log(error);
   }

@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import _ from "lodash";
+// Context
+import { Context as ContentContext } from "../../context/ContentContext";
 // Components
 import Loader from "../../components/shared/Loader";
 import QuizBody from "./QuizBody";
@@ -15,10 +17,14 @@ import { OFF_WHITE } from "../../design/colors";
 import { checkIfChoiceIsCorrect } from "./helpers";
 
 const QuizScreen = ({ route, navigation }) => {
-  const { quizId, contentTitle } = route.params;
+  const { quizId, contentTitle, contentQuizInfo } = route.params;
 
   const { status, data } = useFetchQuiz(quizId);
-  const [updatePersonalQuiz] = useUpdatePersonalQuiz();
+  const [
+    updatePersonalQuiz,
+    { status: updateQuizStatus },
+  ] = useUpdatePersonalQuiz();
+  const { updateContent } = useContext(ContentContext);
 
   // Show either questions on screen, or the outri
   const [quizSection, setQuizSection] = useState("questions");
@@ -84,13 +90,24 @@ const QuizScreen = ({ route, navigation }) => {
   };
 
   // Handle finishing the quiz
-  const handleFinish = () => {
+  const handleFinish = async () => {
     // Spread general quiz data + add new results
     let completedQuiz = { ...data, results: quizQuestions };
     // Set date completed to now
     completedQuiz.dateCompleted = Date.now();
     // Send request to update quiz
-    updatePersonalQuiz({ quizId, data: completedQuiz });
+    const updatedQuiz = await updatePersonalQuiz({
+      quizId,
+      data: completedQuiz,
+    });
+    // Add completed data to user content's quiz info
+    const updatedContentQuizInfo = [...contentQuizInfo];
+    updatedContentQuizInfo[0].dateCompleted = updatedQuiz.dateCompleted;
+    // Update user content with new quiz info
+    updateContent(updatedQuiz.userContentId, {
+      quizInfo: updatedContentQuizInfo,
+    });
+
     // Go to quiz outro
     setQuizSection("outro");
   };
@@ -118,6 +135,7 @@ const QuizScreen = ({ route, navigation }) => {
         onPressCheckButton={handleAnswerCheck}
         onPressNextButton={handleGoNext}
         onFinish={handleFinish}
+        onFinishLoading={updateQuizStatus === "loading"}
         onClose={() => navigation.goBack()}
         isQuizFinished={currentQuestion === numQuestions}
         isDisabled={selectedOptionIndex === null}

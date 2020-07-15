@@ -19,6 +19,7 @@ const AnswerFeedback = ({
   isQuizFinished,
   onPressNext,
   onFinish,
+  onFinishLoading,
 }) => {
   const insets = useSafeArea();
   const BOTTOM_PADDING = insets.bottom + 20;
@@ -51,6 +52,7 @@ const AnswerFeedback = ({
             onPress={onFinish}
             buttonContainerStyle={{ alignItems: "center" }}
             buttonStyle={nextButtonStyle}
+            showLoading={onFinishLoading}
           />
         ) : (
           <ActionButton
@@ -75,6 +77,7 @@ const QuizFooter = ({
   onPressCheckButton,
   onPressNextButton,
   onFinish,
+  onFinishLoading,
   onClose,
   isQuizFinished,
   isDisabled,
@@ -118,6 +121,7 @@ const QuizFooter = ({
           isQuizFinished={isQuizFinished}
           onPressNext={onPressNextButton}
           onFinish={onFinish}
+          onFinishLoading={onFinishLoading}
           onClose={onClose}
         />
       );
