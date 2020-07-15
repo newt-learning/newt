@@ -7,7 +7,7 @@ import { Feather } from "@expo/vector-icons";
 import Loader from "../../components/shared/Loader";
 import QuizOption from "./QuizOption";
 // API
-import { useFetchQuiz } from "../../api/quizzes";
+import { useFetchQuiz, useUpdatePersonalQuiz } from "../../api/quizzes";
 // Design
 import { OFF_WHITE, GRAY_1, GRAY_2, OFF_BLACK } from "../../design/colors";
 import { SEMIBOLD, REGULAR, FS24, FS14 } from "../../design/typography";
@@ -19,6 +19,11 @@ const QuizScreen = ({ route, navigation }) => {
   const { quizId, contentTitle } = route.params;
 
   const { status, data } = useFetchQuiz(quizId);
+  const [
+    updatePersonalQuiz,
+    { status: quizUpdateStatus },
+  ] = useUpdatePersonalQuiz();
+
   // Quiz questions and answers
   const [quizQuestions, setQuizQuestions] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(1);
@@ -78,6 +83,16 @@ const QuizScreen = ({ route, navigation }) => {
     setSelectedOptionIndex(null);
     setSelectedOption(null);
     setDisableOptionSelection(false);
+  };
+
+  // Handle finishing the quiz
+  const handleFinish = () => {
+    // Spread general quiz data + add new results
+    let completedQuiz = { ...data, results: quizQuestions };
+    // Set date completed to now
+    completedQuiz.dateCompleted = Date.now();
+    // Send request to update quiz
+    updatePersonalQuiz({ quizId, data: completedQuiz });
   };
 
   const isQuizFinished = currentQuestion === quizQuestions.length;
@@ -148,7 +163,7 @@ const QuizScreen = ({ route, navigation }) => {
         )}
         onPressCheckButton={handleAnswerCheck}
         onPressNextButton={handleGoNext}
-        onFinish={() => console.log("finish")}
+        onFinish={handleFinish}
         isQuizFinished={currentQuestion === numQuestions}
         isDisabled={selectedOptionIndex === null}
       />

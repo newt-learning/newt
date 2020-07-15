@@ -1,5 +1,5 @@
 import newtApi from "./newtApi";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, queryCache } from "react-query";
 
 // API calls
 const fetchQuiz = async (queryKey, quizId) => {
@@ -17,6 +17,13 @@ const createPersonalQuiz = async (data) => {
     console.log(error);
   }
 };
+const updatePersonalQuiz = async ({ quizId, data }) => {
+  try {
+    await newtApi.put(`/quizzes/${quizId}/update`, data);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // React-query bindings
 export function useFetchQuiz(quizId) {
@@ -24,4 +31,9 @@ export function useFetchQuiz(quizId) {
 }
 export function useCreatePersonalQuiz() {
   return useMutation(createPersonalQuiz);
+}
+export function useUpdatePersonalQuiz() {
+  return useMutation(updatePersonalQuiz, {
+    onSettled: () => queryCache.refetchQueries("quiz"),
+  });
 }
