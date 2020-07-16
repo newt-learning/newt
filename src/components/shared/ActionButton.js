@@ -9,12 +9,17 @@ const ActionButton = ({
   title,
   onPress,
   showLoading,
+  buttonContainerStyle: passedButtonContainerStyle,
   buttonStyle: passedButtonStyle,
   titleStyle,
   icon,
   disabled,
   showOnlyDisabledIcon = false, // If this is true, the button will show a disabled icon instead of a title
 }) => {
+  const buttonContainerStyle = StyleSheet.compose(
+    styles.btnContainer,
+    passedButtonContainerStyle
+  );
   const buttonStyle = StyleSheet.compose(styles.button, passedButtonStyle);
   const buttonTitleStyle = StyleSheet.compose([
     styles.buttonTitle,
@@ -25,7 +30,7 @@ const ActionButton = ({
   return (
     <Button
       title={disabled && showOnlyDisabledIcon ? null : title}
-      containerStyle={styles.btnContainer}
+      containerStyle={buttonContainerStyle}
       buttonStyle={buttonStyle}
       titleStyle={buttonTitleStyle}
       loading={showLoading}

@@ -22,6 +22,7 @@ import { RED, GRAY_5 } from "../../design/colors";
 import {
   initializeShelves,
   initializeMultiSelectCheckbox,
+  handleContentNavigation,
 } from "../../helpers/screenHelpers";
 import { figureOutShelfMovingDataChanges } from "./helpers";
 import SelectStartFinishDatesSection from "./SelectStartFinishDatesSection";
@@ -41,7 +42,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   const { state: topicsState, fetchTopics } = useContext(TopicsContext);
 
   // Get params passed from route
-  const { contentInfo, buttonText, addToLibrary } = route.params;
+  const { contentInfo, buttonText, addToLibrary, contentType } = route.params;
 
   // Initialize shelves and topics checkboxes/selectors
   const [shelves, toggleShelves] = useSingleCheckbox(
@@ -88,12 +89,12 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     }
   }, [topicsState.items]);
 
-  const addBookToLibrary = async (selectedShelf, selectedTopics) => {
+  const addContentToLibrary = async (selectedShelf, selectedTopics) => {
     const data = {
       ...contentInfo,
       shelf: selectedShelf,
       topics: selectedTopics,
-      type: "book",
+      type: contentType,
     };
 
     // If the selected shelf is Currently Learning, set first date started as now
@@ -111,12 +112,12 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     // Send request to add book and then send bookInfo as param in navigation
     // route to 'BookScreen'. This will allow the Shelf button to change from
     // 'Add to Library' to whatever shelf was chosen (ex: 'Want to Learn').
-    const newBook = await addContent(data, true);
+    const newContent = await addContent(data, true);
 
     // Update the reading challenge by adding this book to the finished list
     // if a challenge exists (if selected shelf is Finished).
-    if (selectedShelf === "Finished Learning") {
-      addContentToChallenge(newBook._id);
+    if (selectedShelf === "Finished Learning" && contentType === "book") {
+      addContentToChallenge(newContent._id);
     }
 
     // Fetch all topics to show updates (again, inefficient because multiple
@@ -126,10 +127,11 @@ const ShelfSelectScreen = ({ navigation, route }) => {
 
     // If the result is null, meaning there was an error in adding the book,
     // go back to previous screen.
-    if (newBook === null) {
+    if (newContent === null) {
       navigation.goBack();
     } else {
-      navigation.navigate("BookScreen", { bookInfo: newBook });
+      handleContentNavigation(newContent, navigation);
+      // navigation.navigate("BookScreen", { bookInfo: newBook });
     }
   };
   const updateShelf = (selectedShelf) => {
@@ -169,7 +171,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   // Otherwise update the shelf of already existing content.
   const onConfirmShelf = (selectedShelf, selectedTopics) => {
     if (addToLibrary) {
-      addBookToLibrary(selectedShelf, selectedTopics);
+      addContentToLibrary(selectedShelf, selectedTopics);
     } else {
       updateShelf(selectedShelf);
     }

@@ -1,23 +1,32 @@
 import React, { useState, useContext, useLayoutEffect } from "react";
 import { ScrollView, View, StyleSheet, Image } from "react-native";
+import _ from "lodash";
 import * as Linking from "expo-linking";
+// API
+import { useCreatePersonalQuiz } from "../api/quizzes";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
 import Loader from "../components/shared/Loader";
 import TitleSection from "../components/Content/TitleSection";
 import ActionSection from "../components/Content/ActionSection";
+import QuizSection from "../components/Content/QuizSection";
 import Description from "../components/Content/Description";
 import MoreOptionsButton from "../components/shared/MoreOptionsButton";
 import OptionsModal from "../components/shared/OptionsModal";
 // Design
 import { OFF_WHITE } from "../design/colors";
+// Helpers
+import { convertFromNewtContentToUserContent } from "./AddVideoScreen/helpers";
 
 const VideoScreen = ({ route, navigation }) => {
   // Toggle show more/less description text
   const [showMore, setShowMore] = useState(false);
   // Initialize modal visibility
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  // Get function to create a quiz
+  const [createPersonalQuiz, { status: quizStatus }] = useCreatePersonalQuiz();
 
   // Add the 3-dot options icon which opens the options modal
   useLayoutEffect(() => {
@@ -29,14 +38,31 @@ const VideoScreen = ({ route, navigation }) => {
   });
 
   const passedVideoInfo = route.params.videoInfo;
+  // If coming from the Discover section in Add Content Screen
+  const comingFromDiscoverSection =
+    route.params.comingFromDiscoverSection ?? false;
 
-  const { state: contentState } = useContext(ContentContext);
+  const { state: contentState, updateContent } = useContext(ContentContext);
 
   // Need to come up with a better, more efficient way of ensuring the screen
   // updates when the data updates.
-  const videoInfo = contentState.items.filter(
-    (item) => item._id === passedVideoInfo._id
-  )[0];
+  let videoInfo = {};
+
+  // If coming from the Discover section, filter items with Newt content Id
+  // (since the section displays stuff part of Newt Content DB) so if the item
+  // is already in the user's library, it shows that instead of a new one.
+  // Otherwise filter by _id to get the latest data
+  if (comingFromDiscoverSection) {
+    videoInfo =
+      contentState.items.filter(
+        (item) => item.newtContentInfo?.newtContentId === passedVideoInfo._id
+      )[0] ?? passedVideoInfo;
+  } else {
+    videoInfo =
+      contentState.items.filter(
+        (item) => item._id === passedVideoInfo._id
+      )[0] ?? passedVideoInfo;
+  }
 
   const {
     _id,
@@ -48,6 +74,9 @@ const VideoScreen = ({ route, navigation }) => {
     description,
     thumbnailUrl,
     startFinishDates,
+    isOnNewtContentDatabase,
+    newtContentInfo,
+    quizInfo,
     dateAdded,
   } = videoInfo;
 
@@ -76,6 +105,39 @@ const VideoScreen = ({ route, navigation }) => {
     Linking.openURL(`https://youtu.be/${videoInfo.videoInfo.videoId}`);
   };
 
+  const handleTakeQuiz = async () => {
+    if (_.isEmpty(quizInfo)) {
+      // Create personal quiz for user
+      const personalQuiz = await createPersonalQuiz({
+        newtQuizId: newtContentInfo.newtQuizId,
+        userContentId: _id,
+      });
+      // Add quiz to the user's content
+      await updateContent(_id, {
+        quizInfo: [
+          ...quizInfo,
+          { quizId: personalQuiz._id, dateCreated: personalQuiz.dateCreated },
+        ],
+      });
+      // Navigate to quiz screen
+      navigation.navigate("QuizScreen", {
+        quizId: personalQuiz._id,
+        contentTitle: name,
+        contentQuizInfo: [
+          ...quizInfo,
+          { quizId: personalQuiz._id, dateCreated: personalQuiz.dateCreated },
+        ],
+      });
+    } else {
+      // Fetch already taken quiz for now
+      navigation.navigate("QuizScreen", {
+        quizId: quizInfo[0].quizId,
+        contentTitle: name,
+        contentQuizInfo: quizInfo,
+      });
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.imageContainer}>
@@ -98,14 +160,30 @@ const VideoScreen = ({ route, navigation }) => {
         topics={topics}
         startFinishDates={startFinishDates}
         dateAdded={dateAdded}
-        onPress={() =>
-          navigation.navigate("ShelfSelect", {
-            contentInfo: videoInfo,
-            buttonText: "Confirm",
-            addToLibrary: false,
-          })
+        onPress={
+          shelf
+            ? () =>
+                navigation.navigate("ShelfSelect", {
+                  contentInfo: videoInfo,
+                  buttonText: "Confirm",
+                  addToLibrary: false,
+                })
+            : () =>
+                navigation.navigate("ShelfSelect", {
+                  contentInfo: convertFromNewtContentToUserContent(videoInfo),
+                  buttonText: "Add to Library",
+                  addToLibrary: true,
+                  contentType: "video",
+                })
         }
       />
+      {isOnNewtContentDatabase && (
+        <QuizSection
+          quizInfo={quizInfo}
+          onPress={handleTakeQuiz}
+          isLoading={quizStatus === "loading" || contentState.isFetching}
+        />
+      )}
       <Description
         text={description}
         showMore={showMore}

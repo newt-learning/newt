@@ -7,13 +7,25 @@ import ActionButton from "../shared/ActionButton";
 import { SEMIBOLD, REGULAR, FS24, FS16 } from "../../design/typography";
 import { OFF_BLACK, GRAY_2, GRAY_4, RED } from "../../design/colors";
 
-const TitleSection = ({ title, authors, contentType, onPress }) => {
+const TitleSection = ({
+  title,
+  authors,
+  contentType,
+  subtitle,
+  onPress,
+  noBottomBorder = false,
+}) => {
+  const containerStyle = noBottomBorder
+    ? StyleSheet.compose(styles.container, { borderBottomWidth: 0 })
+    : styles.container;
+
   return (
-    <View style={styles.container}>
+    <View style={containerStyle}>
       {title ? <Text style={styles.title}>{title}</Text> : null}
       {authors ? (
         <Text style={styles.author}>by {authors.join(", ")}</Text>
       ) : null}
+      {subtitle ? <Text style={styles.author}>{subtitle}</Text> : null}
       {/* If content is a video, show button that plays video wherever (right 
         now only YouTube) */}
       {contentType === "video" && (

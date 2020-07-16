@@ -6,6 +6,7 @@ import AddContentScreen from "../screens/AddContentScreen";
 import AddBookScreen from "../screens/AddBookScreen";
 import BookScreen from "../screens/BookScreen";
 import AddVideoScreen from "../screens/AddVideoScreen";
+import VideoScreen from "../screens/VideoScreen";
 import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
 import AddToTopicScreen from "../screens/AddToTopicScreen";
@@ -52,6 +53,11 @@ const MainStack = () => {
       <Stack.Screen
         name="BookScreen"
         component={BookScreen}
+        options={{ title: null }}
+      />
+      <Stack.Screen
+        name="VideoScreen"
+        component={VideoScreen}
         options={{ title: null }}
       />
       <Stack.Screen

@@ -9,20 +9,37 @@ import {
 import _ from "lodash";
 // Styling
 import { SEMIBOLD, REGULAR, FS16, FS14 } from "../design/typography";
-import { OFF_BLACK, GRAY_2, GRAY_4, OFF_WHITE } from "../design/colors";
+import {
+  OFF_BLACK,
+  GRAY_2,
+  GRAY_4,
+  OFF_WHITE,
+  ORANGE_5,
+  ORANGE_4,
+} from "../design/colors";
 
 const ContentListCard = ({
   title,
   authors,
   thumbnailUrl,
+  type,
   onPress,
   cardStyle: passedCardStyle,
+  titleContainerStyle: passedTitleContainerStyle,
 }) => {
-  const cardStyle = StyleSheet.compose(styles.cardContainer, passedCardStyle);
+  const cardStyle = StyleSheet.compose([
+    styles.cardContainer,
+    type === "series" && styles.seriesCard,
+    passedCardStyle,
+  ]);
+  const titleContainerStyle = StyleSheet.compose(
+    styles.bookInfo,
+    passedTitleContainerStyle
+  );
 
   return (
     <TouchableHighlight
-      underlayColor={GRAY_4}
+      underlayColor={type === "series" ? ORANGE_4 : GRAY_4}
       style={cardStyle}
       onPress={onPress}
     >
@@ -38,7 +55,7 @@ const ContentListCard = ({
           }
           resizeMode="contain"
         />
-        <View style={styles.bookInfo}>
+        <View style={titleContainerStyle}>
           {title ? <Text style={styles.title}>{title}</Text> : null}
           {!_.isEmpty(authors) ? (
             <Text style={styles.author}>by {authors.join(", ")}</Text>
@@ -58,6 +75,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: GRAY_4,
     backgroundColor: OFF_WHITE,
+  },
+  seriesCard: {
+    backgroundColor: ORANGE_5,
   },
   thumbnail: {
     height: 80,

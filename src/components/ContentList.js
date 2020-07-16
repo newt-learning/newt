@@ -33,6 +33,7 @@ const ContentList = ({ data, SearchBar }) => {
             title={item.name}
             authors={item.authors}
             thumbnailUrl={item.thumbnailUrl}
+            type={item.type}
             onPress={() => handleContentNavigation(item, navigation)}
           />
         )}
