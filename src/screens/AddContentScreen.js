@@ -5,6 +5,7 @@ import { useFetchNewtContent } from "../api/newtContent";
 // Components
 import { H1 } from "../components/shared/Headers";
 import ShelfContentCard from "../components/MyLibrary/ShelfContentCard";
+import LoadingSkeletonCard from "../components/shared/LoadingSkeletonCard";
 import ContentButton from "../components/ContentButton";
 // Styling
 import { GRAY_5, OFF_WHITE, WHITE, RUBY, ORANGE } from "../design/colors";
@@ -38,6 +39,12 @@ const AddContentScreen = ({ navigation }) => {
             }
           />
         )}
+        ListEmptyComponent={
+          <>
+            <LoadingSkeletonCard backgroundColor={OFF_WHITE} />
+            <LoadingSkeletonCard backgroundColor={OFF_WHITE} />
+          </>
+        }
       />
       <StatusBar barStyle="dark-content" backgroundColor={OFF_WHITE} />
       <View style={styles.contentContainer}>
