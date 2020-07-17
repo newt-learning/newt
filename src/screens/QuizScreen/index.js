@@ -45,6 +45,14 @@ const QuizScreen = ({ route, navigation }) => {
     }
   }, [data, status]);
 
+  // If the quiz has been completed, disable selecting options so user can only
+  // view quiz answers
+  useEffect(() => {
+    if (data.dateCompleted) {
+      setDisableOptionSelection(true);
+    }
+  });
+
   if (status === "loading" || _.isEmpty(quizQuestions)) {
     return <Loader />;
   }
@@ -91,25 +99,32 @@ const QuizScreen = ({ route, navigation }) => {
 
   // Handle finishing the quiz
   const handleFinish = async () => {
-    // Spread general quiz data + add new results
-    let completedQuiz = { ...data, results: quizQuestions };
-    // Set date completed to now
-    completedQuiz.dateCompleted = Date.now();
-    // Send request to update quiz
-    const updatedQuiz = await updatePersonalQuiz({
-      quizId,
-      data: completedQuiz,
-    });
-    // Add completed data to user content's quiz info
-    const updatedContentQuizInfo = [...contentQuizInfo];
-    updatedContentQuizInfo[0].dateCompleted = updatedQuiz.dateCompleted;
-    // Update user content with new quiz info
-    updateContent(updatedQuiz.userContentId, {
-      quizInfo: updatedContentQuizInfo,
-    });
+    // If quiz is completed go to outro section, otherwise update quiz info
+    // and go to outro section
+    if (data.dateCompleted) {
+      // Go to quiz outro
+      setQuizSection("outro");
+    } else {
+      // Spread general quiz data + add new results
+      let completedQuiz = { ...data, results: quizQuestions };
+      // Set date completed to now
+      completedQuiz.dateCompleted = Date.now();
+      // Send request to update quiz
+      const updatedQuiz = await updatePersonalQuiz({
+        quizId,
+        data: completedQuiz,
+      });
+      // Add completed data to user content's quiz info
+      const updatedContentQuizInfo = [...contentQuizInfo];
+      updatedContentQuizInfo[0].dateCompleted = updatedQuiz.dateCompleted;
+      // Update user content with new quiz info
+      updateContent(updatedQuiz.userContentId, {
+        quizInfo: updatedContentQuizInfo,
+      });
 
-    // Go to quiz outro
-    setQuizSection("outro");
+      // Go to quiz outro
+      setQuizSection("outro");
+    }
   };
 
   return (
