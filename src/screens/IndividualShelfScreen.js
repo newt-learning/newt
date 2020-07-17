@@ -8,7 +8,7 @@ import { Context as ContentContext } from "../context/ContentContext";
 // Components
 import ContentList from "../components/ContentList";
 // Helpers
-import { orderByFinishDate } from "../helpers/screenHelpers";
+import { filterAndOrderContentByShelf } from "../helpers/screenHelpers";
 
 const IndividualShelfScreen = ({ route }) => {
   const {
@@ -19,21 +19,9 @@ const IndividualShelfScreen = ({ route }) => {
 
   const items = [...contentItems, ...seriesData];
 
-  const filterAndOrderContentByShelf = (shelf) => {
-    const filteredContent = _.filter(
-      items,
-      (item) => item.shelf === shelf && !item.partOfSeries
-    );
-
-    // If shelf is "Finished", order by finish date, other order by last updated
-    return shelf === "Finished Learning"
-      ? orderByFinishDate(filteredContent, "desc")
-      : _.orderBy(filteredContent, "lastUpdated", "desc");
-  };
-
   return (
     <View style={styles.container}>
-      <ContentList data={filterAndOrderContentByShelf(title)} />
+      <ContentList data={filterAndOrderContentByShelf(title, items)} />
     </View>
   );
 };

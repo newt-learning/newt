@@ -4,30 +4,19 @@ import _ from "lodash";
 // Components
 import Shelf from "./Shelf";
 // Helpers
-import { orderByFinishDate } from "../../helpers/screenHelpers";
+import { filterAndOrderContentByShelf } from "../../helpers/screenHelpers";
 
 const ShelvesSection = ({ items }) => {
   const navigation = useNavigation();
 
-  const filterAndOrderContentByShelf = (shelf) => {
-    // Filter items by shelf and remove items that are part of a series
-    const filteredContent = _.filter(
-      items,
-      (item) => item.shelf === shelf && !item.partOfSeries
-    );
-
-    // If shelf is "Finished", order by finish date, other order by last updated
-    return shelf === "Finished Learning"
-      ? orderByFinishDate(filteredContent, "desc")
-      : _.orderBy(filteredContent, "lastUpdated", "desc");
-  };
-
   const currentlyLearningItems = filterAndOrderContentByShelf(
-    "Currently Learning"
+    "Currently Learning",
+    items
   );
-  const wantToLearnItems = filterAndOrderContentByShelf("Want to Learn");
+  const wantToLearnItems = filterAndOrderContentByShelf("Want to Learn", items);
   const finishedLearningItems = filterAndOrderContentByShelf(
-    "Finished Learning"
+    "Finished Learning",
+    items
   );
 
   return (
