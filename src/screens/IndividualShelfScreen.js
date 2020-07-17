@@ -7,6 +7,8 @@ import { useFetchSeries } from "../api/series";
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
 import ContentList from "../components/ContentList";
+// Helpers
+import { orderByFinishDate } from "../helpers/screenHelpers";
 
 const IndividualShelfScreen = ({ route }) => {
   const {
@@ -22,7 +24,11 @@ const IndividualShelfScreen = ({ route }) => {
       items,
       (item) => item.shelf === shelf && !item.partOfSeries
     );
-    return _.orderBy(filteredContent, "lastUpdated", "desc");
+
+    // If shelf is "Finished", order by finish date, other order by last updated
+    return shelf === "Finished Learning"
+      ? orderByFinishDate(filteredContent, "desc")
+      : _.orderBy(filteredContent, "lastUpdated", "desc");
   };
 
   return (

@@ -88,3 +88,19 @@ export const handleContentNavigation = (
       return;
   }
 };
+
+// Order content by latest finish date
+export const orderByFinishDate = (content, sortBy = "desc") => {
+  return _.orderBy(
+    content,
+    ({ startFinishDates }) => {
+      if (!_.isEmpty(startFinishDates)) {
+        console.log(
+          startFinishDates[startFinishDates.length - 1].dateCompleted
+        );
+        return startFinishDates[startFinishDates.length - 1].dateCompleted;
+      }
+    },
+    [sortBy]
+  );
+};

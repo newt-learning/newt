@@ -3,6 +3,8 @@ import { useNavigation } from "@react-navigation/native";
 import _ from "lodash";
 // Components
 import Shelf from "./Shelf";
+// Helpers
+import { orderByFinishDate } from "../../helpers/screenHelpers";
 
 const ShelvesSection = ({ items }) => {
   const navigation = useNavigation();
@@ -13,7 +15,11 @@ const ShelvesSection = ({ items }) => {
       items,
       (item) => item.shelf === shelf && !item.partOfSeries
     );
-    return _.orderBy(filteredContent, "lastUpdated", "desc");
+
+    // If shelf is "Finished", order by finish date, other order by last updated
+    return shelf === "Finished Learning"
+      ? orderByFinishDate(filteredContent, "desc")
+      : _.orderBy(filteredContent, "lastUpdated", "desc");
   };
 
   const currentlyLearningItems = filterAndOrderContentByShelf(
