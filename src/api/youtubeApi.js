@@ -66,7 +66,7 @@ export async function getYoutubePlaylistInfo(playlistId) {
           params: {
             playlistId,
             part: "snippet",
-            maxResults: 5,
+            maxResults: 50,
             key: keys.youtubeApiKey,
           },
         }
