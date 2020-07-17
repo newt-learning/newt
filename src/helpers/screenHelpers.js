@@ -63,13 +63,62 @@ export const calculatePercentComplete = (amountCompleted, total) => {
 };
 
 // Navigate to content screen (e.g. BookScreen) based on content type
-export const handleContentNavigation = (content, navigationProp) => {
+export const handleContentNavigation = (
+  content,
+  navigationProp,
+  additionalParams
+) => {
   switch (content.type) {
     case "book":
-      return navigationProp.navigate("BookScreen", { bookInfo: content });
+      return navigationProp.navigate("BookScreen", {
+        bookInfo: content,
+        ...additionalParams,
+      });
     case "video":
-      return navigationProp.navigate("VideoScreen", { videoInfo: content });
+      return navigationProp.navigate("VideoScreen", {
+        videoInfo: content,
+        ...additionalParams,
+      });
+    case "series":
+      return navigationProp.navigate("SeriesScreen", {
+        seriesInfo: content,
+        ...additionalParams,
+      });
     default:
       return;
+  }
+};
+
+// Order content by latest finish date
+export const orderByFinishDate = (content, sortBy = "desc") => {
+  return _.orderBy(
+    content,
+    ({ startFinishDates }) => {
+      if (!_.isEmpty(startFinishDates)) {
+        return startFinishDates[startFinishDates.length - 1].dateCompleted;
+      }
+    },
+    [sortBy]
+  );
+};
+
+// Filter content by shelf and order them in the approopriate way
+export const filterAndOrderContentByShelf = (shelf, content) => {
+  const filteredContent = _.filter(
+    content,
+    (item) => item.shelf === shelf && !item.partOfSeries
+  );
+
+  // If shelf is "Current..", sort by lastUpdated, if "Want to..", by dateAdded
+  // and if "Finished", order by finish date
+  switch (shelf) {
+    case "Currently Learning":
+      return _.orderBy(filteredContent, "lastUpdated", "desc");
+    case "Want to Learn":
+      return _.orderBy(filteredContent, "dateAdded", "desc");
+    case "Finished Learning":
+      return orderByFinishDate(filteredContent, "desc");
+    default:
+      return _.orderBy(filteredContent, "lastUpdated", "desc");
   }
 };

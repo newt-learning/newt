@@ -1,11 +1,14 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import _ from "lodash";
+// API
+import { useCreateSeries } from "../../api/series";
 // Context
 import { Context as TopicsContext } from "../../context/TopicsContext";
 import { Context as ContentContext } from "../../context/ContentContext";
 // Components
 import VideoUrlForm from "./VideoUrlForm";
 import VideoConfirmation from "./VideoConfirmation";
+import SeriesConfirmation from "./SeriesConfirmation";
 // Hooks
 import useSingleCheckbox from "../../hooks/useSingleCheckbox";
 import useMultiSelectCheckbox from "../../hooks/useMultiSelectCheckbox";
@@ -14,11 +17,16 @@ import {
   initializeShelves,
   initializeMultiSelectCheckbox,
 } from "../../helpers/screenHelpers";
-import { getBestThumbnail, extractAndAssembleVideoInfo } from "./helpers";
+import {
+  extractAndAssembleVideoInfo,
+  extractAndAssemblePlaylistInfo,
+} from "./helpers";
 
 const AddVideoScreen = ({ navigation }) => {
   const [videoLink, setVideoLink] = useState("");
+  const [seriesLink, setSeriesLink] = useState("");
   const [videoInfo, setVideoInfo] = useState(null);
+  const [seriesInfo, setSeriesInfo] = useState(null);
   // State for start and end dates for Finished books
   const [startDate, setStartDate] = useState(new Date());
   const [finishDate, setFinishDate] = useState(new Date());
@@ -26,7 +34,9 @@ const AddVideoScreen = ({ navigation }) => {
   const [onConfirmationSection, setOnConfirmationSection] = useState(false);
 
   const { state: topicsState, fetchTopics } = useContext(TopicsContext);
-  const { addContent } = useContext(ContentContext);
+  const { addContent, fetchContent } = useContext(ContentContext);
+  // API request func. to DB to create a series
+  const [createSeries, { status }] = useCreateSeries();
 
   // Initialize shelves and topics checkboxes/selectors
   const [shelves, toggleShelves] = useSingleCheckbox(
@@ -88,28 +98,58 @@ const AddVideoScreen = ({ navigation }) => {
     navigation.goBack();
   };
 
-  return onConfirmationSection ? (
-    <VideoConfirmation
-      videoInfo={videoInfo}
-      setOnConfirmationSection={setOnConfirmationSection}
-      shelves={shelves}
-      onSelectShelf={toggleShelves}
-      topics={topicsList}
-      onSelectTopic={toggleTopicsList}
-      startDate={startDate}
-      finishDate={finishDate}
-      setStartDate={setStartDate}
-      setFinishDate={setFinishDate}
-      onSubmit={addVideo}
-    />
-  ) : (
-    <VideoUrlForm
-      videoLink={videoLink}
-      setVideoLink={setVideoLink}
-      setVideoInfo={setVideoInfo}
-      setOnConfirmationSection={setOnConfirmationSection}
-    />
-  );
+  const addSeries = async () => {
+    const formattedSeriesInfo = extractAndAssemblePlaylistInfo(seriesInfo);
+
+    // Create series and fetch content so it's updated
+    await createSeries(formattedSeriesInfo);
+    fetchContent();
+    navigation.goBack();
+  };
+
+  // If on the confirmation section, show either the video confirmation or series
+  // confirmation depending on the request that was made. Otherwise show the
+  // input fields to enter the links
+  if (onConfirmationSection) {
+    if (!_.isEmpty(videoInfo)) {
+      return (
+        <VideoConfirmation
+          videoInfo={videoInfo}
+          shelves={shelves}
+          onSelectShelf={toggleShelves}
+          topics={topicsList}
+          onSelectTopic={toggleTopicsList}
+          startDate={startDate}
+          finishDate={finishDate}
+          setStartDate={setStartDate}
+          setFinishDate={setFinishDate}
+          onGoBack={() => setOnConfirmationSection(false)}
+          onSubmit={addVideo}
+        />
+      );
+    } else {
+      return (
+        <SeriesConfirmation
+          seriesInfo={seriesInfo}
+          onGoBack={() => setOnConfirmationSection(false)}
+          onSubmit={addSeries}
+          isSubmitting={status === "loading"}
+        />
+      );
+    }
+  } else {
+    return (
+      <VideoUrlForm
+        videoLink={videoLink}
+        seriesLink={seriesLink}
+        setVideoLink={setVideoLink}
+        setSeriesLink={setSeriesLink}
+        setVideoInfo={setVideoInfo}
+        setSeriesInfo={setSeriesInfo}
+        setOnConfirmationSection={setOnConfirmationSection}
+      />
+    );
+  }
 };
 
 export default AddVideoScreen;

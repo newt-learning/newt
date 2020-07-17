@@ -20,6 +20,8 @@ import { Context as ContentContext } from "../context/ContentContext";
 // Design
 import { ORANGE, GRAY_2, OFF_WHITE, GRAY_5 } from "../design/colors";
 import { FS24, BOLD } from "../design/typography";
+// Helpers
+import { orderByFinishDate } from "../helpers/screenHelpers";
 
 const ChallengeScreen = ({ navigation, route }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -77,6 +79,8 @@ const ChallengeScreen = ({ navigation, route }) => {
   const finishedBooks = itemsFinished.map((finishedId) =>
     _.find(content, { _id: finishedId })
   );
+  // Order by descending order of finished date
+  const orderedBooks = orderByFinishDate(finishedBooks, "desc");
 
   // List of buttons in the options modal
   const modalOptions = [
@@ -135,7 +139,7 @@ const ChallengeScreen = ({ navigation, route }) => {
   ) : (
     <View>
       <FlatList
-        data={finishedBooks}
+        data={orderedBooks}
         renderItem={({ item, index }) => {
           let cardStyle = StyleSheet.compose([
             styles.bookCard,

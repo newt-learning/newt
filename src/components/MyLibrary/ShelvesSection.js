@@ -3,21 +3,20 @@ import { useNavigation } from "@react-navigation/native";
 import _ from "lodash";
 // Components
 import Shelf from "./Shelf";
+// Helpers
+import { filterAndOrderContentByShelf } from "../../helpers/screenHelpers";
 
 const ShelvesSection = ({ items }) => {
   const navigation = useNavigation();
 
-  const filterAndOrderContentByShelf = (shelf) => {
-    const filteredContent = _.filter(items, (item) => item.shelf === shelf);
-    return _.orderBy(filteredContent, "lastUpdated", "desc");
-  };
-
   const currentlyLearningItems = filterAndOrderContentByShelf(
-    "Currently Learning"
+    "Currently Learning",
+    items
   );
-  const wantToLearnItems = filterAndOrderContentByShelf("Want to Learn");
+  const wantToLearnItems = filterAndOrderContentByShelf("Want to Learn", items);
   const finishedLearningItems = filterAndOrderContentByShelf(
-    "Finished Learning"
+    "Finished Learning",
+    items
   );
 
   return (

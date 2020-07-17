@@ -1,4 +1,5 @@
 import React, { useEffect, useContext } from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 // Context
@@ -15,6 +16,7 @@ import Loader from "./src/components/shared/Loader";
 import MainTabs from "./src/navigators/MainTabs";
 // Screens
 import SignInScreen from "./src/screens/SignInScreen";
+import QuizScreen from "./src/screens/QuizScreen";
 // Hooks
 import useFonts from "./src/hooks/useFonts";
 
@@ -35,23 +37,34 @@ const App = () => {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {exists ? (
-          <Stack.Screen
-            name="Main"
-            component={MainTabs}
-            options={{ headerShown: false }}
-          />
-        ) : (
-          <Stack.Screen
-            name="SignIn"
-            component={SignInScreen}
-            options={{ headerShown: false, animationEnabled: false }}
-          />
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          {exists ? (
+            <>
+              {/* Screens part of bottom tab navigation */}
+              <Stack.Screen
+                name="Main"
+                component={MainTabs}
+                options={{ headerShown: false }}
+              />
+              {/* Don't want the bottom tabs for the Quiz Screen */}
+              <Stack.Screen
+                name="QuizScreen"
+                component={QuizScreen}
+                options={{ headerShown: false }}
+              />
+            </>
+          ) : (
+            <Stack.Screen
+              name="SignIn"
+              component={SignInScreen}
+              options={{ headerShown: false, animationEnabled: false }}
+            />
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 };
 

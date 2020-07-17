@@ -15,6 +15,7 @@ import { OFF_BLACK, GRAY_2, GRAY_4, OFF_WHITE } from "../../design/colors";
 const HomeContentCard = ({
   title,
   authors,
+  type,
   thumbnailUrl,
   percentComplete,
   onPress,
@@ -36,11 +37,13 @@ const HomeContentCard = ({
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.author}>by {authors.join(", ")}</Text>
           </View>
-          <ProgressBar
-            percentComplete={percentComplete}
-            barContainerStyle={styles.progressBar}
-            barStyle={styles.progressBar}
-          />
+          {type === "book" && (
+            <ProgressBar
+              percentComplete={percentComplete}
+              barContainerStyle={styles.progressBar}
+              barStyle={styles.progressBar}
+            />
+          )}
         </View>
       </>
     </TouchableHighlight>

@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { View, ScrollView, StyleSheet, RefreshControl } from "react-native";
 import _ from "lodash";
+// API
+import { useFetchSeries } from "../api/series";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 import { Context as TopicsContext } from "../context/TopicsContext";
@@ -19,6 +21,12 @@ import { GRAY_2, GRAY_5 } from "../design/colors";
 const MyLibraryScreen = () => {
   const { state: contentState, fetchContent } = useContext(ContentContext);
   const { state: topicsState, fetchTopics } = useContext(TopicsContext);
+  // Fetch series data
+  const {
+    status: seriesStatus,
+    data: seriesData,
+    refetch: fetchSeries,
+  } = useFetchSeries();
   // Buttons to switch screens
   const screenSwitchButtons = ["Shelves", "Topics"];
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(0);
@@ -26,6 +34,7 @@ const MyLibraryScreen = () => {
   // Pull to refresh
   const fetchData = () => {
     fetchContent();
+    fetchSeries();
     fetchTopics();
   };
   const [refreshing, onPullToRefresh] = useRefresh(fetchData);
@@ -36,7 +45,12 @@ const MyLibraryScreen = () => {
     fetchTopics();
   }, []);
 
-  if ((contentState.isFetching || topicsState.isFetching) && !refreshing) {
+  if (
+    (contentState.isFetching ||
+      topicsState.isFetching ||
+      seriesStatus === "loading") &&
+    !refreshing
+  ) {
     return <Loader />;
   }
 
@@ -77,7 +91,7 @@ const MyLibraryScreen = () => {
         }
       >
         <MyLibraryButtonGroup />
-        <ShelvesSection items={contentState.items} />
+        <ShelvesSection items={[...contentState.items, ...seriesData]} />
       </ScrollView>
     );
   } else {

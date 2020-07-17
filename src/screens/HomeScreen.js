@@ -93,6 +93,7 @@ const HomeScreen = ({ navigation }) => {
         <HomeContentCard
           title={item.name}
           thumbnailUrl={item.thumbnailUrl ? item.thumbnailUrl : null}
+          type={item.type}
           authors={item.authors}
           percentComplete={calculatePercentComplete(
             item.bookInfo.pagesRead,

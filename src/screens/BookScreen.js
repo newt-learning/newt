@@ -174,6 +174,7 @@ const BookScreen = ({ navigation, route }) => {
                   contentInfo: bookInfo,
                   buttonText: "Add to Library",
                   addToLibrary: true,
+                  contentType: "book",
                 })
         }
       />
