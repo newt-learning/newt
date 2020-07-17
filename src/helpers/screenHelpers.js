@@ -95,9 +95,6 @@ export const orderByFinishDate = (content, sortBy = "desc") => {
     content,
     ({ startFinishDates }) => {
       if (!_.isEmpty(startFinishDates)) {
-        console.log(
-          startFinishDates[startFinishDates.length - 1].dateCompleted
-        );
         return startFinishDates[startFinishDates.length - 1].dateCompleted;
       }
     },

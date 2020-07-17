@@ -1,5 +1,6 @@
 import newtApi from "./newtApi";
 import { useMutation, useQuery } from "react-query";
+import { displayErrorAlert } from "../components/shared/displayErrorAlert";
 
 // API calls
 const fetchSeries = async () => {
@@ -10,7 +11,7 @@ const createSeries = async (data) => {
   try {
     await newtApi.post("/series/create", data);
   } catch (error) {
-    console.log(error);
+    displayErrorAlert("Sorry, there was an error adding this series.");
   }
 };
 
