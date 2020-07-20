@@ -20,7 +20,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.newtlearning.newt",
-      "buildNumber": "0.5.3",
+      "buildNumber": "0.6.0",
       "supportsTablet": false
     },
     "android": {
