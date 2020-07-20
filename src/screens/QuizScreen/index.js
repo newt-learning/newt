@@ -9,6 +9,7 @@ import Loader from "../../components/shared/Loader";
 import QuizBody from "./QuizBody";
 import QuizFooter from "./QuizFooter";
 import QuizOutro from "./QuizOutro";
+import displayErrorAlert from "../../components/shared/displayErrorAlert";
 // API
 import { useFetchQuiz, useUpdatePersonalQuiz } from "../../api/quizzes";
 // Design
@@ -19,7 +20,8 @@ import { checkIfChoiceIsCorrect } from "./helpers";
 const QuizScreen = ({ route, navigation }) => {
   const { quizId, contentTitle, contentQuizInfo } = route.params;
 
-  const { status, data } = useFetchQuiz(quizId);
+  const { status, data, error } = useFetchQuiz(quizId);
+
   const [
     updatePersonalQuiz,
     { status: updateQuizStatus },
@@ -48,13 +50,18 @@ const QuizScreen = ({ route, navigation }) => {
   // If the quiz has been completed, disable selecting options so user can only
   // view quiz answers
   useEffect(() => {
-    if (data.dateCompleted) {
+    if (!_.isEmpty(data) && data.dateCompleted) {
       setDisableOptionSelection(true);
     }
-  });
+  }, [data]);
 
   if (status === "loading" || _.isEmpty(quizQuestions)) {
     return <Loader />;
+  }
+
+  if (error) {
+    displayErrorAlert("Sorry, there was an error fetching your quiz.");
+    return null;
   }
 
   // Handle pressing an option
