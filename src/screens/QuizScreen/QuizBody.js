@@ -17,6 +17,7 @@ const QuizBody = ({
   currentQuestion,
   selectedOptionIndex,
   onPressOption,
+  isQuizComplete,
   disableOptionSelection,
 }) => {
   const navigation = useNavigation();
@@ -42,13 +43,23 @@ const QuizBody = ({
             quizQuestions[currentQuestion - 1].options,
             (option, index) => {
               // Check if option is selected, which will affect styling
-              const isSelected = index === selectedOptionIndex;
+              let isSelected;
+              // If the quiz is completed, check against the optionChosen field.
+              // Otherwise if quiz is ongoing, check against the index of option
+              // that has been selected.
+              if (isQuizComplete) {
+                isSelected =
+                  option.option ===
+                  quizQuestions[currentQuestion - 1].optionChosen;
+              } else {
+                isSelected = index === selectedOptionIndex;
+              }
 
               // If the options is selected, check if a check has been made
               // (_.isUndefined check). If it hasn't (isChoiceCorrect property
               // won't be defined), return null. Otherwise return whether the
               // answer is correct or not.
-              const isChoiceCorrect = isSelected
+              let isChoiceCorrect = isSelected
                 ? checkIfChoiceIsCorrect(
                     quizQuestions[currentQuestion - 1].isChoiceCorrect
                   )

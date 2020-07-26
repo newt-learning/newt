@@ -34,6 +34,7 @@ const QuizScreen = ({ route, navigation }) => {
   const [quizQuestions, setQuizQuestions] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [numQuestions, setNumQuestions] = useState(0);
+  const [isQuizComplete, setIsQuizComplete] = useState(null);
   // State for answer options selected by user
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -47,13 +48,18 @@ const QuizScreen = ({ route, navigation }) => {
     }
   }, [data, status]);
 
+  // console.log(`${currentQuestion} -- `, disableOptionSelection);
+
   // If the quiz has been completed, disable selecting options so user can only
   // view quiz answers
   useEffect(() => {
     if (!_.isEmpty(data) && data.dateCompleted) {
+      setIsQuizComplete(true);
       setDisableOptionSelection(true);
+    } else {
+      setIsQuizComplete(false);
     }
-  }, [data]);
+  }, [status, data]);
 
   if (status === "loading" || _.isEmpty(quizQuestions)) {
     return <Loader />;
@@ -101,7 +107,9 @@ const QuizScreen = ({ route, navigation }) => {
     setCurrentQuestion(currentQuestion + 1);
     setSelectedOptionIndex(null);
     setSelectedOption(null);
-    setDisableOptionSelection(false);
+    if (!data.dateCompleted) {
+      setDisableOptionSelection(false);
+    }
   };
 
   // Handle finishing the quiz
@@ -143,6 +151,7 @@ const QuizScreen = ({ route, navigation }) => {
           currentQuestion={currentQuestion}
           selectedOptionIndex={selectedOptionIndex}
           onPressOption={handleOptionSelection}
+          isQuizComplete={isQuizComplete}
           disableOptionSelection={disableOptionSelection}
         />
       ) : (
