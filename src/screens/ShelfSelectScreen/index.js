@@ -32,6 +32,8 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   // State for start and end dates for Finished books
   const [startDate, setStartDate] = useState(new Date());
   const [finishDate, setFinishDate] = useState(new Date());
+  // Show more/less topics
+  const [showMoreTopics, setShowMoreTopics] = useState(false);
 
   const {
     state: contentState,
@@ -183,11 +185,17 @@ const ShelfSelectScreen = ({ navigation, route }) => {
 
   return (
     <ScrollView
-      contentContainerStyle={
-        shelves[2].checked && addToLibrary
-          ? styles.container
-          : { ...styles.container, flex: 1 }
-      }
+      // The space-between makes the button stay at the bottom of the screen,
+      // but for some reason scroll no longer works (when flex is 1, the
+      // container doesn't exceed height of View). So if show more topics is
+      // pressed, change flex to 0 so scroll works.
+      // TODO: Unfortunately it introduces another bug where the button no
+      // longer stays at the bottom, and shoots up right below Select Topics
+      contentContainerStyle={{
+        justifyContent: "space-between",
+        flex: showMoreTopics ? 0 : 1,
+      }}
+      style={styles.container}
     >
       <View style={styles.option}>
         {/* Section where you select the shelf */}
@@ -217,6 +225,8 @@ const ShelfSelectScreen = ({ navigation, route }) => {
           <SelectTopicsSection
             topicsList={topicsList}
             onSelectTopic={toggleTopicsList}
+            showMore={showMoreTopics}
+            setShowMore={setShowMoreTopics}
           />
         ) : null}
       </View>
@@ -243,8 +253,8 @@ const ShelfSelectScreen = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "space-between",
     backgroundColor: GRAY_5,
+    flex: 1,
   },
   option: {
     justifyContent: "flex-start",
