@@ -5,7 +5,7 @@ import { Button } from "react-native-elements";
 import { RUBY, RUBY_5 } from "../../design/colors";
 import { SEMIBOLD, FS16 } from "../../design/typography";
 
-const CreateTopicButton = ({ title = "Create topic", onPress }) => {
+const CreatePlaylistButton = ({ title = "Create playlist", onPress }) => {
   return (
     <Button
       title={title}
@@ -39,4 +39,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateTopicButton;
+export default CreatePlaylistButton;

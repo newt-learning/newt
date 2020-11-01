@@ -8,7 +8,7 @@ import { Context as ContentContext } from "../context/ContentContext";
 import Loader from "../components/shared/Loader";
 import ListSelect from "../components/shared/ListSelect";
 import ActionButton from "../components/shared/ActionButton";
-import CreateTopicButton from "../components/MyLibrary/CreateTopicButton";
+import CreatePlaylistButton from "../components/MyLibrary/CreatePlaylistButton";
 // Hooks
 import useMultiSelectCheckbox from "../hooks/useMultiSelectCheckbox";
 // Helpers
@@ -104,7 +104,9 @@ const AddToTopicScreen = ({ navigation, route }) => {
         <Text style={styles.noDataText}>
           Looks like you haven't created any topics.
         </Text>
-        <CreateTopicButton onPress={() => navigation.navigate("CreateTopic")} />
+        <CreatePlaylistButton
+          onPress={() => navigation.navigate("CreatePlaylist")}
+        />
       </View>
     );
   };

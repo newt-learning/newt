@@ -3,13 +3,13 @@ import { View, Text, StyleSheet, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import _ from "lodash";
 // Components
-import CreateTopicButton from "./CreateTopicButton";
-import TopicCard from "./TopicCard";
+import CreatePlaylistButton from "./CreatePlaylistButton";
+import PlaylistCard from "./PlaylistCard";
 // Design
 import { GRAY_2 } from "../../design/colors";
 import { SEMIBOLD, FS14 } from "../../design/typography";
 
-const TopicsSection = ({ items, ButtonGroupHeader }) => {
+const PlaylistsSection = ({ items, ButtonGroupHeader }) => {
   const navigation = useNavigation();
 
   if (_.isEmpty(items)) {
@@ -17,12 +17,12 @@ const TopicsSection = ({ items, ButtonGroupHeader }) => {
       <View style={styles.container}>
         <ButtonGroupHeader />
         <Text style={styles.noDataText}>
-          Looks like you haven't created any topics. You can use topics to
+          Looks like you haven't created any playlists. You can use playlists to
           organize your content.
         </Text>
         <View style={styles.btnContainer}>
-          <CreateTopicButton
-            onPress={() => navigation.navigate("CreateTopic")}
+          <CreatePlaylistButton
+            onPress={() => navigation.navigate("CreatePlaylist")}
           />
         </View>
       </View>
@@ -35,15 +35,15 @@ const TopicsSection = ({ items, ButtonGroupHeader }) => {
         ListHeaderComponent={<ButtonGroupHeader />}
         ListHeaderComponentStyle={{ marginBottom: 15 }}
         ListFooterComponent={
-          <CreateTopicButton
-            onPress={() => navigation.navigate("CreateTopic")}
+          <CreatePlaylistButton
+            onPress={() => navigation.navigate("CreatePlaylist")}
           />
         }
         ListFooterComponentStyle={{ ...styles.btnContainer, marginTop: 20 }}
         data={items}
         numColumns={2}
-        renderItem={({ item }) => <TopicCard topicInfo={item} />}
-        keyExtractor={(topic) => topic._id}
+        renderItem={({ item }) => <PlaylistCard playlistInfo={item} />}
+        keyExtractor={(playlist) => playlist._id}
         columnWrapperStyle={styles.columnContainer}
       />
     </Fragment>
@@ -66,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TopicsSection;
+export default PlaylistsSection;
