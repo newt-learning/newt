@@ -10,7 +10,7 @@ import SeriesScreen from "../screens/SeriesScreen";
 import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
 import CreatePlaylistScreen from "../screens/CreatePlaylistScreen";
-import TopicScreen from "../screens/TopicScreen";
+import PlaylistScreen from "../screens/PlaylistScreen";
 import AddToTopicScreen from "../screens/AddToTopicScreen";
 import EditTopicScreen from "../screens/EditTopicScreen";
 import AddEditDatesScreen from "../screens/AddEditDatesScreen";
@@ -60,7 +60,7 @@ const MainStack = () => {
         component={ShelfSelectScreen}
         options={{ title: null }}
       />
-      <Stack.Screen name="Topic" component={TopicScreen} />
+      <Stack.Screen name="Playlist" component={PlaylistScreen} />
     </Stack.Navigator>
   );
 };

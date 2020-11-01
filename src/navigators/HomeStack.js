@@ -8,7 +8,7 @@ import VideoScreen from "../screens/VideoScreen";
 import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
 import AddToTopicScreen from "../screens/AddToTopicScreen";
-import TopicScreen from "../screens/TopicScreen";
+import PlaylistScreen from "../screens/PlaylistScreen";
 import EditTopicScreen from "../screens/EditTopicScreen";
 import CreatePlaylistScreen from "../screens/CreatePlaylistScreen";
 import AddEditDatesScreen from "../screens/AddEditDatesScreen";
@@ -50,12 +50,12 @@ const MainStack = () => {
         options={{ title: null }}
       />
       <Stack.Screen
-        name="Topic"
-        component={TopicScreen}
+        name="Playlist"
+        component={PlaylistScreen}
         options={({ route }) => ({
-          title: route.params.topicInfo.name,
+          title: route.params.playlistInfo.name,
           headerTitle: () => (
-            <NavHeaderTitle title={route.params.topicInfo.name} />
+            <NavHeaderTitle title={route.params.playlistInfo.name} />
           ),
         })}
       />
