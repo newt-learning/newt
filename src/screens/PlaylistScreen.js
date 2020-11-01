@@ -19,7 +19,9 @@ const PlaylistScreen = ({ route, navigation }) => {
   const [playlistInfo, setPlaylistInfo] = useState(playlist);
 
   // Fetch playlist by id
-  const { data: playlistData, status } = useFetchPlaylist(playlistInfo?._id);
+  const { data: playlistData, status: fetchPlaylistStatus } = useFetchPlaylist(
+    playlistInfo?._id
+  );
   const [
     deletePlaylist,
     { status: deletePlaylistStatus },
@@ -30,7 +32,7 @@ const PlaylistScreen = ({ route, navigation }) => {
 
   // Add the 3-dot options icon which opens the modal on the right side of the header.
   // Also added title and headerTitle options here so that they update once the
-  // topic has been updated (see useEffect below)
+  // playlist has been updated
   useLayoutEffect(() => {
     navigation.setOptions({
       title: playlistData?.name,
@@ -72,9 +74,6 @@ const PlaylistScreen = ({ route, navigation }) => {
             "Are you sure you want to delete this playlist?";
           const onDelete = async () => {
             await deletePlaylist(playlistInfo._id);
-            // Fetch all content (for now, should really be only changed ones),
-            // because they'll be updated after deleting the topic
-            // fetchContent();
             navigation.goBack();
           };
 
@@ -86,7 +85,7 @@ const PlaylistScreen = ({ route, navigation }) => {
   ];
 
   // Show Loader if either playlist is fetching
-  if (status === "loading") {
+  if (fetchPlaylistStatus === "loading" || deletePlaylistStatus === "loading") {
     return <Loader />;
   }
 
