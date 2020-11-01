@@ -9,7 +9,7 @@ import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
 import AddToTopicScreen from "../screens/AddToTopicScreen";
 import PlaylistScreen from "../screens/PlaylistScreen";
-import EditTopicScreen from "../screens/EditTopicScreen";
+import EditPlaylistScreen from "../screens/EditPlaylistScreen";
 import CreatePlaylistScreen from "../screens/CreatePlaylistScreen";
 import AddEditDatesScreen from "../screens/AddEditDatesScreen";
 // Helpers
@@ -99,10 +99,10 @@ const RootStack = () => {
         }}
       />
       <Stack.Screen
-        name="EditTopic"
-        component={EditTopicScreen}
+        name="EditPlaylist"
+        component={EditPlaylistScreen}
         options={{
-          title: "Edit Topic",
+          title: "Edit Playlist",
           ...SCREEN_OPTIONS.presentationModalOptions,
         }}
       />

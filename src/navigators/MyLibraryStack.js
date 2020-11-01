@@ -12,7 +12,7 @@ import UpdateProgressScreen from "../screens/UpdateProgressScreen";
 import CreatePlaylistScreen from "../screens/CreatePlaylistScreen";
 import PlaylistScreen from "../screens/PlaylistScreen";
 import AddToTopicScreen from "../screens/AddToTopicScreen";
-import EditTopicScreen from "../screens/EditTopicScreen";
+import EditPlaylistScreen from "../screens/EditPlaylistScreen";
 import AddEditDatesScreen from "../screens/AddEditDatesScreen";
 // Helpers
 import SCREEN_OPTIONS from "./screenOptions";
@@ -101,10 +101,10 @@ const RootStack = () => {
         }}
       />
       <Stack.Screen
-        name="EditTopic"
-        component={EditTopicScreen}
+        name="EditPlaylist"
+        component={EditPlaylistScreen}
         options={{
-          title: "Edit Topic",
+          title: "Edit Playlist",
           ...SCREEN_OPTIONS.presentationModalOptions,
         }}
       />

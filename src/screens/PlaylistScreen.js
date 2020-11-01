@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import _ from "lodash";
 // API
-import { useFetchPlaylist } from "../api/playlists";
+import { useFetchPlaylist, useDeletePlaylist } from "../api/playlists";
 // Components
 import OptionsModal from "../components/shared/OptionsModal";
 import ContentList from "../components/ContentList";
@@ -20,6 +20,10 @@ const PlaylistScreen = ({ route, navigation }) => {
 
   // Fetch playlist by id
   const { data: playlistData, status } = useFetchPlaylist(playlistInfo?._id);
+  const [
+    deletePlaylist,
+    { status: deletePlaylistStatus },
+  ] = useDeletePlaylist();
 
   // Initialize modal visibility
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -29,8 +33,8 @@ const PlaylistScreen = ({ route, navigation }) => {
   // topic has been updated (see useEffect below)
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: playlistInfo.name,
-      headerTitle: () => <NavHeaderTitle title={playlistInfo.name} />,
+      title: playlistData?.name,
+      headerTitle: () => <NavHeaderTitle title={playlistData?.name} />,
       headerRight: () => (
         <MoreOptionsButton onPress={() => setIsModalVisible(true)} />
       ),
@@ -42,43 +46,44 @@ const PlaylistScreen = ({ route, navigation }) => {
       },
       headerBackTitle: "Back",
     });
-  }, [playlistInfo]);
+  }, [playlistData]);
 
   // List of buttons in the options modal
-  // const modalOptions = [
-  //   {
-  //     title: "Edit",
-  //     onPress: () => {
-  //       navigation.navigate("EditTopic", { topicInfo });
-  //       setIsModalVisible(false);
-  //     },
-  //   },
-  //   {
-  //     title: "Delete",
-  //     onPress: () => {
-  //       // Hide the options modal
-  //       setIsModalVisible(false);
-  //       // Put the delete ActionSheet/Alert in a timer so that the modal
-  //       // animation finishes first, otherwise the ActionSheet/Alert appears
-  //       // then immediately disappears. This is def not the proper way of
-  //       // handling this, but can't find good info on how to handle this
-  //       // particular case
-  //       setTimeout(function () {
-  //         const deleteMessage = "Are you sure you want to delete this topic?";
-  //         const onDelete = async () => {
-  //           await deleteTopicAndAssociatedContent(topicInfo._id);
-  //           // Fetch all content (for now, should really be only changed ones),
-  //           // because they'll be updated after deleting the topic
-  //           fetchContent();
-  //           navigation.goBack();
-  //         };
+  const modalOptions = [
+    {
+      title: "Edit",
+      onPress: () => {
+        navigation.navigate("EditPlaylist", { playlistInfo: playlistData });
+        setIsModalVisible(false);
+      },
+    },
+    {
+      title: "Delete",
+      onPress: () => {
+        // Hide the options modal
+        setIsModalVisible(false);
+        // Put the delete ActionSheet/Alert in a timer so that the modal
+        // animation finishes first, otherwise the ActionSheet/Alert appears
+        // then immediately disappears. This is def not the proper way of
+        // handling this, but can't find good info on how to handle this
+        // particular case
+        setTimeout(function () {
+          const deleteMessage =
+            "Are you sure you want to delete this playlist?";
+          const onDelete = async () => {
+            await deletePlaylist(playlistInfo._id);
+            // Fetch all content (for now, should really be only changed ones),
+            // because they'll be updated after deleting the topic
+            // fetchContent();
+            navigation.goBack();
+          };
 
-  //         initiateDeleteConfirmation(deleteMessage, onDelete);
-  //       }, 400);
-  //     },
-  //     isDelete: true,
-  //   },
-  // ];
+          initiateDeleteConfirmation(deleteMessage, onDelete);
+        }, 400);
+      },
+      isDelete: true,
+    },
+  ];
 
   // Show Loader if either playlist is fetching
   if (status === "loading") {
@@ -92,11 +97,11 @@ const PlaylistScreen = ({ route, navigation }) => {
         <Text style={styles.noDataText}>
           There is no content saved under this playlist.
         </Text>
-        {/* <OptionsModal
+        <OptionsModal
           isVisible={isModalVisible}
           onBackdropPress={() => setIsModalVisible(false)}
           options={modalOptions}
-        /> */}
+        />
       </View>
     );
   }
@@ -104,11 +109,11 @@ const PlaylistScreen = ({ route, navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <ContentList data={playlistData?.content} />
-      {/* <OptionsModal
+      <OptionsModal
         isVisible={isModalVisible}
         onBackdropPress={() => setIsModalVisible(false)}
         options={modalOptions}
-      /> */}
+      />
     </View>
   );
 };
