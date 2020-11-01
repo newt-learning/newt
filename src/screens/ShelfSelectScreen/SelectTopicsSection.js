@@ -35,7 +35,7 @@ const SelectTopicsSection = ({
           }
           onSelect={onSelectTopic}
           showCreateItem={showCreateItem}
-          onSelectCreateItem={() => navigation.navigate("CreateTopic")}
+          onSelectCreateItem={() => navigation.navigate("CreatePlaylist")}
         />
       </View>
       {/* Only show the Show More button if there are more topics to show (in

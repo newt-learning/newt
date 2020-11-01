@@ -9,7 +9,7 @@ import VideoScreen from "../screens/VideoScreen";
 import SeriesScreen from "../screens/SeriesScreen";
 import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
-import CreateTopicScreen from "../screens/CreateTopicScreen";
+import CreatePlaylistScreen from "../screens/CreatePlaylistScreen";
 import TopicScreen from "../screens/TopicScreen";
 import AddToTopicScreen from "../screens/AddToTopicScreen";
 import EditTopicScreen from "../screens/EditTopicScreen";
@@ -85,10 +85,10 @@ const RootStack = () => {
         }}
       />
       <Stack.Screen
-        name="CreateTopic"
-        component={CreateTopicScreen}
+        name="CreatePlaylist"
+        component={CreatePlaylistScreen}
         options={{
-          title: "Create Topic",
+          title: "Create Playlist",
           ...SCREEN_OPTIONS.presentationModalOptions,
         }}
       />
