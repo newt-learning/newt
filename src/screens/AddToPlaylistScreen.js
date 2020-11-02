@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, FlatList } from "react-native";
 import _ from "lodash";
 // API
 import {
+  useFetchAllPlaylists,
   useAddContentToPlaylists,
   useRemoveContentFromPlaylists,
 } from "../api/playlists";
@@ -23,6 +24,8 @@ import { SEMIBOLD, BOLD, FS16, FS20 } from "../design/typography";
 import { OFF_BLACK, GRAY_2 } from "../design/colors";
 
 const AddToPlaylistScreen = ({ navigation, route }) => {
+  const { contentId, contentPlaylists } = route.params;
+
   const {
     state: { isFetching, items },
     fetchTopics,
@@ -31,6 +34,10 @@ const AddToPlaylistScreen = ({ navigation, route }) => {
   } = useContext(TopicsContext);
   const { updateContent } = useContext(ContentContext);
 
+  const {
+    data: allPlaylistsData,
+    status: allPlaylistsStatus,
+  } = useFetchAllPlaylists();
   const [
     addContentToPlaylists,
     { status: isAddingContentToPlaylist },
@@ -42,17 +49,10 @@ const AddToPlaylistScreen = ({ navigation, route }) => {
 
   // Initialize empty multi-select list
   const [
-    topicsList,
-    toggleTopicsList,
+    playlistsList,
+    togglePlaylistsList,
     setCheckboxesFromOutside,
   ] = useMultiSelectCheckbox([]);
-
-  // Array of topic ids that the content (book, etc.) is already in
-  const { contentId, contentTopics } = route.params;
-
-  useEffect(() => {
-    fetchTopics();
-  }, []);
 
   // This is a little hacky? way (I think, can't find anything cases like this),
   // to fix the bug where the checkboxes were being initialized before the
@@ -63,11 +63,16 @@ const AddToPlaylistScreen = ({ navigation, route }) => {
   // change).
   useEffect(() => {
     setCheckboxesFromOutside(
-      initializeMultiSelectCheckbox(items, contentTopics)
+      initializeMultiSelectCheckbox(
+        allPlaylistsData,
+        contentPlaylists.map((playlist) => playlist._id)
+      )
     );
-  }, [items, contentTopics]);
+  }, [allPlaylistsData, contentPlaylists]);
 
-  if (isFetching) {
+  console.log(playlistsList);
+
+  if (allPlaylistsStatus === "loading") {
     return <Loader />;
   }
 
@@ -110,13 +115,13 @@ const AddToPlaylistScreen = ({ navigation, route }) => {
     await fetchTopics();
   };
 
-  // Display message and button to go to Create Topic screen when there are no
-  // topics
-  const NoTopics = () => {
+  // Display message and button to go to Create Playlist screen when there are no
+  // playlists
+  const NoPlaylists = () => {
     return (
-      <View style={styles.noTopicsContainer}>
+      <View style={styles.noPlaylistsContainer}>
         <Text style={styles.noDataText}>
-          Looks like you haven't created any topics.
+          Looks like you haven't created any playlists.
         </Text>
         <CreatePlaylistButton
           onPress={() => navigation.navigate("CreatePlaylist")}
@@ -125,23 +130,23 @@ const AddToPlaylistScreen = ({ navigation, route }) => {
     );
   };
 
-  // Show "Select topics" header only if there are topics already created
-  const AddToTopicHeader = () => {
+  // Show "Select playlists" header only if there are playlists already created
+  const AddToPlaylistHeader = () => {
     return (
-      !_.isEmpty(topicsList) && (
-        <Text style={styles.header}>Select Topic(s)</Text>
+      !_.isEmpty(playlistsList) && (
+        <Text style={styles.header}>Select Playlist(s)</Text>
       )
     );
   };
 
-  // Show Confirmation button at the end only if there are topics already created
-  const AddToTopicFooter = () => {
+  // Show Confirmation button at the end only if there are playlists already created
+  const AddToPlaylistFooter = () => {
     return (
-      !_.isEmpty(topicsList) && (
+      !_.isEmpty(playlistsList) && (
         <ActionButton
           title="Confirm"
           onPress={() => {
-            updateTopicsAndContent(topicsList);
+            updateTopicsAndContent(playlistsList);
             navigation.goBack();
           }}
         />
@@ -152,20 +157,20 @@ const AddToPlaylistScreen = ({ navigation, route }) => {
   return (
     <FlatList
       contentContainerStyle={styles.container}
-      data={topicsList}
+      data={playlistsList}
       renderItem={({ item, index }) => (
         <ListSelect
           name={item.name}
           checked={item.checked}
           onPressCheckbox={() => {
-            toggleTopicsList(index);
+            togglePlaylistsList(index);
           }}
         />
       )}
       keyExtractor={(item) => item.name}
-      ListEmptyComponent={<NoTopics />}
-      ListHeaderComponent={<AddToTopicHeader />}
-      ListFooterComponent={<AddToTopicFooter />}
+      ListEmptyComponent={<NoPlaylists />}
+      ListHeaderComponent={<AddToPlaylistHeader />}
+      ListFooterComponent={<AddToPlaylistFooter />}
       ListFooterComponentStyle={styles.btnContainer}
     />
   );
@@ -175,7 +180,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
   },
-  noTopicsContainer: {
+  noPlaylistsContainer: {
     marginHorizontal: 15,
     marginVertical: 20,
     flex: 1,
