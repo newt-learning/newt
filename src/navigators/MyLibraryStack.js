@@ -11,7 +11,7 @@ import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
 import CreatePlaylistScreen from "../screens/CreatePlaylistScreen";
 import PlaylistScreen from "../screens/PlaylistScreen";
-import AddToTopicScreen from "../screens/AddToTopicScreen";
+import AddToPlaylistScreen from "../screens/AddToPlaylistScreen";
 import EditPlaylistScreen from "../screens/EditPlaylistScreen";
 import AddEditDatesScreen from "../screens/AddEditDatesScreen";
 // Helpers
@@ -93,10 +93,10 @@ const RootStack = () => {
         }}
       />
       <Stack.Screen
-        name="AddToTopic"
-        component={AddToTopicScreen}
+        name="AddToPlaylist"
+        component={AddToPlaylistScreen}
         options={{
-          title: "Add to Topic",
+          title: "Add to Playlist",
           ...SCREEN_OPTIONS.presentationModalOptions,
         }}
       />

@@ -70,7 +70,7 @@ const VideoScreen = ({ route, navigation }) => {
     authors,
     type,
     shelf,
-    topics,
+    playlists,
     description,
     thumbnailUrl,
     startFinishDates,
@@ -157,7 +157,7 @@ const VideoScreen = ({ route, navigation }) => {
         contentId={_id}
         type={type}
         shelf={shelf}
-        topics={topics}
+        playlists={playlists}
         startFinishDates={startFinishDates}
         dateAdded={dateAdded}
         onPress={

@@ -1,6 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import { View, StyleSheet, Text, FlatList } from "react-native";
 import _ from "lodash";
+// API
+import {
+  useAddContentToPlaylists,
+  useRemoveContentFromPlaylists,
+} from "../api/playlists";
 // Context
 import { Context as TopicsContext } from "../context/TopicsContext";
 import { Context as ContentContext } from "../context/ContentContext";
@@ -17,7 +22,7 @@ import { initializeMultiSelectCheckbox } from "../helpers/screenHelpers";
 import { SEMIBOLD, BOLD, FS16, FS20 } from "../design/typography";
 import { OFF_BLACK, GRAY_2 } from "../design/colors";
 
-const AddToTopicScreen = ({ navigation, route }) => {
+const AddToPlaylistScreen = ({ navigation, route }) => {
   const {
     state: { isFetching, items },
     fetchTopics,
@@ -25,6 +30,15 @@ const AddToTopicScreen = ({ navigation, route }) => {
     removeContentTopics,
   } = useContext(TopicsContext);
   const { updateContent } = useContext(ContentContext);
+
+  const [
+    addContentToPlaylists,
+    { status: isAddingContentToPlaylist },
+  ] = useAddContentToPlaylists();
+  const [
+    removeContentFromPlaylists,
+    { status: isRemovingContentFromPlaylists },
+  ] = useRemoveContentFromPlaylists();
 
   // Initialize empty multi-select list
   const [
@@ -190,4 +204,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddToTopicScreen;
+export default AddToPlaylistScreen;
