@@ -66,8 +66,6 @@ const AddToPlaylistScreen = ({ navigation, route }) => {
     );
   }, [allPlaylistsData, contentPlaylists]);
 
-  console.log(playlistsList);
-
   if (
     allPlaylistsStatus === "loading" ||
     addingStatus === "loading" ||
@@ -83,6 +81,9 @@ const AddToPlaylistScreen = ({ navigation, route }) => {
     const selectedPlaylistsIds = _.filter(playlistsList, { checked: true }).map(
       (item) => item._id
     );
+    const contentPlaylistsIds = contentPlaylists.map(
+      (playlist) => playlist._id
+    );
 
     let playlistsToAdd = [];
     let playlistsToRemove = [];
@@ -91,7 +92,7 @@ const AddToPlaylistScreen = ({ navigation, route }) => {
     // only then add it to the playlistsToAdd array. Only those playlists will then
     // have the content added to it to avoid duplication.
     selectedPlaylistsIds.forEach((playlistId) => {
-      if (!_.includes(contentPlaylists, playlistId)) {
+      if (!_.includes(contentPlaylistsIds, playlistId)) {
         playlistsToAdd.push(playlistId);
       }
     });
@@ -99,7 +100,7 @@ const AddToPlaylistScreen = ({ navigation, route }) => {
     // For each of the existing playlists, if they're not in the selected playlists,
     // then add it to the playlistsToRemove array. It will be used to remove the
     // playlist <==> content associations.
-    contentPlaylists.forEach((playlistId) => {
+    contentPlaylistsIds.forEach((playlistId) => {
       if (!_.includes(selectedPlaylistsIds, playlistId)) {
         playlistsToRemove.push(playlistId);
       }
