@@ -6,41 +6,41 @@ import { H3 } from "../../components/shared/Headers";
 import MultiItemSelect from "../../components/shared/MultiItemSelect";
 import ShowMoreShowLess from "../../components/Content/ShowMoreShowLess";
 
-const INITIAL_NUM_TOPICS_TO_SHOW = 8;
+const INITIAL_NUM_PLAYLISTS_TO_SHOW = 8;
 
-const SelectTopicsSection = ({
-  topicsList,
-  onSelectTopic,
+const SelectPlaylistsSection = ({
+  playlistsList,
+  onSelectPlaylist,
   showMore,
   setShowMore,
   showCreateItem = true,
-  topicSelectContainer: passedTopicSelectContainer,
+  playlistSelectContainer: passedPlaylistSelectContainer,
 }) => {
   const navigation = useNavigation();
 
-  const topicSelectContainer = StyleSheet.compose([
-    styles.topicSelectContainer,
-    passedTopicSelectContainer,
+  const playlistSelectContainer = StyleSheet.compose([
+    styles.playlistSelectContainer,
+    passedPlaylistSelectContainer,
   ]);
 
   return (
     <>
-      <H3 style={styles.header}>Select Topic(s)</H3>
-      <View style={topicSelectContainer}>
+      <H3 style={styles.header}>Select Playlist(s)</H3>
+      <View style={playlistSelectContainer}>
         <MultiItemSelect
           itemsList={
             showMore
-              ? topicsList
-              : topicsList.slice(0, INITIAL_NUM_TOPICS_TO_SHOW)
+              ? playlistsList
+              : playlistsList.slice(0, INITIAL_NUM_PLAYLISTS_TO_SHOW)
           }
-          onSelect={onSelectTopic}
+          onSelect={onSelectPlaylist}
           showCreateItem={showCreateItem}
           onSelectCreateItem={() => navigation.navigate("CreatePlaylist")}
         />
       </View>
-      {/* Only show the Show More button if there are more topics to show (in
+      {/* Only show the Show More button if there are more playlists to show (in
           this case, more than initial num defined above) */}
-      {topicsList.length > INITIAL_NUM_TOPICS_TO_SHOW ? (
+      {playlistsList.length > INITIAL_NUM_PLAYLISTS_TO_SHOW ? (
         <ShowMoreShowLess showMore={showMore} setShowMore={setShowMore} />
       ) : null}
     </>
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     marginBottom: 5,
   },
-  topicSelectContainer: {
+  playlistSelectContainer: {
     marginHorizontal: 8,
     flexDirection: "row",
     justifyContent: "flex-start",
@@ -61,4 +61,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SelectTopicsSection;
+export default SelectPlaylistsSection;

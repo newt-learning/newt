@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect, useRef } from "react";
 import _ from "lodash";
 // API
 import { useCreateSeries } from "../../api/series";
+import { useFetchAllPlaylists } from "../../api/playlists";
 // Context
 import { Context as TopicsContext } from "../../context/TopicsContext";
 import { Context as ContentContext } from "../../context/ContentContext";
@@ -33,27 +34,31 @@ const AddVideoScreen = ({ navigation }) => {
   // Used to move between the form and confirmation sections
   const [onConfirmationSection, setOnConfirmationSection] = useState(false);
 
-  const { state: topicsState, fetchTopics } = useContext(TopicsContext);
+  const {
+    data: allPlaylistsData,
+    status: allPlaylistsStatus,
+  } = useFetchAllPlaylists();
+
   const { addContent, fetchContent } = useContext(ContentContext);
   // API request func. to DB to create a series
   const [createSeries, { status }] = useCreateSeries();
 
-  // Initialize shelves and topics checkboxes/selectors
+  // Initialize shelves and playlists checkboxes/selectors
   const [shelves, toggleShelves] = useSingleCheckbox(
     initializeShelves("Want to Learn")
   );
   const [
-    topicsList,
-    toggleTopicsList,
+    playlistsList,
+    togglePlaylistsList,
     setCheckboxesFromOutside,
   ] = useMultiSelectCheckbox(
-    initializeMultiSelectCheckbox(topicsState.items, [])
+    initializeMultiSelectCheckbox(allPlaylistsData, [])
   );
 
-  // Create a ref to be used as the previous topics state for comparison with a
-  // new one should it be updated (so that the new topic can be added to the
-  // topics multi-checkbox)
-  const topicsRef = useRef(topicsState.items);
+  // Create a ref to be used as the previous playlist state for comparison with a
+  // new one should it be updated (so that the new playlist can be added to the
+  // playlist multi-checkbox)
+  const playlistsRef = useRef(allPlaylistsData);
 
   // This useEffect call will check if there's a change to topicState, if there
   // is (i.e. if a user creates a topic), it will add the new topic to the
@@ -61,29 +66,31 @@ const AddVideoScreen = ({ navigation }) => {
   // implementation to deal with state updates and updates to hooks, but it works.
   useEffect(() => {
     // Get previous topic state from ref
-    const prevTopics = topicsRef.current;
+    const prevPlaylists = playlistsRef.current;
 
     // If the topics items state is not the same length (if they are then
     // no useful change, we only care about whether a topic was added or not),
     // then add the new topic to the mult-checkbox
-    if (prevTopics.length !== topicsState.items.length) {
+    if (prevPlaylists && prevPlaylists?.length !== allPlaylistsData?.length) {
       // new topic is the last item in the array
-      const newTopic = topicsState.items[topicsState.items.length - 1];
+      const newPlaylist = allPlaylistsData[allPlaylistsData.length - 1];
 
       setCheckboxesFromOutside([
-        ...topicsList,
-        { _id: newTopic._id, name: newTopic.name, checked: true },
+        ...playlistsList,
+        { _id: newPlaylist._id, name: newPlaylist.name, checked: true },
       ]);
-      // Update ref to new topic items state
-      topicsRef.current = topicsState.items;
+      // Update ref to new playlist items state
+      playlistsRef.current = allPlaylistsData;
     }
-  }, [topicsState.items]);
+  }, [allPlaylistsData]);
 
-  const addVideo = async (selectedShelf, selectedTopics) => {
+  console.log(playlistsList);
+
+  const addVideo = async (selectedShelf, selectedPlaylists) => {
     const contentInfo = extractAndAssembleVideoInfo(
       videoInfo,
       selectedShelf,
-      selectedTopics,
+      selectedPlaylists,
       startDate,
       finishDate
     );
@@ -92,9 +99,13 @@ const AddVideoScreen = ({ navigation }) => {
     // If the topics list is not empty, fetch topics because the video will be
     // added to whatever topics that were selected, and this way it'll fetch the
     // new data (not an ideal way of doing this).
-    if (!_.isEmpty(selectedTopics)) {
-      fetchTopics();
-    }
+    // if (!_.isEmpty(selectedTopics)) {
+    //   fetchTopics();
+    // }
+    // Temporary so that playlists are fetched for added content -- should be
+    // fixed when moving over from Content Context to react-query
+    fetchContent();
+
     navigation.goBack();
   };
 
@@ -117,8 +128,8 @@ const AddVideoScreen = ({ navigation }) => {
           videoInfo={videoInfo}
           shelves={shelves}
           onSelectShelf={toggleShelves}
-          topics={topicsList}
-          onSelectTopic={toggleTopicsList}
+          playlists={playlistsList}
+          onSelectPlaylist={togglePlaylistsList}
           startDate={startDate}
           finishDate={finishDate}
           setStartDate={setStartDate}

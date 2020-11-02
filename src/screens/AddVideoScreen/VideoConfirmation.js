@@ -6,7 +6,7 @@ import { Feather } from "@expo/vector-icons";
 import SubHeader from "../../components/Content/SubHeader";
 import Description from "../../components/Content/Description";
 import SelectShelfSection from "../ShelfSelectScreen/SelectShelfSection";
-import SelectTopicsSection from "../ShelfSelectScreen/SelectTopicsSection";
+import SelectPlaylistsSection from "../ShelfSelectScreen/SelectPlaylistsSection";
 import SelectStartFinishDatesSection from "../ShelfSelectScreen/SelectStartFinishDatesSection";
 import ActionButton from "../../components/shared/ActionButton";
 // Design
@@ -20,16 +20,17 @@ const VideoConfirmation = ({
   onGoBack,
   shelves,
   onSelectShelf,
-  topics,
-  onSelectTopic,
+  playlists,
+  onSelectPlaylist,
   startDate,
   finishDate,
   setStartDate,
   setFinishDate,
   onSubmit,
 }) => {
-  // Used to expand or contract the description text
+  // Used to expand or contract the description text and playlist options
   const [showMore, setShowMore] = useState(false);
+  const [showMorePlaylists, setShowMorePlaylists] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -85,10 +86,12 @@ const VideoConfirmation = ({
           rounded
         />
       )}
-      <SelectTopicsSection
-        topicsList={topics}
-        onSelectTopic={onSelectTopic}
-        topicSelectContainer={{ marginHorizontal: 0 }}
+      <SelectPlaylistsSection
+        playlistsList={playlists}
+        onSelectPlaylist={onSelectPlaylist}
+        showMore={showMorePlaylists}
+        setShowMore={setShowMorePlaylists}
+        playlistSelectContainer={{ marginHorizontal: 0 }}
       />
       <View style={styles.confirmBtnContainer}>
         <ActionButton
@@ -103,13 +106,13 @@ const VideoConfirmation = ({
             setIsLoading(true);
             // Get chosen shelf
             const currentShelf = _.find(shelves, (shelf) => shelf.checked);
-            // filter through the topics list to get only the checked ones, then
+            // filter through the playlists list to get only the checked ones, then
             // from those objects only take out the ids
-            const selectedTopicIds = _.chain(topics)
+            const selectedPlaylistIds = _.chain(playlists)
               .filter({ checked: true })
               .map((item) => item._id);
 
-            onSubmit(currentShelf.name, selectedTopicIds);
+            onSubmit(currentShelf.name, selectedPlaylistIds);
           }}
           showLoading={isLoading}
         />

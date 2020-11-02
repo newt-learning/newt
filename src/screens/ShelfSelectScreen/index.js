@@ -8,7 +8,7 @@ import { Context as ContentContext } from "../../context/ContentContext";
 import { Context as TopicsContext } from "../../context/TopicsContext";
 // Components
 import SelectShelfSection from "./SelectShelfSection";
-import SelectTopicsSection from "./SelectTopicsSection";
+import SelectPlaylistsSection from "./SelectPlaylistsSection";
 import ActionButton from "../../components/shared/ActionButton";
 import ClearButton from "../../components/shared/ClearButton";
 import Loader from "../../components/shared/Loader";
@@ -32,7 +32,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   // State for start and end dates for Finished books
   const [startDate, setStartDate] = useState(new Date());
   const [finishDate, setFinishDate] = useState(new Date());
-  // Show more/less topics
+  // Show more/less playlists
   const [showMoreTopics, setShowMoreTopics] = useState(false);
 
   const {
@@ -222,9 +222,9 @@ const ShelfSelectScreen = ({ navigation, route }) => {
         ) : null}
         {/* If on Add to Library screen, show Topic Selector */}
         {addToLibrary ? (
-          <SelectTopicsSection
-            topicsList={topicsList}
-            onSelectTopic={toggleTopicsList}
+          <SelectPlaylistsSection
+            playlistsList={topicsList}
+            onSelectPlaylist={toggleTopicsList}
             showMore={showMoreTopics}
             setShowMore={setShowMoreTopics}
           />
