@@ -4,7 +4,6 @@ import _ from "lodash";
 import { useCreateSeries } from "../../api/series";
 import { useFetchAllPlaylists } from "../../api/playlists";
 // Context
-import { Context as TopicsContext } from "../../context/TopicsContext";
 import { Context as ContentContext } from "../../context/ContentContext";
 // Components
 import VideoUrlForm from "./VideoUrlForm";
@@ -60,19 +59,19 @@ const AddVideoScreen = ({ navigation }) => {
   // playlist multi-checkbox)
   const playlistsRef = useRef(allPlaylistsData);
 
-  // This useEffect call will check if there's a change to topicState, if there
-  // is (i.e. if a user creates a topic), it will add the new topic to the
+  // This useEffect call will check if there's a change to playlist data, if there
+  // is (i.e. if a user creates a playlist), it will add the new playlist to the
   // multi-checkbox and set it as already checked. Not a fan of this
   // implementation to deal with state updates and updates to hooks, but it works.
   useEffect(() => {
-    // Get previous topic state from ref
+    // Get previous playlist state from ref
     const prevPlaylists = playlistsRef.current;
 
-    // If the topics items state is not the same length (if they are then
-    // no useful change, we only care about whether a topic was added or not),
-    // then add the new topic to the mult-checkbox
+    // If the playlist data is not the same length (if they are then
+    // no useful change, we only care about whether a playlist was added or not),
+    // then add the new playlist to the mult-checkbox
     if (prevPlaylists && prevPlaylists?.length !== allPlaylistsData?.length) {
-      // new topic is the last item in the array
+      // new playlist is the last item in the array
       const newPlaylist = allPlaylistsData[allPlaylistsData.length - 1];
 
       setCheckboxesFromOutside([
@@ -84,8 +83,6 @@ const AddVideoScreen = ({ navigation }) => {
     }
   }, [allPlaylistsData]);
 
-  console.log(playlistsList);
-
   const addVideo = async (selectedShelf, selectedPlaylists) => {
     const contentInfo = extractAndAssembleVideoInfo(
       videoInfo,
@@ -96,12 +93,6 @@ const AddVideoScreen = ({ navigation }) => {
     );
 
     await addContent(contentInfo);
-    // If the topics list is not empty, fetch topics because the video will be
-    // added to whatever topics that were selected, and this way it'll fetch the
-    // new data (not an ideal way of doing this).
-    // if (!_.isEmpty(selectedTopics)) {
-    //   fetchTopics();
-    // }
     // Temporary so that playlists are fetched for added content -- should be
     // fixed when moving over from Content Context to react-query
     fetchContent();

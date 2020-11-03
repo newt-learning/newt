@@ -3,7 +3,6 @@ import { Text, StyleSheet, FlatList } from "react-native";
 import _ from "lodash";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
-import { Context as TopicsContext } from "../context/TopicsContext";
 // Components
 import { H1 } from "../components/shared/Headers";
 import Loader from "../components/shared/Loader";
@@ -24,13 +23,11 @@ import {
 
 const HomeScreen = ({ navigation }) => {
   const { state: contentState, fetchContent } = useContext(ContentContext);
-  const { state: topicsState, fetchTopics } = useContext(TopicsContext);
   const [refreshing, onPullToRefresh] = useRefresh(fetchContent);
 
   // Fetch content data
   useEffect(() => {
     fetchContent();
-    fetchTopics();
   }, []);
 
   // Message if there's data/content but none in the "Currently Learning" shelf
@@ -50,7 +47,7 @@ const HomeScreen = ({ navigation }) => {
   );
 
   // If data is being fetched, show loading spinner
-  if ((contentState.isFetching || topicsState.isFetching) && !refreshing) {
+  if (contentState.isFetching && !refreshing) {
     return <Loader />;
   }
 
@@ -59,10 +56,7 @@ const HomeScreen = ({ navigation }) => {
     return (
       <ErrorMessage
         message={contentState.errorMessage}
-        onRetry={() => {
-          fetchContent();
-          fetchTopics();
-        }}
+        onRetry={fetchContent}
       />
     );
   }
