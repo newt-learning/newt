@@ -1,18 +1,57 @@
-import React, { Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import _ from "lodash";
+// API
+import { useFetchAllPlaylists } from "../../api/playlists";
 // Components
 import CreatePlaylistButton from "./CreatePlaylistButton";
 import PlaylistCard from "./PlaylistCard";
+import Loader from "../shared/Loader";
+import displayErrorAlert from "../shared/displayErrorAlert";
+import ErrorMessage from "../shared/ErrorMessage";
 // Design
 import { GRAY_2 } from "../../design/colors";
 import { SEMIBOLD, FS14 } from "../../design/typography";
 
-const PlaylistsSection = ({ items, ButtonGroupHeader }) => {
+const PlaylistsSection = ({ ButtonGroupHeader }) => {
+  // Whether the loading error has previously been shown, so it doesn't keep
+  // rerendering
+  const [playlistErrorShown, setPlaylistErrorShown] = useState(false);
+
+  const {
+    data: playlistData,
+    status: playlistDataStatus,
+    refetch,
+  } = useFetchAllPlaylists();
+
   const navigation = useNavigation();
 
-  if (_.isEmpty(items)) {
+  // Loading UI
+  if (playlistDataStatus === "loading") {
+    return (
+      <>
+        <ButtonGroupHeader />
+        <Loader />
+      </>
+    );
+  }
+
+  // Error handling
+  if (playlistDataStatus === "error") {
+    return (
+      <>
+        <ButtonGroupHeader />
+        <ErrorMessage
+          message="Sorry, we're having some trouble fetching your playlists."
+          onRetry={refetch}
+        />
+      </>
+    );
+  }
+
+  // No data UI
+  if (_.isEmpty(playlistData)) {
     return (
       <View style={styles.container}>
         <ButtonGroupHeader />
@@ -40,7 +79,7 @@ const PlaylistsSection = ({ items, ButtonGroupHeader }) => {
           />
         }
         ListFooterComponentStyle={{ ...styles.btnContainer, marginTop: 20 }}
-        data={items}
+        data={playlistData}
         numColumns={2}
         renderItem={({ item }) => <PlaylistCard playlistInfo={item} />}
         keyExtractor={(playlist) => playlist._id}

@@ -3,7 +3,6 @@ import { View, ScrollView, StyleSheet, RefreshControl } from "react-native";
 import _ from "lodash";
 // API
 import { useFetchSeries } from "../api/series";
-import { useFetchAllPlaylists } from "../api/playlists";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
@@ -20,10 +19,6 @@ import { GRAY_2, GRAY_5 } from "../design/colors";
 
 const MyLibraryScreen = () => {
   const { state: contentState, fetchContent } = useContext(ContentContext);
-  const {
-    data: playlistData,
-    isLoading: playlistsAreLoading,
-  } = useFetchAllPlaylists();
 
   // Fetch series data
   const {
@@ -42,17 +37,12 @@ const MyLibraryScreen = () => {
   };
   const [refreshing, onPullToRefresh] = useRefresh(fetchData);
 
-  // Fetch content and playlists data
+  // Fetch content
   useEffect(() => {
     fetchContent();
   }, []);
 
-  if (
-    (contentState.isFetching ||
-      playlistsAreLoading ||
-      seriesStatus === "loading") &&
-    !refreshing
-  ) {
+  if ((contentState.isFetching || seriesStatus === "loading") && !refreshing) {
     return <Loader />;
   }
 
@@ -72,7 +62,10 @@ const MyLibraryScreen = () => {
     return <NoContentMessage />;
   }
 
-  // Button group to switch between Shelves and Playlists
+  // Button group to switch between Shelves and Playlists. The reason this is
+  // being passed as a prop and not just rendered here is because ScrollView and
+  // Flatlist (in PlaylistSection) don't work well together. I'm confident there's
+  // a better solution though... for later
   const MyLibraryButtonGroup = () => (
     <ButtonGroup
       buttonsArray={screenSwitchButtons}
@@ -102,10 +95,7 @@ const MyLibraryScreen = () => {
         {/* This component returns a FlatList if there's data, so send the 
         ButtonGroup component to be the FlatList's header. Also needs to be 
         wrapped in a View instead of ScrollView. Need to improve this screen */}
-        <PlaylistsSection
-          items={playlistData}
-          ButtonGroupHeader={MyLibraryButtonGroup}
-        />
+        <PlaylistsSection ButtonGroupHeader={MyLibraryButtonGroup} />
       </View>
     );
   }
