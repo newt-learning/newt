@@ -14,6 +14,7 @@ import Loader from "../components/shared/Loader";
 import ListSelect from "../components/shared/ListSelect";
 import ActionButton from "../components/shared/ActionButton";
 import CreatePlaylistButton from "../components/MyLibrary/CreatePlaylistButton";
+import ErrorMessage from "../components/shared/ErrorMessage";
 // Hooks
 import useMultiSelectCheckbox from "../hooks/useMultiSelectCheckbox";
 // Helpers
@@ -33,6 +34,7 @@ const AddToPlaylistScreen = ({ navigation, route }) => {
   const {
     data: allPlaylistsData,
     status: allPlaylistsStatus,
+    refetch: refetchAllPlaylists,
   } = useFetchAllPlaylists();
   const [
     addContentToPlaylists,
@@ -66,6 +68,7 @@ const AddToPlaylistScreen = ({ navigation, route }) => {
     );
   }, [allPlaylistsData, contentPlaylists]);
 
+  // Loading UI
   if (
     allPlaylistsStatus === "loading" ||
     addingStatus === "loading" ||
@@ -73,6 +76,16 @@ const AddToPlaylistScreen = ({ navigation, route }) => {
     isFetching
   ) {
     return <Loader />;
+  }
+
+  // Error Message
+  if (allPlaylistsStatus === "error") {
+    return (
+      <ErrorMessage
+        message="Sorry, we're having some trouble fetching your playlists."
+        onRetry={refetchAllPlaylists}
+      />
+    );
   }
 
   const updatePlaylistsAndContent = async (playlistsList) => {
