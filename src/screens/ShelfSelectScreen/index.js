@@ -93,6 +93,13 @@ const ShelfSelectScreen = ({ navigation, route }) => {
       ]);
       // Update ref to new playlist state
       playlistsRef.current = playlistsState.items;
+    } else {
+      // Why does this work??? Updating ref and setting multi-checkboxes because
+      // it doesn't update otherwise
+      setCheckboxesFromOutside(
+        initializeMultiSelectCheckbox(allPlaylistsData, [])
+      );
+      playlistsRef.current = allPlaylistsData;
     }
   }, [allPlaylistsData]);
 
@@ -226,6 +233,8 @@ const ShelfSelectScreen = ({ navigation, route }) => {
           <SelectPlaylistsSection
             playlistsList={playlistsList}
             onSelectPlaylist={togglePlaylistsList}
+            isLoading={allPlaylistsStatus === "loading"}
+            isError={allPlaylistsStatus === "error"}
             showMore={showMorePlaylists}
             setShowMore={setShowMorePlaylists}
           />
