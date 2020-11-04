@@ -1,10 +1,9 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState } from "react";
 import { View, ScrollView, StyleSheet, RefreshControl } from "react-native";
 import _ from "lodash";
 // API
+import { useFetchAllContent } from "../api/content";
 import { useFetchSeries } from "../api/series";
-// Context
-import { Context as ContentContext } from "../context/ContentContext";
 // Components
 import Loader from "../components/shared/Loader";
 import ErrorMessage from "../components/shared/ErrorMessage";
@@ -18,47 +17,55 @@ import useRefresh from "../hooks/useRefresh";
 import { GRAY_2, GRAY_5 } from "../design/colors";
 
 const MyLibraryScreen = () => {
-  const { state: contentState, fetchContent } = useContext(ContentContext);
-
-  // Fetch series data
+  // Fetch all content and series data
+  const {
+    data: allContentData,
+    status: allContentStatus,
+    refetch: fetchAllContent,
+  } = useFetchAllContent();
   const {
     status: seriesStatus,
     data: seriesData,
     refetch: fetchSeries,
   } = useFetchSeries();
+
   // Buttons to switch screens
   const screenSwitchButtons = ["Shelves", "Playlists"];
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(0);
 
   // Pull to refresh
   const fetchData = () => {
-    fetchContent();
+    fetchAllContent();
     fetchSeries();
   };
   const [refreshing, onPullToRefresh] = useRefresh(fetchData);
 
-  // Fetch content
-  useEffect(() => {
-    fetchContent();
-  }, []);
-
-  if ((contentState.isFetching || seriesStatus === "loading") && !refreshing) {
+  // Loading UI
+  if (
+    (allContentStatus === "loading" || seriesStatus === "loading") &&
+    !refreshing
+  ) {
     return <Loader />;
   }
 
   // If there's an error message display error message screen
-  if (contentState.errorMessage) {
+  if (allContentStatus === "error") {
     return (
       <ErrorMessage
-        message={contentState.errorMessage}
-        onRetry={fetchContent}
+        message="Sorry, we're having some trouble getting your data."
+        onRetry={fetchData}
       />
     );
   }
 
   // If there's no data and it's not currently being fetched, show the
   // "No Content" message
-  if (!contentState.isFetching && _.isEmpty(contentState.items)) {
+  if (
+    allContentStatus !== "loading" &&
+    seriesStatus !== "loading" &&
+    _.isEmpty(allContentData) &&
+    _.isEmpty(seriesData)
+  ) {
     return <NoContentMessage />;
   }
 
@@ -86,7 +93,7 @@ const MyLibraryScreen = () => {
         }
       >
         <MyLibraryButtonGroup />
-        <ShelvesSection items={[...contentState.items, ...seriesData]} />
+        <ShelvesSection items={[...allContentData, ...seriesData]} />
       </ScrollView>
     );
   } else {
