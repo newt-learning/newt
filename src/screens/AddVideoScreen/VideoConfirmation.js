@@ -24,15 +24,10 @@ import {
   initializeMultiSelectCheckbox,
 } from "../../helpers/screenHelpers";
 
-const VideoConfirmation = ({
-  videoInfo,
-  onGoBack,
-  startDate,
-  finishDate,
-  setStartDate,
-  setFinishDate,
-  onSubmit,
-}) => {
+const VideoConfirmation = ({ videoInfo, onGoBack, onSubmit }) => {
+  // State for start and end dates for Finished videos
+  const [startDate, setStartDate] = useState(new Date());
+  const [finishDate, setFinishDate] = useState(new Date());
   // Used to expand or contract the description text and playlist options
   const [showMore, setShowMore] = useState(false);
   const [showMorePlaylists, setShowMorePlaylists] = useState(false);
@@ -163,7 +158,12 @@ const VideoConfirmation = ({
               .filter({ checked: true })
               .map((item) => item._id);
 
-            onSubmit(currentShelf.name, selectedPlaylistIds);
+            onSubmit(
+              currentShelf.name,
+              selectedPlaylistIds,
+              startDate,
+              finishDate
+            );
           }}
           showLoading={isLoading}
         />

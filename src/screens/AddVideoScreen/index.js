@@ -20,9 +20,6 @@ const AddVideoScreen = ({ navigation }) => {
   const [seriesLink, setSeriesLink] = useState("");
   const [videoInfo, setVideoInfo] = useState(null);
   const [seriesInfo, setSeriesInfo] = useState(null);
-  // State for start and end dates for Finished books
-  const [startDate, setStartDate] = useState(new Date());
-  const [finishDate, setFinishDate] = useState(new Date());
   // Used to move between the form and confirmation sections
   const [onConfirmationSection, setOnConfirmationSection] = useState(false);
 
@@ -30,7 +27,12 @@ const AddVideoScreen = ({ navigation }) => {
   // API request func. to DB to create a series
   const [createSeries, { status }] = useCreateSeries();
 
-  const addVideo = async (selectedShelf, selectedPlaylists) => {
+  const addVideo = async (
+    selectedShelf,
+    selectedPlaylists,
+    startDate,
+    finishDate
+  ) => {
     const contentInfo = extractAndAssembleVideoInfo(
       videoInfo,
       selectedShelf,
@@ -64,10 +66,6 @@ const AddVideoScreen = ({ navigation }) => {
       return (
         <VideoConfirmation
           videoInfo={videoInfo}
-          startDate={startDate}
-          finishDate={finishDate}
-          setStartDate={setStartDate}
-          setFinishDate={setFinishDate}
           onGoBack={() => setOnConfirmationSection(false)}
           onSubmit={addVideo}
         />
