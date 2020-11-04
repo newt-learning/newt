@@ -10,6 +10,7 @@ import Loader from "../components/shared/Loader";
 import { NavHeaderTitle } from "../components/shared/Headers";
 import MoreOptionsButton from "../components/shared/MoreOptionsButton";
 import initiateDeleteConfirmation from "../components/shared/initiateDeleteConfirmation";
+import ErrorMessage from "../components/shared/ErrorMessage";
 // Design
 import { SEMIBOLD, FS16 } from "../design/typography";
 import { GRAY_2 } from "../design/colors";
@@ -19,9 +20,11 @@ const PlaylistScreen = ({ route, navigation }) => {
   const [playlistInfo, setPlaylistInfo] = useState(playlist);
 
   // Fetch playlist by id
-  const { data: playlistData, status: fetchPlaylistStatus } = useFetchPlaylist(
-    playlistInfo?._id
-  );
+  const {
+    data: playlistData,
+    status: fetchPlaylistStatus,
+    refetch: refetchPlaylist,
+  } = useFetchPlaylist(playlistInfo?._id);
   const [
     deletePlaylist,
     { status: deletePlaylistStatus },
@@ -87,6 +90,16 @@ const PlaylistScreen = ({ route, navigation }) => {
   // Show Loader if either playlist is fetching
   if (fetchPlaylistStatus === "loading" || deletePlaylistStatus === "loading") {
     return <Loader />;
+  }
+
+  // Error handling
+  if (fetchPlaylistStatus === "error") {
+    return (
+      <ErrorMessage
+        message="Sorry, we're having trouble fetching your playlist data."
+        onRetry={refetchPlaylist}
+      />
+    );
   }
 
   // If the playlist has no content saved, show no content message
