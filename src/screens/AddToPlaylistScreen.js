@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, Text, FlatList } from "react-native";
 import _ from "lodash";
 // API
@@ -22,8 +22,10 @@ import { initializeMultiSelectCheckbox } from "../helpers/screenHelpers";
 // Design
 import { SEMIBOLD, BOLD, FS16, FS20 } from "../design/typography";
 import { OFF_BLACK, GRAY_2 } from "../design/colors";
+import displayErrorAlert from "../components/shared/displayErrorAlert";
 
 const AddToPlaylistScreen = ({ navigation, route }) => {
+  const [shownUpdatingError, setShownUpdatingError] = useState(false);
   const { contentId, contentPlaylists } = route.params;
 
   const {
@@ -88,6 +90,17 @@ const AddToPlaylistScreen = ({ navigation, route }) => {
     );
   }
 
+  // Error alert if there's an error adding/removing playlist from book/video
+  if (
+    (addingStatus === "error" || removingStatus === "error") &&
+    !shownUpdatingError
+  ) {
+    displayErrorAlert(
+      "Sorry, an error occurred while trying to update your playlists."
+    );
+    setShownUpdatingError(true);
+  }
+
   const updatePlaylistsAndContent = async (playlistsList) => {
     // First filter through the playlists list to get only the checked ones, then
     // from those objects only take out the ids
@@ -130,7 +143,7 @@ const AddToPlaylistScreen = ({ navigation, route }) => {
     });
     // Temporarily fetch all content after updating until I move ContentContext to
     // react-query
-    await fetchContent();
+    fetchContent();
   };
 
   // Display message and button to go to Create Playlist screen when there are no
@@ -163,8 +176,8 @@ const AddToPlaylistScreen = ({ navigation, route }) => {
       !_.isEmpty(playlistsList) && (
         <ActionButton
           title="Confirm"
-          onPress={() => {
-            updatePlaylistsAndContent(playlistsList);
+          onPress={async () => {
+            await updatePlaylistsAndContent(playlistsList);
             navigation.goBack();
           }}
         />
