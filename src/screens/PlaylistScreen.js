@@ -11,6 +11,7 @@ import { NavHeaderTitle } from "../components/shared/Headers";
 import MoreOptionsButton from "../components/shared/MoreOptionsButton";
 import initiateDeleteConfirmation from "../components/shared/initiateDeleteConfirmation";
 import ErrorMessage from "../components/shared/ErrorMessage";
+import displayErrorAlert from "../components/shared/displayErrorAlert";
 // Design
 import { SEMIBOLD, FS16 } from "../design/typography";
 import { GRAY_2 } from "../design/colors";
@@ -99,6 +100,13 @@ const PlaylistScreen = ({ route, navigation }) => {
         message="Sorry, we're having trouble fetching your playlist data."
         onRetry={refetchPlaylist}
       />
+    );
+  }
+
+  // Error alert if deleting fails
+  if (deletePlaylistStatus === "error") {
+    displayErrorAlert(
+      "Sorry, an error occurred while trying to delete your playlist"
     );
   }
 
