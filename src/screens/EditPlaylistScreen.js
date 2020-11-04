@@ -11,6 +11,7 @@ import {
 import { useUpdatePlaylist } from "../api/playlists";
 // Components
 import ActionButton from "../components/shared/ActionButton";
+import displayErrorAlert from "../components/shared/displayErrorAlert";
 // Design
 import { SEMIBOLD, FS18, FS24 } from "../design/typography";
 import { GRAY_2 } from "../design/colors";
@@ -20,6 +21,13 @@ const EditPlaylistScreen = ({ route, navigation }) => {
   const [playlistName, setPlaylistName] = useState(playlistInfo?.name);
 
   const [updatePlaylist, { status }] = useUpdatePlaylist();
+
+  // Error handling
+  if (status === "error") {
+    displayErrorAlert(
+      "Sorry, an error occurred while trying to edit your playlist"
+    );
+  }
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
