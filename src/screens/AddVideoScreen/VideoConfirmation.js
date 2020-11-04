@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ScrollView, View, StyleSheet, Text, Image } from "react-native";
 import _ from "lodash";
 import { Feather } from "@expo/vector-icons";
+// API
+import { useFetchAllPlaylists } from "../../api/playlists";
 // Components
 import SubHeader from "../../components/Content/SubHeader";
 import Description from "../../components/Content/Description";
@@ -9,19 +11,20 @@ import SelectShelfSection from "../ShelfSelectScreen/SelectShelfSection";
 import SelectPlaylistsSection from "../ShelfSelectScreen/SelectPlaylistsSection";
 import SelectStartFinishDatesSection from "../ShelfSelectScreen/SelectStartFinishDatesSection";
 import ActionButton from "../../components/shared/ActionButton";
+// Hooks
+import useMultiSelectCheckbox from "../../hooks/useMultiSelectCheckbox";
 // Design
 import { OFF_WHITE, GRAY_5, GRAY_3, GRAY_4 } from "../../design/colors";
 import { REGULAR, FS14 } from "../../design/typography";
 // Helpers
 import { getBestThumbnail } from "./helpers";
+import { initializeMultiSelectCheckbox } from "../../helpers/screenHelpers";
 
 const VideoConfirmation = ({
   videoInfo,
   onGoBack,
   shelves,
   onSelectShelf,
-  playlists,
-  onSelectPlaylist,
   startDate,
   finishDate,
   setStartDate,
@@ -32,6 +35,48 @@ const VideoConfirmation = ({
   const [showMore, setShowMore] = useState(false);
   const [showMorePlaylists, setShowMorePlaylists] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    data: allPlaylistsData,
+    status: allPlaylistsStatus,
+  } = useFetchAllPlaylists();
+
+  const [
+    playlistsList,
+    togglePlaylistsList,
+    setCheckboxesFromOutside,
+  ] = useMultiSelectCheckbox(
+    initializeMultiSelectCheckbox(allPlaylistsData, [])
+  );
+
+  // Create a ref to be used as the previous playlist state for comparison with a
+  // new one should it be updated (so that the new playlist can be added to the
+  // playlist multi-checkbox)
+  const playlistsRef = useRef(allPlaylistsData);
+
+  // This useEffect call will check if there's a change to playlist data, if there
+  // is (i.e. if a user creates a playlist), it will add the new playlist to the
+  // multi-checkbox and set it as already checked. Not a fan of this
+  // implementation to deal with state updates and updates to hooks, but it works.
+  useEffect(() => {
+    // Get previous playlist state from ref
+    const prevPlaylists = playlistsRef.current;
+
+    // If the playlist data is not the same length (if they are then
+    // no useful change, we only care about whether a playlist was added or not),
+    // then add the new playlist to the mult-checkbox
+    if (prevPlaylists && prevPlaylists?.length !== allPlaylistsData?.length) {
+      // new playlist is the last item in the array
+      const newPlaylist = allPlaylistsData[allPlaylistsData.length - 1];
+
+      setCheckboxesFromOutside([
+        ...playlistsList,
+        { _id: newPlaylist._id, name: newPlaylist.name, checked: true },
+      ]);
+      // Update ref to new playlist items state
+      playlistsRef.current = allPlaylistsData;
+    }
+  }, [allPlaylistsData]);
 
   const {
     snippet: { title, description, thumbnails },
@@ -87,8 +132,8 @@ const VideoConfirmation = ({
         />
       )}
       <SelectPlaylistsSection
-        playlistsList={playlists}
-        onSelectPlaylist={onSelectPlaylist}
+        playlistsList={playlistsList}
+        onSelectPlaylist={togglePlaylistsList}
         showMore={showMorePlaylists}
         setShowMore={setShowMorePlaylists}
         playlistSelectContainer={{ marginHorizontal: 0 }}
@@ -108,7 +153,7 @@ const VideoConfirmation = ({
             const currentShelf = _.find(shelves, (shelf) => shelf.checked);
             // filter through the playlists list to get only the checked ones, then
             // from those objects only take out the ids
-            const selectedPlaylistIds = _.chain(playlists)
+            const selectedPlaylistIds = _.chain(playlistsList)
               .filter({ checked: true })
               .map((item) => item._id);
 
