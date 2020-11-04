@@ -5,12 +5,16 @@ import { useNavigation } from "@react-navigation/native";
 import { H3 } from "../../components/shared/Headers";
 import MultiItemSelect from "../../components/shared/MultiItemSelect";
 import ShowMoreShowLess from "../../components/Content/ShowMoreShowLess";
+import Loader from "../../components/shared/Loader";
+import ErrorMessage from "../../components/shared/ErrorMessage";
 
 const INITIAL_NUM_PLAYLISTS_TO_SHOW = 8;
 
 const SelectPlaylistsSection = ({
   playlistsList,
   onSelectPlaylist,
+  isLoading,
+  isError,
   showMore,
   setShowMore,
   showCreateItem = true,
@@ -27,16 +31,22 @@ const SelectPlaylistsSection = ({
     <>
       <H3 style={styles.header}>Select Playlist(s)</H3>
       <View style={playlistSelectContainer}>
-        <MultiItemSelect
-          itemsList={
-            showMore
-              ? playlistsList
-              : playlistsList.slice(0, INITIAL_NUM_PLAYLISTS_TO_SHOW)
-          }
-          onSelect={onSelectPlaylist}
-          showCreateItem={showCreateItem}
-          onSelectCreateItem={() => navigation.navigate("CreatePlaylist")}
-        />
+        {isLoading ? (
+          <Loader />
+        ) : isError ? (
+          <ErrorMessage message="Error fetching playlists." />
+        ) : (
+          <MultiItemSelect
+            itemsList={
+              showMore
+                ? playlistsList
+                : playlistsList.slice(0, INITIAL_NUM_PLAYLISTS_TO_SHOW)
+            }
+            onSelect={onSelectPlaylist}
+            showCreateItem={showCreateItem}
+            onSelectCreateItem={() => navigation.navigate("CreatePlaylist")}
+          />
+        )}
       </View>
       {/* Only show the Show More button if there are more playlists to show (in
           this case, more than initial num defined above) */}

@@ -55,6 +55,9 @@ const VideoConfirmation = ({ videoInfo, onGoBack, onSubmit }) => {
   // playlist multi-checkbox)
   const playlistsRef = useRef(allPlaylistsData);
 
+  console.log(allPlaylistsData);
+  console.log(playlistsRef);
+
   // This useEffect call will check if there's a change to playlist data, if there
   // is (i.e. if a user creates a playlist), it will add the new playlist to the
   // multi-checkbox and set it as already checked. Not a fan of this
@@ -62,6 +65,8 @@ const VideoConfirmation = ({ videoInfo, onGoBack, onSubmit }) => {
   useEffect(() => {
     // Get previous playlist state from ref
     const prevPlaylists = playlistsRef.current;
+
+    console.log(prevPlaylists);
 
     // If the playlist data is not the same length (if they are then
     // no useful change, we only care about whether a playlist was added or not),
@@ -75,6 +80,13 @@ const VideoConfirmation = ({ videoInfo, onGoBack, onSubmit }) => {
         { _id: newPlaylist._id, name: newPlaylist.name, checked: true },
       ]);
       // Update ref to new playlist items state
+      playlistsRef.current = allPlaylistsData;
+    } else {
+      // Why does this work??? Updating ref and setting multi-checkboxes because
+      // it doesn't update otherwise
+      setCheckboxesFromOutside(
+        initializeMultiSelectCheckbox(allPlaylistsData, [])
+      );
       playlistsRef.current = allPlaylistsData;
     }
   }, [allPlaylistsData]);
@@ -135,6 +147,8 @@ const VideoConfirmation = ({ videoInfo, onGoBack, onSubmit }) => {
       <SelectPlaylistsSection
         playlistsList={playlistsList}
         onSelectPlaylist={togglePlaylistsList}
+        isLoading={allPlaylistsStatus === "loading"}
+        isError={allPlaylistsStatus === "error"}
         showMore={showMorePlaylists}
         setShowMore={setShowMorePlaylists}
         playlistSelectContainer={{ marginHorizontal: 0 }}
