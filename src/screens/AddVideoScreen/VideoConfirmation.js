@@ -12,19 +12,21 @@ import SelectPlaylistsSection from "../ShelfSelectScreen/SelectPlaylistsSection"
 import SelectStartFinishDatesSection from "../ShelfSelectScreen/SelectStartFinishDatesSection";
 import ActionButton from "../../components/shared/ActionButton";
 // Hooks
+import useSingleCheckbox from "../../hooks/useSingleCheckbox";
 import useMultiSelectCheckbox from "../../hooks/useMultiSelectCheckbox";
 // Design
 import { OFF_WHITE, GRAY_5, GRAY_3, GRAY_4 } from "../../design/colors";
 import { REGULAR, FS14 } from "../../design/typography";
 // Helpers
 import { getBestThumbnail } from "./helpers";
-import { initializeMultiSelectCheckbox } from "../../helpers/screenHelpers";
+import {
+  initializeShelves,
+  initializeMultiSelectCheckbox,
+} from "../../helpers/screenHelpers";
 
 const VideoConfirmation = ({
   videoInfo,
   onGoBack,
-  shelves,
-  onSelectShelf,
   startDate,
   finishDate,
   setStartDate,
@@ -41,6 +43,10 @@ const VideoConfirmation = ({
     status: allPlaylistsStatus,
   } = useFetchAllPlaylists();
 
+  // Initialize shelves and playlists checkboxes/selectors
+  const [shelves, toggleShelves] = useSingleCheckbox(
+    initializeShelves("Want to Learn")
+  );
   const [
     playlistsList,
     togglePlaylistsList,
@@ -117,7 +123,7 @@ const VideoConfirmation = ({
       </View>
       <SelectShelfSection
         shelves={shelves}
-        onSelectShelf={onSelectShelf}
+        onSelectShelf={toggleShelves}
         rounded
       />
       {/* If the Finished Learning shelf is selected, show input selectors for

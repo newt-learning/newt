@@ -8,10 +8,8 @@ import { Context as ContentContext } from "../../context/ContentContext";
 import VideoUrlForm from "./VideoUrlForm";
 import VideoConfirmation from "./VideoConfirmation";
 import SeriesConfirmation from "./SeriesConfirmation";
-// Hooks
-import useSingleCheckbox from "../../hooks/useSingleCheckbox";
 // Helpers
-import { initializeShelves } from "../../helpers/screenHelpers";
+import {} from "../../helpers/screenHelpers";
 import {
   extractAndAssembleVideoInfo,
   extractAndAssemblePlaylistInfo,
@@ -31,11 +29,6 @@ const AddVideoScreen = ({ navigation }) => {
   const { addContent, fetchContent } = useContext(ContentContext);
   // API request func. to DB to create a series
   const [createSeries, { status }] = useCreateSeries();
-
-  // Initialize shelves and playlists checkboxes/selectors
-  const [shelves, toggleShelves] = useSingleCheckbox(
-    initializeShelves("Want to Learn")
-  );
 
   const addVideo = async (selectedShelf, selectedPlaylists) => {
     const contentInfo = extractAndAssembleVideoInfo(
@@ -71,8 +64,6 @@ const AddVideoScreen = ({ navigation }) => {
       return (
         <VideoConfirmation
           videoInfo={videoInfo}
-          shelves={shelves}
-          onSelectShelf={toggleShelves}
           startDate={startDate}
           finishDate={finishDate}
           setStartDate={setStartDate}
