@@ -15,6 +15,7 @@ import ActionButton from "../components/shared/ActionButton";
 // Design
 import { SEMIBOLD, FS18, FS24, REGULAR, FS14 } from "../design/typography";
 import { GRAY_2, RED } from "../design/colors";
+import displayErrorAlert from "../components/shared/displayErrorAlert";
 
 const CHARACTER_LIMIT = 24;
 
@@ -23,6 +24,13 @@ const CreatePlaylistScreen = ({ navigation }) => {
   let nameCharRemaining = CHARACTER_LIMIT - playlistName.length;
 
   const [createPlaylist, { status: playlistStatus }] = useCreatePlaylist();
+
+  // Error alert
+  if (playlistStatus === "error") {
+    displayErrorAlert(
+      "Sorry, an error occurred while trying to create the playlist"
+    );
+  }
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
