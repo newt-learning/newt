@@ -1,8 +1,8 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { Text, StyleSheet, FlatList } from "react-native";
 import _ from "lodash";
-// Context
-import { Context as ContentContext } from "../context/ContentContext";
+// API
+import { useFetchAllContent } from "../api/content";
 // Components
 import { H1 } from "../components/shared/Headers";
 import Loader from "../components/shared/Loader";
@@ -22,13 +22,12 @@ import {
 } from "../helpers/screenHelpers";
 
 const HomeScreen = ({ navigation }) => {
-  const { state: contentState, fetchContent } = useContext(ContentContext);
-  const [refreshing, onPullToRefresh] = useRefresh(fetchContent);
-
-  // Fetch content data
-  useEffect(() => {
-    fetchContent();
-  }, []);
+  const {
+    data: allContentData,
+    status: allContentStatus,
+    refetch: fetchAllContent,
+  } = useFetchAllContent();
+  const [refreshing, onPullToRefresh] = useRefresh(fetchAllContent);
 
   // Message if there's data/content but none in the "Currently Learning" shelf
   const NoCurrentlyLearningMessage = () => (
@@ -47,29 +46,29 @@ const HomeScreen = ({ navigation }) => {
   );
 
   // If data is being fetched, show loading spinner
-  if (contentState.isFetching && !refreshing) {
+  if (allContentStatus === "loading" && !refreshing) {
     return <Loader />;
   }
 
   // If there's an error message display error message screen
-  if (contentState.errorMessage) {
+  if (allContentStatus === "error") {
     return (
       <ErrorMessage
-        message={contentState.errorMessage}
-        onRetry={fetchContent}
+        message="Sorry, we're having some trouble getting your data."
+        onRetry={fetchAllContent}
       />
     );
   }
 
   // If there's no data and it's not currently being fetched, show the "No Content"
   // message
-  if (!contentState.isFetching && _.isEmpty(contentState.items)) {
+  if (allContentStatus !== "loading" && _.isEmpty(allContentData)) {
     return <NoContentMessage />;
   }
 
   // Filter out only items in "Currently Learning" shelf
   const inProgressContent = _.filter(
-    contentState.items,
+    allContentData,
     (item) => item.shelf === "Currently Learning"
   );
   // Then order the filtered content by descending order of when it was last updated (latest to oldest)
