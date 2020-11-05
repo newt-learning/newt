@@ -92,7 +92,7 @@ const ShelfSelectScreen = ({ navigation, route }) => {
         { _id: newPlaylist._id, name: newPlaylist.name, checked: true },
       ]);
       // Update ref to new playlist state
-      playlistsRef.current = playlistsState.items;
+      playlistsRef.current = allPlaylistsData;
     } else {
       // Why does this work??? Updating ref and setting multi-checkboxes because
       // it doesn't update otherwise
