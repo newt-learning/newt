@@ -41,13 +41,15 @@ export const initializeMultiSelectCheckbox = (
 ) => {
   let initialList = [];
 
-  allItems.forEach((item) => {
-    if (alreadySelectedItems.includes(item._id)) {
-      initialList.push({ _id: item._id, name: item.name, checked: true });
-    } else {
-      initialList.push({ _id: item._id, name: item.name, checked: false });
-    }
-  });
+  if (!_.isEmpty(allItems)) {
+    allItems.forEach((item) => {
+      if (alreadySelectedItems.includes(item._id)) {
+        initialList.push({ _id: item._id, name: item.name, checked: true });
+      } else {
+        initialList.push({ _id: item._id, name: item.name, checked: false });
+      }
+    });
+  }
 
   return initialList;
 };

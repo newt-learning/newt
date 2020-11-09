@@ -8,33 +8,42 @@ import {
   KeyboardAvoidingView,
   View,
 } from "react-native";
-// Context
-import { Context as TopicsContext } from "../context/TopicsContext";
+// API
+import { useCreatePlaylist } from "../api/playlists";
 // Components
 import ActionButton from "../components/shared/ActionButton";
 // Design
 import { SEMIBOLD, FS18, FS24, REGULAR, FS14 } from "../design/typography";
 import { GRAY_2, RED } from "../design/colors";
+import displayErrorAlert from "../components/shared/displayErrorAlert";
 
 const CHARACTER_LIMIT = 24;
 
-const CreateTopicScreen = ({ navigation }) => {
-  const [topicName, setTopicName] = useState("");
-  let nameCharRemaining = CHARACTER_LIMIT - topicName.length;
-  const { createTopic } = useContext(TopicsContext);
+const CreatePlaylistScreen = ({ navigation }) => {
+  const [playlistName, setPlaylistName] = useState("");
+  let nameCharRemaining = CHARACTER_LIMIT - playlistName.length;
+
+  const [createPlaylist, { status: playlistStatus }] = useCreatePlaylist();
+
+  // Error alert
+  if (playlistStatus === "error") {
+    displayErrorAlert(
+      "Sorry, an error occurred while trying to create the playlist"
+    );
+  }
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.inner}>
-          <Text style={styles.text}>Topic name:</Text>
+          <Text style={styles.text}>Playlist name:</Text>
           <TextInput
             style={styles.input}
             autoFocus={true}
-            value={topicName}
-            onChangeText={setTopicName}
+            value={playlistName}
+            onChangeText={setPlaylistName}
           />
-          {/* If the topic is getting close to the character limit (8 characters
+          {/* If the playlist is getting close to the character limit (8 characters
             away), show number of characters remaining in red.  */}
           <Text style={styles.charLimit}>
             {nameCharRemaining <= 8 && nameCharRemaining}
@@ -42,13 +51,14 @@ const CreateTopicScreen = ({ navigation }) => {
           <View style={styles.btnContainer}>
             <ActionButton
               title="Create"
-              onPress={() => {
-                createTopic({ name: topicName });
+              onPress={async () => {
+                await createPlaylist({ name: playlistName });
                 navigation.goBack();
               }}
+              showLoading={playlistStatus === "loading"}
               // Disable button if there's no name or if the name is over the
               // character limit
-              disabled={topicName.length === 0 || nameCharRemaining < 0}
+              disabled={playlistName.length === 0 || nameCharRemaining < 0}
               showOnlyDisabledIcon={true}
             />
           </View>
@@ -93,4 +103,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateTopicScreen;
+export default CreatePlaylistScreen;

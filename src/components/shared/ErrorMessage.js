@@ -16,12 +16,14 @@ const ErrorMessage = ({ message, onRetry, backgroundColor = GRAY_5 }) => {
   return (
     <View style={containerStyle}>
       <ErrorText>{message}</ErrorText>
-      <ClearButton
-        title="Retry"
-        onPress={onRetry}
-        containerStyle={styles.buttonContainer}
-        titleStyle={styles.buttonTitle}
-      />
+      {onRetry ? (
+        <ClearButton
+          title="Retry"
+          onPress={onRetry}
+          containerStyle={styles.buttonContainer}
+          titleStyle={styles.buttonTitle}
+        />
+      ) : null}
     </View>
   );
 };

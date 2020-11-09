@@ -8,7 +8,7 @@ import { FS12, SEMIBOLD } from "../../design/typography";
 const Pill = ({
   title,
   onPress,
-  addPill = false, // whether the pill's for adding (for example, creating a topic)
+  addPill = false, // whether the pill's for adding (for example, creating a playlist)
   buttonStyle: passedButtonStyle,
   titleStyle: passedTitleStyle,
   iconColor = RUBY,

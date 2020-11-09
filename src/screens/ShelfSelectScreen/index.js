@@ -3,12 +3,12 @@ import { ScrollView, View, StyleSheet } from "react-native";
 import _ from "lodash";
 // API
 import { useAddContentToChallenge } from "../../api/challenges";
+import { useFetchAllPlaylists } from "../../api/playlists";
 // Context
 import { Context as ContentContext } from "../../context/ContentContext";
-import { Context as TopicsContext } from "../../context/TopicsContext";
 // Components
 import SelectShelfSection from "./SelectShelfSection";
-import SelectTopicsSection from "./SelectTopicsSection";
+import SelectPlaylistsSection from "./SelectPlaylistsSection";
 import ActionButton from "../../components/shared/ActionButton";
 import ClearButton from "../../components/shared/ClearButton";
 import Loader from "../../components/shared/Loader";
@@ -32,70 +32,82 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   // State for start and end dates for Finished books
   const [startDate, setStartDate] = useState(new Date());
   const [finishDate, setFinishDate] = useState(new Date());
-  // Show more/less topics
-  const [showMoreTopics, setShowMoreTopics] = useState(false);
+  // Show more/less playlists
+  const [showMorePlaylists, setShowMorePlaylists] = useState(false);
+
+  const {
+    data: allPlaylistsData,
+    status: allPlaylistsStatus,
+  } = useFetchAllPlaylists();
 
   const {
     state: contentState,
+    fetchContent,
     addContent,
     deleteContent,
     updateContent,
   } = useContext(ContentContext);
-  const { state: topicsState, fetchTopics } = useContext(TopicsContext);
 
   // Get params passed from route
   const { contentInfo, buttonText, addToLibrary, contentType } = route.params;
 
-  // Initialize shelves and topics checkboxes/selectors
+  // Initialize shelves and playlists checkboxes/selectors
   const [shelves, toggleShelves] = useSingleCheckbox(
     initializeShelves(contentInfo.shelf)
   );
   const [
-    topicsList,
-    toggleTopicsList,
+    playlistsList,
+    togglePlaylistsList,
     setCheckboxesFromOutside,
   ] = useMultiSelectCheckbox(
-    initializeMultiSelectCheckbox(topicsState.items, [])
+    initializeMultiSelectCheckbox(allPlaylistsData, [])
   );
 
   // Get function to add content to an existing challenge (used when shelf is
   // changed to "Finished Learning")
   const [addContentToChallenge] = useAddContentToChallenge();
 
-  // Create a ref to be used as the previous topics state for comparison with a
-  // new one should it be updated (so that the new topic can be added to the
-  // topics multi-checkbox)
-  const topicsRef = useRef(topicsState.items);
+  // Create a ref to be used as the previous playlists state for comparison with a
+  // new one should it be updated (so that the new playlist can be added to the
+  // playlists multi-checkbox)
+  const playlistsRef = useRef(allPlaylistsData);
 
-  // This useEffect call will check if there's a change to topicState, if there
-  // is (i.e. if a user creates a topic), it will add the new topic to the
+  // This useEffect call will check if there's a change to playlist data, if there
+  // is (i.e. if a user creates a playlist), it will add the new playlist to the
   // multi-checkbox and set it as already checked. Not a fan of this
   // implementation to deal with state updates and updates to hooks, but it works.
   useEffect(() => {
-    // Get previous topic state from ref
-    const prevTopics = topicsRef.current;
+    // Get previous playlist state from ref
+    const prevPlaylists = playlistsRef.current;
 
-    // If the topics items state is not the same length (if they are then
-    // no useful change, we only care about whether a topic was added or not),
-    // then add the new topic to the mult-checkbox
-    if (prevTopics.length !== topicsState.items.length) {
-      // new topic is the last item in the array
-      const newTopic = topicsState.items[topicsState.items.length - 1];
+    // If the playlists data is not the same length (if they are then
+    // no useful change, we only care about whether a playlist was added or not),
+    // then add the new playlist to the multi-checkbox
+    if (prevPlaylists && prevPlaylists?.length !== allPlaylistsData?.length) {
+      // new playlist is the last item in the array
+      const newPlaylist = allPlaylistsData[allPlaylistsData.length - 1];
 
       setCheckboxesFromOutside([
-        ...topicsList,
-        { _id: newTopic._id, name: newTopic.name, checked: true },
+        ...playlistsList,
+        { _id: newPlaylist._id, name: newPlaylist.name, checked: true },
       ]);
-      // Update ref to new topic items state
-      topicsRef.current = topicsState.items;
+      // Update ref to new playlist state
+      playlistsRef.current = allPlaylistsData;
+    } else {
+      // Why does this work??? Updating ref and setting multi-checkboxes because
+      // it doesn't update otherwise
+      setCheckboxesFromOutside(
+        initializeMultiSelectCheckbox(allPlaylistsData, [])
+      );
+      playlistsRef.current = allPlaylistsData;
     }
-  }, [topicsState.items]);
+  }, [allPlaylistsData]);
 
-  const addContentToLibrary = async (selectedShelf, selectedTopics) => {
+  const addContentToLibrary = async (selectedShelf, selectedPlaylists) => {
     const data = {
       ...contentInfo,
       shelf: selectedShelf,
-      topics: selectedTopics,
+      playlists: selectedPlaylists,
       type: contentType,
     };
 
@@ -122,10 +134,8 @@ const ShelfSelectScreen = ({ navigation, route }) => {
       addContentToChallenge(newContent._id);
     }
 
-    // Fetch all topics to show updates (again, inefficient because multiple
-    // updates together doesn't return the updated items, so can't update global
-    // state from dispatch)
-    fetchTopics();
+    // Temporarily fetch everything so playlists for each content are updated
+    fetchContent();
 
     // If the result is null, meaning there was an error in adding the book,
     // go back to previous screen.
@@ -133,7 +143,6 @@ const ShelfSelectScreen = ({ navigation, route }) => {
       navigation.goBack();
     } else {
       handleContentNavigation(newContent, navigation);
-      // navigation.navigate("BookScreen", { bookInfo: newBook });
     }
   };
   const updateShelf = (selectedShelf) => {
@@ -161,7 +170,6 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     const deleteFlow = async () => {
       navigation.popToTop();
       await deleteContent(contentInfo._id);
-      fetchTopics();
     };
 
     // Show delete ActionSheet/Alert
@@ -171,15 +179,15 @@ const ShelfSelectScreen = ({ navigation, route }) => {
   // Function that decided what to do when the Confirm/Add To Library button is
   // pressed. If coming from the 'Add Content' screen, then add to Library.
   // Otherwise update the shelf of already existing content.
-  const onConfirmShelf = (selectedShelf, selectedTopics) => {
+  const onConfirmShelf = (selectedShelf, selectedPlaylists) => {
     if (addToLibrary) {
-      addContentToLibrary(selectedShelf, selectedTopics);
+      addContentToLibrary(selectedShelf, selectedPlaylists);
     } else {
       updateShelf(selectedShelf);
     }
   };
 
-  if (contentState.isFetching || topicsState.isFetching) {
+  if (contentState.isFetching || allPlaylistsStatus === "loading") {
     return <Loader />;
   }
 
@@ -187,13 +195,13 @@ const ShelfSelectScreen = ({ navigation, route }) => {
     <ScrollView
       // The space-between makes the button stay at the bottom of the screen,
       // but for some reason scroll no longer works (when flex is 1, the
-      // container doesn't exceed height of View). So if show more topics is
+      // container doesn't exceed height of View). So if show more playlists is
       // pressed, change flex to 0 so scroll works.
       // TODO: Unfortunately it introduces another bug where the button no
-      // longer stays at the bottom, and shoots up right below Select Topics
+      // longer stays at the bottom, and shoots up right below Select Playlists
       contentContainerStyle={{
         justifyContent: "space-between",
-        flex: showMoreTopics ? 0 : 1,
+        flex: showMorePlaylists ? 0 : 1,
       }}
       style={styles.container}
     >
@@ -220,13 +228,15 @@ const ShelfSelectScreen = ({ navigation, route }) => {
             setFinishDate={setFinishDate}
           />
         ) : null}
-        {/* If on Add to Library screen, show Topic Selector */}
+        {/* If on Add to Library screen, show Playlist Selector */}
         {addToLibrary ? (
-          <SelectTopicsSection
-            topicsList={topicsList}
-            onSelectTopic={toggleTopicsList}
-            showMore={showMoreTopics}
-            setShowMore={setShowMoreTopics}
+          <SelectPlaylistsSection
+            playlistsList={playlistsList}
+            onSelectPlaylist={togglePlaylistsList}
+            isLoading={allPlaylistsStatus === "loading"}
+            isError={allPlaylistsStatus === "error"}
+            showMore={showMorePlaylists}
+            setShowMore={setShowMorePlaylists}
           />
         ) : null}
       </View>
@@ -237,12 +247,12 @@ const ShelfSelectScreen = ({ navigation, route }) => {
             setIsLoading(true);
             // Get chosen shelf
             const currentShelf = _.find(shelves, (shelf) => shelf.checked);
-            // filter through the topics list to get only the checked ones, then
+            // filter through the playlists list to get only the checked ones, then
             // from those objects only take out the ids
-            const selectedTopicIds = _.chain(topicsList)
+            const selectedPlaylistIds = _.chain(playlistsList)
               .filter({ checked: true })
               .map((item) => item._id);
-            onConfirmShelf(currentShelf.name, selectedTopicIds);
+            onConfirmShelf(currentShelf.name, selectedPlaylistIds);
           }}
           showLoading={isLoading}
         />

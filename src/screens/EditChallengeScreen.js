@@ -16,7 +16,7 @@ import ActionButton from "../components/shared/ActionButton";
 import { SEMIBOLD, FS18, FS24 } from "../design/typography";
 import { GRAY_2 } from "../design/colors";
 
-const EditTopicScreen = ({ route, navigation }) => {
+const EditChallengeScreen = ({ route, navigation }) => {
   const { challengeData } = route.params;
   const { _id, totalItems } = challengeData;
   const [numBooks, setNumBooks] = useState(String(totalItems));
@@ -92,4 +92,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditTopicScreen;
+export default EditChallengeScreen;

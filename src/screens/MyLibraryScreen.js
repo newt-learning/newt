@@ -5,14 +5,13 @@ import _ from "lodash";
 import { useFetchSeries } from "../api/series";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
-import { Context as TopicsContext } from "../context/TopicsContext";
 // Components
 import Loader from "../components/shared/Loader";
 import ErrorMessage from "../components/shared/ErrorMessage";
 import NoContentMessage from "../components/shared/NoContentMessage";
 import ButtonGroup from "../components/shared/ButtonGroup";
 import ShelvesSection from "../components/MyLibrary/ShelvesSection";
-import TopicsSection from "../components/MyLibrary/TopicsSection";
+import PlaylistsSection from "../components/MyLibrary/PlaylistsSection";
 // Hooks
 import useRefresh from "../hooks/useRefresh";
 // Design
@@ -20,7 +19,7 @@ import { GRAY_2, GRAY_5 } from "../design/colors";
 
 const MyLibraryScreen = () => {
   const { state: contentState, fetchContent } = useContext(ContentContext);
-  const { state: topicsState, fetchTopics } = useContext(TopicsContext);
+
   // Fetch series data
   const {
     status: seriesStatus,
@@ -28,29 +27,22 @@ const MyLibraryScreen = () => {
     refetch: fetchSeries,
   } = useFetchSeries();
   // Buttons to switch screens
-  const screenSwitchButtons = ["Shelves", "Topics"];
+  const screenSwitchButtons = ["Shelves", "Playlists"];
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(0);
 
   // Pull to refresh
   const fetchData = () => {
     fetchContent();
     fetchSeries();
-    fetchTopics();
   };
   const [refreshing, onPullToRefresh] = useRefresh(fetchData);
 
-  // Fetch content and topics data
+  // Fetch content
   useEffect(() => {
     fetchContent();
-    fetchTopics();
   }, []);
 
-  if (
-    (contentState.isFetching ||
-      topicsState.isFetching ||
-      seriesStatus === "loading") &&
-    !refreshing
-  ) {
+  if ((contentState.isFetching || seriesStatus === "loading") && !refreshing) {
     return <Loader />;
   }
 
@@ -70,7 +62,10 @@ const MyLibraryScreen = () => {
     return <NoContentMessage />;
   }
 
-  // Button group to switch between Shelves and Topics
+  // Button group to switch between Shelves and Playlists. The reason this is
+  // being passed as a prop and not just rendered here is because ScrollView and
+  // Flatlist (in PlaylistSection) don't work well together. I'm confident there's
+  // a better solution though... for later
   const MyLibraryButtonGroup = () => (
     <ButtonGroup
       buttonsArray={screenSwitchButtons}
@@ -81,7 +76,7 @@ const MyLibraryScreen = () => {
     />
   );
 
-  // Display Shelves or Topics section based on button selected
+  // Display Shelves or Playlists section based on button selected
   if (selectedButtonIndex === 0) {
     return (
       <ScrollView
@@ -100,10 +95,7 @@ const MyLibraryScreen = () => {
         {/* This component returns a FlatList if there's data, so send the 
         ButtonGroup component to be the FlatList's header. Also needs to be 
         wrapped in a View instead of ScrollView. Need to improve this screen */}
-        <TopicsSection
-          items={topicsState.items}
-          ButtonGroupHeader={MyLibraryButtonGroup}
-        />
+        <PlaylistsSection ButtonGroupHeader={MyLibraryButtonGroup} />
       </View>
     );
   }

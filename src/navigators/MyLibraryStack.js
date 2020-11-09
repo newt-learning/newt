@@ -9,10 +9,10 @@ import VideoScreen from "../screens/VideoScreen";
 import SeriesScreen from "../screens/SeriesScreen";
 import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
-import CreateTopicScreen from "../screens/CreateTopicScreen";
-import TopicScreen from "../screens/TopicScreen";
-import AddToTopicScreen from "../screens/AddToTopicScreen";
-import EditTopicScreen from "../screens/EditTopicScreen";
+import CreatePlaylistScreen from "../screens/CreatePlaylistScreen";
+import PlaylistScreen from "../screens/PlaylistScreen";
+import AddToPlaylistScreen from "../screens/AddToPlaylistScreen";
+import EditPlaylistScreen from "../screens/EditPlaylistScreen";
 import AddEditDatesScreen from "../screens/AddEditDatesScreen";
 // Helpers
 import SCREEN_OPTIONS from "./screenOptions";
@@ -60,7 +60,7 @@ const MainStack = () => {
         component={ShelfSelectScreen}
         options={{ title: null }}
       />
-      <Stack.Screen name="Topic" component={TopicScreen} />
+      <Stack.Screen name="Playlist" component={PlaylistScreen} />
     </Stack.Navigator>
   );
 };
@@ -85,26 +85,26 @@ const RootStack = () => {
         }}
       />
       <Stack.Screen
-        name="CreateTopic"
-        component={CreateTopicScreen}
+        name="CreatePlaylist"
+        component={CreatePlaylistScreen}
         options={{
-          title: "Create Topic",
+          title: "Create Playlist",
           ...SCREEN_OPTIONS.presentationModalOptions,
         }}
       />
       <Stack.Screen
-        name="AddToTopic"
-        component={AddToTopicScreen}
+        name="AddToPlaylist"
+        component={AddToPlaylistScreen}
         options={{
-          title: "Add to Topic",
+          title: "Add to Playlist",
           ...SCREEN_OPTIONS.presentationModalOptions,
         }}
       />
       <Stack.Screen
-        name="EditTopic"
-        component={EditTopicScreen}
+        name="EditPlaylist"
+        component={EditPlaylistScreen}
         options={{
-          title: "Edit Topic",
+          title: "Edit Playlist",
           ...SCREEN_OPTIONS.presentationModalOptions,
         }}
       />

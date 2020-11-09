@@ -7,10 +7,10 @@ import BookScreen from "../screens/BookScreen";
 import VideoScreen from "../screens/VideoScreen";
 import ShelfSelectScreen from "../screens/ShelfSelectScreen";
 import UpdateProgressScreen from "../screens/UpdateProgressScreen";
-import AddToTopicScreen from "../screens/AddToTopicScreen";
-import TopicScreen from "../screens/TopicScreen";
-import EditTopicScreen from "../screens/EditTopicScreen";
-import CreateTopicScreen from "../screens/CreateTopicScreen";
+import AddToPlaylistScreen from "../screens/AddToPlaylistScreen";
+import PlaylistScreen from "../screens/PlaylistScreen";
+import EditPlaylistScreen from "../screens/EditPlaylistScreen";
+import CreatePlaylistScreen from "../screens/CreatePlaylistScreen";
 import AddEditDatesScreen from "../screens/AddEditDatesScreen";
 // Helpers
 import SCREEN_OPTIONS from "./screenOptions";
@@ -50,12 +50,12 @@ const MainStack = () => {
         options={{ title: null }}
       />
       <Stack.Screen
-        name="Topic"
-        component={TopicScreen}
+        name="Playlist"
+        component={PlaylistScreen}
         options={({ route }) => ({
-          title: route.params.topicInfo.name,
+          title: route.params.playlistInfo.name,
           headerTitle: () => (
-            <NavHeaderTitle title={route.params.topicInfo.name} />
+            <NavHeaderTitle title={route.params.playlistInfo.name} />
           ),
         })}
       />
@@ -83,26 +83,26 @@ const RootStack = () => {
         }}
       />
       <Stack.Screen
-        name="AddToTopic"
-        component={AddToTopicScreen}
+        name="AddToPlaylist"
+        component={AddToPlaylistScreen}
         options={{
-          title: "Add to Topic",
+          title: "Add to Playlist",
           ...SCREEN_OPTIONS.presentationModalOptions,
         }}
       />
       <Stack.Screen
-        name="CreateTopic"
-        component={CreateTopicScreen}
+        name="CreatePlaylist"
+        component={CreatePlaylistScreen}
         options={{
-          title: "Create Topic",
+          title: "Create Playlist",
           ...SCREEN_OPTIONS.presentationModalOptions,
         }}
       />
       <Stack.Screen
-        name="EditTopic"
-        component={EditTopicScreen}
+        name="EditPlaylist"
+        component={EditPlaylistScreen}
         options={{
-          title: "Edit Topic",
+          title: "Edit Playlist",
           ...SCREEN_OPTIONS.presentationModalOptions,
         }}
       />
