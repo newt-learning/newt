@@ -45,11 +45,11 @@ export function validateYoutubePlaylistUrl(url) {
 }
 
 // Extract only relevant video information from result of Youtube API + add
-// other content info like shelf and topics
+// other content info like shelf and playlists
 export function extractAndAssembleVideoInfo(
   videoInfo,
   shelf,
-  topics,
+  playlists,
   startDate,
   finishDate
 ) {
@@ -74,7 +74,7 @@ export function extractAndAssembleVideoInfo(
     thumbnailUrl: bestThumbnail ? bestThumbnail.url : null,
     type: "video",
     shelf,
-    topics,
+    playlists,
     videoInfo: {
       source: "youtube",
       videoId: _.isString(id) ? id : null,

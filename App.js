@@ -2,6 +2,7 @@ import React, { useEffect, useContext } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { setConsole } from "react-query";
 // Context
 import {
   Provider as AuthProvider,
@@ -9,7 +10,6 @@ import {
 } from "./src/context/AuthContext";
 import { Provider as ContentProvider } from "./src/context/ContentContext";
 import { Provider as StatsProvider } from "./src/context/StatsContext";
-import { Provider as TopicsProvider } from "./src/context/TopicsContext";
 // Components
 import Loader from "./src/components/shared/Loader";
 // Stacks
@@ -19,6 +19,14 @@ import SignInScreen from "./src/screens/SignInScreen";
 import QuizScreen from "./src/screens/QuizScreen";
 // Hooks
 import useFonts from "./src/hooks/useFonts";
+
+// Doesn't show red box error for API errors
+// https://github.com/tannerlinsley/react-query/discussions/622
+setConsole({
+  log: console.log,
+  warn: console.log,
+  error: console.log,
+});
 
 const App = () => {
   const {
@@ -73,9 +81,7 @@ export default () => {
     <AuthProvider>
       <ContentProvider>
         <StatsProvider>
-          <TopicsProvider>
-            <App />
-          </TopicsProvider>
+          <App />
         </StatsProvider>
       </ContentProvider>
     </AuthProvider>

@@ -87,7 +87,7 @@ const fetchContent = (dispatch) => async () => {
   try {
     dispatch(requestContent());
 
-    const res = await newtApi.get("/content");
+    const res = await newtApi.get("/v2/content");
     dispatch(setContent(res.data));
     dispatch(resolveContent());
   } catch (error) {

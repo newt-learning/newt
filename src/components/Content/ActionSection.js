@@ -8,7 +8,7 @@ import ActionButton from "../shared/ActionButton";
 import ChangeShelfButton from "./ChangeShelfButton";
 import ClearButton from "../shared/ClearButton";
 import ProgressBar from "../shared/ProgressBar";
-import ContentTopicSection from "./ContentTopicSection";
+import ContentPlaylistSection from "./ContentPlaylistSection";
 // Styling
 import { GRAY_4, GRAY_2 } from "../../design/colors";
 import { REGULAR, FS12 } from "../../design/typography";
@@ -79,7 +79,7 @@ const ActionSection = ({
   contentId,
   type,
   shelf,
-  topics,
+  playlists,
   pageCount,
   pagesRead,
   dateAdded,
@@ -100,7 +100,7 @@ const ActionSection = ({
             dateAdded={dateAdded}
             startFinishDates={startFinishDates}
           />
-          <ContentTopicSection contentId={contentId} topics={topics} />
+          <ContentPlaylistSection contentId={contentId} playlists={playlists} />
         </View>
       ) : (
         <ActionButton title="Add to Library" onPress={onPress} />

@@ -60,6 +60,7 @@ const authenticateWithGoogle = (dispatch) => async () => {
       iosClientId: keys.googleIosClientId,
       androidClientId: keys.googleAndroidClientId,
       iosStandaloneAppClientId: keys.googleIosUrlScheme,
+      androidStandaloneAppClientId: keys.googleAndroidClientId,
     });
 
     if (result.type === "success") {

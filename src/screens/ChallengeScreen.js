@@ -95,7 +95,7 @@ const ChallengeScreen = ({ navigation, route }) => {
       title: "Delete",
       onPress: () => {
         setIsModalVisible(false);
-        // Rationale for this is in TopicScreen file
+        // Rationale for this is in PlaylistScreen file
         setTimeout(() => {
           const deleteMessage =
             "Are you sure you want to delete your reading challenge for this year?";

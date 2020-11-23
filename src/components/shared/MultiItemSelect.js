@@ -49,7 +49,7 @@ const MultiItemSelect = ({
       {/* If showCreateItem is true, show the pill to create an item */}
       {showCreateItem ? (
         <Pill
-          title="Create topic"
+          title="Create playlist"
           addPill={true}
           onPress={onSelectCreateItem}
           buttonStyle={StyleSheet.compose(styles.pill, styles.addItemPill)}

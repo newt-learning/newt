@@ -130,7 +130,7 @@ const BookScreen = ({ navigation, route }) => {
     thumbnailUrl,
     type,
     shelf,
-    topics,
+    playlists,
     dateAdded,
     startFinishDates,
   } = bookInfo;
@@ -156,7 +156,7 @@ const BookScreen = ({ navigation, route }) => {
         contentId={bookExistsInLibrary ? bookInfo._id : null}
         type={type}
         shelf={shelf}
-        topics={topics}
+        playlists={playlists}
         pageCount={pageCount}
         pagesRead={pagesRead}
         dateAdded={dateAdded}

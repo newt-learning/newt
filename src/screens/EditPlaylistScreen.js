@@ -7,22 +7,27 @@ import {
   KeyboardAvoidingView,
   View,
 } from "react-native";
-// Context
-import { Context as TopicsContext } from "../context/TopicsContext";
+// API
+import { useUpdatePlaylist } from "../api/playlists";
 // Components
 import ActionButton from "../components/shared/ActionButton";
+import displayErrorAlert from "../components/shared/displayErrorAlert";
 // Design
 import { SEMIBOLD, FS18, FS24 } from "../design/typography";
 import { GRAY_2 } from "../design/colors";
 
-const EditTopicScreen = ({ route, navigation }) => {
-  const { topicInfo } = route.params;
-  const [topicName, setTopicName] = useState(topicInfo.name);
+const EditPlaylistScreen = ({ route, navigation }) => {
+  const { playlistInfo } = route.params;
+  const [playlistName, setPlaylistName] = useState(playlistInfo?.name);
 
-  const {
-    state: { isFetching },
-    updateTopic,
-  } = useContext(TopicsContext);
+  const [updatePlaylist, { status }] = useUpdatePlaylist();
+
+  // Error handling
+  if (status === "error") {
+    displayErrorAlert(
+      "Sorry, an error occurred while trying to edit your playlist"
+    );
+  }
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -30,18 +35,21 @@ const EditTopicScreen = ({ route, navigation }) => {
         <View style={styles.inner}>
           <TextInput
             style={styles.input}
-            value={topicName}
-            onChangeText={setTopicName}
+            value={playlistName}
+            onChangeText={setPlaylistName}
           />
           <View style={styles.btnContainer}>
             <ActionButton
               title="Update"
               onPress={async () => {
-                await updateTopic(topicInfo._id, { name: topicName });
+                await updatePlaylist({
+                  playlistId: playlistInfo._id,
+                  data: { name: playlistName },
+                });
                 navigation.goBack();
               }}
-              disabled={topicName === topicInfo.name}
-              showLoading={isFetching}
+              disabled={playlistName === playlistInfo.name}
+              showLoading={status === "loading"}
             />
           </View>
         </View>
@@ -78,4 +86,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditTopicScreen;
+export default EditPlaylistScreen;
