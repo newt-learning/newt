@@ -1,6 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import { Text, StyleSheet, FlatList } from "react-native";
 import _ from "lodash";
+// API
+import { useFetchSeries } from "../api/series";
 // Context
 import { Context as ContentContext } from "../context/ContentContext";
 // Components
@@ -23,7 +25,18 @@ import {
 
 const HomeScreen = ({ navigation }) => {
   const { state: contentState, fetchContent } = useContext(ContentContext);
-  const [refreshing, onPullToRefresh] = useRefresh(fetchContent);
+  const {
+    data: seriesData,
+    status: seriesStatus,
+    refetch: fetchSeries,
+  } = useFetchSeries();
+
+  // Pull to refresh
+  const fetchData = () => {
+    fetchContent();
+    fetchSeries();
+  };
+  const [refreshing, onPullToRefresh] = useRefresh(fetchData);
 
   // Fetch content data
   useEffect(() => {
@@ -47,7 +60,7 @@ const HomeScreen = ({ navigation }) => {
   );
 
   // If data is being fetched, show loading spinner
-  if (contentState.isFetching && !refreshing) {
+  if ((contentState.isFetching || seriesStatus === "loading") && !refreshing) {
     return <Loader />;
   }
 
@@ -67,21 +80,21 @@ const HomeScreen = ({ navigation }) => {
     return <NoContentMessage />;
   }
 
-  // Filter out only items in "Currently Learning" shelf
-  const inProgressContent = _.filter(
-    contentState.items,
-    (item) => item.shelf === "Currently Learning"
-  );
-  // Then order the filtered content by descending order of when it was last updated (latest to oldest)
-  const orderedInProgressContent = _.orderBy(
-    inProgressContent,
-    "lastUpdated",
-    "desc"
-  );
+  // Filter out only items in "Currently Learning" shelf and then order the
+  // filtered content by descending order of when it was last updated (latest to oldest)
+  const inProgressContent = _.chain(contentState.items)
+    .filter((item) => item.shelf === "Currently Learning" && !item.partOfSeries)
+    .orderBy("lastUpdated", "desc")
+    .value();
+
+  const inProgessSeries = _.chain(seriesData)
+    .filter((series) => series.shelf === "Currently Learning")
+    .orderBy("lastUpdated", "desc")
+    .value();
 
   return (
     <FlatList
-      data={orderedInProgressContent}
+      data={[...inProgressContent, ...inProgessSeries]}
       keyExtractor={(item) => item._id}
       renderItem={({ item }) => (
         <HomeContentCard
@@ -90,8 +103,8 @@ const HomeScreen = ({ navigation }) => {
           type={item.type}
           authors={item.authors}
           percentComplete={calculatePercentComplete(
-            item.bookInfo.pagesRead,
-            item.bookInfo.pageCount
+            item?.bookInfo?.pagesRead,
+            item?.bookInfo?.pageCount
           )}
           onPress={() => handleContentNavigation(item, navigation)}
         />
